@@ -1,0 +1,2 @@
+# EKrut
+Our degree project
