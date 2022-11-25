@@ -1,0 +1,185 @@
+﻿// This file contains a list of localised words 
+// that the Word Cloud plugin will ignore when 
+// building its word list.
+//
+// Each line should contain a single word only. 
+// Words are treated case-insensitively.
+//
+// The following words are provided as an example.
+// Note: You are expected to replace them with words
+// appropriate to your specific language.
+
+-
+približno
+zgoraj
+po
+ponovno
+proti
+vse
+sem
+-
+in
+kaj
+tako
+nekater
+kot
+ob
+biti
+Ker
+bil
+prej
+biti
+spodaj
+med
+oboje
+ampak
+mimo
+ne more
+ne more
+bi lahko
+ni mogel
+naredil
+ni
+stori
+naredi
+ne
+početje
+ne
+dol
+med
+vsak
+nekaj
+za
+iz
+dalje
+imel
+ni
+je
+ni
+so
+niso
+imeti
+on
+bi
+bo
+je
+njo
+tukaj
+tukaj je
+njen
+sama
+njega
+sebe
+njegovo
+kako
+kako je
+jaz
+jaz bi
+bom
+sem
+sem
+če
+v
+v
+je
+ni
+to
+je
+svoje
+sama
+mene
+jaz
+več
+večina
+ne sme
+moj
+sebe
+št
+niti
+ne
+od
+izklopljeno
+naprej
+enkrat
+samo
+ali
+drugo
+treba
+naše
+naše
+sebe
+ven
+čez
+lastno
+enako
+ne bo
+ona
+ona bi
+ona bo
+ona je
+naj bi
+ne bi smel
+tako
+nekateri
+takih
+kot
+da
+to je
+the
+njihove
+njihove
+njim
+sami
+torej
+tam
+tam je
+teh
+oni
+bi
+bodo
+so
+so jih imeli
+to
+tistih
+skozi
+do
+tudi
+Spodaj
+dokler
+gor
+zelo
+je bil
+ni bilo
+mi
+bi
+bomo
+smo
+imamo
+so bili
+ni bilo
+kaj
+kaj je
+kdaj
+kdaj je
+kje
+kje je
+ki
+medtem
+WHO
+kdo je
+koga
+zakaj
+zakaj je tako
+s
+ne bo
+bi
+ne bi
+ti
+bi
+boš
+ti si
+imaš
+svoj
+tvoje
+sebe
+sebe
