@@ -12,7 +12,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="borderPane" fx:id="borderPane" prefHeight="339.0" prefWidth="419.0" style="-fx-background-color: #303841; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundary.HostClientUIController">
+<BorderPane id="borderPane" fx:id="borderPane" prefHeight="339.0" prefWidth="419.0" style="-fx-background-color: #303841; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HostClientUIController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="100.0" prefWidth="186.0" style="-fx-background-opacity: 50; -fx-background-color: #3A424B; -fx-background-radius: 15;" vgap="5.0">
         <columnConstraints>

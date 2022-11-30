@@ -4,10 +4,10 @@ import javafx.application.Application;
 
 import javafx.stage.Stage;
 import server.EKrutServer;
+import utils.ChangeScreen;
 
 import java.util.Vector;
 import client.EKrutClient;
-import common.ChangeScreen;
 
 public class EKrutClientUI extends Application {
 

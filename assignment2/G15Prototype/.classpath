@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFX"/>
+	<classpathentry kind="lib" path="D:/OneDrive - ort braude college of engineering/בראודה/סמסטר ה&apos;/קורסי פרוייקט/שיטות הנדסיות/פרוייקט/G15Prototype/src/mysql/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
