@@ -10,224 +10,233 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="vboxServer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ServerConfigurationUIController">
+<VBox id="vboxServer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ServerConfigurationUIController">
    <children>
-      <Label id="headLine" text="Server Conifiguration" textFill="#eeeeee">
-         <font>
-            <Font name="Guttman Logo1" size="26.0" />
-         </font>
-         <opaqueInsets>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </opaqueInsets>
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </Label>
-      <GridPane id="gridPane" hgap="10.0" prefHeight="224.0" prefWidth="616.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;" vgap="10.0">
-        <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="109.0" />
-          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="502.0" minWidth="10.0" prefWidth="476.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <opaqueInsets>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </opaqueInsets>
-         <VBox.margin>
-            <Insets bottom="25.0" left="25.0" right="25.0" top="5.0" />
-         </VBox.margin>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
+      <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label id="gridLabel" text="IP" textFill="#eeeeee" GridPane.halignment="CENTER">
+            <ImageView fitHeight="83.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label id="headLine" alignment="BOTTOM_CENTER" prefHeight="82.0" prefWidth="480.0" text="Server Conifiguration" textFill="#eeeeee">
                <font>
-                  <Font name="Guttman Frank Bold" size="14.0" />
+                  <Font name="HP Simplified Bold" size="36.0" />
                </font>
-            </Label>
-            <Label id="gridLabel" text="Port" textFill="#eeeeee" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Guttman Frank Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label id="gridLabel" text="DB Name" textFill="#eeeeee" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Guttman Frank Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label id="gridLabel" text="DB Username" textFill="#eeeeee" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Guttman Frank Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label id="gridLabel" text="DB Password" textFill="#eeeeee" GridPane.rowIndex="4">
-               <font>
-                  <Font name="Guttman Frank Bold" size="14.0" />
-               </font>
-            </Label>
-            <TextField id="ipTxtFill" fx:id="txtIP" prefHeight="25.0" prefWidth="440.0" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField id="portTxtFill" fx:id="txtPort" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField id="dbNameTxtFill" fx:id="txtDBName" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <PasswordField id="dbPasswordTxtFill" fx:id="txtDBPassword" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </PasswordField>
-            <TextField id="dbUserNameTxtFill" fx:id="txtDBUsername" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </TextField>
-            <ButtonBar nodeOrientation="LEFT_TO_RIGHT" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
-              <buttons>
-                  <Button id="connectBtn" fx:id="connectBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#connectToDB" prefHeight="26.0" prefWidth="213.0" style="-fx-background-color: #00ADB5;" text="Connect" textFill="#eeeeee">
-                     <opaqueInsets>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </opaqueInsets>
-                     <effect>
-                        <InnerShadow>
-                           <color>
-                              <Color blue="0.27000001072883606" green="0.25518858432769775" red="0.09719999879598618" />
-                           </color>
-                        </InnerShadow>
-                     </effect>
-                  </Button>
-                <Button id="disconnectBtn" fx:id="disconnectBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#disconnectFromDB" prefHeight="27.0" style="-fx-background-color: #FF5722;" text="Disconnect" textFill="#eeeeee">
-                     <opaqueInsets>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <effect>
-                        <InnerShadow>
-                           <color>
-                              <Color blue="0.015350877307355404" green="0.09773391485214233" red="0.3684210479259491" />
-                           </color>
-                        </InnerShadow>
-                     </effect>
-                  </Button>
-              </buttons>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
                <opaqueInsets>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </opaqueInsets>
-            </ButtonBar>
+            </Label>
          </children>
-      </GridPane>
-      <HBox alignment="TOP_CENTER" prefHeight="192.0" prefWidth="635.0" spacing="20.0">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="429.0" prefWidth="640.0" spacing="10.0">
          <opaqueInsets>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </opaqueInsets>
          <VBox.margin>
-            <Insets bottom="25.0" left="25.0" right="25.0" />
+            <Insets />
          </VBox.margin>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <GridPane id="gridPane" alignment="TOP_CENTER" prefHeight="147.0" prefWidth="301.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;">
+            <GridPane id="gridPane" hgap="10.0" prefHeight="266.0" prefWidth="302.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;" vgap="10.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="105.0" />
+                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="502.0" minWidth="10.0" prefWidth="147.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="36.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                  <Label id="headLineGrid" text="Connected Clients" textFill="#eeeeee" underline="true" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <TableView fx:id="consoleConnections" style="-fx-background-radius: 5;" GridPane.rowIndex="1">
-                    <columns>
-                      <TableColumn prefWidth="83.0" text="IP" />
-                      <TableColumn prefWidth="101.0" text="Host" />
-                        <TableColumn prefWidth="92.0" text="Status" />
-                    </columns>
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <effect>
-                        <InnerShadow />
-                     </effect>
-                  </TableView>
-               </children>
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
                <padding>
-                  <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
-            </GridPane>
-            <GridPane id="gridPane" alignment="TOP_CENTER" layoutX="261.0" layoutY="15.0" prefHeight="147.0" prefWidth="305.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
-               </rowConstraints>
                <children>
-                  <Label id="headLineGrid" alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="0.0" prefWidth="45.0" text="Console" textAlignment="CENTER" textFill="#eeeeee" underline="true" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                  <Label id="gridLabel" text="IP:" textFill="#eeeeee" GridPane.halignment="CENTER">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="consoleOutput" prefHeight="99.0" prefWidth="275.0" GridPane.rowIndex="1">
-                     <opaqueInsets>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </opaqueInsets>
+                  <Label id="gridLabel" text="Port:" textFill="#eeeeee" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label id="gridLabel" text="DB Name:" textFill="#eeeeee" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label id="gridLabel" text="DB Username:" textFill="#eeeeee" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label id="gridLabel" text="DB Password:" textFill="#eeeeee" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="ipTxtFill" fx:id="txtIP" prefHeight="25.0" prefWidth="153.0" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
-                     <effect>
-                        <InnerShadow />
-                     </effect>
+                  </TextField>
+                  <TextField id="portTxtFill" fx:id="txtPort" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField id="dbNameTxtFill" fx:id="txtDBName" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <PasswordField id="dbPasswordTxtFill" fx:id="txtDBPassword" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </PasswordField>
+                  <TextField id="dbUserNameTxtFill" fx:id="txtDBUsername" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0" prefWidth="238.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
-                  </TextArea>
+                     <opaqueInsets>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </opaqueInsets>
+                     <buttons>
+                        <Button id="connectBtn" fx:id="connectBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#connectToDB" prefHeight="31.0" prefWidth="87.0" style="-fx-background-color: #00ADB5;" text="Connect" textFill="#eeeeee">
+                           <opaqueInsets>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </opaqueInsets>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                      <Button id="disconnectBtn" fx:id="disconnectBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#disconnectFromDB" prefHeight="32.0" prefWidth="105.0" style="-fx-background-color: #FF5722;" text="Disconnect" textFill="#eeeeee">
+                           <opaqueInsets>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </opaqueInsets>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </buttons>
+                  </ButtonBar>
                </children>
                <HBox.margin>
-                  <Insets />
+                  <Insets top="5.0" />
                </HBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </GridPane>
+            <VBox prefHeight="393.0" prefWidth="293.0" spacing="10.0">
+               <children>
+                  <GridPane id="gridPane" alignment="TOP_CENTER" prefHeight="174.0" prefWidth="252.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label id="headLineGrid" text="Connected Clients" textFill="#eeeeee" underline="true" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="consoleConnections" prefHeight="165.0" prefWidth="232.0" style="-fx-background-radius: 5;" GridPane.rowIndex="1">
+                          <columns>
+                            <TableColumn prefWidth="54.0" text="IP" />
+                            <TableColumn prefWidth="105.0" text="Host" />
+                              <TableColumn prefWidth="117.0" text="Status" />
+                          </columns>
+                           <GridPane.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </GridPane.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </padding>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </GridPane>
+                  <GridPane id="gridPane" prefHeight="196.0" prefWidth="293.0" style="-fx-background-color: #3A424B; -fx-background-radius: 20;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="40.0" minHeight="8.0" prefHeight="8.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="168.0" minHeight="10.0" prefHeight="168.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label id="headLineGrid" alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="20.0" prefWidth="96.0" text="Console" textAlignment="CENTER" textFill="#eeeeee" underline="true" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="consoleOutput" prefHeight="169.0" prefWidth="263.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <opaqueInsets>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </opaqueInsets>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </TextArea>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </GridPane>
+               </children>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </VBox>
          </children>
       </HBox>
    </children>
