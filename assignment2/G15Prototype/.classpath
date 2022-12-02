@@ -7,7 +7,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFX"/>
-	<classpathentry kind="lib" path="D:/OneDrive - ort braude college of engineering/בראודה/סמסטר ה&apos;/קורסי פרוייקט/שיטות הנדסיות/פרוייקט/G15Prototype/src/mysql/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx"/>
+	<classpathentry kind="lib" path="C:/Users/meir/Desktop/לימודים/שנה ג/סמסטר 5/שיטות הנדסיות/תרגול/תרגול 3/Ex-03-WorkbenchJDBC/Ex-03-Workbench&amp;JDBC/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
