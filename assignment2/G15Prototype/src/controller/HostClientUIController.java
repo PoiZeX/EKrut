@@ -48,7 +48,7 @@ public class HostClientUIController {
 	    void SendPort(ActionEvent event) {
 	    	String port = txtConnectToServerArea.getText();
 			FXMLLoader loader = new FXMLLoader();
-
+			
 	    	// Validate
 	    	if(CommonFunctions.isNullOrEmpty(port)) { System.out.println("Please insert text"); return; }
 	    	try {
@@ -62,24 +62,24 @@ public class HostClientUIController {
 	    	chat = new ClientController("localhost", Integer.parseInt(port));
 	    	chat.accept("Connection success");
 	    	chat.accept("Switching view from Configuration to Editor");
-	    	
+    		chat.accept("Connect");  // change later to Message OBJECT 
+//    		Thread.sleep(4000);
+//    		chat.accept("Disconnect");
+    		
 	    	// Go to next screen (controller creates the screen)
-
 	    	try {
-//	    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-//	    		Stage primaryStage = new Stage();
-//	    		Pane root = loader.load(getClass().getResource("/boundary/EditUsersBoundary.fxml").openStream());
-//	    		//EditUsersController editUsersController = loader.getController();		
-//	    		
-//	    		Scene scene = new Scene(root);			
-//	    		//scene.getStylesheets().add(getClass().getResource("/gui/StudentForm.css").toExternalForm());
-//	    		primaryStage.setTitle("Edit EKrut Users");
-//
-//	    		primaryStage.setScene(scene);		
-//	    		primaryStage.show();
-	    		chat.accept("Connect");
-	    		Thread.sleep(4000);
-	    		chat.accept("Disconnect");
+	    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
+	    		Stage primaryStage = new Stage();
+	    		Pane root = loader.load(getClass().getResource("/boundary/EditUsersBoundary.fxml"));
+	    		//EditUsersController editUsersController = loader.getController();		
+	    		
+	    		Scene scene = new Scene(root);			
+	    		//scene.getStylesheets().add(getClass().getResource("/gui/StudentForm.css").toExternalForm());
+	    		primaryStage.setTitle("Edit EKrut Users");
+
+	    		primaryStage.setScene(scene);		
+	    		primaryStage.show();
+
 	        	
 	    	}
 	    	catch(Exception ex) {

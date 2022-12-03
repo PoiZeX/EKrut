@@ -85,7 +85,6 @@ public class ServerConfigurationUIController {
 		connectBtn.setDisable(false);
 		disconnectBtn.setDisable(true);
 		setDisableTextFieldValues(false);
-
 	}
 
 	@FXML

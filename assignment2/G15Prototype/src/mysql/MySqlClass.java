@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySqlClass {
-	static Connection connection;
+	private static Connection connection;  
 	public static void connectToDb(String DBAddress, String username, String password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,5 +22,8 @@ public class MySqlClass {
 			System.out.println("Error: " + ex.getErrorCode());
 			System.out.println("\n");
 		}
+	}
+	public static Connection getConnection() {
+		return connection;
 	}
 }

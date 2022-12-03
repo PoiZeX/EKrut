@@ -34,6 +34,9 @@ public class ClientController implements ChatIF {
 
 	}
 
+	public void acceptObj(Object obj) {
+		client.handleMessageFromClient(obj);
+	}
 	/**
 	 * This method overrides the method in the ChatIF interface. It displays a
 	 * message onto the screen.
