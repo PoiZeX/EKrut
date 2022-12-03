@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import client.ChatClient;
 import client.ClientController;
+import common.MessageType;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -66,8 +67,7 @@ public class EditUsersController {
 	@FXML
 	// Setup screen before launching view
 	public void initialize() throws Exception {
-
-		chat.accept("GetTable"); // get all entities to ArrayList from DB
+		refresh(null);
 		setupTable(); // setup columns connection
 	}
 
@@ -79,7 +79,7 @@ public class EditUsersController {
 	@FXML
 	private void refresh(ActionEvent event) {
 		ChatClient.subscribers.clear();
-		chat.accept("GetTable"); // get all entities to ArrayList from DB
+		chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList from DB
 	}
 
 	@FXML

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.mysql.cj.MysqlConnection;
 
+import common.MessageType;
 import entity.ConnectedClient;
 import entity.DatabaseEntity;
 import entity.Subscriber;
@@ -45,64 +46,34 @@ public class EchoServer extends AbstractServer {
 		if (msg instanceof ArrayList) {
 			// i know its ArrayList of subscribers but TODO check this
 			ArrayList<Subscriber> subscribersLst = (ArrayList<Subscriber>) msg;
-			updateSubscribersEntities(client, subscribersLst);
-		}
+			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
+		} else if (msg instanceof MessageType) {
+			MessageType type = (MessageType) msg;
+			switch (type) {
+			case ClientConnect:
+				updateClientList(client, "Connect");
+				break;
+			case ClientDisconnect:
+				updateClientList(client, "Disconnect");
+				break;
+			case LoadSubscribers:
+				SubscribersDbController.getTable(client);
+				break;
 
-		if (msg.equals("Connect")) {
-			updateClientList(client, "Connect");
-		} else if (msg.equals("Disconnect")) {
-			updateClientList(client, "Disconnect");
-		}
+			default:
+				System.out.println("Message received: " + msg + " from " + client);
+				break;
+			}
 
-		else if (msg.equals("GetTable")) {
-			getTable(client);
-		} else {
-			System.out.println("Message received: " + msg + " from " + client);
 		}
+		
+		System.out.println("Message received: " + msg + " from " + client);
 		try {
 			client.sendToClient("Server done");
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
 
-	}
-
-	// TODO extract this to subscribersDbController
-	private void updateSubscribersEntities(ConnectionToClient client, ArrayList<Subscriber> subscribersLst) {
-		Statement stmt;
-		Subscriber entity;
-		try 
-		{
-			stmt = MySqlClass.getConnection().createStatement();
-			for(Subscriber subscriber : subscribersLst){
-				// TODO change this to another build method as we learned with question mark (?)...
-				stmt.executeUpdate("UPDATE subscriber SET CreditCardNumber=\""+subscriber.getCreditCardNumber()+"\", SubscriberNumber="+subscriber.getSubscriberNumber()+" WHERE id="+subscriber.getId()+";");
-
-			}
-
-		} catch (SQLException e) {e.printStackTrace();}
-	}
-
-	// TODO extract this to subscribersDbController
-	private void getTable(ConnectionToClient client) {
-		Statement stmt;
-		Subscriber entity;
-		try {
-			stmt = MySqlClass.getConnection().createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM subscriber;");
-			while (rs.next()) {
-				entity = new Subscriber(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), rs.getString(6), rs.getInt(7));
-				try {
-					client.sendToClient(entity); // finally send the entity
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	// Extract it from here later

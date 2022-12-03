@@ -31,7 +31,6 @@ public class ChatClient extends AbstractClient {
 
 
 	public void handleMessageFromServer(Object msg) {
-		System.out.println(msg);
 		awaitResponse = false;
 		if(msg instanceof Subscriber) {
 			subscribers.add((Subscriber)msg);
