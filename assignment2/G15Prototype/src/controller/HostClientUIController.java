@@ -1,8 +1,10 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import utils.ChangeScreen;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,9 +12,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.nio.file.Path;
+
+import javax.tools.StandardJavaFileManager.PathFactory;
+
+import client.ChatClient;
 import client.ClientController;
 import common.CommonFunctions;
+
 public class HostClientUIController {
 
     @FXML
@@ -34,7 +44,50 @@ public class HostClientUIController {
     private Label headLine;
 	public static ClientController chat; // only one instance
 
-  
+	 @FXML
+	    void SendPort(ActionEvent event) {
+	    	String port = txtConnectToServerArea.getText();
+			FXMLLoader loader = new FXMLLoader();
+
+	    	// Validate
+	    	if(CommonFunctions.isNullOrEmpty(port)) { System.out.println("Please insert text"); return; }
+	    	try {
+	    		Integer.parseInt(port);
+	    	}
+	    	catch(Exception ex) {
+	    		System.out.println("Please insert digits only"); return;
+	    	}
+	    	
+	    	// Establish connection
+	    	chat = new ClientController("localhost", Integer.parseInt(port));
+	    	chat.accept("Connection success");
+	    	chat.accept("Switching view from Configuration to Editor");
+	    	
+	    	// Go to next screen (controller creates the screen)
+
+	    	try {
+//	    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
+//	    		Stage primaryStage = new Stage();
+//	    		Pane root = loader.load(getClass().getResource("/boundary/EditUsersBoundary.fxml").openStream());
+//	    		//EditUsersController editUsersController = loader.getController();		
+//	    		
+//	    		Scene scene = new Scene(root);			
+//	    		//scene.getStylesheets().add(getClass().getResource("/gui/StudentForm.css").toExternalForm());
+//	    		primaryStage.setTitle("Edit EKrut Users");
+//
+//	    		primaryStage.setScene(scene);		
+//	    		primaryStage.show();
+	    		chat.accept("Connect");
+	    		Thread.sleep(4000);
+	    		chat.accept("Disconnect");
+	        	
+	    	}
+	    	catch(Exception ex) {
+	    		ex.printStackTrace();
+	    	}
+	    	
+	    }
+	 
     public void start(Stage primaryStage) throws Exception {	
 		Parent root = FXMLLoader.load(getClass().getResource("/boundary/HostClientUI.fxml"));
 				
@@ -46,25 +99,7 @@ public class HostClientUIController {
 		primaryStage.show();	 	   
 	}
     
-    @FXML
-    void SendPort(ActionEvent event) {
-    	String port = txtConnectToServerArea.getText();
+   
 
-    	// Validate
-    	if(CommonFunctions.isNullOrEmpty(port)) { System.out.println("Please insert text"); return; }
-    	try {
-    		Integer.parseInt(port);
-    	}
-    	catch(Exception ex) {
-    		System.out.println("Please insert digits only"); return;
-    	}
-    	
-    	// Establish connection
-    	chat = new ClientController("localhost", Integer.parseInt(port));
-    	chat.accept("Try this");
-    	
-    	// Go to next screen (controller creates the screen)
-    	
-    }
 
 }

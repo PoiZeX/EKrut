@@ -11,11 +11,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import server.EchoServer;
 import server.ServerUI;
 import common.CommonFunctions;
+import entity.ConnectedClient;
 
 public class ServerConfigurationUIController {
 
@@ -40,24 +45,31 @@ public class ServerConfigurationUIController {
 	@FXML
 	private Button disconnectBtn;
 
-	@FXML
-	private TableView<?> consoleConnections;
 
+	@FXML
+    private TableView<ConnectedClient> connectedClients;
+	
+    @FXML
+    private TableColumn<ConnectedClient, String> IP;
+    
+    @FXML
+    private TableColumn<ConnectedClient, String> Host;
+    
+    @FXML
+    private TableColumn<ConnectedClient, String> Status;
+    
 	@FXML
 	private TextArea consoleOutput;
 
 	private PrintStream printStream;
 
-
 	@FXML
-	void connectToDB(ActionEvent event) {	
-		if(CommonFunctions.isNullOrEmpty(txtIP.getText()) ||
-				CommonFunctions.isNullOrEmpty(txtPort.getText()) ||
-				CommonFunctions.isNullOrEmpty(txtDBName.getText()) ||
-				CommonFunctions.isNullOrEmpty(txtDBUsername.getText()) ||
-				CommonFunctions.isNullOrEmpty(txtDBPassword.getText()))
-		{
-			System.out.println("Error. one or more fields are empty");  
+	void connectToDB(ActionEvent event) {
+		if (CommonFunctions.isNullOrEmpty(txtIP.getText()) || CommonFunctions.isNullOrEmpty(txtPort.getText())
+				|| CommonFunctions.isNullOrEmpty(txtDBName.getText())
+				|| CommonFunctions.isNullOrEmpty(txtDBUsername.getText())
+				|| CommonFunctions.isNullOrEmpty(txtDBPassword.getText())) {
+			System.out.println("Error. one or more fields are empty");
 			return;
 		}
 		ServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
@@ -78,28 +90,35 @@ public class ServerConfigurationUIController {
 
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
-		this.txtIP.setText(getIPValue());
-		this.txtPort.setText("5555");
-		this.txtDBName.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
-		this.txtDBUsername.setText("root");
-		this.txtDBPassword.setText("root");
-		this.disconnectBtn.setDisable(true);
+		txtIP.setText(getIPValue());
+        connectedClients.setItems(EchoServer.getClientList());
+		connectTableColumnToObject();
+
+		txtPort.setText("5555");
+		txtDBName.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
+		txtDBUsername.setText("root");
+		txtDBPassword.setText("root");
+		disconnectBtn.setDisable(true);
 		changeConsoleToUI();
 
 	}
 
 	private String getIPValue() throws Exception {
 		String ip = null;
-		ip = Inet4Address.getLocalHost().getHostAddress();
+		try {
+			ip = Inet4Address.getLocalHost().getHostAddress();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return ip;
 	}
 
 	private void setDisableTextFieldValues(boolean b) {
-		this.txtDBName.setDisable(b);
-		this.txtIP.setDisable(b);
-		this.txtPort.setDisable(b);
-		this.txtDBPassword.setDisable(b);
-		this.txtDBUsername.setDisable(b);
+		txtDBName.setDisable(b);
+		txtIP.setDisable(b);
+		txtPort.setDisable(b);
+		txtDBPassword.setDisable(b);
+		txtDBUsername.setDisable(b);
 	}
 
 	@FXML
@@ -107,6 +126,16 @@ public class ServerConfigurationUIController {
 		this.printStream = new PrintStream((OutputStream) new ConsoleStream(this.consoleOutput));
 		System.setOut(this.printStream);
 		System.setErr(this.printStream);
+	}
+
+	/*
+	 * Making a connection between the ConnectedClient object to the columns
+	 *  PropertyValueFactory search for a getters like "getIp", "getHost" in entity object
+	 */
+	private void connectTableColumnToObject() {
+		IP.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("ip"));
+		Host.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("host"));
+		Status.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("status"));
 	}
 
 }
