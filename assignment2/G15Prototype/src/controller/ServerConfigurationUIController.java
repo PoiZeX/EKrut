@@ -14,7 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import server.EKrutServerUI;
+import server.ServerUI;
 import common.CommonFunctions;
 
 public class ServerConfigurationUIController {
@@ -60,7 +60,7 @@ public class ServerConfigurationUIController {
 			System.out.println("Error. one or more fields are empty");  
 			return;
 		}
-		EKrutServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
+		ServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
 				this.txtDBPassword.getText());
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
@@ -69,7 +69,7 @@ public class ServerConfigurationUIController {
 
 	@FXML
 	void disconnectFromDB(ActionEvent event) {
-		EKrutServerUI.disconnect();
+		ServerUI.disconnect();
 		connectBtn.setDisable(false);
 		disconnectBtn.setDisable(true);
 		setDisableTextFieldValues(false);

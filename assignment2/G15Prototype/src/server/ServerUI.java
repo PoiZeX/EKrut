@@ -2,7 +2,7 @@ package server;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import server.EKrutServer;
+import server.EchoServer;
 import utils.ChangeScreen;
 
 import java.io.IOException;
@@ -10,10 +10,10 @@ import java.util.Vector;
 
 import controller.ServerConfigurationUIController;
 
-public class EKrutServerUI extends Application {
+public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
 
-	static EKrutServer EKrutServer;
+	static EchoServer EchoServer;
 
 	public static void main(String[] args) throws Exception {
 		launch(args);
@@ -33,9 +33,9 @@ public class EKrutServerUI extends Application {
 			return;
 		}
 		
-		EKrutServer = new EKrutServer(serverPort, DBAddress, username, password);
+		EchoServer = new EchoServer(serverPort, DBAddress, username, password);
 		try {
-			EKrutServer.listen();
+			EchoServer.listen();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR - Could not listen for clients!");
@@ -43,11 +43,11 @@ public class EKrutServerUI extends Application {
 	}
 
 	public static void disconnect() {
-	    if (EKrutServer == null) {
-	        EKrutServer.stopListening();
+	    if (EchoServer == null) {
+	    	EchoServer.stopListening();
 	      } else {
 	        try {
-	          EKrutServer.close();
+	        	EchoServer.close();
 	        } catch (IOException e) {
 	          e.printStackTrace();
 	        } 

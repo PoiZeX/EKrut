@@ -5,16 +5,23 @@ import entity.DatabaseEntity;
 import mysql.MySqlClass;
 import ocsf.server.*;
 
-public class EKrutServer extends AbstractServer {
+public class EchoServer extends AbstractServer {
 	DatabaseEntity DatabaseController;
 
-	public EKrutServer(int port, String DBAddress, String username, String password) {
+	public EchoServer(int port, String DBAddress, String username, String password) {
 		super(port);
 		this.DatabaseController = new DatabaseEntity(username, password, DBAddress);
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+		System.out.println("Message received: " + msg + " from " + client);
+		try {
+			client.sendToClient(msg);
+		}
+		catch(Exception ex) {
+			System.err.println(ex);
+		}
+		
 	}
 
 	protected void serverStarted() {

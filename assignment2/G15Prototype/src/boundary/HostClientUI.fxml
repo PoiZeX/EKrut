@@ -38,7 +38,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Label id="gridLabel" fx:id="gridLabel" prefHeight="37.0" prefWidth="208.0" text="Please enter Host Name:" textFill="#eeeeee" GridPane.valignment="BOTTOM">
+            <Label id="gridLabel" fx:id="gridLabel" prefHeight="37.0" prefWidth="208.0" text="Please enter Port:" textFill="#eeeeee" GridPane.valignment="BOTTOM">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
