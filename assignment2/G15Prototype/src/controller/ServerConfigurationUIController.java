@@ -2,6 +2,7 @@ package controller;
 
 import utils.ConsoleStream;
 
+import java.awt.Event;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Inet4Address;
@@ -14,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import server.EKrutServerUI;
+import common.CommonFunctions;
 
 public class ServerConfigurationUIController {
 
@@ -46,8 +48,18 @@ public class ServerConfigurationUIController {
 
 	private PrintStream printStream;
 
+
 	@FXML
-	void connectToDB(ActionEvent event) {
+	void connectToDB(ActionEvent event) {	
+		if(CommonFunctions.isNullOrEmpty(txtIP.getText()) ||
+				CommonFunctions.isNullOrEmpty(txtPort.getText()) ||
+				CommonFunctions.isNullOrEmpty(txtDBName.getText()) ||
+				CommonFunctions.isNullOrEmpty(txtDBUsername.getText()) ||
+				CommonFunctions.isNullOrEmpty(txtDBPassword.getText()))
+		{
+			System.out.println("Error. one or more fields are empty");  
+			return;
+		}
 		EKrutServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
 				this.txtDBPassword.getText());
 		connectBtn.setDisable(true);
