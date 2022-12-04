@@ -74,8 +74,6 @@ public class EditUsersController {
 	public void initialize() throws Exception {
 		refresh(null);
 		setupTable(); // setup columns connection
-		originalTableContent = (ArrayList)ChatClient.subscribers;
-		System.out.println(originalTableContent);
 	}
 
 	@FXML
