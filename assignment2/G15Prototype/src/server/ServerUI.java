@@ -21,7 +21,7 @@ public class ServerUI extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		ChangeScreen screen = new ChangeScreen();
-		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationUI.fxml");
+		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationUI.fxml", null);
 	}
 
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
