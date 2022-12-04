@@ -1,5 +1,5 @@
 package controller;
-
+import utils.*;
 import java.util.ArrayList;
 
 import client.ChatClient;
@@ -19,8 +19,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
-import javafx.stage.Stage;
+
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import server.EchoServer;
@@ -59,22 +58,38 @@ public class EditUsersController {
 
 	@FXML
 	private Button saveBtn;
+	
+    @FXML
+    private Button revertBtn;
+
 
 	ClientController chat = HostClientUIController.chat; // define the chat for the controller
 
 	private ArrayList<Subscriber> changedSubscriberItems = new ArrayList<>();
+
+	private static ArrayList<Subscriber> originalTableContent;
 
 	@FXML
 	// Setup screen before launching view
 	public void initialize() throws Exception {
 		refresh(null);
 		setupTable(); // setup columns connection
+		originalTableContent = (ArrayList)ChatClient.subscribers;
+		System.out.println(originalTableContent);
 	}
 
 	@FXML
 	private void back(ActionEvent event) {
 
 	}
+	
+	@FXML
+	private void revert(ActionEvent event) {
+		if (changedSubscriberItems.size() > 0) {
+			chat.acceptObj(originalTableContent);
+		}
+	}
+	
 
 	@FXML
 	private void refresh(ActionEvent event) {
@@ -84,9 +99,12 @@ public class EditUsersController {
 
 	@FXML
 	private void save(ActionEvent event) {
-		if (changedSubscriberItems.size() > 0)
+		if (changedSubscriberItems.size() > 0) {
 			chat.acceptObj(changedSubscriberItems);
-		refresh(event);
+			changedSubscriberItems.clear();
+		}
+			
+		
 	}
 
 	/*
@@ -113,6 +131,7 @@ public class EditUsersController {
 		subscriberCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
 		// define the event when submit / commit
+		// Handle subscriber credit card number change
 		creditCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, String>>() {
 			@Override
 			public void handle(CellEditEvent<Subscriber, String> event) {
@@ -123,7 +142,7 @@ public class EditUsersController {
 			}
 
 		});
-
+		// Handle subscriber number change
 		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, Integer>>() {
 			@Override
 			public void handle(CellEditEvent<Subscriber, Integer> event) {

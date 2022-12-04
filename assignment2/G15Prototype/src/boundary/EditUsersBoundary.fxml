@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="vboxmain" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="928.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditUsersController">
+<VBox id="vboxmain" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="525.0" minWidth="920.0" prefHeight="525.0" prefWidth="920.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditUsersController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="100.0" prefWidth="920.0">
          <children>
             <ImageView fitHeight="83.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -24,9 +24,17 @@
                   <Insets left="5.0" />
                </HBox.margin>
             </ImageView>
-            <Label id="headLine" alignment="BOTTOM_CENTER" prefHeight="82.0" prefWidth="480.0" text="Edit Users" textFill="#eeeeee">
+            <Label id="headLine" alignment="CENTER" contentDisplay="TOP" prefHeight="98.0" prefWidth="246.0" text="Edit Users" textAlignment="CENTER" textFill="#c4d7ff">
                <font>
                   <Font name="HP Simplified Bold" size="36.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+            </Label>
+            <Label id="saveChangesNote" alignment="BOTTOM_RIGHT" contentDisplay="BOTTOM" prefHeight="83.0" prefWidth="575.0" text="*Press ENTER to confirm changes" textAlignment="CENTER" textFill="#c4d7ff">
+               <font>
+                  <Font size="11.0" />
                </font>
                <opaqueInsets>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -37,7 +45,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="usersTable" prefHeight="513.0" prefWidth="838.0" style="-fx-background-radius: 5;">
+      <TableView fx:id="usersTable" prefHeight="525.0" prefWidth="920.0" style="-fx-background-radius: 5;">
         <columns>
           <TableColumn fx:id="idCol" editable="false" prefWidth="35.0" text="ID" />
           <TableColumn fx:id="fnameCol" editable="false" prefWidth="124.0" text="First name" />
@@ -56,25 +64,39 @@
       </TableView>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="640.0">
+            <HBox alignment="CENTER" prefHeight="55.0" prefWidth="928.0">
                <children>
                   <Button id="goBack" fx:id="backBtn" mnemonicParsing="false" onAction="#back" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Back" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Button>
-                  <Button id="saveChanges" fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Save changes" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
+                  <Button id="saveChanges" fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Save Changes" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="80.0" right="80.0" />
+                        <Insets left="40.0" />
                      </HBox.margin>
                   </Button>
                   <Button id="refreshPage" fx:id="refreshBtn" mnemonicParsing="false" onAction="#refresh" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Refresh" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button id="goBack" fx:id="revertBtn" mnemonicParsing="false" onAction="#revert" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Revert Changes" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
                   </Button>
                </children>
                <opaqueInsets>

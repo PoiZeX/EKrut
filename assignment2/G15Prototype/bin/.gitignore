@@ -1,7 +1,3 @@
-/boundary/
+/utils/
 /controller/
-/client/
-/entity/
-/server/
-/mysql/
-/common/
+/boundary/
