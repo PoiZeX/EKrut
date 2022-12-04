@@ -10,7 +10,8 @@ import javafx.stage.StageStyle;
 public class ChangeScreen {
 	  public void changeScreen(Stage primaryStage, String path, ActionEvent event) {
 		  try {
-			  ((Node)event.getSource()).getScene().getWindow().hide();
+			  if (event != null)
+				  ((Node)event.getSource()).getScene().getWindow().hide();
 			  Parent root = FXMLLoader.load(getClass().getResource(path));
 		      Scene scene = new Scene(root);
 		      primaryStage.setScene(scene);
