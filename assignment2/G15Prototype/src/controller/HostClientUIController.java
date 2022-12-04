@@ -68,10 +68,9 @@ public class HostClientUIController {
 //    		chat.accept("Disconnect");
 		
     	// Go to next screen (controller creates the screen)
-		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
 		Stage primaryStage = new Stage();
 		ChangeScreen screenChanger = new ChangeScreen();
-		screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml");
+		screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
 //    	try {
 //    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
 //    		Stage primaryStage = new Stage();

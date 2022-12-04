@@ -1,0 +1,15 @@
+.root{
+	-fx-background-color: #FFBF69;
+	-fx-text-fill: white;
+	-fx-alignment: CENTER;
+}
+.Button {
+	-fx-background-color: false;
+	-fx-text-fill:white;
+}
+
+.GridPane{
+	-fx-background-radius:15;
+	-fx-background-color:#FF9F1C;
+}
+	
