@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -39,6 +40,9 @@
                <opaqueInsets>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </opaqueInsets>
+               <tooltip>
+                  <Tooltip text="tooltop" />
+               </tooltip>
             </Label>
          </children>
          <VBox.margin>
@@ -70,33 +74,19 @@
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <Button id="saveChanges" fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Save Changes" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="40.0" />
+                        <Insets left="80.0" right="80.0" />
                      </HBox.margin>
                   </Button>
                   <Button id="refreshPage" fx:id="refreshBtn" mnemonicParsing="false" onAction="#refresh" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Refresh" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets left="40.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button id="goBack" fx:id="revertBtn" mnemonicParsing="false" onAction="#revert" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Revert Changes" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="40.0" />
-                     </HBox.margin>
                   </Button>
                </children>
                <opaqueInsets>

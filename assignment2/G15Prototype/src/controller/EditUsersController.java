@@ -59,15 +59,9 @@ public class EditUsersController {
 	@FXML
 	private Button saveBtn;
 	
-    @FXML
-    private Button revertBtn;
-
-
 	ClientController chat = HostClientUIController.chat; // define the chat for the controller
-
 	private ArrayList<Subscriber> changedSubscriberItems = new ArrayList<>();
 
-	private static ArrayList<Subscriber> originalTableContent;
 
 	@FXML
 	// Setup screen before launching view
@@ -79,13 +73,6 @@ public class EditUsersController {
 	@FXML
 	private void back(ActionEvent event) {
 
-	}
-	
-	@FXML
-	private void revert(ActionEvent event) {
-		if (changedSubscriberItems.size() > 0) {
-			chat.acceptObj(originalTableContent);
-		}
 	}
 	
 
