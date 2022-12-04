@@ -17,7 +17,7 @@ public class MySqlClass {
 			connection = DriverManager.getConnection(DBAddress, username, password);
 			System.out.println("Connected To SQL");
 		} catch (SQLException ex) {
-			System.out.println("Expection: " + ex.getMessage());
+			System.out.println("Exception: " + ex.getMessage());
 			System.out.println("State: " + ex.getSQLState());
 			System.out.println("Error: " + ex.getErrorCode());
 			System.out.println("\n");
