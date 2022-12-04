@@ -22,7 +22,7 @@ import server.ServerUI;
 import common.CommonFunctions;
 import entity.ConnectedClient;
 
-public class ServerConfigurationUIController {
+public class ServerConfigurationUIController  extends WindowControllerBase {
 
 	@FXML
 	private TextField txtIP;

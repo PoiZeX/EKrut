@@ -26,7 +26,7 @@ import server.EchoServer;
 import entity.ConnectedClient;
 import entity.Subscriber;
 
-public class EditUsersController {
+public class EditUsersController extends WindowControllerBase {
 
 	@FXML
 	private Button backBtn;

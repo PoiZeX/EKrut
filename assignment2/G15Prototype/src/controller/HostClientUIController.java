@@ -24,7 +24,7 @@ import client.ClientController;
 import common.CommonFunctions;
 import utils.*;
 
-public class HostClientUIController {
+public class HostClientUIController  extends WindowControllerBase {
 
     @FXML
     private BorderPane borderPane;
