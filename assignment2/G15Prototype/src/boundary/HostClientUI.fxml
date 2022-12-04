@@ -33,7 +33,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="txtConnectToServerArea" prefHeight="32.0" prefWidth="185.0" GridPane.rowIndex="1">
+            <TextField fx:id="txtConnectToServerArea" prefHeight="32.0" prefWidth="185.0" promptText="Port Number" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
@@ -63,7 +63,7 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Label id="headLine" fx:id="headLine" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="100.0" prefWidth="314.0" style="-fx-background-color: 303841;" text="Connect to server" textFill="#eeeeee">
+            <Label id="headLine" fx:id="headLine" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="100.0" prefWidth="314.0" style="-fx-background-color: 303841;" text="Server Connection" textFill="#eeeeee">
                <font>
                   <Font name="HP Simplified Bold" size="35.0" />
                </font>
