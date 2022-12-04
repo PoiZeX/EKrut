@@ -1,5 +1,17 @@
+<<<<<<< Updated upstream
 /utils/
 /controller/
 /boundary/
 /server/
 /css/
+=======
+/client/
+/common/
+/controller/
+/entity/
+/ocsf/
+/server/
+/utils/
+/boundary/
+/mysql/
+>>>>>>> Stashed changes
