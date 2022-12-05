@@ -1,6 +1,6 @@
 package entity;
 
-public class Subscriber extends mainEntity {
+public class Subscriber extends MainEntity {
 	public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, String creditCardNumber,
 			int subscriberNumber) {
 		super(id);

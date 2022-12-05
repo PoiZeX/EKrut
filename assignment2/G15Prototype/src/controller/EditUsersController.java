@@ -1,4 +1,5 @@
 package controller;
+
 import utils.*;
 import java.util.ArrayList;
 
@@ -58,10 +59,9 @@ public class EditUsersController extends WindowControllerBase {
 
 	@FXML
 	private Button saveBtn;
-	
+
 	ClientController chat = HostClientUIController.chat; // define the chat for the controller
 	private ArrayList<Subscriber> changedSubscriberItems = new ArrayList<>();
-
 
 	@FXML
 	// Setup screen before launching view
@@ -74,11 +74,11 @@ public class EditUsersController extends WindowControllerBase {
 	private void back(ActionEvent event) {
 
 	}
-	
 
 	@FXML
 	private void refresh(ActionEvent event) {
-		ChatClient.subscribers.clear();
+		if(ChatClient.subscribers != null)
+			ChatClient.subscribers.clear();
 		chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList from DB
 	}
 
@@ -88,8 +88,7 @@ public class EditUsersController extends WindowControllerBase {
 			chat.acceptObj(changedSubscriberItems);
 			changedSubscriberItems.clear();
 		}
-			
-		
+
 	}
 
 	/*
@@ -100,6 +99,7 @@ public class EditUsersController extends WindowControllerBase {
 	private void setupTable() {
 		usersTable.setEditable(true); // make table editable
 		usersTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+		if(ChatClient.subscribers == null) return;
 		usersTable.setItems(ChatClient.subscribers);
 
 		// factory
