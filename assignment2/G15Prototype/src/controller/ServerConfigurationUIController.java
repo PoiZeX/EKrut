@@ -80,7 +80,7 @@ public class ServerConfigurationUIController  extends WindowControllerBase {
 	}
 
 	@FXML
-	void disconnectFromDB(ActionEvent event) {
+	public void disconnectFromDB(ActionEvent event) {
 		ServerUI.disconnect();
 		connectBtn.setDisable(false);
 		disconnectBtn.setDisable(true);

@@ -15,7 +15,6 @@ public class NavigationStoreController {
 		windowControllers  = new HashMap<>();
 		windowControllerHistory = new LinkedList<>();
 		windowControllers.put(WindowControllerBase.class, new WindowControllerBase());
-		
 	}
 	
 	public WindowControllerBase getCurrentScreenController() {
@@ -43,8 +42,14 @@ public class NavigationStoreController {
 	
 	}
 	
+	// set current to be the last instance
+	public void goBack() {
+		if(getPrevious()!=null) {
+			currentWindowController = windowControllerHistory.pop();
+		}
+	}
 	
-
+	// get the last node without pop
 	public WindowControllerBase getPrevious() {
 		return windowControllerHistory.peekLast();
 	}
