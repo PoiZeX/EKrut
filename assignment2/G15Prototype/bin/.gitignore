@@ -1,7 +1,3 @@
-/boundary/
-/client/
-/controller/
-/entity/
+/ocsf/
 /server/
-/css/
-/Store/
+/utils/
