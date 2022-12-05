@@ -2,10 +2,10 @@ package entity;
 
 import java.io.Serializable;
 
-public class mainEntity implements Serializable{
+public class MainEntity implements Serializable{
 	int id;
 
-	public mainEntity(int id) {
+	public MainEntity(int id) {
 		this.id = id;
 	}
 	

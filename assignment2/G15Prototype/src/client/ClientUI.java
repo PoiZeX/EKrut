@@ -14,6 +14,9 @@ public class ClientUI extends Application {
 
 
 	public static void main(String[] args) throws Exception {
+		Runtime.getRuntime().addShutdownHook(new Thread(()->{
+		    System.out.println("closing...");
+		}));
 		launch(args);
 	}
 

@@ -17,6 +17,8 @@ public class SubscribersDbController {
 		Subscriber entity;
 		try 
 		{
+			if(MySqlClass.getConnection() == null) return;
+
 			stmt = MySqlClass.getConnection().createStatement();
 			for(Subscriber subscriber : subscribersLst){
 				// TODO change this to another build method as we learned with question mark (?)...
@@ -32,6 +34,8 @@ public class SubscribersDbController {
 		Statement stmt;
 		Subscriber entity;
 		try {
+			if(MySqlClass.getConnection() == null) return;
+
 			stmt = MySqlClass.getConnection().createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM subscriber;");
 			while (rs.next()) {
