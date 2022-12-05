@@ -57,6 +57,7 @@ public class NavigationStoreController {
 		{
 			windowControllerHistory.addLast(wc);	
 		}
+		return wc;
 	}
 	
 }
