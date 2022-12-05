@@ -39,6 +39,7 @@ public class NavigationStoreController {
 		currentWindowController = windowControllers.get(wc.getClass());
 	
 		// need to insert here the 'hide' and 'set stage' and stuff to really change VIEW
+		
 	
 	}
 	
