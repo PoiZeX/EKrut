@@ -2,47 +2,51 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E8EEF1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #E8EEF1;" BorderPane.alignment="CENTER" />
-   </top>
-   <center>
-      <VBox id="GridPane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+   <left>
+      <VBox id="GridPane" alignment="TOP_CENTER" minHeight="362.0" minWidth="300.0" prefHeight="362.0" prefWidth="225.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
          <children>
-            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="500.0" prefHeight="320.0" prefWidth="500.0" style="-fx-background-color: #E8EEF1; -fx-background-radius: 15; -fx-border-color: #1E3D58; -fx-border-radius: 15; -fx-border-width: 2;">
+            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" style="-fx-background-color: #E8EEF1; -fx-background-radius: 15; -fx-border-color: #1E3D58; -fx-border-radius: 15; -fx-border-width: 0;">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="258.0" />
-                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="262.0" />
+                <ColumnConstraints />
+                <ColumnConstraints />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="112.0" />
+                  <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="109.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="167.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="64.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="66.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="197.0" minHeight="0.0" prefHeight="144.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="101.0" minHeight="0.0" prefHeight="98.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <VBox.margin>
-                  <Insets bottom="20.0" left="100.0" right="100.0" top="10.0" />
-               </VBox.margin>
                <children>
-                  <TextField fx:id="usernameTxtField" minWidth="60.0" prefWidth="60.0" promptText="Username" style="-fx-background-radius: 10;" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                  <TextField fx:id="usernameTxtField" minWidth="100.0" prefHeight="25.0" prefWidth="171.0" promptText="Username" style="-fx-background-radius: 10;" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="100.0" right="100.0" />
-                     </GridPane.margin></TextField>
-                  <PasswordField fx:id="passwordTxtFeild" promptText="Password" style="-fx-background-radius: 10;" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                        <Insets left="40.0" right="40.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <PasswordField fx:id="passwordTxtFeild" minWidth="100.0" prefHeight="25.0" prefWidth="100.0" promptText="Password" style="-fx-background-radius: 10;" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="100.0" right="100.0" />
-                     </GridPane.margin></PasswordField>
-                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: #E8630A; -fx-background-radius: 10;" text="Login" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                        <Insets left="40.0" right="40.0" top="60.0" />
+                     </GridPane.margin>
+                  </PasswordField>
+                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" style="-fx-background-color: #43B0f1; -fx-background-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -51,17 +55,18 @@
                      </GridPane.margin>
                   </Button>
                </children>
-               <padding>
-                  <Insets bottom="20.0" left="15.0" right="15.0" top="25.0" />
-               </padding>
+               <VBox.margin>
+                  <Insets bottom="25.0" left="25.0" top="15.0" />
+               </VBox.margin>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" height="40.0" radius="19.5" width="40.0">
+                     <color>
+                        <Color red="0.12240000069141388" green="0.24208000302314758" blue="0.3400000035762787" opacity="0.5038167834281921" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </GridPane>
          </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
       </VBox>
-   </center>
+   </left>
 </BorderPane>
