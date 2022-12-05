@@ -1,13 +1,17 @@
 package server;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import server.EchoServer;
 import utils.ChangeScreen;
 
 import java.io.IOException;
 import java.util.Vector;
 
+import common.MessageType;
+import controller.HostClientUIController;
 import controller.ServerConfigurationUIController;
 
 public class ServerUI extends Application {
@@ -22,6 +26,14 @@ public class ServerUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		ChangeScreen screen = new ChangeScreen();
 		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationUI.fxml", null);
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				ServerUI.disconnect();  // force disconnect server
+				}
+		});
+	
+	
 	}
 
 	public static void runServer(String portUI, String DBAddress, String username, String password) {

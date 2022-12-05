@@ -22,7 +22,7 @@ import server.ServerUI;
 import common.CommonFunctions;
 import entity.ConnectedClient;
 
-public class ServerConfigurationUIController {
+public class ServerConfigurationUIController  extends WindowControllerBase {
 
 	@FXML
 	private TextField txtIP;
@@ -80,7 +80,7 @@ public class ServerConfigurationUIController {
 	}
 
 	@FXML
-	void disconnectFromDB(ActionEvent event) {
+	public void disconnectFromDB(ActionEvent event) {
 		ServerUI.disconnect();
 		connectBtn.setDisable(false);
 		disconnectBtn.setDisable(true);

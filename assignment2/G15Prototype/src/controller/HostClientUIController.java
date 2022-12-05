@@ -22,9 +22,10 @@ import javax.tools.StandardJavaFileManager.PathFactory;
 import client.ChatClient;
 import client.ClientController;
 import common.CommonFunctions;
+import common.MessageType;
 import utils.*;
 
-public class HostClientUIController {
+public class HostClientUIController  extends WindowControllerBase {
 
     @FXML
     private BorderPane borderPane;
@@ -44,7 +45,7 @@ public class HostClientUIController {
     @FXML
     private Label headLine;
 	public static ClientController chat; // only one instance
-
+	
 	@FXML
     void SendPort(ActionEvent event) {
     	String port = txtConnectToServerArea.getText();
@@ -63,14 +64,14 @@ public class HostClientUIController {
     	chat = new ClientController("localhost", Integer.parseInt(port));
     	chat.accept("Connection success");
     	chat.accept("Switching view from Configuration to Editor");
-		chat.accept("Connect");  // change later to Message OBJECT 
-//    		Thread.sleep(4000);
-//    		chat.accept("Disconnect");
-		
+		chat.acceptObj(MessageType.ClientConnect); // send server that client connected
+
     	// Go to next screen (controller creates the screen)
 		Stage primaryStage = new Stage();
 		ChangeScreen screenChanger = new ChangeScreen();
 		screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
+		
+		
 //    	try {
 //    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
 //    		Stage primaryStage = new Stage();
@@ -100,7 +101,8 @@ public class HostClientUIController {
 		primaryStage.setTitle("EKrut connect");
 		primaryStage.setScene(scene);
 		
-		primaryStage.show();	 	   
+		primaryStage.show();	 
+		
 	}
     
    
