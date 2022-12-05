@@ -12,21 +12,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@loginStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E8EEF1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <buttons>
-          <Button id="Button" minWidth="40.0" mnemonicParsing="false" prefHeight="32.0" style="-fx-background-color: false;" stylesheets="@loginStyleSheet.css" />
-        </buttons>
-      </ButtonBar>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #E8EEF1;" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <VBox id="GridPane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@loginStyleSheet.css" BorderPane.alignment="CENTER">
+      <VBox id="GridPane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane id="GridPane" alignment="TOP_RIGHT" prefHeight="369.0" prefWidth="400.0" style="-fx-background-color: #F2A154; -fx-background-radius: 15;" stylesheets="@loginStyleSheet.css">
+            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="500.0" prefHeight="320.0" prefWidth="500.0" style="-fx-background-color: #E8EEF1; -fx-background-radius: 15; -fx-border-color: #1E3D58; -fx-border-radius: 15; -fx-border-width: 2;">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="112.0" />
-                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="258.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="258.0" />
+                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="262.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="167.0" vgrow="SOMETIMES" />
@@ -38,9 +34,15 @@
                   <Insets bottom="20.0" left="100.0" right="100.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <TextField fx:id="usernameTxtField" promptText="Username" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <PasswordField fx:id="passwordTxtFeild" promptText="Password" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: #2EC4B6; -fx-background-radius: 15;" text="Login" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                  <TextField fx:id="usernameTxtField" minWidth="60.0" prefWidth="60.0" promptText="Username" style="-fx-background-radius: 10;" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </GridPane.margin></TextField>
+                  <PasswordField fx:id="passwordTxtFeild" promptText="Password" style="-fx-background-radius: 10;" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </GridPane.margin></PasswordField>
+                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: #E8630A; -fx-background-radius: 10;" text="Login" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
