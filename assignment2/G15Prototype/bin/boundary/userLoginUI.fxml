@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -25,7 +24,7 @@
             <Insets top="10.0" />
          </padding>
          <children>
-            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" style="-fx-background-color: #E8EEF1; -fx-background-radius: 15; -fx-border-color: #1E3D58; -fx-border-radius: 15; -fx-border-width: 0;">
+            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" styleClass="GridPane" stylesheets="@../css/generalStyleSheet.css">
               <columnConstraints>
                 <ColumnConstraints />
                 <ColumnConstraints />
@@ -48,29 +47,18 @@
                         <Insets left="40.0" right="40.0" top="60.0" />
                      </GridPane.margin>
                   </PasswordField>
-                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" style="-fx-background-color: #43B0f1; -fx-background-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" styleClass="Button" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="15.0" />
                      </GridPane.margin>
+                     <stylesheets>
+                        <URL value="@../../../../../Desktop/generalStyleSheet.css" />
+                        <URL value="@../css/generalStyleSheet.css" />
+                     </stylesheets>
                   </Button>
-                  <ImageView fitHeight="178.0" fitWidth="178.0" style="-fx-border-radius: 15;" GridPane.columnIndex="2" GridPane.columnSpan="2">
-                     <image>
-                        <Image url="@ekurtlogobg-removebg.png" />
-                     </image>
-                     <effect>
-                        <DropShadow height="40.0" radius="19.5" width="40.0">
-                           <color>
-                              <Color red="0.12156862765550613" green="0.24313725531101227" blue="0.34117648005485535" opacity="0.5" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                     <GridPane.margin>
-                        <Insets left="48.0" top="20.0" />
-                     </GridPane.margin>
-                  </ImageView>
                </children>
                <VBox.margin>
                   <Insets bottom="25.0" left="25.0" top="15.0" />
