@@ -2,7 +2,7 @@ package entity;
 
 public class Subscriber extends MainEntity {
 	public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, String creditCardNumber,
-			int subscriberNumber) {
+			String subscriberNumber) {
 		super(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -11,8 +11,7 @@ public class Subscriber extends MainEntity {
 		CreditCardNumber = creditCardNumber;
 		SubscriberNumber = subscriberNumber;
 	}
-	private String firstName, lastName, phoneNumber, email, CreditCardNumber;
-	private int SubscriberNumber;
+	private String firstName, lastName, phoneNumber, email, CreditCardNumber, SubscriberNumber;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -43,10 +42,10 @@ public class Subscriber extends MainEntity {
 	public void setCreditCardNumber(String creditCardNumber) {
 		CreditCardNumber = creditCardNumber;
 	}
-	public int getSubscriberNumber() {
+	public String getSubscriberNumber() {
 		return SubscriberNumber;
 	}
-	public void setSubscriberNumber(int subscriberNumber) {
+	public void setSubscriberNumber(String subscriberNumber) {
 		SubscriberNumber = subscriberNumber;
 	}
 

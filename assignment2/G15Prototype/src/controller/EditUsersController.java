@@ -22,7 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import javafx.util.Callback;
-import javafx.util.converter.IntegerStringConverter;
 import server.EchoServer;
 import entity.ConnectedClient;
 import entity.Subscriber;
@@ -52,7 +51,7 @@ public class EditUsersController extends WindowControllerBase {
 	private TableColumn<Subscriber, String> creditCol;
 
 	@FXML
-	private TableColumn<Subscriber, Integer> subscriberCol;
+	private TableColumn<Subscriber, String> subscriberCol;
 
 	@FXML
 	private Button refreshBtn;
@@ -109,11 +108,11 @@ public class EditUsersController extends WindowControllerBase {
 		phoneCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("phoneNumber"));
 		emailCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("email"));
 		creditCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("creditCardNumber"));
-		subscriberCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, Integer>("subscriberNumber"));
+		subscriberCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("subscriberNumber"));
 
 		// define the editable cells
 		creditCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		subscriberCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+		subscriberCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		// define the event when submit / commit
 		// Handle subscriber credit card number change
@@ -128,17 +127,17 @@ public class EditUsersController extends WindowControllerBase {
 
 		});
 		// Handle subscriber number change
-		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, Integer>>() {
+		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, String>>() {
 			@Override
-			public void handle(CellEditEvent<Subscriber, Integer> event) {
+			public void handle(CellEditEvent<Subscriber, String> event) {
 				Subscriber subscriber = event.getRowValue();
-				if (event.getNewValue() > 0) {
+				if (event.getNewValue() != null) {
 					// TODO check if not exists in the table
 					subscriber.setSubscriberNumber(event.getNewValue());
 
 				} else {
 					// TODO make null subscriber
-					subscriber.setSubscriberNumber(0);
+					subscriber.setSubscriberNumber(null);
 				}
 				if (!changedSubscriberItems.contains(subscriber))
 					changedSubscriberItems.add(subscriber);
