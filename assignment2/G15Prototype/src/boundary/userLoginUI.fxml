@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
@@ -23,12 +24,12 @@
             <Insets top="10.0" />
          </padding>
          <children>
-            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" style="-fx-background-color: #E8EEF1; -fx-background-radius: 15; -fx-border-color: #1E3D58; -fx-border-radius: 15; -fx-border-width: 0;">
+            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" styleClass="GridPane" stylesheets="@../css/generalStyleSheet.css">
               <columnConstraints>
                 <ColumnConstraints />
                 <ColumnConstraints />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="112.0" />
-                  <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="109.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="137.0" />
+                  <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="138.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="197.0" minHeight="0.0" prefHeight="144.0" vgrow="SOMETIMES" />
@@ -46,13 +47,17 @@
                         <Insets left="40.0" right="40.0" top="60.0" />
                      </GridPane.margin>
                   </PasswordField>
-                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" style="-fx-background-color: #43B0f1; -fx-background-radius: 10;" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <Button id="loginBtn" fx:id="loginBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" styleClass="Button" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="15.0" />
                      </GridPane.margin>
+                     <stylesheets>
+                        <URL value="@../../../../../Desktop/generalStyleSheet.css" />
+                        <URL value="@../css/generalStyleSheet.css" />
+                     </stylesheets>
                   </Button>
                </children>
                <VBox.margin>
@@ -61,7 +66,7 @@
                <effect>
                   <DropShadow blurType="GAUSSIAN" height="40.0" radius="19.5" width="40.0">
                      <color>
-                        <Color red="0.12240000069141388" green="0.24208000302314758" blue="0.3400000035762787" opacity="0.5038167834281921" />
+                        <Color red="0.12156862765550613" green="0.24313725531101227" blue="0.34117648005485535" opacity="0.5" />
                      </color>
                   </DropShadow>
                </effect>
