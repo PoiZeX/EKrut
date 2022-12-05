@@ -175,11 +175,11 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="consoleConnections" prefHeight="165.0" prefWidth="232.0" style="-fx-background-radius: 5;" GridPane.rowIndex="1">
+                        <TableView fx:id="connectedClients" prefHeight="165.0" prefWidth="232.0" style="-fx-background-radius: 5;" GridPane.rowIndex="1">
                           <columns>
-                            <TableColumn prefWidth="54.0" text="IP" />
-                            <TableColumn prefWidth="105.0" text="Host" />
-                              <TableColumn prefWidth="117.0" text="Status" />
+                            <TableColumn fx:id="IP" prefWidth="54.0" text="IP" />
+                            <TableColumn fx:id="Host" prefWidth="105.0" text="Host" />
+                              <TableColumn fx:id="Status"  prefWidth="117.0" text="Status" />
                           </columns>
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
