@@ -46,6 +46,8 @@ public class HostClientUIController  extends WindowControllerBase {
     private Label headLine;
 	public static ClientController chat; // only one instance
 	
+	public static Parent root;
+	
 	@FXML
     void SendPort(ActionEvent event) {
     	String port = txtConnectToServerArea.getText();
@@ -94,15 +96,13 @@ public class HostClientUIController  extends WindowControllerBase {
     }
 	 
     public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/boundary/HostClientUI.fxml"));
-				
+    	if (root == null)
+    		root = FXMLLoader.load(getClass().getResource("/boundary/HostClientUI.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/styles/HostClientUI.css").toExternalForm());
-		primaryStage.setTitle("EKrut connect");
+		primaryStage.setTitle("EKrut Connection");
 		primaryStage.setScene(scene);
-		
 		primaryStage.show();	 
-		
 	}
     
    

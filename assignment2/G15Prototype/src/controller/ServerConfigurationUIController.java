@@ -90,6 +90,7 @@ public class ServerConfigurationUIController  extends WindowControllerBase {
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
 		txtIP.setText(getIPValue());
+		txtIP.setDisable(true);
         connectedClients.setItems(EchoServer.getClientList());
 		connectTableColumnToObject();
 
@@ -102,7 +103,7 @@ public class ServerConfigurationUIController  extends WindowControllerBase {
 
 	}
 
-	private String getIPValue() throws Exception {
+	public String getIPValue() throws Exception {
 		String ip = null;
 		try {
 			ip = Inet4Address.getLocalHost().getHostAddress();

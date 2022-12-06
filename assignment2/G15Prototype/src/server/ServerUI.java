@@ -26,14 +26,13 @@ public class ServerUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		ChangeScreen screen = new ChangeScreen();
 		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationUI.fxml", null);
-		
+		primaryStage.setTitle("Ekrut Server Connection");
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
-				ServerUI.disconnect();  // force disconnect server
-				}
+				if (EchoServer != null)
+					ServerUI.disconnect();  // force disconnect server
+			}
 		});
-	
-	
 	}
 
 	public static void runServer(String portUI, String DBAddress, String username, String password) {

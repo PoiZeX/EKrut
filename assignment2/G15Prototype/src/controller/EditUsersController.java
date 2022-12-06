@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import client.ChatClient;
 import client.ClientController;
+import client.ClientUI;
 import common.MessageType;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +21,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import server.EchoServer;
@@ -29,8 +30,8 @@ import entity.Subscriber;
 
 public class EditUsersController extends WindowControllerBase {
 
-	@FXML
-	private Button backBtn;
+    @FXML
+    private Button disconnectBtn;
 
 	@FXML
 	private TableView<Subscriber> usersTable;
@@ -71,8 +72,12 @@ public class EditUsersController extends WindowControllerBase {
 	}
 
 	@FXML
-	private void back(ActionEvent event) {
-
+	private void disconnect(ActionEvent event) {
+//		Stage primaryStage = new Stage();
+//		ChangeScreen screenChanger = new ChangeScreen();
+//		screenChanger.changeScreen(primaryStage, "/boundary/HostClientUI.fxml", event);
+		chat.acceptObj(MessageType.ClientDisconnect);
+		System.exit(1);
 	}
 
 	@FXML
