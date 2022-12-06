@@ -21,11 +21,13 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="49.60000610351563" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="39.99999389648437" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button id="connectToServerBtnClient" fx:id="connectBtnclient" mnemonicParsing="false" onAction="#SendPort" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Connect" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <Button id="connectToServerBtnClient" fx:id="connectBtnclient" mnemonicParsing="false" onAction="#SendPort" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Connect" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -33,12 +35,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="txtConnectToServerArea" prefHeight="32.0" prefWidth="185.0" promptText="Port Number" text="5555" GridPane.rowIndex="1">
+            <TextField fx:id="hostTxt" prefHeight="32.0" prefWidth="185.0" promptText="localhost" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </TextField>
-            <Label id="gridLabel" fx:id="gridLabel" prefHeight="27.0" prefWidth="153.0" text="Please enter Port:" textFill="#eeeeee" GridPane.valignment="BOTTOM">
+            <Label id="gridLabel" fx:id="gridLabel" prefHeight="27.0" prefWidth="153.0" text="Please enter Host:" textFill="#eeeeee" GridPane.valignment="BOTTOM">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -46,6 +48,12 @@
                   <Insets bottom="-5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Label>
+            <Label id="gridLabel" fx:id="gridLabel1" prefHeight="27.0" prefWidth="153.0" text="Please enter Port:" textFill="#eeeeee" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="portTxt" prefHeight="32.0" prefWidth="185.0" promptText="Port Number" text="5555" GridPane.rowIndex="3" />
          </children>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="10.0" />

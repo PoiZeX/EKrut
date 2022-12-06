@@ -34,7 +34,10 @@ public class HostClientUIController  extends WindowControllerBase {
     private GridPane gridPane;
 
     @FXML
-    private TextField txtConnectToServerArea;
+    private TextField hostTxt;
+    
+    @FXML
+    private TextField portTxt;
 
     @FXML
     private Button connectBtnclient;
@@ -48,11 +51,11 @@ public class HostClientUIController  extends WindowControllerBase {
 	
 	@FXML
     void SendPort(ActionEvent event) {
-    	String port = txtConnectToServerArea.getText();
+    	String host = hostTxt.getText(), port = portTxt.getText();
 		FXMLLoader loader = new FXMLLoader();
 		
     	// Validate
-    	if(CommonFunctions.isNullOrEmpty(port)) { System.out.println("Please insert text"); return; }
+    	if(CommonFunctions.isNullOrEmpty(port) || CommonFunctions.isNullOrEmpty(host)) { System.out.println("Please fill host & port"); return; }
     	try {
     		Integer.parseInt(port);
     	}
@@ -61,7 +64,7 @@ public class HostClientUIController  extends WindowControllerBase {
     	}
     	
     	// Establish connection
-    	chat = new ClientController("localhost", Integer.parseInt(port));
+    	chat = new ClientController(host, Integer.parseInt(port));
     	chat.accept("Connection success");
     	chat.accept("Switching view from Configuration to Editor");
 		chat.acceptObj(MessageType.ClientConnect); // send server that client connected
@@ -72,25 +75,6 @@ public class HostClientUIController  extends WindowControllerBase {
 		screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
 		
 		
-//    	try {
-//    		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-//    		Stage primaryStage = new Stage();
-//    		Pane root = loader.load(getClass().getResource("/boundary/EditUsersBoundary.fxml"));
-//    		//EditUsersController editUsersController = loader.getController();		
-//    		
-//    		Scene scene = new Scene(root);			
-//    		//scene.getStylesheets().add(getClass().getResource("/gui/StudentForm.css").toExternalForm());
-//    		primaryStage.setTitle("Edit EKrut Users");
-//
-//    		primaryStage.setScene(scene);		
-//    		primaryStage.show();
-//
-//        	
-//    	}
-//    	catch(Exception ex) {
-//    		ex.printStackTrace();
-//    	}
-    	
     }
 	 
     public void start(Stage primaryStage) throws Exception {	
