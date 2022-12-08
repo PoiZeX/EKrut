@@ -29,7 +29,7 @@ import entity.Subscriber;
 public class EditUsersController extends WindowControllerBase {
 
 	@FXML
-	private Button backBtn;
+	private Button disconnectBtn;
 
 	@FXML
 	private TableView<Subscriber> usersTable;
@@ -68,12 +68,11 @@ public class EditUsersController extends WindowControllerBase {
 		refresh(null);
 		setupTable(); // setup columns connection
 	}
-
 	@FXML
-	private void back(ActionEvent event) {
-
+	private void disconnect(ActionEvent event) {
+		chat.acceptObj(MessageType.ClientDisconnect);
+		System.exit(1);
 	}
-
 	@FXML
 	private void refresh(ActionEvent event) {
 		if(ChatClient.subscribers != null)

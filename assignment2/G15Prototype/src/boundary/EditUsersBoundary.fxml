@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditUsersController">
    <center>
       <VBox id="vboxmain" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="426.0" prefWidth="900.0" style="-fx-background-color: #303841;">
@@ -83,7 +82,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="55.0" prefWidth="928.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="goBack" fx:id="backBtn" mnemonicParsing="false" onAction="#back" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Back" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
+            <Button id="goBack" fx:id="disconnectBtn" mnemonicParsing="false" onAction="#disconnect" prefHeight="33.0" prefWidth="146.0" style="-fx-background-color: #00ADB5; -fx-background-radius: 10; -fx-border-width: 1;" text="Disconnect" textFill="#eeeeee" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
