@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .root{
 	
 -fx-background-color: #CBF3F0;
@@ -7,6 +8,16 @@
 .Button {
 	-fx-background-color: false;
 	-fx-text-fill:white;
+=======
+.GridPanebox {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
+}
+
+.LabelLogin {
+	-fx-text-fill: #8b969d;
+>>>>>>> Stashed changes
 }
 
 .GridPane{
