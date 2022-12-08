@@ -31,22 +31,25 @@
 }
 
 .Button:hover{
--fx-background-radius:15;
--fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #43B0F1 0%, #057DCD 100%),
-		#1E3D58,
-        #057DCD,
-        radial-gradient(center 50% 50%, radius 100%, #43B0F1, #057DCD);
+-fx-background-radius:10;
+-fx-background-color: #057DCD;
+   
 }
 
-.Button:hover {
-    -fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #186b9e 0%, #1f5b82 100%),
-        #1a6ca3,
-        #399fdb,
-        radial-gradient(center 50% 50%, radius 100%, #54baf7, #2380b8);
+.ButtonLogOut{
+	-fx-background-color:  #FF9414;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 5,0,0,0 );
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 16pt;
+   
 }
 
+.ButtonLogOut:hover{
+-fx-background-radius:10;
+-fx-background-color: #FF5D14;
+   
+}
 .Button:Text {
     -fx-fill: white;
 	-fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
@@ -67,13 +70,14 @@
 	-fx-text-fill: #1E3D58;
 	-fx-font-size: 13pt;
 }
-.button:focused {
+.button-Report:focused {
     -fx-border-color: transparent, white;
    -fx-background-color:false;
 	 -fx-border-color:#1E3D58;
 	 -fx-border-radius:15;
 }
-.button:pressed {
+
+.button-Report:pressed {
     -fx-background-color: white;
 
 }

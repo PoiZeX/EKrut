@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGUI.SelectionReportController">
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
          <children>
@@ -68,8 +68,8 @@
                            <styleClass>
                               <String fx:value="Button-report" />
                               <String fx:value="Button-return" />
-                              <String fx:value="button" />
                               <String fx:value="Label" />
+                              <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
                         <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="138.0" text="Supply Report">
@@ -83,8 +83,8 @@
                            <styleClass>
                               <String fx:value="Button-report" />
                               <String fx:value="Button-return" />
-                              <String fx:value="button" />
                               <String fx:value="Label" />
+                              <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
                         <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="130.0" text="orders report">
@@ -101,8 +101,8 @@
                            <styleClass>
                               <String fx:value="Button-report" />
                               <String fx:value="Button-return" />
-                              <String fx:value="button" />
                               <String fx:value="Label" />
+                              <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
                      </items>
