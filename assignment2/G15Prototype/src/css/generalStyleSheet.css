@@ -1,10 +1,18 @@
 
 .root{
+<<<<<<< Updated upstream
 	
 -fx-background-color: #E8EEF1;
+=======
+    -fx-background-color: #E8EEF1;
+     -fx-font-family: "Calibri";
+     -fx-font-weight: bold;
+   -fx-text-alignment:center;
+>>>>>>> Stashed changes
 }
-
+/*first grid */
 .GridPane{
+<<<<<<< Updated upstream
 	-fx-background-radius:15;
 	-fx-background-color:#f6f5f5;
  -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
@@ -19,9 +27,32 @@
         radial-gradient(center 50% 50%, radius 100%, #43B0F1, #057DCD);
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
 	-fx-background-radius:15;
+=======
+    -fx-background-color:#f6f5f5;
+    -fx-effect: dropshadow( gaussian , #babfc2, 25 , 0, 0, 0 );
+    -fx-background-radius: 15;
+      -fx-padding: 10 10 10 10;
+      
+}
+/*for grid in grid */
+.GridPaneChild {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
+}
+
+.Button{
+	-fx-background-color:  #50b7f3;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 20,0,0,0 );
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 16pt;
+   
+>>>>>>> Stashed changes
 }
 
 .Button:hover{
+<<<<<<< Updated upstream
 
 -fx-background-radius:15;
 -fx-background-color: 
@@ -56,3 +87,74 @@
     -fx-fill: white;
 -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );}
 
+=======
+    -fx-background-radius: 10;
+    -fx-background-color:  #057DCD;
+
+}
+.Button-return{
+	 -fx-background-color:false;
+	 -fx-font-size:15pt;
+}
+
+.Button-report:hover{
+	 -fx-background-color:false;
+	 -fx-border-color:#1E3D58;
+	 -fx-border-radius:15;
+}
+.Label {
+	-fx-text-fill: #1E3D58;
+	-fx-font-size: 13pt;
+  
+
+}
+.button:focused {
+    -fx-border-color: transparent, white;
+   -fx-background-color:false;
+	 -fx-border-color:#1E3D58;
+	 -fx-border-radius:15;
+}
+.button:pressed {
+    -fx-background-color: white;
+
+}
+
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
+}
+
+.ComboBox{
+	-fx-text-base-color: #FFFFFF;
+		-fx-font-size: 14pt;	
+}
+.combo-box .arrow{
+    -fx-background-color:#FFFFFF;
+}
+.combo-box .arrow-button{
+    -fx-background-color:#43B0F1;
+    -fx-border-style:none;
+}
+
+.combo-box .list-cell{
+    -fx-background-color:#43B0F1;
+   -fx-text-alignment:center;
+}
+.combo-box .arrow-button:hover{
+    -fx-background-color:#057DCD;
+    -fx-border-style:none;
+}
+
+.combo-box:hover{
+    -fx-background-color:#057DCD;
+}
+.LabelTitel{
+	-fx-font-family: "Calibri";
+     -fx-font-weight: bold;
+   -fx-text-alignment:center;
+   -fx-text-fill:#057DCD;
+   -fx-font-size: 20pt;
+   -fx-label-padding: 20 20 5 20;
+ 
+}
+>>>>>>> Stashed changes

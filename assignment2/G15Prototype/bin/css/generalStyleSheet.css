@@ -1,58 +1,100 @@
 
 .root{
-	
--fx-background-color: #E8EEF1;
+    -fx-background-color: #E8EEF1;
+     -fx-font-family: "Calibri";
+     -fx-font-weight: bold;
+   -fx-text-alignment:center;
 }
-
+/*first grid */
 .GridPane{
-	-fx-background-radius:15;
-	-fx-background-color:#f6f5f5;
- -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-background-color:#f6f5f5;
+    -fx-effect: dropshadow( gaussian , #babfc2, 25 , 0, 0, 0 );
+    -fx-background-radius: 15;
+      -fx-padding: 10 10 10 10;
+      
+}
+/*for grid in grid */
+.GridPaneChild {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
 }
 
 .Button{
-	-fx-background-color:
-	
-        linear-gradient(from 0% 93% to 0% 100%, #43B0F1 0%, #057DCD 100%),
-        #43B0F1,
-        #057DCD,
-        radial-gradient(center 50% 50%, radius 100%, #43B0F1, #057DCD);
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
-	-fx-background-radius:15;
+	-fx-background-color:  #50b7f3;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 20,0,0,0 );
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 16pt;
+   
 }
-
 .Button:hover{
+    -fx-background-radius: 10;
+    -fx-background-color:  #057DCD;
 
--fx-background-radius:15;
--fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #43B0F1 0%, #057DCD 100%),
-#1E3D58,
-        #057DCD,
-        radial-gradient(center 50% 50%, radius 100%, #43B0F1, #057DCD);
+}
+.Button-return{
+	 -fx-background-color:false;
+	 -fx-font-size:15pt;
 }
 
-.Button:{
-    -fx-padding: 8 15 15 15;
-    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
-    -fx-background-radius: 8;
-    -fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #186b9e,0%, #1f5b82 100%),
-        #1a6ca3,
-        #399fdb,
-        radial-gradient(center 50% 50%, radius 100%, #399fdb #2380b8);
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
-    -fx-font-weight: bold;
-    -fx-font-size: 1.1em;
+.Button-report:hover{
+	 -fx-background-color:false;
+	 -fx-border-color:#1E3D58;
+	 -fx-border-radius:15;
 }
-.Button:hover {
-    -fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #186b9e 0%, #1f5b82 100%),
-        #1a6ca3,
-        #399fdb,
-        radial-gradient(center 50% 50%, radius 100%, #54baf7, #2380b8);
+.Label {
+	-fx-text-fill: #1E3D58;
+	-fx-font-size: 13pt;
+  
+
+}
+.button:focused {
+    -fx-border-color: transparent, white;
+   -fx-background-color:false;
+	 -fx-border-color:#1E3D58;
+	 -fx-border-radius:15;
+}
+.button:pressed {
+    -fx-background-color: white;
+
 }
 
-.Button :Text {
-    -fx-fill: white;
--fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );}
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
+}
 
+.ComboBox{
+	-fx-text-base-color: #FFFFFF;
+		-fx-font-size: 14pt;	
+}
+.combo-box .arrow{
+    -fx-background-color:#FFFFFF;
+}
+.combo-box .arrow-button{
+    -fx-background-color:#43B0F1;
+    -fx-border-style:none;
+}
+
+.combo-box .list-cell{
+    -fx-background-color:#43B0F1;
+   -fx-text-alignment:center;
+}
+.combo-box .arrow-button:hover{
+    -fx-background-color:#057DCD;
+    -fx-border-style:none;
+}
+
+.combo-box:hover{
+    -fx-background-color:#057DCD;
+}
+.LabelTitel{
+	-fx-font-family: "Calibri";
+     -fx-font-weight: bold;
+   -fx-text-alignment:center;
+   -fx-text-fill:#057DCD;
+   -fx-font-size: 20pt;
+   -fx-label-padding: 20 20 5 20;
+ 
+}
