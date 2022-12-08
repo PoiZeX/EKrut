@@ -8,13 +8,13 @@
     -fx-effect: dropshadow( gaussian , #babfc2, 25 , 0, 0, 0 );
     -fx-background-radius: 15;
 }
-/*
+
 .Button{
-	-fx-background-color: 
-        linear-gradient(from 0% 93% to 0% 100%, #43B0F1 0%, #057DCD 100%), #43B0F1, #057DCD, radial-gradient(center 50% 50%, radius 100%, #43B0F1, #057DCD);
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 25,0,0,1 );
+	-fx-background-color:  #50b7f3;
 	-fx-background-radius: 15;
+    -fx-text-fill: white;
 }
+/*
 .Button:hover{
     -fx-background-radius: 15;
     -fx-background-color: 

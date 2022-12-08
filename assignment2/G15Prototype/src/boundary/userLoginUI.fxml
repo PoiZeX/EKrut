@@ -91,7 +91,7 @@
                   </Label>
                </children>
             </GridPane>
-            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="Button" stylesheets="@../css/loginStyleSheet.css" text="Login" textFill="WHITE" textOverrun="CLIP" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="Button" stylesheets="@../css/generalStyleSheet.css" text="Login" textFill="WHITE" textOverrun="CLIP" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
