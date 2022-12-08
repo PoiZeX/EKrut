@@ -20,20 +20,37 @@
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
     -fx-background-radius:15;
 }
+.Label {
+	-fx-text-fill: #1E3D58;
+	-fx-font-size: 13pt;
+}
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
+}
+.LabelTitel{
+	-fx-font-family: "Calibri";
+     -fx-font-weight: bold;
+   -fx-text-alignment:center;
+   -fx-text-fill:#057DCD;
+   -fx-font-size: 20pt;
+   -fx-label-padding: 20 20 5 20;
+ 
+}
 
+/*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 5,0,0,0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
-   
 }
+
 
 .Button:hover{
 -fx-background-radius:10;
--fx-background-color: #057DCD;
-   
+-fx-background-color: #057DCD; 
 }
 
 .ButtonLogOut{
@@ -58,18 +75,18 @@
 
 .Button-return{
 	 -fx-background-color:false;
-	 -fx-font-size:15pt;
+	 
 }
-
+.Button-NoBG{
+	 -fx-background-color:false;
+}
+/*report icon btn */
 .Button-report:hover{
 	 -fx-background-color:false;
 	 -fx-border-color:#1E3D58;
 	 -fx-border-radius:15;
 }
-.Label {
-	-fx-text-fill: #1E3D58;
-	-fx-font-size: 13pt;
-}
+
 .button-Report:focused {
     -fx-border-color: transparent, white;
    -fx-background-color:false;
@@ -82,11 +99,8 @@
 
 }
 
-.TextField {
-	-fx-background-radius:15;
-	-fx-background-color:#f6f5f5;
-}
 
+/*------------------------------------------------ combo box----------------------------------------------------------- */
 .ComboBox{
 	-fx-text-base-color: #FFFFFF;
 		-fx-font-size: 14pt;	
@@ -110,14 +124,5 @@
 
 .combo-box:hover{
     -fx-background-color:#057DCD;
-}
-.LabelTitel{
-	-fx-font-family: "Calibri";
-     -fx-font-weight: bold;
-   -fx-text-alignment:center;
-   -fx-text-fill:#057DCD;
-   -fx-font-size: 20pt;
-   -fx-label-padding: 20 20 5 20;
- 
 }
 

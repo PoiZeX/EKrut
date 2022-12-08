@@ -40,8 +40,8 @@
                         <Insets right="25.0" />
                      </GridPane.margin>
                   </Label>
-                  <ComboBox prefHeight="42.0" prefWidth="143.0" promptText="Month" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <ComboBox prefHeight="42.0" prefWidth="143.0" promptText="Year" styleClass="ComboBox" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="monthItemsCmb" prefHeight="42.0" prefWidth="143.0" promptText="Month" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <ComboBox fx:id="yearItemsCmb" prefHeight="42.0" prefWidth="143.0" promptText="Year" styleClass="ComboBox" GridPane.rowIndex="1" />
                   <Label alignment="BOTTOM_CENTER" styleClass="Label" stylesheets="@../css/generalStyleSheet.css" text="Choose report type:" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font name="SansSerif Bold" size="12.0" />
@@ -57,7 +57,7 @@
                   </Label>
                   <ToolBar prefHeight="131.0" prefWidth="355.0" style="-fx-background-color: false;" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="3">
                      <items>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="122.0" text="clients report">
+                        <Button fx:id="clientReportBtn" contentDisplay="TOP" mnemonicParsing="false" prefHeight="130.0" prefWidth="123.0" text="Clients report">
                            <graphic>
                               <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
                                  <image>
@@ -67,12 +67,12 @@
                            </graphic>
                            <styleClass>
                               <String fx:value="Button-report" />
-                              <String fx:value="Button-return" />
+                              <String fx:value="Button-NoBG" />
                               <String fx:value="Label" />
                               <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
-                        <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="138.0" text="Supply Report">
+                        <Button fx:id="supplyReportBtn" contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="138.0" text="Supply report">
                            <graphic>
                               <ImageView fitHeight="83.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -82,12 +82,12 @@
                            </graphic>
                            <styleClass>
                               <String fx:value="Button-report" />
-                              <String fx:value="Button-return" />
+                              <String fx:value="Button-NoBG" />
                               <String fx:value="Label" />
                               <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
-                        <Button alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="130.0" text="orders report">
+                        <Button fx:id="ordersReportBtn" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="130.0" text="Orders report">
                            <graphic>
                               <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
                                  <image>
@@ -100,7 +100,7 @@
                            </opaqueInsets>
                            <styleClass>
                               <String fx:value="Button-report" />
-                              <String fx:value="Button-return" />
+                              <String fx:value="Button-NoBG" />
                               <String fx:value="Label" />
                               <String fx:value="button-Report" />
                            </styleClass>
@@ -127,7 +127,7 @@
                   <ColumnConstraints />
               </columnConstraints>
                <children>
-                  <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="176.0" styleClass="Button" text="View Report" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Button fx:id="viewReportCmb" mnemonicParsing="false" prefHeight="42.0" prefWidth="176.0" styleClass="Button" text="View Report" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
@@ -143,26 +143,5 @@
             </GridPane>
          </children>
       </VBox>
-   </center>
-   <bottom>
-      <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return">
-               <graphic>
-                  <ImageView fitHeight="62.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-return">
-                     <image>
-                        <Image url="@../../../../../../../Desktop/return.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </GridPane>
-   </bottom>
+   </right>
 </BorderPane>
