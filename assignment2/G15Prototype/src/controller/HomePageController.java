@@ -19,7 +19,12 @@ public class HomePageController {
     @FXML
     private Button bottomBtn;
 
-    
+    @FXML
+    void initialize() {
+    	/*TODO : Set welcomeLabel by user type
+    	 * 
+    	 */
+    }
     @FXML
     void bottomBtnAction(ActionEvent event) {
 
