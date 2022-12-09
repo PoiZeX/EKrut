@@ -1,13 +1,13 @@
 package entity;
 
-public class ConnectedClient
+public class ConnectedClientEntity
 {
     private String ip;
     private String host;
     private String status;
     
 
-    public ConnectedClient(final String ip, final String host, final String status) {
+    public ConnectedClientEntity(final String ip, final String host, final String status) {
         this.ip = ip;
         this.host = host;
         this.status = status;

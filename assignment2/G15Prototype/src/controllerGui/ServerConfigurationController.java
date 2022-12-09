@@ -20,7 +20,7 @@ import javafx.util.Callback;
 import server.EchoServer;
 import server.ServerUI;
 import common.CommonFunctions;
-import entity.ConnectedClient;
+import entity.ConnectedClientEntity;
 
 public class ServerConfigurationController  extends WindowControllerBase {
 
@@ -47,16 +47,16 @@ public class ServerConfigurationController  extends WindowControllerBase {
 
 
 	@FXML
-    private TableView<ConnectedClient> connectedClients;
+    private TableView<ConnectedClientEntity> connectedClients;
 	
     @FXML
-    private TableColumn<ConnectedClient, String> IP;
+    private TableColumn<ConnectedClientEntity, String> IP;
     
     @FXML
-    private TableColumn<ConnectedClient, String> Host;
+    private TableColumn<ConnectedClientEntity, String> Host;
     
     @FXML
-    private TableColumn<ConnectedClient, String> Status;
+    private TableColumn<ConnectedClientEntity, String> Status;
     
 	@FXML
 	private TextArea consoleOutput;
@@ -132,9 +132,9 @@ public class ServerConfigurationController  extends WindowControllerBase {
 	 *  PropertyValueFactory search for a getters like "getIp", "getHost" in entity object
 	 */
 	private void connectTableColumnToObject() {
-		IP.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("ip"));
-		Host.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("host"));
-		Status.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClient, String>("status"));
+		IP.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("ip"));
+		Host.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("host"));
+		Status.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("status"));
 	}
 
 }

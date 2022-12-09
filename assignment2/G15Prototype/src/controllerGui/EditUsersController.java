@@ -23,8 +23,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import javafx.util.Callback;
 import server.EchoServer;
-import entity.ConnectedClient;
-import entity.Subscriber;
+import entity.ConnectedClientEntity;
+import entity.SubscriberEntity;
 
 public class EditUsersController extends WindowControllerBase {
 
@@ -32,26 +32,26 @@ public class EditUsersController extends WindowControllerBase {
 	private Button disconnectBtn;
 
 	@FXML
-	private TableView<Subscriber> usersTable;
+	private TableView<SubscriberEntity> usersTable;
 
 	@FXML
-	private TableColumn<Subscriber, Integer> idCol;
+	private TableColumn<SubscriberEntity, Integer> idCol;
 
 	@FXML
-	private TableColumn<Subscriber, String> fnameCol;
+	private TableColumn<SubscriberEntity, String> fnameCol;
 
 	@FXML
-	private TableColumn<Subscriber, String> lnameCol;
+	private TableColumn<SubscriberEntity, String> lnameCol;
 
 	@FXML
-	private TableColumn<Subscriber, String> phoneCol;
+	private TableColumn<SubscriberEntity, String> phoneCol;
 	@FXML
-	private TableColumn<Subscriber, String> emailCol;
+	private TableColumn<SubscriberEntity, String> emailCol;
 	@FXML
-	private TableColumn<Subscriber, String> creditCol;
+	private TableColumn<SubscriberEntity, String> creditCol;
 
 	@FXML
-	private TableColumn<Subscriber, String> subscriberCol;
+	private TableColumn<SubscriberEntity, String> subscriberCol;
 
 	@FXML
 	private Button refreshBtn;
@@ -60,7 +60,7 @@ public class EditUsersController extends WindowControllerBase {
 	private Button saveBtn;
 
 	ClientController chat = HostClientController.chat; // define the chat for the controller
-	private ArrayList<Subscriber> changedSubscriberItems = new ArrayList<>();
+	private ArrayList<SubscriberEntity> changedSubscriberItems = new ArrayList<>();
 
 	@FXML
 	// Setup screen before launching view
@@ -101,13 +101,13 @@ public class EditUsersController extends WindowControllerBase {
 		usersTable.setItems(ChatClient.subscribers);
 
 		// factory
-		idCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, Integer>("id"));
-		fnameCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("firstName"));
-		lnameCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("lastName"));
-		phoneCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("phoneNumber"));
-		emailCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("email"));
-		creditCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("creditCardNumber"));
-		subscriberCol.setCellValueFactory((Callback) new PropertyValueFactory<Subscriber, String>("subscriberNumber"));
+		idCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, Integer>("id"));
+		fnameCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("firstName"));
+		lnameCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("lastName"));
+		phoneCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("phoneNumber"));
+		emailCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("email"));
+		creditCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("creditCardNumber"));
+		subscriberCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("subscriberNumber"));
 
 		// define the editable cells
 		creditCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -115,10 +115,10 @@ public class EditUsersController extends WindowControllerBase {
 
 		// define the event when submit / commit
 		// Handle subscriber credit card number change
-		creditCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, String>>() {
+		creditCol.setOnEditCommit(new EventHandler<CellEditEvent<SubscriberEntity, String>>() {
 			@Override
-			public void handle(CellEditEvent<Subscriber, String> event) {
-				Subscriber subscriber = event.getRowValue();
+			public void handle(CellEditEvent<SubscriberEntity, String> event) {
+				SubscriberEntity subscriber = event.getRowValue();
 				subscriber.setCreditCardNumber(event.getNewValue());
 				if (!changedSubscriberItems.contains(subscriber))
 					changedSubscriberItems.add(subscriber);
@@ -126,10 +126,10 @@ public class EditUsersController extends WindowControllerBase {
 
 		});
 		// Handle subscriber number change
-		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<Subscriber, String>>() {
+		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<SubscriberEntity, String>>() {
 			@Override
-			public void handle(CellEditEvent<Subscriber, String> event) {
-				Subscriber subscriber = event.getRowValue();
+			public void handle(CellEditEvent<SubscriberEntity, String> event) {
+				SubscriberEntity subscriber = event.getRowValue();
 				if (event.getNewValue() != null) {
 					// TODO check if not exists in the table
 					subscriber.setSubscriberNumber(event.getNewValue());

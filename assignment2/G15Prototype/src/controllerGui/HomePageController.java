@@ -105,7 +105,7 @@ public class HomePageController {
 			@Override
 			public void handle(ActionEvent event) {
 				Stage primartStage = new Stage();
-				(new ChangeScreen()).changeScreen(primartStage, "/boundary/ApproveUsersBoundary.fxml", event);  
+				(new ChangeScreen()).changeScreen(primartStage, "/boundary/UsersManagementBoundary.fxml", event);  
 			}
 		});
 		topBtn.setVisible(true);

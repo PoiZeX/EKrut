@@ -72,9 +72,7 @@ public class HostClientController  extends WindowControllerBase {
     	// Go to next screen (controller creates the screen)
 		Stage primaryStage = new Stage();
 		ChangeScreen screenChanger = new ChangeScreen();
-		//screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
-		screenChanger.changeScreen(primaryStage, "/boundary/HomePageBoundary.fxml", event);
-		
+		screenChanger.changeScreen(primaryStage, "/boundary/LoginBoundary.fxml", event);
 		
     }
 	 
