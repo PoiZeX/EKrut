@@ -1,7 +1,7 @@
 
 .root{
 	-fx-background-color: #E8EEF1;
-    -fx-background-color: #E8EEF1;
+   
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
@@ -98,6 +98,13 @@
     -fx-background-color: white;
 
 }
+.button-AddToCart {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-text-fill: gray;
+    -fx-background-radius:10;
+
+}
 
 
 /*------------------------------------------------ combo box----------------------------------------------------------- */
@@ -125,4 +132,6 @@
 .combo-box:hover{
     -fx-background-color:#057DCD;
 }
+
+/*--------------------------------- */
 
