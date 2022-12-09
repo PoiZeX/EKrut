@@ -1,4 +1,4 @@
-package controller;
+package controllerGui;
 
 import utils.*;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class EditUsersController extends WindowControllerBase {
 	@FXML
 	private Button saveBtn;
 
-	ClientController chat = HostClientUIController.chat; // define the chat for the controller
+	ClientController chat = HostClientController.chat; // define the chat for the controller
 	private ArrayList<Subscriber> changedSubscriberItems = new ArrayList<>();
 
 	@FXML

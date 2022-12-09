@@ -1,4 +1,4 @@
-package controller;
+package controllerGui;
 
 import javafx.event.ActionEvent;
 import utils.ChangeScreen;
@@ -25,7 +25,7 @@ import common.CommonFunctions;
 import common.MessageType;
 import utils.*;
 
-public class HostClientUIController  extends WindowControllerBase {
+public class HostClientController  extends WindowControllerBase {
 
     @FXML
     private BorderPane borderPane;
@@ -72,13 +72,14 @@ public class HostClientUIController  extends WindowControllerBase {
     	// Go to next screen (controller creates the screen)
 		Stage primaryStage = new Stage();
 		ChangeScreen screenChanger = new ChangeScreen();
-		screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
+		//screenChanger.changeScreen(primaryStage, "/boundary/EditUsersBoundary.fxml", event);
+		screenChanger.changeScreen(primaryStage, "/boundary/HomePageBoundary.fxml", event);
 		
 		
     }
 	 
     public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/boundary/HostClientUI.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/boundary/HostClientBoundary.fxml"));
 				
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/styles/HostClientUI.css").toExternalForm());

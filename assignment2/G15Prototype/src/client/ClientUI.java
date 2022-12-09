@@ -8,7 +8,7 @@ import utils.ChangeScreen;
 
 import java.util.Vector;
 import client.ClientController;
-import controller.HostClientUIController;
+import controllerGui.HostClientController;
 
 public class ClientUI extends Application {
 
@@ -24,7 +24,7 @@ public class ClientUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		//ChangeScreen screen = new ChangeScreen();
 		//screen.changeScreen(primaryStage, "/boundary/HostClientUI.fxml");
-		HostClientUIController aFrame = new HostClientUIController();
+		HostClientController aFrame = new HostClientController();
 		
 		aFrame.start(primaryStage);
 		

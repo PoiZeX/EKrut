@@ -2,7 +2,7 @@
  * Sample Skeleton for 'viewReportUI.fxml' Controller Class
  */
 
-package controller;
+package controllerGui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
-public class SelectionReportController {
+public class ReportSelectionController {
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;

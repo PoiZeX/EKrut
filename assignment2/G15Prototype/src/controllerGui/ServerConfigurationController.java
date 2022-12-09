@@ -1,4 +1,4 @@
-package controller;
+package controllerGui;
 
 import utils.ConsoleStream;
 
@@ -22,7 +22,7 @@ import server.ServerUI;
 import common.CommonFunctions;
 import entity.ConnectedClient;
 
-public class ServerConfigurationUIController  extends WindowControllerBase {
+public class ServerConfigurationController  extends WindowControllerBase {
 
 	@FXML
 	private TextField txtIP;

@@ -3,7 +3,7 @@ package Store;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import controller.WindowControllerBase;
+import controllerGui.WindowControllerBase;
 
 // The class handles the navigation store for different pages
 public class NavigationStoreController {

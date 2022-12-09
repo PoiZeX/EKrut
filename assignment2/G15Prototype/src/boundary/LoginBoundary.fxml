@@ -25,7 +25,7 @@
          </padding>
          <children>
 <<<<<<< Updated upstream
-            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" styleClass="GridPane" stylesheets="@../css/generalStyleSheet.css">
+            <GridPane id="GridPane" alignment="TOP_RIGHT" minWidth="200.0" prefHeight="350.0" prefWidth="200.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css">
 =======
             <GridPane id="#GridPanebox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="350.0" styleClass="GridPaneChild" stylesheets="@../css/loginStyleSheet.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 >>>>>>> Stashed changes

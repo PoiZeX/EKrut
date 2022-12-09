@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.Vector;
 
 import common.MessageType;
-import controller.HostClientUIController;
-import controller.ServerConfigurationUIController;
+import controllerGui.HostClientController;
+import controllerGui.ServerConfigurationController;
 
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
@@ -25,7 +25,7 @@ public class ServerUI extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		ChangeScreen screen = new ChangeScreen();
-		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationUI.fxml", null);
+		screen.changeScreen(primaryStage, "/boundary/ServerConfigurationBoundary.fxml", null);
 		primaryStage.setTitle("Ekrut Server");
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {

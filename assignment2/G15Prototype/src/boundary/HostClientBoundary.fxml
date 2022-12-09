@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="borderPane" fx:id="borderPane" minHeight="377.0" minWidth="489.0" prefHeight="377.0" prefWidth="489.0" style="-fx-background-color: #303841; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HostClientUIController">
+<BorderPane id="borderPane" fx:id="borderPane" minHeight="377.0" minWidth="489.0" prefHeight="377.0" prefWidth="489.0" style="-fx-background-color: #303841; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HostClientController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="189.0" prefWidth="419.0" style="-fx-background-opacity: 50; -fx-background-color: #3A424B; -fx-background-radius: 15;">
         <columnConstraints>

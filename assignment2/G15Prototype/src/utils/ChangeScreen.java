@@ -2,8 +2,8 @@ package utils;
 
 import client.ClientController;
 import common.MessageType;
-import controller.HostClientUIController;
-import controller.ServerConfigurationUIController;
+import controllerGui.HostClientController;
+import controllerGui.ServerConfigurationController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class ChangeScreen {
 			primaryStage.show();
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					HostClientUIController.chat.acceptObj(MessageType.ClientDisconnect);
+					HostClientController.chat.acceptObj(MessageType.ClientDisconnect);
 				}
 			});
 

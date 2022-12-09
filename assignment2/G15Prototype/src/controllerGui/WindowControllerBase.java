@@ -1,4 +1,4 @@
-package controller;
+package controllerGui;
 
 public class WindowControllerBase {
 

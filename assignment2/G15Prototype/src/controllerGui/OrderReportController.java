@@ -1,4 +1,4 @@
-package controller;
+package controllerGui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class OrderReportUIController extends Application{
+public class OrderReportController extends Application{
 
     @FXML
     private ResourceBundle resources;
