@@ -2,9 +2,9 @@ package controllerGui;
 
 import utils.*;
 import java.util.ArrayList;
-
 import client.ChatClient;
 import client.ClientController;
+import common.MessageType;
 import common.MessageType;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,13 +20,12 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-
 import javafx.util.Callback;
 import server.EchoServer;
 import entity.ConnectedClientEntity;
 import entity.SubscriberEntity;
 
-public class EditUsersController extends WindowControllerBase {
+public class EditUsersController {
 
 	@FXML
 	private Button disconnectBtn;

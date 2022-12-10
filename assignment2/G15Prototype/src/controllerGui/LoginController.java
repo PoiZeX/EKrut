@@ -1,5 +1,7 @@
 package controllerGui;
 
+import Store.NavigationStoreController;
+import common.ScreensNames;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,9 +24,8 @@ public class LoginController {
     @FXML
     void loginBtnAction(ActionEvent event) {
     	// Go to next screen (controller creates the screen)
-		Stage primaryStage = new Stage();
-		ChangeScreen screenChanger = new ChangeScreen();
-		screenChanger.changeScreen(primaryStage, "/boundary/HomePageBoundary.fxml", event);
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+
     }
 
 }

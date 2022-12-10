@@ -6,12 +6,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import server.EchoServer;
 import utils.ChangeScreen;
-
 import java.io.IOException;
 import java.util.Vector;
 
-import common.MessageType;
-import controllerGui.HostClientController;
 import controllerGui.ServerConfigurationController;
 
 public class ServerUI extends Application {

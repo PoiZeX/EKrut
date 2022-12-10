@@ -1,5 +1,7 @@
 package controllerGui;
 
+import Store.NavigationStoreController;
+import common.ScreensNames;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -57,11 +59,12 @@ public class UsersManagementController {
 
     @FXML
     void goBack(ActionEvent event) {
-
+    	NavigationStoreController.getInstance().goBack(event);
     }
 
     @FXML
     void refresh(ActionEvent event) {
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.HostClient);
 
     }
 
