@@ -82,7 +82,7 @@ public class NavigationStoreController {
 		// show the last stage
 		// history will never be null, you can't go back to login page (and even before)
 		history.pop().hide();
-		history.pop().show();
+		history.peek().show();
 
 	}
 
