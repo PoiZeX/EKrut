@@ -1,27 +1,20 @@
-.root{
-	
--fx-background-color: #CBF3F0;
--fx-text-fill: white;
--fx-alignment: CENTER;
-}
-.Button {
-	-fx-background-color: false;
-	-fx-text-fill:white;
-	
-	}
-.GridPanebox {
+.GridPane {
     -fx-background-color:#ffffff;
-    -fx-effect: dropshadow(gaussian , #d5d5d5, 25.0, 0.0, 0.0, 0.0 );
-    -fx-background-radius:15.0;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
 }
 
-.LabelLogin {
+.Label {
 	-fx-text-fill: #8b969d;
-
 }
 
-.GridPane{
-	-fx-background-radius:15.0;
-	-fx-background-color:#2EC4B6;
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
 }
-	
+
+
+.Button{
+	-fx-background-color:  #50b7f3;
+	-fx-background-radius: 15;
+}

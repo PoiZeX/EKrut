@@ -7,21 +7,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import common.CommonFunctions;
-import entity.Subscriber;
+import entity.SubscriberEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class SubscribersDbController {
 	// TODO extract this to subscribersDbController
-	protected static void updateSubscribersEntities(ConnectionToClient client, ArrayList<Subscriber> subscribersLst) {
+	protected static void updateSubscribersEntities(ConnectionToClient client, ArrayList<SubscriberEntity> subscribersLst) {
 		Statement stmt;
-		Subscriber entity;
+		SubscriberEntity entity;
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
 
 			stmt = MySqlClass.getConnection().createStatement();
-			for (Subscriber subscriber : subscribersLst) {
+			for (SubscriberEntity subscriber : subscribersLst) {
 				// TODO change this to another build method as we learned with question mark
 				// (?)...
 				if (CommonFunctions.isNullOrEmpty(subscriber.getSubscriberNumber()))
@@ -42,7 +42,7 @@ public class SubscribersDbController {
 	// TODO extract this to subscribersDbController
 	protected static void getTable(ConnectionToClient client) {
 		Statement stmt;
-		Subscriber entity;
+		SubscriberEntity entity;
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
@@ -50,7 +50,7 @@ public class SubscribersDbController {
 			stmt = MySqlClass.getConnection().createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM subscriber;");
 			while (rs.next()) {
-				entity = new Subscriber(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+				entity = new SubscriberEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7));
 				try {
 					client.sendToClient(entity); // finally send the entity

@@ -11,15 +11,15 @@ import common.ChatIF;
 import java.io.*;
 import java.util.ArrayList;
 
-import entity.ConnectedClient;
-import entity.Subscriber;
+import entity.ConnectedClientEntity;
+import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
-	public static ObservableList<Subscriber> subscribers;
+	public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
 
 
@@ -32,8 +32,8 @@ public class ChatClient extends AbstractClient {
 
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-		if(msg instanceof Subscriber) {
-			subscribers.add((Subscriber)msg);
+		if(msg instanceof SubscriberEntity) {
+			subscribers.add((SubscriberEntity)msg);
 		}
 	}
 
@@ -95,11 +95,11 @@ public class ChatClient extends AbstractClient {
 		ChatClient.subscribers = FXCollections.observableArrayList();
 	}
 
-	public static void setClientList(final ObservableList<Subscriber> subscribers) {
+	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
 		ChatClient.subscribers = subscribers;
 	}
 
-	public static ObservableList<Subscriber> getClientList() {
+	public static ObservableList<SubscriberEntity> getClientList() {
 		return ChatClient.subscribers;
 	}
 	
