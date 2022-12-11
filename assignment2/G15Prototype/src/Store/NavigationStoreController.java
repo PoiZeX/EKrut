@@ -48,7 +48,6 @@ public class NavigationStoreController {
 		return instance;
 	}
 
-	Stage lastStage = null;
 	/**
 	 * Set the current screen as given in param
 	 * 
@@ -58,22 +57,12 @@ public class NavigationStoreController {
 		Stage stage = screenStages.get(scName);
 
 		// if null create new instance (should not happens)
-//		if (stage == null)
-//			stage = setSingleStage(scName);
+		if (stage == null)
+			stage = setSingleStage(scName);
 		// hide the current view
-		if(lastStage == null)
-			lastStage = stage;
-		if (history.size() > 0) {
+
+		if (history.size() > 0) 
 			history.peek().close();
-			if(lastStage == history.peek())
-				return;
-		}
-		else
-			System.out.println("im empty");
-		
-		
-		// set new current view
-		//stage.show();
 
 		// save to stack
 		history.push(stage).show();
@@ -91,10 +80,9 @@ public class NavigationStoreController {
 		// history will never be null, you can't go back to login page (and even before)
 		if(history.size() >= 2) {
 			history.pop().close();
-			history.pop().show();
+			history.peek().show();
 		}
 		
-
 	}
 
 	/**
