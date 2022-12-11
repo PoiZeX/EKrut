@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="conrollerGUI.ViewCatalogContoller">
+   <bottom>
+      <GridPane prefHeight="71.0" prefWidth="859.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" styleClass="Button-return">
+               <graphic>
+                  <ImageView fitHeight="54.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@return.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="150.0" styleClass="ButtonLogOut" text="Cancle Order" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" styleClass="Button" text="Place Order" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+   </bottom>
+   <right>
+      <GridPane prefHeight="499.0" prefWidth="151.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="cartBTn" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="75.0" prefWidth="85.0" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@001-shopping%20cart.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
+   </right>
+   <top>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </top>
+   <center>
+      <ScrollPane prefHeight="391.0" prefWidth="800.0" style="-fx-background-color: #E8EEF1;" styleClass="root" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane prefHeight="741.0" prefWidth="724.0" styleClass="root">
+               <children>
+                  <GridPane prefHeight="276.0" prefWidth="735.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Pane layoutX="281.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn2" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn2" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField2" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn2" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg2" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn22" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn22" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField22" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn22" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg22" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn23" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn23" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField23" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn23" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg23" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                     </children>
+                     <opaqueInsets>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </GridPane>
+                  <GridPane layoutX="1.0" layoutY="260.0" prefHeight="276.0" prefWidth="735.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Pane layoutX="281.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn21" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn21" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField21" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn21" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg21" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn221" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn221" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField221" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn221" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg221" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn231" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn231" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField231" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn231" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg231" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                     </children>
+                     <opaqueInsets>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </GridPane>
+                  <GridPane layoutX="-3.0" layoutY="529.0" prefHeight="276.0" prefWidth="735.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Pane layoutX="281.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn211" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn211" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField211" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn211" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg211" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn2211" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn2211" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField2211" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn2211" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg2211" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                        <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="10.0" layoutY="189.0" prefHeight="32.0" prefWidth="211.0" styleClass="Button-NoBG">
+                                 <columnConstraints>
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.666656494140625" minWidth="10.0" prefWidth="33.66668701171875" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="31.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="35.0" />
+                                    <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="137.66665649414062" minWidth="10.0" prefWidth="126.66665649414062" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="AddQuantityBtn2311" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="MinusQuantityBtn2311" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="Button-NoBG">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@minus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="QuantityTxtField2311" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="1" />
+                                    <Button fx:id="AddToCartBtn2311" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="productItemImg2311" fitHeight="173.0" fitWidth="209.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Pane>
+                     </children>
+                     <opaqueInsets>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
