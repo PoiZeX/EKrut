@@ -8,6 +8,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx"/>
+<<<<<<< Updated upstream
 	<classpathentry kind="lib" path="C:/כל הדברים/לימודים/שנה ג/Git/EKrut/assignment2/G15Prototype/src/mysql/mysql-connector-java-8.0.13.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/User/Documents/GitHub/EKrut/assignment2/G15Prototype/src/utils/mysql-connector-java-8.0.13.jar"/>
+>>>>>>> Stashed changes
 	<classpathentry kind="output" path="bin"/>
 </classpath>
