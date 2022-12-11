@@ -4,8 +4,6 @@
 
 package controllerGui;
 
-import Store.NavigationStoreController;
-import common.ScreensNames;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -106,7 +104,8 @@ public class HomePageController {
 		topBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.UsersManagement);
+				Stage primartStage = new Stage();
+				(new ChangeScreen()).changeScreen(primartStage, "/boundary/ApproveUsersBoundary.fxml", event);  
 			}
 		});
 		topBtn.setVisible(true);
@@ -119,7 +118,8 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					// NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrderSomething); // not working yet 
+					Stage primartStage = new Stage();
+					(new ChangeScreen()).changeScreen(primartStage, "/boundary/OrderCreationBoundary.fxml", event);  // not working yet 
 				}
 			});
 		}
@@ -128,7 +128,8 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection);
+					Stage primartStage = new Stage();
+					(new ChangeScreen()).changeScreen(primartStage, "/boundary/ReportSelectionBoundary.fxml", event);
 				}
 			});
 		}

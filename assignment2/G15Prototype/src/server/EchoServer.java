@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import com.mysql.cj.MysqlConnection;
 
 import common.MessageType;
-import entity.ConnectedClientEntity;
+import entity.ConnectedClient;
 import entity.DatabaseEntity;
-import entity.SubscriberEntity;
+import entity.Subscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
@@ -20,17 +20,17 @@ import ocsf.server.*;
 
 public class EchoServer extends AbstractServer {
 	DatabaseEntity DatabaseController;
-	private static ObservableList<ConnectedClientEntity> clientList;
+	private static ObservableList<ConnectedClient> clientList;
 
 	static {
 		EchoServer.clientList = FXCollections.observableArrayList();
 	}
 
-	public static void setClientList(final ObservableList<ConnectedClientEntity> clientList) {
+	public static void setClientList(final ObservableList<ConnectedClient> clientList) {
 		EchoServer.clientList = clientList;
 	}
 
-	public static ObservableList<ConnectedClientEntity> getClientList() {
+	public static ObservableList<ConnectedClient> getClientList() {
 		return EchoServer.clientList;
 	}
 
@@ -45,7 +45,7 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg instanceof ArrayList) {
 			// i know its ArrayList of subscribers but TODO check this
-			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
+			ArrayList<Subscriber> subscribersLst = (ArrayList<Subscriber>) msg;
 			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
 		} else if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;
@@ -78,13 +78,13 @@ public class EchoServer extends AbstractServer {
 
 	// Extract it from here later
 	static void updateClientList(final ConnectionToClient client, final String connectionStatus) {
-		final ObservableList<ConnectedClientEntity> clientList = EchoServer.getClientList();
+		final ObservableList<ConnectedClient> clientList = EchoServer.getClientList();
 		for (int i = 0; i < clientList.size(); ++i) {
-			if (((ConnectedClientEntity) clientList.get(i)).getIp().equals(client.getInetAddress().getHostAddress())) {
+			if (((ConnectedClient) clientList.get(i)).getIp().equals(client.getInetAddress().getHostAddress())) {
 				clientList.remove(i);
 			}
 		}
-		clientList.add((ConnectedClientEntity) new ConnectedClientEntity(client.getInetAddress().getHostAddress(),
+		clientList.add((ConnectedClient) new ConnectedClient(client.getInetAddress().getHostAddress(),
 				client.getInetAddress().getHostName(), connectionStatus));
 		EchoServer.setClientList(clientList);
 	}
