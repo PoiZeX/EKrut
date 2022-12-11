@@ -1,7 +1,7 @@
 package entity;
 
-public class SubscriberEntity extends MainEntity {
-	public SubscriberEntity(int id, String firstName, String lastName, String phoneNumber, String email, String creditCardNumber,
+public class Subscriber extends MainEntity {
+	public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, String creditCardNumber,
 			String subscriberNumber) {
 		super(id);
 		this.firstName = firstName;
