@@ -73,13 +73,10 @@ public class NavigationStoreController {
 	 * 
 	 */
 	public void goBack(ActionEvent event) {
-		// hide the 'current'
-		// ((Node) event.getSource()).getScene().getWindow().hide();
-
 		// show the last stage
 		// history will never be null, you can't go back to login page (and even before)
 		if(history.size() >= 2) {
-			history.pop().close();
+			history.pop().close(); // hide the 'current'
 			history.peek().show();
 		}
 		

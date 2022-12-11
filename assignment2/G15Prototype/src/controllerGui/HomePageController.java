@@ -65,7 +65,8 @@ public class HomePageController {
 		User ceo = new User("CEO");
 		User regionManager = new User("RegionManager");
 		User register = new User("Register");
-		User selectedUser = regionManager;
+		
+		User selectedUser = register;
 
 		// switch case by role
 		switch (selectedUser.role) {
@@ -119,7 +120,7 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					// NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrderSomething); // not working yet 
+					 NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog); // not working yet 
 				}
 			});
 		}

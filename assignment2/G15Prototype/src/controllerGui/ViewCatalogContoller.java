@@ -1,4 +1,4 @@
-package conrollerGUI;
+package controllerGui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -5,8 +5,8 @@ public enum ScreensNames {
 	Login,
 	HomePage,
 	UsersManagement,
-	ReportSelection
-	
+	ReportSelection,
+	ViewCatalog
 	/* Not implemented yet */
 	// SupplyManagement,
 	// OrderThingsHere etc
