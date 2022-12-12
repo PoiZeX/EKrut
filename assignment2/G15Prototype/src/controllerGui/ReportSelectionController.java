@@ -1,54 +1,112 @@
-/**
- * Sample Skeleton for 'viewReportUI.fxml' Controller Class
- */
-
 package controllerGui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import Store.NavigationStoreController;
+import common.ScreensNames;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 
 public class ReportSelectionController {
+    private String selectedReport = "";
+    
+    @FXML
+    private ComboBox<String> monthItemsCmb;
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
+    @FXML
+    private ComboBox<Integer> yearItemsCmb;
+    
+    @FXML
+    private Label errorMsgLabel;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+    @FXML
+    private ToolBar reportsToolBar;
 
-    @FXML // fx:id="clientReportBtn"
-    private Button clientReportBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button clientReportBtn;
 
-    @FXML // fx:id="monthItemsCmb"
-    private ComboBox<?> monthItemsCmb; // Value injected by FXMLLoader
+    @FXML
+    private Button supplyReportBtn;
 
-    @FXML // fx:id="ordersReportBtn"
-    private Button ordersReportBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button ordersReportBtn;
 
-    @FXML // fx:id="returnBtn"
-    private Button returnBtn; // Value injected by FXMLLoader
-
-    @FXML // fx:id="supplyReportBtn"
-    private Button supplyReportBtn; // Value injected by FXMLLoader
-
-    @FXML // fx:id="viewReportCmb"
-    private Button viewReportCmb; // Value injected by FXMLLoader
-
-    @FXML // fx:id="yearItemsCmb"
-    private ComboBox<?> yearItemsCmb; // Value injected by FXMLLoader
-
-    @FXML // This method is called by the FXMLLoader when initialization is complete
-    void initialize() {
-        assert clientReportBtn != null : "fx:id=\"clientReportBtn\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert monthItemsCmb != null : "fx:id=\"monthItemsCmb\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert ordersReportBtn != null : "fx:id=\"ordersReportBtn\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert returnBtn != null : "fx:id=\"returnBtn\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert supplyReportBtn != null : "fx:id=\"supplyReportBtn\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert viewReportCmb != null : "fx:id=\"viewReportCmb\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-        assert yearItemsCmb != null : "fx:id=\"yearItemsCmb\" was not injected: check your FXML file 'viewReportUI.fxml'.";
-
+    @FXML
+    private Button viewReportBtn;
+  
+    @FXML
+    void viewReport(ActionEvent event) {
+    	errorMsgLabel.setText(validateFields());
+    	if (selectedReport == "ordersReport") {
+    		Store.NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
+    	}
     }
+     
+    public void initialize() {
+        ObservableList<Integer> years = FXCollections.observableArrayList();
+        for (int i = 2016; i <= 2023; i++) {
+            years.add(i);
+        }    
+        ObservableList<String> months = FXCollections.observableArrayList();
+        months.addAll("January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December");
+        
+        setReportButtons();
+        monthItemsCmb.setItems(months);
+        yearItemsCmb.setItems(years);
+    }
+    
 
+	String validateFields() {
+    	String errorMsg = "";
+    	if (monthItemsCmb.getSelectionModel().isEmpty() && yearItemsCmb.getSelectionModel().isEmpty()) {
+    		errorMsg = "Please Select Month and Year";
+    	}
+    	else if (monthItemsCmb.getSelectionModel().isEmpty()) {
+    		errorMsg = "Please Select Month";
+    	}
+    	else if (yearItemsCmb.getSelectionModel().isEmpty()) {
+    		errorMsg = "Please Select Year";
+    	}
+    	if (errorMsg != "" && selectedReport == "") {
+    		errorMsg += " and Report Type";
+    	}
+    	if (errorMsg == "" && selectedReport == "") {
+    		errorMsg = "Please Select Report Type";
+    	}
+    	return errorMsg;
+    }
+	
+    private void setReportButtons() {
+        supplyReportBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ce) {
+				selectedReport = "supplyReport";
+			}  	
+        });
+        ordersReportBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ce) {
+				selectedReport = "ordersReport";
+			}  	
+        });
+        clientReportBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ce) {
+				selectedReport = "clientsReport";
+			}  	
+        });
+	}
+    
+    private String getSelectedReport() {
+    	return this.selectedReport;
+    }
 }

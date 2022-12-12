@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
          <children>
@@ -55,7 +55,7 @@
                         <Font name="Verdana" size="12.0" />
                      </font>
                   </Label>
-                  <ToolBar prefHeight="140.0" prefWidth="439.0" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="3">
+                  <ToolBar fx:id="reportsToolBar" prefHeight="140.0" prefWidth="439.0" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="3">
                      <items>
                         <Button fx:id="clientReportBtn" contentDisplay="TOP" mnemonicParsing="false" prefHeight="130.0" prefWidth="134.0" text="Clients report">
                            <graphic>
@@ -127,11 +127,15 @@
                   <ColumnConstraints />
               </columnConstraints>
                <children>
-                  <Button fx:id="viewReportCmb" mnemonicParsing="false" prefHeight="42.0" prefWidth="176.0" styleClass="Button" text="View Report" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Button fx:id="viewReportBtn" mnemonicParsing="false" onAction="#viewReport" prefHeight="42.0" prefWidth="176.0" styleClass="Button" text="View Report" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
                   </Button>
+                  <Label fx:id="errorMsgLabel" alignment="CENTER" prefHeight="18.0" prefWidth="480.0" textAlignment="CENTER" textFill="RED" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -139,6 +143,7 @@
                <rowConstraints>
                   <RowConstraints />
                   <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
                </rowConstraints>
             </GridPane>
          </children>
