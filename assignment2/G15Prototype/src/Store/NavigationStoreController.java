@@ -1,6 +1,6 @@
 package Store;
 
-
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -29,19 +29,30 @@ import javafx.stage.WindowEvent;
  *
  */
 public class NavigationStoreController {
-	private HashMap<ScreensNames, Stage> screenStages; // saves the instance of the screen
-	private Stack<Stage> history; // saves the history of screens changes
+	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
+	private Stack<Scene> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
+	private Stage primaryStage;  // the main stage (window)
 
 	/**
 	 * Constructor, creates the new instances
 	 */
 	private NavigationStoreController() {
-		screenStages = new HashMap<>();
+		// create objects
+		screenScenes = new HashMap<>();
 		history = new Stack<>();
-		setAllStages(); // fill the hashMap
+		primaryStage = new Stage();
+
+		setAllScenes(); // fill the hashMap
+		primaryStage.show(); // show primary stage
 	}
 
+
+	/**
+	 * singleton design pattern, create / get the instance
+	 * 
+	 * @return
+	 */
 	public static NavigationStoreController getInstance() {
 		if (instance == null)
 			instance = new NavigationStoreController();
@@ -54,32 +65,34 @@ public class NavigationStoreController {
 	 * @param scName
 	 */
 	public void setCurrentScreen(ScreensNames scName) {
-		Stage stage = screenStages.get(scName);
+		Scene scene = screenScenes.get(scName);
 
 		// if null create new instance (should not happens)
-		if (stage == null)
-			stage = setSingleStage(scName);
-		// hide the current view
-
-		if (history.size() > 0) 
-			history.peek().close();
+		if (scene == null)
+			scene = createSingleScene(scName);
 
 		// save to stack
-		history.push(stage).show();
+		primaryStage.setTitle(scName.toString());
+		primaryStage.setScene(history.push(scene));
+
 	}
 
 	/**
 	 * sets the current view to previous
-	 * 
 	 */
-	public void goBack(ActionEvent event) {
+	public void goBack() {
 		// show the last stage
 		// history will never be null, you can't go back to login page (and even before)
-		if(history.size() >= 2) {
-			history.pop().close(); // hide the 'current'
-			history.peek().show();
+		if (history.size() >= 1) {
+			history.pop(); // throw the current
+			for (var key : screenScenes.keySet()) {
+				if (screenScenes.get(key).equals(history.peek()))
+					primaryStage.setTitle(key.toString());
+			}
+			primaryStage.setScene(history.peek());
+
 		}
-		
+
 	}
 
 	/**
@@ -89,47 +102,45 @@ public class NavigationStoreController {
 	 * @return
 	 */
 	public boolean refreshStage(ScreensNames screenName) {
-		Stage stage = setSingleStage(screenName);
-		if (stage == null)
+		Scene scene = createSingleScene(screenName); // create new instance
+		if (scene == null)
 			return false;
-		screenStages.put(screenName, stage); // replace the last stage with new
+		screenScenes.replace(screenName, scene); // replace the last stage with new
+		
+		// REPLACE the stack head
+		primaryStage.setTitle(screenName.toString());
+		history.pop(); // remove the last instance of the current screen and sets a new one
+		primaryStage.setScene(history.push(scene));		
 		return true;
 	}
 
 	/**
 	 * Set all stages into HashMap, using 'setSingleStage'
 	 */
-	private void setAllStages() {
+	private void setAllScenes() {
 		for (ScreensNames screenName : ScreensNames.values()) {
-			Stage stage = setSingleStage(screenName);
-			if (stage != null)
-				screenStages.put(screenName, stage);
+			Scene scene = createSingleScene(screenName);
+			if (scene != null)
+				screenScenes.put(screenName, scene);
 		}
 	}
 
 	/**
-	 * Creates one stage with the common properties.
+	 * Creates one scene and attach to the primary stage (to save in dictionary)
 	 * 
-	 * @param path
-	 * @return Stage
+	 * @param screenName
+	 * @return
 	 */
-	private Stage setSingleStage(ScreensNames screenName) {
-		String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
-		Stage primaryStage = new Stage();
-		Scene scene;
-
+	private Scene createSingleScene(ScreensNames screenName) {
+		Scene scene = null;
 		try {
-			// load fxml
+			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			Parent root = FXMLLoader.load(getClass().getResource(path));
-
-			// load bottom bar (if need)
-			if (screenName != ScreensNames.HostClient && screenName != ScreensNames.Login)
+			if (screenName != ScreensNames.HostClient && screenName != ScreensNames.Login
+					&& screenName != ScreensNames.HomePage)
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
-
-			// attach to stage
-			primaryStage.setScene(scene);
 
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -139,11 +150,11 @@ public class NavigationStoreController {
 					closeAllScreens();
 				}
 			});
-
-		} catch (Exception e) {
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return primaryStage;
+		return scene;
 	}
 
 	/**
@@ -153,7 +164,6 @@ public class NavigationStoreController {
 	 * @return
 	 */
 	private Parent setBottomBar(Parent stage) {
-
 		Button returnBtn = new Button();
 		ImageView returnImage = new ImageView();
 
@@ -174,7 +184,7 @@ public class NavigationStoreController {
 
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae) {
-				NavigationStoreController.getInstance().goBack(ae);
+				NavigationStoreController.getInstance().goBack();
 			}
 		});
 
@@ -187,8 +197,7 @@ public class NavigationStoreController {
 	 * Close all screens, and exits from platform & system
 	 */
 	private void closeAllScreens() {
-		for (var screen : history)
-			screen.close();
+
 		Platform.exit(); // exit JavaFx
 		System.exit(0); // exit system
 

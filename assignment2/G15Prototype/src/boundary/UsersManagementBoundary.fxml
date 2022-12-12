@@ -26,7 +26,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="returnBtn" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" onAction="#goBack" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return">
+            <Button fx:id="returnBtn" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return">
                <graphic>
                   <ImageView fitHeight="62.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-return">
                      <image>
