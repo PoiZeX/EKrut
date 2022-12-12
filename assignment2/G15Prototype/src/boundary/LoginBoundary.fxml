@@ -5,12 +5,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.LoginController">
@@ -20,9 +23,11 @@
           <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="250.0" valignment="CENTER" vgrow="NEVER" />
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" valignment="CENTER" vgrow="NEVER" />
-          <RowConstraints maxHeight="171.33334350585938" minHeight="10.0" prefHeight="130.66668701171875" valignment="TOP" vgrow="NEVER" />
+          <RowConstraints maxHeight="245.0" minHeight="-Infinity" prefHeight="211.0" valignment="CENTER" vgrow="NEVER" />
+          <RowConstraints maxHeight="239.0" minHeight="-Infinity" prefHeight="200.0" valignment="CENTER" vgrow="NEVER" />
+          <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="47.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="28.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="114.0" valignment="TOP" vgrow="NEVER" />
         </rowConstraints>
          <children>
             <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="350.0" styleClass="GridPane" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -91,7 +96,7 @@
                   </Label>
                </children>
             </GridPane>
-            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#loginBtnAction" prefHeight="40.0" prefWidth="240.0" styleClass="Button" stylesheets="@../styles/css/generalStyleSheet.css" text="Login" textFill="WHITE" textOverrun="CLIP" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#loginBtnAction" prefHeight="40.0" prefWidth="240.0" styleClass="LoginButton" stylesheets="@../styles/css/loginStyleSheet.css" text="Login" textFill="WHITE" textOverrun="CLIP" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -99,6 +104,12 @@
                   <Insets bottom="25.0" left="25.0" right="25.0" />
                </GridPane.margin>
             </Button>
+            <Button fx:id="EKTLoginBtn" defaultButton="true" mnemonicParsing="false" onAction="#ektLoginAction" prefHeight="40.0" prefWidth="240.0" styleClass="EKTLoginBtn" stylesheets="@../styles/css/loginStyleSheet.css" text="EKT Login" textFill="WHITE" textOverrun="CLIP" GridPane.rowIndex="4">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Button>
+            <Line endX="213.5" startX="-100.0" stroke="#c3bcbc" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </left>
@@ -107,6 +118,13 @@
          <image>
             <Image url="@../styles/icons/logo.png" />
          </image>
+         <effect>
+            <DropShadow height="104.54" radius="72.655" width="188.08">
+               <color>
+                  <Color opacity="0.2977099120616913" />
+               </color>
+            </DropShadow>
+         </effect>
       </ImageView>
    </center>
 </BorderPane>

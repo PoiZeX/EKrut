@@ -13,8 +13,15 @@
 	-fx-background-color:#f6f5f5;
 }
 
-
-.Button{
+.LoginButton {
 	-fx-background-color:  #50b7f3;
+	-fx-effect: dropshadow(gaussian , #acaaaa, 25, 0, 0, 0 );
 	-fx-background-radius: 15;
 }
+
+.EKTLoginBtn {
+	-fx-background-color:  #3091c9;
+	-fx-effect: dropshadow(gaussian , #acaaaa, 25, 0, 0, 0 );
+	-fx-background-radius: 15;
+}
+

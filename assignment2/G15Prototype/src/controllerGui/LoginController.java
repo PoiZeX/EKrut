@@ -20,6 +20,9 @@ public class LoginController {
 
     @FXML
     private TextField usernameTxtField;
+    
+    @FXML
+    private Button EKTLoginBtn;
 
     @FXML
     void loginBtnAction(ActionEvent event) {
@@ -27,5 +30,11 @@ public class LoginController {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 
     }
+    
+    @FXML
+    void ektLoginAction(ActionEvent event) {
+    	//
+    }
+
 
 }

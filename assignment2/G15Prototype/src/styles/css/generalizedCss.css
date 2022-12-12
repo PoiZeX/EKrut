@@ -11,7 +11,7 @@
 
 	-fx-background-radius:15;
 	-fx-background-color:#f6f5f5;
- 	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+ 	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 25,0,0,0 );
 }
 
 /*for grid in grid */
@@ -23,7 +23,7 @@
 
 .Button{
 	-fx-background-color:  #50b7f3;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 5,0,0,0 );
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 25,0,0,0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
