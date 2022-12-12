@@ -4,11 +4,14 @@
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
+    -fx-background-repeat: no-repeat;  
+    fx-background-size: 500 500; 
+    -fx-background-position: center center;
 }
 /*first grid */
 .GridPane{
     -fx-background-color:#f6f5f5;
-    -fx-effect: dropshadow( gaussian , #babfc2, 25 , 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , #babfc2, 25, 0, 0, 0 );
     -fx-background-radius: 15;
 }
 /*for grid in grid */
@@ -38,13 +41,13 @@
 /* --------------------------------------background logo------------------------------------------- */
 .backgroundLogo {
     z-index: -1;
-    
+
 }
 
 /*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
-    -fx-effect: dropshadow( gaussian , #acaaaa , 25,0,0,0 );
+    -fx-effect: dropshadow( gaussian , #acaaaa , 10, 0, 0, 0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
@@ -62,7 +65,7 @@
 
 .ButtonLogOut{
 	-fx-background-color:  #FF9414;
-    -fx-effect: dropshadow( gaussian , #acaaaa , 25,0,0,0 );
+    -fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
