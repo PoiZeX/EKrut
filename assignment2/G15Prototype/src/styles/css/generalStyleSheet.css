@@ -39,36 +39,45 @@
 /*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 5,0,0,0 );
+    -fx-effect: dropshadow( gaussian , #acaaaa , 25,0,0,0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
+    cursor: pointer;
 }
 
+.Button:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
 
-.Button:hover{
--fx-background-radius:10;
--fx-background-color: #057DCD; 
+.Button:hover {
+    -fx-background-color: #64c6ff;
 }
 
 .ButtonLogOut{
 	-fx-background-color:  #FF9414;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 5,0,0,0 );
+    -fx-effect: dropshadow( gaussian , #acaaaa , 25,0,0,0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 16pt;
+    cursor: pointer;
    
 }
 
-.ButtonLogOut:hover{
--fx-background-radius:10;
--fx-background-color: #FF5D14;
-   
+.ButtonLogOut:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
 }
+
+.ButtonLogOut:hover {
+    -fx-background-color: #ffab45;
+}
+
+
 .Button:Text {
     -fx-fill: white;
-	-fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
-    -fx-background-color:  #057DCD;
+	/* -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 ); */
 }
 
 .Button-return{
