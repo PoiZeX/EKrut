@@ -65,21 +65,22 @@ public class HomePageController {
 		User ceo = new User("CEO");
 		User regionManager = new User("RegionManager");
 		User register = new User("Register");
-		
-		User selectedUser = register;
+
+		User selectedUser = regionManager;
 
 		// switch case by role
 		switch (selectedUser.role) {
 		case "CEO":
 		case "Register":
-			setMiddleButton(selectedUser.role);
+			setTopButton(selectedUser.role);
+			setBottomButton(selectedUser.role);			
 			break;
 
 		case "RegionManager":
 			// CEO has 3 buttons.
-			setTopButton();
-			setMiddleButton(selectedUser.role);
-			setBottomButton();
+			setTopButton(selectedUser.role);
+			setMiddleButton();
+			setBottomButton(selectedUser.role);
 			break;
 
 		default:
@@ -102,50 +103,60 @@ public class HomePageController {
 		bottomBtn.setMinWidth(maxWidth);
 	}
 
-	private void setTopButton() {
-		topBtn.setText("Approve Users");
-		topBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.UsersManagement);
-			}
-		});
+	private void setTopButton(String userRole) {
+		if (userRole.equals("Register")) {
+			topBtn.setText("Create new order");
+			topBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.NewOrder);
+				}
+			});
+		} else {
+			topBtn.setText("Approve Users");
+			topBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.UsersManagement);
+				}
+			});
+		}
 		topBtn.setVisible(true);
+
 	}
 
-	private void setMiddleButton(String userRole) {
-		if(userRole.equals("Register"))
-		{
-			middleBtn.setText("Create new order");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					 NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog); // not working yet 
-				}
-			});
-		}
-		else {  // ceo / manager
-			middleBtn.setText("View reports");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection);
-				}
-			});
-		}
+	private void setMiddleButton() {
+		middleBtn.setText("View reports");
+		middleBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection);
+			}
+		});
 		middleBtn.setVisible(true);
-
 	}
 
 	/// register and Manager share the same button.
-	private void setBottomButton() {
-		bottomBtn.setText("Supply Management");
-		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				bottomBtnAction(event);
-			}
-		});
+	private void setBottomButton(String userRole) {
+		if (userRole.equals("Register")) {
+			bottomBtn.setText("Collect an order");
+			bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CollectOrder); // not working yet																					
+				}
+			});
+		} else { // ceo / manager etc
+			bottomBtn.setText("Supply Management");
+			bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					bottomBtnAction(event);
+				}
+
+			});
+		}
 
 		bottomBtn.setVisible(true);
 	}

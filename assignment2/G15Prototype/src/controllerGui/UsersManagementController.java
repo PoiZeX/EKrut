@@ -57,14 +57,10 @@ public class UsersManagementController {
 
     }
 
-    @FXML
-    void goBack(ActionEvent event) {
-    	NavigationStoreController.getInstance().goBack(event);
-    }
 
     @FXML
     void refresh(ActionEvent event) {
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.HostClient);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
 
     }
 
