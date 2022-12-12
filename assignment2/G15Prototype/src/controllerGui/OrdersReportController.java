@@ -11,12 +11,14 @@ public class OrdersReportController {
     private PieChart pieChartOrders;
     
     public void initialize() {
-    	ObservableList<PieChart.Data> pieChartData =
-               FXCollections.observableArrayList(
-                    new PieChart.Data("Apple", 20),
-                    new PieChart.Data("Banana", 30),
-                    new PieChart.Data("Orange", 10));
-    	pieChartOrders = new PieChart(pieChartData);	
+    	 ObservableList<PieChart.Data> pieChartData =
+    	            FXCollections.observableArrayList(
+    	            new PieChart.Data("Lidor", 10.5),
+    	            new PieChart.Data("Dima", 75),
+    	            new PieChart.Data("David",100),
+    	 			new PieChart.Data("Vital", 200),
+    	 			new PieChart.Data("Neta", 200));
+    	 pieChartOrders.setData(pieChartData);
     }
 
 }
