@@ -548,17 +548,17 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <GridPane prefHeight="469.0" prefWidth="386.0" styleClass="GridPaneChild">
+            <GridPane minHeight="0.0" minWidth="0.0" prefHeight="291.0" prefWidth="63.0" styleClass="GridPaneChild">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="69.66666412353516" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="350.33333587646484" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="86.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="334.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="cartBTn" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="75.0" prefWidth="85.0" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                  <Button fx:id="cartBTn" contentDisplay="RIGHT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="75.0" prefWidth="85.0" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -583,4 +583,7 @@
          </items>
       </SplitPane>
    </center>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </BorderPane>
