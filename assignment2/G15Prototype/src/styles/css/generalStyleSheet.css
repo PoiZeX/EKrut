@@ -30,10 +30,6 @@
 	-fx-text-fill: #1E3D58;
 	-fx-font-size: 13pt;
 }
-.Label-list {
-	-fx-text-fill: #1E3D58;
-	-fx-font-size: 10pt;
-}
 .TextField {
 	-fx-background-radius:15;
 	-fx-background-color:#f6f5f5;
