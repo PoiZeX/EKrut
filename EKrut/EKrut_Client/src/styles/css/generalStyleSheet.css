@@ -7,6 +7,8 @@
     -fx-background-repeat: no-repeat;  
     -fx-background-size: 500 500; 
     -fx-background-position: center center;
+    -fx-background-image: url("/styles/images/BG.jpg");
+    -fx-background-size: cover;
 }
 /*first grid */
 .GridPane{
@@ -121,6 +123,13 @@
 	-fx-effect: dropshadow( gaussian , #acaaasa , 10 , 0, 0, 0 );
 	-fx-background-color:white;
 	-fx-text-fill: gray;
+	
+}
+.button-AddToCart:hover{
+	-fx-border-radius:15;
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:#43B0F1;
+	-fx-text-fill: white;
 	
 }
 

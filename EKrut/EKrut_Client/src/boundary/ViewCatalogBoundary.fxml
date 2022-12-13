@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCatalogContoller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCatalogContoller">
    <bottom>
       <GridPane prefHeight="71.0" prefWidth="859.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -29,8 +29,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="ButtonLogOut" text="Cancle Order" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" styleClass="Button" text="Place Order" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button fx:id="cancelOrderBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="40.0" prefWidth="152.0" styleClass="ButtonLogOut" text="Cancel Order" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+            <Button fx:id="placeOrderBtn" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="147.0" styleClass="Button" text="Place Order" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin></Button>
@@ -570,7 +570,7 @@
                   <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="cartBTn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="Button-NoBG" text="View cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                  <Button fx:id="viewCartBtn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="Button-NoBG" text="View cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font name="Calibri Bold Italic" size="15.0" />
                      </font>
@@ -584,7 +584,7 @@
                   </Button>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="145.0" style="-fx-background-color: white;">
+                        <AnchorPane fx:id="cartList" minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="145.0" style="-fx-background-color: white;">
                            <children>
                               <GridPane layoutX="10.0" layoutY="3.0" prefHeight="122.0" prefWidth="113.0">
                                 <columnConstraints>
@@ -622,7 +622,7 @@
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin></Label>
-                  <Label alignment="CENTER" styleClass="Label" text="74₪" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                  <Label fx:id="totalPriceLabel" alignment="CENTER" styleClass="Label" text="74₪" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="45.0" />
                      </GridPane.margin>
