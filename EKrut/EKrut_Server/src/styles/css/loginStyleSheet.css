@@ -1,0 +1,36 @@
+.GridPane {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
+}
+
+.Label {
+	-fx-text-fill: #8b969d;
+}
+
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
+}
+
+.LoginButton {
+	-fx-background-color:  #50b7f3;
+	-fx-effect: dropshadow(gaussian , #acaaaa, 10, 0, 0, 0 );
+	-fx-background-radius: 15;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 16pt;
+	cursor: pointer;
+}
+
+/* .LoginButton:hover {
+    -fx-background-color:  #64c6ff;
+} */
+
+.LoginButton:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+.LoginButton:hover {
+    -fx-background-color: #64c6ff;
+}

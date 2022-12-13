@@ -1,12 +1,18 @@
 
 .root{
-	-fx-background-color: #E8EEF1;
+	-fx-background-image: url('@/GitHub/EKrut/assignment2/G15Prototype/src/styles/resource/background.png');
+ 	-fx-background-color: #E8EEF1;
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
     -fx-background-repeat: no-repeat;  
     fx-background-size: 500 500; 
-    -fx-background-position: center center;
+   /*-fx-background-position: center center;*/
+}
+.background {
+-fx-background-position: center;
+-fx-background-image: url('file:src/background.png');
+-fx-background-repeat: stretch;
 }
 /*first grid */
 .GridPane{
@@ -126,7 +132,7 @@
 .button-AddToCart:hover{
 	-fx-border-radius:15;
 	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
-	-fx-background-color:#43B0F1;
+	-fx-background-color:gray;
 	-fx-text-fill: white;
 	
 }
