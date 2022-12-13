@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HomePageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HomePageController">
    <top>
       <GridPane prefWidth="687.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -25,17 +25,35 @@
    </top>
    <center>
       <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="310.0" prefWidth="624.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" VBox.vgrow="ALWAYS" />
-            <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" VBox.vgrow="ALWAYS" />
-            <Button fx:id="bottomBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" VBox.vgrow="ALWAYS" />
-         </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         <children>
+            <GridPane prefHeight="218.0" prefWidth="578.0">
+              <columnConstraints>
+                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" />
+                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" GridPane.rowIndex="1" />
+                  <Button fx:id="bottomBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" GridPane.rowIndex="2" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+            </GridPane>
+         </children>
       </VBox>
    </center>
    <bottom>
