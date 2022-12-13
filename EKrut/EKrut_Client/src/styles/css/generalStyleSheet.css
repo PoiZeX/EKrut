@@ -5,7 +5,7 @@
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
     -fx-background-repeat: no-repeat;  
-    fx-background-size: 500 500; 
+    -fx-background-size: 500 500; 
     -fx-background-position: center center;
 }
 /*first grid */
