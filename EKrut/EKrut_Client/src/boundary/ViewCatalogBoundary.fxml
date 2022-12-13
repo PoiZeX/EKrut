@@ -22,17 +22,17 @@
       <GridPane prefHeight="71.0" prefWidth="859.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="445.0" minWidth="10.0" prefWidth="432.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="319.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="150.0" styleClass="ButtonLogOut" text="Cancle Order" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" styleClass="Button" text="Place Order" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="ButtonLogOut" text="Cancle Order" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" styleClass="Button" text="Place Order" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <GridPane.margin>
-                  <Insets right="-100.0" />
+                  <Insets right="10.0" />
                </GridPane.margin></Button>
          </children>
       </GridPane>
@@ -433,7 +433,8 @@
                                           <Button fx:id="AddToCartBtn2211" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets right="8.0" />
-                                             </GridPane.margin></Button>
+                                             </GridPane.margin>
+                                          </Button>
                                           <Label fx:id="productNameLbl11" prefHeight="0.0" prefWidth="194.0" styleClass="Label-list" text="Coca Cola 330 ml " GridPane.columnSpan="4" GridPane.rowIndex="1" />
                                           <Label fx:id="priceLbl11" prefHeight="4.0" prefWidth="190.0" styleClass="Label-list" text="10₪" GridPane.columnSpan="4" />
                                        </children>
@@ -485,7 +486,8 @@
                                           <Button fx:id="AddToCartBtn22211" mnemonicParsing="false" prefHeight="32.0" prefWidth="96.0" styleClass="button-AddToCart" text="Add to cart" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets right="8.0" />
-                                             </GridPane.margin></Button>
+                                             </GridPane.margin>
+                                          </Button>
                                           <Label fx:id="productNameLbl111" prefHeight="16.0" prefWidth="188.0" styleClass="Label-list" text="Coca Cola Zero 330 ml" GridPane.columnSpan="4" GridPane.rowIndex="1" />
                                           <Label fx:id="priceLbl111" prefHeight="0.0" prefWidth="184.0" styleClass="Label-list" text="10₪" GridPane.columnSpan="4" />
                                        </children>
@@ -563,19 +565,26 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="86.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="334.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="360.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="cartBTn" alignment="CENTER" contentDisplay="BOTTOM" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="75.0" prefWidth="126.0" styleClass="Button-NoBG" textOverrun="WORD_ELLIPSIS" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                  <Button fx:id="cartBTn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="Button-NoBG" text="View cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font name="Calibri Bold Italic" size="15.0" />
                      </font>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../styles/icons/001-shopping%20cart.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="145.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="145.0" style="-fx-background-color: white;">
                            <children>
                               <GridPane layoutX="10.0" layoutY="3.0" prefHeight="122.0" prefWidth="113.0">
                                 <columnConstraints>
@@ -618,16 +627,6 @@
                         <Insets right="45.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="114.0" styleClass="Label-list" text="View cart">
-                     <font>
-                        <Font name="Calibri" size="1.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../styles/icons/001-shopping%20cart.png" />
-                     </image>
-                  </ImageView>
                </children>
                <padding>
                   <Insets left="1.0" />

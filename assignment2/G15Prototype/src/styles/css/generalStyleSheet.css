@@ -1,6 +1,6 @@
 
 .root{
-	-fx-background-image: url('@/GitHub/EKrut/assignment2/G15Prototype/src/styles/resource/background.png');
+	-fx-background-image: url('/resource/bg/background.png');
  	-fx-background-color: #E8EEF1;
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
@@ -128,7 +128,7 @@
 .button-AddToCart:hover{
 	-fx-border-radius:15;
 	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
-	-fx-background-color:gray;
+	-fx-background-color:#43B0F1;
 	-fx-text-fill: white;
 	
 }

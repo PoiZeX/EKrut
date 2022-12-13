@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReviewOrderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../../../assignment2/G15Prototype/src/styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReviewOrderController">
    <top>
       <Label fx:id="TitleLbl" styleClass="LabelTitel" text="Place Order" BorderPane.alignment="CENTER" />
    </top>
@@ -49,7 +50,7 @@
                               <Font size="53.0" />
                            </font>
                            <GridPane.margin>
-                              <Insets left="200.0" />
+                              <Insets left="220.0" />
                            </GridPane.margin>
                         </Label>
                         <Label prefHeight="39.0" prefWidth="188.0" styleClass="Label" text="TOTAL PRODUCTS SUM: " GridPane.halignment="LEFT" GridPane.rowIndex="2">
@@ -60,15 +61,15 @@
                               <Font size="53.0" />
                            </font>
                         </Label>
-                        <Label fx:id="totulDisscountSumLbl" prefHeight="48.0" prefWidth="105.0" style="-fx-text-fill: red;" styleClass="Label" text="0000₪" textFill="RED" GridPane.rowIndex="3">
+                        <Label fx:id="totulDiscountSumLbl" prefHeight="48.0" prefWidth="105.0" style="-fx-text-fill: red;" styleClass="Label" text="0000₪" textFill="RED" GridPane.rowIndex="3">
                            <font>
                               <Font size="53.0" />
                            </font>
                            <GridPane.margin>
-                              <Insets left="200.0" />
+                              <Insets left="220.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label prefHeight="48.0" prefWidth="161.0" style="-fx-text-fill: red;" styleClass="Label" text="TOTAL DISSCOUNT: " textFill="RED" GridPane.rowIndex="3">
+                        <Label prefHeight="48.0" prefWidth="161.0" style="-fx-text-fill: red;" styleClass="Label" text="TOTAL DISCOUNT: " textFill="RED" GridPane.rowIndex="3">
                            <font>
                               <Font size="53.0" />
                            </font>
@@ -76,12 +77,12 @@
                               <Insets left="20.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="totulSumLbl" prefHeight="48.0" prefWidth="105.0" styleClass="Label" text="0000₪" GridPane.rowIndex="4">
+                        <Label fx:id="totalSumLbl" prefHeight="48.0" prefWidth="105.0" styleClass="Label" text="0000₪" GridPane.rowIndex="4">
                            <font>
                               <Font size="53.0" />
                            </font>
                            <GridPane.margin>
-                              <Insets left="200.0" />
+                              <Insets left="220.0" />
                            </GridPane.margin>
                         </Label>
                         <Label prefHeight="39.0" prefWidth="188.0" styleClass="Label" text="TOTAL SUM: " GridPane.rowIndex="4">
@@ -199,7 +200,7 @@
                               <RowConstraints fillHeight="false" maxHeight="171.0" minHeight="0.0" prefHeight="46.666656494140625" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="firstNameTxtField1" prefHeight="22.0" prefWidth="175.0" promptText="First name" styleClass="TextField" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                              <TextField fx:id="firstNameTxtField" prefHeight="22.0" prefWidth="175.0" promptText="First name" styleClass="TextField" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="10.0" />
                                  </GridPane.margin>
@@ -225,7 +226,7 @@
                               <Insets top="10.0" />
                            </GridPane.margin>
                         </GridPane>
-                        <Label fx:id="contuctDetailsLbl" prefHeight="15.0" prefWidth="134.0" text="CONTACT DETAILS" underline="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <Label fx:id="contactDetailsLbl" prefHeight="15.0" prefWidth="134.0" text="CONTACT DETAILS" underline="true" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                         <Label prefHeight="15.0" prefWidth="153.0" text="ADDRESS DETAILS" underline="true" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                      </children>
                      <padding>
@@ -254,7 +255,7 @@
                   <Insets right="50.0" top="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="cancleOrderBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="154.0" styleClass="ButtonLogOut" text="Cancle Order" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button fx:id="cancelOrderBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="154.0" styleClass="ButtonLogOut" text="Cancel Order" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets top="10.0" />
                </GridPane.margin>
@@ -268,4 +269,8 @@
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
+   <styleClass>
+      <String fx:value="root" />
+      <String fx:value="background" />
+   </styleClass>
 </BorderPane>

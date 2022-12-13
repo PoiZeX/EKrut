@@ -26,22 +26,22 @@ public class ReviewOrderController {
     private GridPane addressDetalisGridPane;
 
     @FXML
-    private Button cancleOrderBtn;
+    private Button cancelOrderBtn;
 
     @FXML
     private TextField cityTxtField;
 
     @FXML
-    private GridPane contactDetalisGridPane;
+    private Label contactDetailsLbl;
 
     @FXML
-    private Label contuctDetailsLbl;
+    private GridPane contactDetalisGridPane;
 
     @FXML
     private RadioButton deliveryRb;
 
     @FXML
-    private TextField firstNameTxtField1;
+    private TextField firstNameTxtField;
 
     @FXML
     private TextField lastNameTxtField;
@@ -68,12 +68,12 @@ public class ReviewOrderController {
     private TextField streetTxtField;
 
     @FXML
-    private Label totulDisscountSumLbl;
+    private Label totalSumLbl;
+
+    @FXML
+    private Label totulDiscountSumLbl;
 
     @FXML
     private Label totulProductsSumLbl;
-
-    @FXML
-    private Label totulSumLbl;
 
 }
