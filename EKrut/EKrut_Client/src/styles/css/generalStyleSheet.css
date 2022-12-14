@@ -35,12 +35,14 @@
 }
 
 .LabelTitel{
-	-fx-font-family: "Calibri";
-     -fx-font-weight: bold;
-   -fx-text-alignment:center;
-   -fx-text-fill:#057DCD;
-   -fx-font-size: 20pt;
-   -fx-label-padding: 20 20 5 20;
+
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 20pt;
+    -fx-label-padding: 20 20 5 20;
+
 }
 /* header */
 #headerBar {
@@ -57,6 +59,7 @@
 /* --------------------------------------catalog------------------------------------------- */
 #catalogScrollpane {
     -fx-background-color: linear-gradient(#f6f5f5 20%, #ffffff 60%);
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
 
 }
 /*------------------------------- no BG */
@@ -197,14 +200,25 @@
  /*------------------------------------------------ TABLE---------------------------------- */
 /*TBL View */
 .table-view {
-    -fx-background-color: transparent;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    /* -fx-border-color: white; */
+    /* -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 ); */
 }
+
 /*title */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+}
+
 .table-view .column-header-background .filler {
     -fx-background-color: transparent;
 }
+
 .table-view .corner {
-    -fx-background-color: transparent;
+    -fx-background-color: #babfc2;
 }
 
 .table-view .column-header {
@@ -212,28 +226,29 @@
 }
 
 .table-view .column-header-background{
-    -fx-background-color: linear-gradient(to bottom, #50b7f3, #64c6ff);
+    -fx-background-color: #64c6ff;
     -fx-background-radius: 7px 7px 0px 0px;
-    -fx-background-insets: 0 11px 0 0;
-    -fx-padding: 0 0 5px 0;
+    -fx-padding: 4px;
+    -fx-text-fill: white;
 }
+
 .table-view .table-cell{
-    -fx-border-color: transparent;
-    -fx-padding: 2 0 2 10px;
+    -fx-border-color: #50b7f3;
 }
+
 .table-row-cell:hover {
-    -fx-background-color: #5dbcf2;
+    -fx-background-color: transparent;
     -fx-text-background-color: red;
 }
+
 .table-row-cell:odd {
     -fx-background-color: #64c6ff;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
+
 .table-row-cell:even{
     -fx-background-color: #50b7f3;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
-
-
