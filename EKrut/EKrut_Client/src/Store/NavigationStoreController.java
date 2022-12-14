@@ -37,7 +37,7 @@ public class NavigationStoreController {
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage;  // the main stage (window)
 	private ScreensNames[] isSkipped = {ScreensNames.HostClient,ScreensNames.HomePage, ScreensNames.Login};
-s
+
 	/**
 	 * Constructor, creates the new instances
 	 */
