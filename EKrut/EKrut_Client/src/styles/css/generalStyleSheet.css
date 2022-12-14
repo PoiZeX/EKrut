@@ -11,6 +11,9 @@
     -fx-background-size: cover;
 }
 
+.HomeScreen {
+	-fx-background-image: url("/styles/images/BGnoBLUE.png");
+}
 /*-----------------------------------------------GRID PANE -------------------------------------------- */
 /*first grid */
 .GridPane{

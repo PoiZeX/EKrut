@@ -12,12 +12,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="HomeScreen" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.LoginController">
    <left>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -118,17 +119,21 @@
       </GridPane>
    </left>
    <center>
-      <ImageView fitHeight="325.0" fitWidth="325.0" opacity="0.85" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../styles/icons/logo.png" />
-         </image>
-         <effect>
-            <DropShadow height="104.54" radius="72.655" width="188.08">
-               <color>
-                  <Color opacity="0.2977099120616913" />
-               </color>
-            </DropShadow>
-         </effect>
-      </ImageView>
+      <Pane prefHeight="200.0" prefWidth="459.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="325.0" fitWidth="325.0" layoutX="88.0" layoutY="138.0" opacity="0.85">
+               <image>
+                  <Image url="@../styles/icons/logo.png" />
+               </image>
+               <effect>
+                  <DropShadow height="104.54" radius="72.655" width="188.08">
+                     <color>
+                        <Color opacity="0.2977099120616913" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </ImageView>
+         </children>
+      </Pane>
    </center>
 </BorderPane>
