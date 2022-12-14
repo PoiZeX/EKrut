@@ -43,7 +43,7 @@
       </GridPane>
    </top>
    <center>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="750.0" styleClass="root" BorderPane.alignment="CENTER">
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="750.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="750.0" />
          </columnConstraints>
@@ -51,7 +51,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ScrollPane id="catalogScrollpane" hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="720.0" style="-fx-background-color: #E8EEF1;" stylesheets="@../styles/css/generalStyleSheet.css">
+            <ScrollPane hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="720.0" style="-fx-background-color: transparent;">
               <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="804.0" prefWidth="708.0" styleClass="root">
                      <children>
