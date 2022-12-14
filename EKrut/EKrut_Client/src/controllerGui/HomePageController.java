@@ -12,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import utils.TooltipSetter;
 
 public class HomePageController {
 
@@ -88,23 +88,25 @@ public class HomePageController {
 		}
 
 		welcomeLabel.setText("Welcome " + selectedUser.friendlyName() + "!");
-		updateButtonsSize();
+		//updateButtonsSize();
 	}
 
-	// updates the buttons width by the max width
-	// bug here
-	private void updateButtonsSize() {
-		double maxWidth = 0;
-		maxWidth = topBtn.getPrefWidth() > middleBtn.getPrefWidth() ? topBtn.getPrefWidth() : middleBtn.getPrefWidth();
-		maxWidth = maxWidth > bottomBtn.getPrefWidth() ? maxWidth : bottomBtn.getPrefWidth();
-		topBtn.setMinWidth(maxWidth);
-		middleBtn.setMinWidth(maxWidth);
-		bottomBtn.setMinWidth(maxWidth);
-	}
+//	// updates the buttons width by the max width
+//	// bug here
+//	private void updateButtonsSize() {
+//		double maxWidth = 0;
+//		maxWidth = topBtn.getPrefWidth() > middleBtn.getPrefWidth() ? topBtn.getPrefWidth() : middleBtn.getPrefWidth();
+//		maxWidth = maxWidth > bottomBtn.getPrefWidth() ? maxWidth : bottomBtn.getPrefWidth();
+//		topBtn.setMinWidth(200);
+//		middleBtn.setMinWidth(200);
+//		bottomBtn.setMinWidth(200);
+//	}
 
 	private void setTopButton(String userRole) {
 		if (userRole.equals("Register")) {
-			topBtn.setText("Create new order");
+			topBtn.setText("Create New Order");
+			TooltipSetter topBtnTooltip = new TooltipSetter("View the catalog and create a new order");
+			topBtn.setTooltip(topBtnTooltip.getTooltip());
 			topBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -126,7 +128,9 @@ public class HomePageController {
 
 	private void setMiddleButton(String userRole) {
 		if (userRole.equals("Register")) {
-			middleBtn.setText("Collect an order");
+			middleBtn.setText("Collect An Order");
+			TooltipSetter middleBtnTooltip = new TooltipSetter("Collect any orders that are ready");
+			middleBtn.setTooltip(middleBtnTooltip.getTooltip());
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -152,6 +156,8 @@ public class HomePageController {
 	private void setBottomButton(String userRole) {
 		// ceo / manager etc
 		bottomBtn.setText("Supply Management");
+		TooltipSetter bottomBtnTooltip = new TooltipSetter("Manage the available supply");
+		bottomBtn.setTooltip(bottomBtnTooltip.getTooltip());
 		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

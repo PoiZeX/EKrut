@@ -11,7 +11,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HomePageController">
    <top>
-      <GridPane prefWidth="687.0" styleClass="GridPane" BorderPane.alignment="CENTER">
+      <GridPane id="headerBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
@@ -42,9 +42,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" />
-                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" GridPane.rowIndex="1" />
-                  <Button fx:id="bottomBtn" mnemonicParsing="false" prefHeight="50.0" styleClass="Button" GridPane.rowIndex="2" />
+                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" />
+                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" GridPane.rowIndex="1" />
+                  <Button fx:id="bottomBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
