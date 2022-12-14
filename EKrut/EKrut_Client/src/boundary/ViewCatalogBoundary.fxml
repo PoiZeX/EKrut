@@ -41,7 +41,7 @@
             <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="53.0" prefWidth="354.0" styleClass="LabelTitel" text="Ort Braude Machine Catalog" GridPane.valignment="TOP" />
          </children>
          <BorderPane.margin>
-            <Insets bottom="25.0" />
+            <Insets bottom="20.0" />
          </BorderPane.margin>
       </GridPane>
    </top>
@@ -578,14 +578,14 @@
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="59.666664123535156" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="59.666664123535156" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="300.0" minHeight="156.33333587646484" prefHeight="193.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="58.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="72.66665649414062" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="81.33334350585938" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="viewCartBtn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="64.0" prefWidth="123.0" styleClass="Button-NoBG" text="View cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+            <Button fx:id="viewCartBtn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="64.0" prefWidth="150.0" styleClass="Button-NoBG" text="View Cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                <font>
                   <Font name="Calibri Bold Italic" size="15.0" />
                </font>
@@ -603,9 +603,9 @@
                      <children>
                         <GridPane layoutX="10.0" layoutY="3.0" prefHeight="150.0" prefWidth="150.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.0" minWidth="10.0" prefWidth="45.66668701171875" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="66.0" minWidth="0.0" prefWidth="47.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.0" minWidth="10.0" prefWidth="53.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.0" minWidth="10.0" prefWidth="53.33331298828125" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.66668701171875" minWidth="0.0" prefWidth="52.66668701171875" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.0" minWidth="10.0" prefWidth="43.33331298828125" />
                           </columnConstraints>
                           <rowConstraints>
                               <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
@@ -625,8 +625,8 @@
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="24₪" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                               <Label prefHeight="14.0" prefWidth="40.0" styleClass="Label-list" text="Name" />
-                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="qty" GridPane.columnIndex="1" />
-                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="price" GridPane.columnIndex="2" />
+                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="Qty" GridPane.columnIndex="1" />
+                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="Price" GridPane.columnIndex="2" />
                               <Line endX="55.0" startX="-114.31495666503906" startY="7.748603820800781E-7" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
