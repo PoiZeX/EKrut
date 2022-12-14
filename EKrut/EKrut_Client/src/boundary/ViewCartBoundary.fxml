@@ -18,8 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <GridPane prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -30,7 +29,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="63.0" prefWidth="128.0" styleClass="LabelTitel" text="My Cart" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+            <Label prefHeight="57.0" prefWidth="130.0" styleClass="LabelTitel" text="My Cart" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                <GridPane.margin>
                   <Insets top="-10.0" />
                </GridPane.margin>
@@ -41,40 +40,13 @@
    <bottom>
       <GridPane prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="148.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="117.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="279.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="229.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="324.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Button fx:id="placeOrderBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="150.0" styleClass="Button" text="Payment" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button fx:id="cancelOrderBtn" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="40.0" prefWidth="140.0" styleClass="ButtonLogOut" text="Cancel Order" GridPane.columnIndex="2" GridPane.halignment="LEFT">
-               <font>
-                  <Font size="96.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button mnemonicParsing="false" styleClass="Button-return">
-               <graphic>
-                  <ImageView fitHeight="36.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../styles/icons/return.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
          <padding>
             <Insets bottom="20.0" left="10.0" top="20.0" />
          </padding>
@@ -84,32 +56,34 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <right>
-      <HBox fillHeight="false" BorderPane.alignment="CENTER">
+      <HBox fillHeight="false" prefHeight="456.0" prefWidth="880.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="275.0" prefWidth="414.0">
+            <ScrollPane prefHeight="497.0" prefWidth="462.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="387.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="444.0">
                      <children>
-                        <Pane layoutX="7.0" layoutY="14.0" prefHeight="236.0" prefWidth="387.0" styleClass="GridPaneChild">
+                        <Pane layoutX="-3.0" layoutY="1.0" prefHeight="482.0" prefWidth="460.0" styleClass="GridPaneChild">
                            <children>
-                              <GridPane layoutX="14.0" layoutY="14.0" prefHeight="214.0" prefWidth="348.0">
+                              <GridPane layoutY="14.0" prefHeight="377.0" prefWidth="449.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="81.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="87.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
+                                    <Label prefHeight="17.0" prefWidth="446.0" style="-fx-font-size: 13PT;" styleClass="Label-list" text="        Product                          Price                              Quantity         " underline="true" GridPane.valignment="TOP" />
                                     <GridPane alignment="CENTER" prefHeight="69.0" prefWidth="348.0" styleClass="Button-NoBG" GridPane.rowIndex="1">
                                        <columnConstraints>
                                           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="57.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="186.0" minWidth="0.0" prefWidth="186.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="35.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="40.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="31.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="248.0" minWidth="0.0" prefWidth="235.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="62.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="42.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="48.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -127,14 +101,17 @@
                                              </graphic>
                                           </Button>
                                           <TextField fx:id="QuantityTxtField2221" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="2" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="3" />
-                                          <Label fx:id="productNameLbl11" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="Twix" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
-                                          <Label fx:id="priceLbl11" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="10₪" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="productNameLbl11" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="Twix" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="priceLbl11" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="10₪" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="100.0" />
+                                             </GridPane.margin></Label>
                                           <ImageView fx:id="productItemImg2221" fitHeight="59.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.rowSpan="3">
                                              <image>
                                                 <Image url="@../styles/products/טוויקס.png" />
                                              </image>
                                           </ImageView>
-                                          <Line endX="265.18878173828125" endY="0.7214934229850769" fill="#908e8e" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                          <Line endX="333.18878173828125" endY="0.014589416794478893" fill="#908e8e" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                                           <Button fx:id="MinusQuantityBtn22211" mnemonicParsing="false" prefHeight="24.0" prefWidth="34.0" styleClass="Button-NoBG" GridPane.columnIndex="4" GridPane.rowSpan="3">
                                              <graphic>
                                                 <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -149,10 +126,10 @@
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="69.0" prefWidth="348.0" styleClass="Button-NoBG" GridPane.rowIndex="2">
                                        <columnConstraints>
                                           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="57.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="186.0" minWidth="0.0" prefWidth="186.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="35.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="40.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="31.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="242.0" minWidth="0.0" prefWidth="237.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="56.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="49.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="47.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -170,14 +147,17 @@
                                              </graphic>
                                           </Button>
                                           <TextField fx:id="QuantityTxtField22211" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="3" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="3" />
-                                          <Label fx:id="productNameLbl111" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="Kif-Kef" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
-                                          <Label fx:id="priceLbl111" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="10₪" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="productNameLbl111" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="Kif-Kef" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="priceLbl111" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="10₪" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="100.0" />
+                                             </GridPane.margin></Label>
                                           <ImageView fx:id="productItemImg22211" fitHeight="55.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.rowSpan="3">
                                              <image>
                                                 <Image url="@../styles/products/כיפכף.png" />
                                              </image>
                                           </ImageView>
-                                          <Line endX="265.18878173828125" endY="0.7214934229850769" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                          <Line endX="405.29290771484375" endY="2.014589309692383" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                                           <Button fx:id="MinusQuantityBtn222111" mnemonicParsing="false" prefHeight="24.0" prefWidth="34.0" styleClass="Button-NoBG" GridPane.columnIndex="4" GridPane.rowSpan="3">
                                              <graphic>
                                                 <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -192,10 +172,10 @@
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="69.0" prefWidth="348.0" styleClass="Button-NoBG" GridPane.rowIndex="3">
                                        <columnConstraints>
                                           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="57.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="186.0" minWidth="0.0" prefWidth="186.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="35.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="40.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="31.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="285.0" minWidth="0.0" prefWidth="244.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="46.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="60.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="41.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -213,14 +193,17 @@
                                              </graphic>
                                           </Button>
                                           <TextField fx:id="QuantityTxtField22212" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="2" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="3" />
-                                          <Label fx:id="productNameLbl112" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="Bamba" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
-                                          <Label fx:id="priceLbl112" prefHeight="17.0" prefWidth="65.0" styleClass="Label-list" text="12₪" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="productNameLbl112" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="Bamba" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="priceLbl112" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="12₪" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="100.0" />
+                                             </GridPane.margin></Label>
                                           <ImageView fx:id="productItemImg22212" fitHeight="59.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.rowSpan="3">
                                              <image>
                                                 <Image url="@../styles/products/במבה.png" />
                                              </image>
                                           </ImageView>
-                                          <Line endX="265.18878173828125" endY="0.7214934229850769" fill="#dacdcd" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                          <Line endX="327.18878173828125" endY="0.23630112409591675" fill="#dacdcd" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                                           <Button fx:id="MinusQuantityBtn222112" mnemonicParsing="false" prefHeight="24.0" prefWidth="34.0" styleClass="Button-NoBG" GridPane.columnIndex="4" GridPane.rowSpan="3">
                                              <graphic>
                                                 <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -232,7 +215,52 @@
                                           </Button>
                                        </children>
                                     </GridPane>
-                                    <Label prefHeight="14.0" prefWidth="346.0" styleClass="Label-list" text="  product   price                                                              quantity        " underline="true" GridPane.valignment="TOP" />
+                                    <GridPane alignment="CENTER" prefHeight="69.0" prefWidth="348.0" styleClass="Button-NoBG" GridPane.rowIndex="4">
+                                       <columnConstraints>
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="57.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="249.0" minWidth="0.0" prefWidth="243.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="47.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="55.0" />
+                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="46.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="60.0" minHeight="9.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="60.0" minHeight="9.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Button fx:id="MinusQuantityBtn222111" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="Button-NoBG" GridPane.columnIndex="2" GridPane.rowSpan="3">
+                                             <graphic>
+                                                <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../styles/icons/minus.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <TextField fx:id="QuantityTxtField222111" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="3" />
+                                          <Label fx:id="productNameLbl1111" prefHeight="18.0" prefWidth="113.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="Grape Water" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                          <Label fx:id="priceLbl1111" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="7₪" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="100.0" />
+                                             </GridPane.margin></Label>
+                                          <ImageView fx:id="productItemImg222111" fitHeight="55.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.rowSpan="3">
+                                             <image>
+                                                <Image url="@../styles/products/מים%20בטעם%20ענבים.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Line endX="405.29290771484375" endY="2.014589309692383" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                          <Button fx:id="MinusQuantityBtn2221111" mnemonicParsing="false" prefHeight="24.0" prefWidth="34.0" styleClass="Button-NoBG" GridPane.columnIndex="4" GridPane.rowSpan="3">
+                                             <graphic>
+                                                <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../styles/icons/plus.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </GridPane>
                                  </children>
                               </GridPane>
                            </children>
@@ -244,70 +272,97 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </ScrollPane>
-            <GridPane prefHeight="143.0" prefWidth="156.0" styleClass="GridPane">
-              <columnConstraints>
-                <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="92.0" />
-                <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="78.0" minWidth="7.0" prefWidth="64.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints fillHeight="false" maxHeight="94.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
-                <RowConstraints fillHeight="false" maxHeight="162.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                  <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                  <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <Pane prefHeight="311.0" prefWidth="389.0">
                <children>
-                  <Label styleClass="Label" text="TOTAL SUMMERY:" underline="true" GridPane.columnSpan="2" GridPane.valignment="BOTTOM">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="totalPayLbl" prefHeight="32.0" prefWidth="36.0" style="-fx-font-size: 11pt;" styleClass="Label" text="74₪" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                  <GridPane layoutX="25.0" layoutY="14.0" prefHeight="229.0" prefWidth="344.0" styleClass="GridPane">
+                    <columnConstraints>
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="99.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="94.0" minWidth="7.0" prefWidth="87.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints fillHeight="false" maxHeight="94.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="162.0" minHeight="7.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                        <RowConstraints fillHeight="false" maxHeight="177.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label prefWidth="143.0" styleClass="Label" text="TOTAL SUMMARY:" underline="true" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="totalPayLbl" prefHeight="32.0" prefWidth="36.0" styleClass="Label" text="81₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="53.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label prefHeight="38.0" prefWidth="130.0" styleClass="Label" text="PRODUCTS:" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="totulDiscountSumLbl" prefHeight="20.0" prefWidth="27.0" style="-fx-text-fill: red;" styleClass="Label" text="0₪" textFill="RED" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="53.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label prefHeight="48.0" prefWidth="161.0" style="-fx-text-fill: red;" styleClass="Label" text="DISCOUNT: " textFill="RED" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="53.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="totalSumLbl" prefHeight="29.0" prefWidth="34.0" styleClass="Label" text="81₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="53.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label prefHeight="39.0" prefWidth="188.0" styleClass="Label" text="TOTAL SUM: " GridPane.rowIndex="4">
+                           <font>
+                              <Font size="53.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Line endX="540.08935546875" endY="4.439878463745117" fill="#dacdcd" startX="269.79644775390625" startY="4.217592239379883" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets left="35.0" />
+                           </GridPane.margin>
+                        </Line>
+                     </children>
+                  </GridPane>
+                  <Button fx:id="placeOrderBtn" layoutX="175.0" layoutY="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="201.0" styleClass="Button" text="Payment">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="cancelOrderBtn" contentDisplay="CENTER" layoutX="25.0" layoutY="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="40.0" prefWidth="139.0" styleClass="ButtonLogOut" text="Cancel Order">
                      <font>
-                        <Font size="53.0" />
+                        <Font size="96.0" />
                      </font>
-                  </Label>
-                  <Label prefHeight="38.0" prefWidth="130.0" style="-fx-font-size: 10pt;" styleClass="Label" text="PRODUCTS:" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="totulDiscountSumLbl" prefHeight="20.0" prefWidth="27.0" style="-fx-text-fill: red; -fx-font-size: 10pt;" styleClass="Label" text="0₪" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="53.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="48.0" prefWidth="161.0" style="-fx-text-fill: red; -fx-font-size: 10pt;" styleClass="Label" text="DISCOUNT: " textFill="RED" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="53.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="totalSumLbl" prefHeight="29.0" prefWidth="34.0" style="-fx-font-size: 10pt;" styleClass="Label" text="74₪" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="53.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="39.0" prefWidth="188.0" style="-fx-font-size: 11pt;" styleClass="Label" text="TOTAL SUM: " GridPane.rowIndex="4">
-                     <font>
-                        <Font size="53.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Line endX="71.18876647949219" endY="0.7216382622718811" fill="#dacdcd" startX="-72.1041259765625" startY="0.7216961979866028" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
-                     <GridPane.margin>
-                        <Insets left="5.0" />
-                     </GridPane.margin>
-                  </Line>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
-            </GridPane>
+            </Pane>
          </children>
       </HBox>
    </right>
