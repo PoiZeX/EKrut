@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
    <bottom>
       <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -42,11 +42,11 @@
       <Label lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitel" text="Approve New Users" underline="true" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="387.0" prefWidth="896.0">
+            <Pane prefHeight="387.0" prefWidth="900.0" VBox.vgrow="NEVER">
                <children>
-                  <TableView fx:id="usersTable" layoutX="26.0" layoutY="47.0" prefHeight="330.0" prefWidth="853.0">
+                  <TableView fx:id="usersTable" layoutX="9.0" layoutY="47.0" prefHeight="330.0" prefWidth="891.0">
                     <columns>
                       <TableColumn fx:id="customerID" prefWidth="75.0" text="Customer ID" />
                       <TableColumn fx:id="ID" prefWidth="63.33332824707031" text="ID" />
