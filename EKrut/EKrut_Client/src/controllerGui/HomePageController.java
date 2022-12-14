@@ -66,7 +66,7 @@ public class HomePageController {
 		User regionManager = new User("RegionManager");
 		User register = new User("Register");
 
-		User selectedUser = register;
+		User selectedUser = ceo;
 
 		// switch case by role
 		switch (selectedUser.role) {
@@ -140,7 +140,7 @@ public class HomePageController {
 			});
 		}
 		else {
-			middleBtn.setText("View reports");
+			middleBtn.setText("View Reports");
 			tooltip = new TooltipSetter("View the current monthly reports");
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
