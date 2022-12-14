@@ -38,8 +38,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="57.0" prefWidth="354.0" styleClass="LabelTitel" text="Ort Braude Machine Catalog" />
+            <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="53.0" prefWidth="354.0" styleClass="LabelTitel" text="Ort Braude Machine Catalog" GridPane.valignment="TOP" />
          </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" />
+         </BorderPane.margin>
       </GridPane>
    </top>
    <center>
@@ -65,7 +68,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="205.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -110,7 +113,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="1">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="3.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -159,7 +162,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="2">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -223,7 +226,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -276,7 +279,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="1">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -329,7 +332,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="2">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -396,7 +399,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPane">
+                              <Pane layoutX="494.0" layoutY="30.0" prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -449,7 +452,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="1">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="1">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
@@ -502,7 +505,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPane" GridPane.columnIndex="2">
+                              <Pane prefHeight="236.0" prefWidth="233.0" styleClass="GridPaneChild" GridPane.columnIndex="2">
                                  <children>
                                     <GridPane alignment="CENTER" layoutX="10.0" layoutY="158.0" prefHeight="63.0" prefWidth="211.0" styleClass="Button-NoBG">
                                        <columnConstraints>
