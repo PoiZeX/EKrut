@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
    <bottom>
       <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -39,14 +38,24 @@
       </GridPane>
    </bottom>
    <top>
-      <Label lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitel" text="Approve New Users" underline="true" BorderPane.alignment="CENTER" />
+      <GridPane id="headerBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitel" text="Approve New Users" underline="true" />
+         </children>
+      </GridPane>
    </top>
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="387.0" prefWidth="900.0" VBox.vgrow="NEVER">
                <children>
-                  <TableView fx:id="usersTable" layoutX="9.0" layoutY="47.0" prefHeight="330.0" prefWidth="891.0">
+                  <TableView fx:id="usersTable" layoutX="19.0" layoutY="43.0" prefHeight="321.0" prefWidth="860.0">
                     <columns>
                       <TableColumn fx:id="customerID" prefWidth="75.0" text="Customer ID" />
                       <TableColumn fx:id="ID" prefWidth="63.33332824707031" text="ID" />
@@ -56,33 +65,30 @@
                         <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-mail" />
                         <TableColumn fx:id="creditCardNumber" prefWidth="124.0" text="Credit card number" />
                         <TableColumn fx:id="subscriberID" prefWidth="94.6666259765625" text="Subscriber ID" />
-                        <TableColumn fx:id="approveCheckB" prefWidth="107.0" text="Approve" />
+                        <TableColumn fx:id="approveCheckB" prefWidth="114.0" text="Approve" />
                     </columns>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </TableView>
                   <Button fx:id="refreshBtn" layoutX="823.0" mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="56.0" styleClass="Button-NoBG">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
-                     <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
-                           <image>
-                              <Image url="@../styles/icons/043-sync.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
                   </Button>
                </children>
             </Pane>
             <GridPane alignment="CENTER" prefHeight="72.0" prefWidth="494.0" styleClass="GridPane">
               <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="365.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="79.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="301.0000305175781" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="approveBtn" mnemonicParsing="false" onAction="#approveSelected" prefHeight="32.0" prefWidth="190.0" styleClass="Button" text="Approve Selected" GridPane.halignment="RIGHT">
+                  <Button fx:id="approveBtn" mnemonicParsing="false" onAction="#approveSelected" prefHeight="32.0" prefWidth="190.0" styleClass="Button" text="Approve Selected" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
@@ -90,7 +96,7 @@
                         <Insets right="60.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="selectBtn" mnemonicParsing="false" onAction="#selectAll" prefHeight="44.0" prefWidth="144.0" styleClass="Button-NoBG" text="Select All" GridPane.columnIndex="1">
+                  <Button fx:id="selectBtn" mnemonicParsing="false" onAction="#selectAll" prefHeight="44.0" prefWidth="144.0" styleClass="Button-NoBG" GridPane.columnIndex="2">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
@@ -102,13 +108,14 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../styles/icons/043-sync.png" />
+                     </image>
+                  </ImageView>
                </children>
             </GridPane>
          </children>
       </VBox>
    </center>
-   <stylesheets>
-      <URL value="@../styles/css/generalStyleSheet.css" />
-      <URL value="@../styles/css/generalStyleSheet.css" />
-   </stylesheets>
 </BorderPane>
