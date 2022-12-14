@@ -71,17 +71,12 @@
                         <Insets />
                      </opaqueInsets>
                   </TableView>
-                  <Button fx:id="refreshBtn" layoutX="823.0" mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="56.0" styleClass="Button-NoBG">
-                     <font>
-                        <Font name="Calibri" size="12.0" />
-                     </font>
-                  </Button>
                </children>
             </Pane>
             <GridPane alignment="CENTER" prefHeight="72.0" prefWidth="494.0" styleClass="GridPaneChild">
               <columnConstraints>
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="301.0000305175781" />
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
               </columnConstraints>
               <rowConstraints>
@@ -113,6 +108,11 @@
                         <Image url="@../styles/icons/043-sync.png" />
                      </image>
                   </ImageView>
+                  <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="45.0" styleClass="Button-NoBG" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </Button>
                </children>
             </GridPane>
          </children>
