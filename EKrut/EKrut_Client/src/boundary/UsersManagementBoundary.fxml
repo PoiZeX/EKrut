@@ -62,7 +62,7 @@
                         <TableColumn fx:id="firstName" prefWidth="87.66667175292969" text="First Name" />
                         <TableColumn fx:id="lastName" prefWidth="103.0" text="Last Name" />
                         <TableColumn fx:id="phoneNumber" prefWidth="101.0" text="Phone Number" />
-                        <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-Mail" />
+                        <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-mail" />
                         <TableColumn fx:id="creditCardNumber" prefWidth="124.0" text="Credit Card Number" />
                         <TableColumn fx:id="subscriberID" prefWidth="94.6666259765625" text="Subscriber ID" />
                         <TableColumn fx:id="approveCheckB" prefWidth="114.0" text="Approve" />
@@ -78,7 +78,7 @@
                   </Button>
                </children>
             </Pane>
-            <GridPane alignment="CENTER" prefHeight="72.0" prefWidth="494.0" styleClass="GridPane">
+            <GridPane alignment="CENTER" prefHeight="72.0" prefWidth="494.0" styleClass="GridPaneChild">
               <columnConstraints>
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="301.0000305175781" />
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="65.0" />
