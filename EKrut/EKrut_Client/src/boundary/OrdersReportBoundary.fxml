@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
    <center>
-      <PieChart fx:id="pieChartOrders" BorderPane.alignment="CENTER" />
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <BarChart fx:id="orderBarChart" categoryGap="5.0">
+              <xAxis>
+                <CategoryAxis label="by sales" side="BOTTOM" tickMarkVisible="false" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis minorTickVisible="false" side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="by orders numbers" />
+         </children>
+      </HBox>
    </center>
    <top>
       <Label alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" text="Orders Report" BorderPane.alignment="CENTER" />

@@ -210,3 +210,13 @@
     -fx-background-color:#057DCD;
 }
 
+/*------------------------------------------------ pieChart ----------------------------------------------------------- */
+.default-color0.chart-pie { -fx-pie-color: #92f2ff; }
+.default-color2.chart-pie { -fx-pie-color: #fa317d; }
+.default-color3.chart-pie { -fx-pie-color: #bf7fdf; }
+.default-color1.chart-pie { -fx-pie-color: #F79256; }
+.default-color4.chart-pie { -fx-pie-color: #10a9ba; }
+.default-color5.chart-pie { -fx-pie-color: #FFE45E; }
+
+
+

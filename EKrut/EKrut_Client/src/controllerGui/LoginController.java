@@ -27,6 +27,7 @@ public class LoginController {
     void loginBtnAction(ActionEvent event) {
     	// Go to next screen (controller creates the screen)
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+    	//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection);
 
     }
     
