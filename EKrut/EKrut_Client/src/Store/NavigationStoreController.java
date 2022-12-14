@@ -1,6 +1,8 @@
 package Store;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -19,6 +21,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -33,6 +36,7 @@ public class NavigationStoreController {
 	private Stack<Scene> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage;  // the main stage (window)
+	private ScreensNames[] isSkipped = {ScreensNames.HostClient,ScreensNames.HomePage, ScreensNames.Login};
 
 	/**
 	 * Constructor, creates the new instances
@@ -42,8 +46,7 @@ public class NavigationStoreController {
 		screenScenes = new HashMap<>();
 		history = new Stack<>();
 		primaryStage = new Stage();
-
-		setAllScenes(); // fill the hashMap
+		//setAllScenes(); // fill the hashMap
 		primaryStage.show(); // show primary stage
 	}
 
@@ -133,11 +136,11 @@ public class NavigationStoreController {
 	 */
 	private Scene createSingleScene(ScreensNames screenName) {
 		Scene scene = null;
+		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			Parent root = FXMLLoader.load(getClass().getResource(path));
-			if (screenName != ScreensNames.HostClient && screenName != ScreensNames.Login
-					&& screenName != ScreensNames.HomePage && screenName != ScreensNames.ViewCatalog)//for submit
+			if (!skippedScreens.contains(screenName))//for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
@@ -169,8 +172,8 @@ public class NavigationStoreController {
 
 		Image image = new Image(getClass().getResourceAsStream("/styles/icons/return.png"));
 		returnImage.setImage(image);
-		returnImage.setFitHeight(62.0);
-		returnImage.setFitWidth(72.0);
+		returnImage.setFitHeight(40.0);
+		returnImage.setFitWidth(40.0);
 		returnImage.setPickOnBounds(true);
 		returnImage.setPreserveRatio(true);
 		returnImage.getStyleClass().add("Button-return");
@@ -188,7 +191,14 @@ public class NavigationStoreController {
 			}
 		});
 
-		((BorderPane) stage).setBottom(returnBtn);
+		if (((BorderPane) stage).bottomProperty().getValue() instanceof GridPane) {
+			GridPane t = (GridPane) ((BorderPane) stage).bottomProperty().getValue();
+			t.add(returnBtn, 0, 0);
+		}
+		else {
+			((BorderPane) stage).setBottom(returnBtn);
+		}
+		
 		return stage;
 
 	}

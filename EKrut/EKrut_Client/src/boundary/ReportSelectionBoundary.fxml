@@ -159,15 +159,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="73.0" prefWidth="73.0" styleClass="Button-return">
-               <graphic>
-                  <ImageView fitHeight="45.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../styles/icons/return.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button mnemonicParsing="false" prefHeight="73.0" prefWidth="73.0" styleClass="Button-return" />
          </children>
       </GridPane>
    </bottom>

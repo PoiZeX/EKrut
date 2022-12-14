@@ -10,6 +10,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 
 public class OrdersReportController {
 
@@ -37,7 +38,8 @@ public class OrdersReportController {
 		map.put("Lev Karmiel mall", 14);
 
 		for (String key : map.keySet()) {
-			var a = new XYChart.Series();
+			//was var
+			Series a = new XYChart.Series();
 			a.setName(key);
 			a.getData().add(new XYChart.Data(key, map.get(key)));
 			orderBarChart.getData().addAll(a);

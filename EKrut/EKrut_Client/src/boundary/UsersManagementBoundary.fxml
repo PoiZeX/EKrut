@@ -15,28 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
-   <bottom>
-      <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button fx:id="returnBtn" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return">
-               <graphic>
-                  <ImageView fitHeight="62.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-return">
-                     <image>
-                        <Image url="@../styles/icons/return.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </GridPane>
-   </bottom>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
    <top>
       <GridPane id="headerBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
          <columnConstraints>
