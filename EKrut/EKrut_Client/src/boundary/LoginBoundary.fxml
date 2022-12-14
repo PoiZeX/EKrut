@@ -18,54 +18,22 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="HomeScreen" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="HomeScreen" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.LoginController">
    <left>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="245.0" minHeight="-Infinity" prefHeight="211.0" valignment="CENTER" vgrow="NEVER" />
-          <RowConstraints maxHeight="239.0" minHeight="-Infinity" prefHeight="200.0" valignment="CENTER" vgrow="NEVER" />
-          <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="40.0" valignment="TOP" vgrow="NEVER" />
-            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="35.0" valignment="CENTER" vgrow="NEVER" />
-            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="114.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="348.0" minHeight="10.0" prefHeight="79.0" valignment="CENTER" vgrow="NEVER" />
+          <RowConstraints maxHeight="478.0" minHeight="-Infinity" prefHeight="253.0" valignment="CENTER" vgrow="NEVER" />
+          <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="59.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="43.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="46.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="121.0" valignment="TOP" vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="350.0" styleClass="GridPane" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-              <columnConstraints>
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="280.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <GridPane.margin>
-                  <Insets left="25.0" right="25.0" top="25.0" />
-               </GridPane.margin>
-               <children>
-                  <PasswordField fx:id="passwordTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="********" styleClass="TextField" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </PasswordField>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../styles/icons/passwordLoginIcon.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="Label" stylesheets="@../styles/css/loginStyleSheet.css" text="Enter Password" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="25.0" right="25.0" top="25.0" />
-                     </GridPane.margin>
-                  </Label>
-               </children>
-            </GridPane>
-            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="350.0" styleClass="GridPane" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="199.0" prefWidth="341.0" styleClass="GridPane" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
               <columnConstraints>
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="70.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="291.00000762939453" minWidth="10.0" prefWidth="280.0" />
@@ -73,9 +41,11 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <GridPane.margin>
-                  <Insets left="25.0" right="25.0" top="50.0" />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="50.0" />
                </GridPane.margin>
                <children>
                   <TextField fx:id="usernameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Username" styleClass="TextField" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -88,6 +58,27 @@
                         <Image url="@../styles/icons/userLoginIcon.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                     <image>
+                        <Image url="@../styles/icons/passwordLoginIcon.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <PasswordField fx:id="passwordTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="********" styleClass="TextField" stylesheets="@../styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </PasswordField>
+                  <Label styleClass="Label" stylesheets="@../styles/css/loginStyleSheet.css" text="Enter Password" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="25.0" right="25.0" top="25.0" />
+                     </GridPane.margin>
+                  </Label>
                   <Label styleClass="Label" stylesheets="@../styles/css/loginStyleSheet.css" text="Enter Username" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets left="25.0" right="25.0" top="25.0" />
@@ -109,12 +100,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="EKTLoginBtn" defaultButton="true" mnemonicParsing="false" onAction="#ektLoginAction" prefHeight="40.0" prefWidth="240.0" style="-fx-background-color: #4093c3;" styleClass="LoginButton" stylesheets="@../styles/css/loginStyleSheet.css" text="EKT Login" textFill="WHITE" textOverrun="CLIP" GridPane.rowIndex="4">
+            <Button fx:id="EKTLoginBtn" defaultButton="true" mnemonicParsing="false" onAction="#ektLoginAction" prefHeight="58.0" prefWidth="240.0" style="-fx-background-color: #4093c3;" styleClass="LoginButton" stylesheets="@../styles/css/loginStyleSheet.css" text="EKT Login" textFill="WHITE" textOverrun="CLIP" GridPane.rowIndex="5">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
             <Line endX="213.5" startX="-100.0" stroke="#c3bcbc" GridPane.rowIndex="3" />
+            <Label styleClass="Label" text="Subscriber? quick login with EKT" GridPane.rowIndex="4" />
+            <Label styleClass="LabelTitel" text="welcome!" />
          </children>
       </GridPane>
    </left>
