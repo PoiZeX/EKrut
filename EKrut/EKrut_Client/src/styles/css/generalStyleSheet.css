@@ -56,10 +56,10 @@
 
 }
 
-#catalogMenu {
-    -fx-background-color: transparent;
-}
-
+.scroll-pane{
+    -fx-background-color:transparent;
+ }
+ 
 /*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
