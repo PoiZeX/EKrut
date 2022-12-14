@@ -19,6 +19,7 @@ public class HomePageController {
 ////--------------------------------
 
 	private String[] rolesStub;
+	private TooltipSetter tooltip;
 
 	protected class User {
 		private String role;
@@ -105,8 +106,7 @@ public class HomePageController {
 	private void setTopButton(String userRole) {
 		if (userRole.equals("Register")) {
 			topBtn.setText("Create New Order");
-			TooltipSetter topBtnTooltip = new TooltipSetter("View the catalog and create a new order");
-			topBtn.setTooltip(topBtnTooltip.getTooltip());
+			tooltip = new TooltipSetter("View the catalog and create a new order");
 			topBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -115,6 +115,7 @@ public class HomePageController {
 			});
 		} else {
 			topBtn.setText("Approve Users");
+			tooltip = new TooltipSetter("View, manage and approve users");
 			topBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -122,6 +123,7 @@ public class HomePageController {
 				}
 			});
 		}
+		topBtn.setTooltip(tooltip.getTooltip());
 		topBtn.setVisible(true);
 
 	}
@@ -129,8 +131,7 @@ public class HomePageController {
 	private void setMiddleButton(String userRole) {
 		if (userRole.equals("Register")) {
 			middleBtn.setText("Collect An Order");
-			TooltipSetter middleBtnTooltip = new TooltipSetter("Collect any orders that are ready");
-			middleBtn.setTooltip(middleBtnTooltip.getTooltip());
+			tooltip = new TooltipSetter("Collect any orders that are ready");
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -140,6 +141,7 @@ public class HomePageController {
 		}
 		else {
 			middleBtn.setText("View reports");
+			tooltip = new TooltipSetter("View the current monthly reports");
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -147,6 +149,7 @@ public class HomePageController {
 				}
 			});
 		}
+		middleBtn.setTooltip(tooltip.getTooltip());
 		middleBtn.setVisible(true);
 		
 	}
@@ -156,14 +159,15 @@ public class HomePageController {
 	private void setBottomButton(String userRole) {
 		// ceo / manager etc
 		bottomBtn.setText("Supply Management");
-		TooltipSetter bottomBtnTooltip = new TooltipSetter("Manage the available supply");
-		bottomBtn.setTooltip(bottomBtnTooltip.getTooltip());
+		tooltip = new TooltipSetter("Manage the available supply");
+		
 		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				bottomBtnAction(event);
 			}
 			});
+		bottomBtn.setTooltip(tooltip.getTooltip());
 		bottomBtn.setVisible(true);
 	}
 

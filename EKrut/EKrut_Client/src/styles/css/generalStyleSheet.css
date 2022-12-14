@@ -105,24 +105,24 @@
 }
 
 .Button-return{
-	 -fx-background-color:false;
+	 -fx-background-color:transparent;
 	 
 }
 .Button-NoBG{
-	 -fx-background-color:false;
+	 -fx-background-color:transparent;
 }
 /*report icon btn */
 .Button-report:hover{
-	 -fx-background-color:false;
-	 -fx-border-color:#1E3D58;
-	 -fx-border-radius:15;
+    -fx-background-color:transparent;
+    -fx-border-color:#1E3D58;
+    -fx-border-radius:15;
 }
 
 .button-Report:focused {
     -fx-border-color: transparent, white;
-   -fx-background-color:false;
-	 -fx-border-color:#1E3D58;
-	 -fx-border-radius:15;
+    -fx-background-color:transparent;
+    -fx-border-color:#1E3D58;
+    -fx-border-radius:15;
 }
 
 .button-Report:pressed {

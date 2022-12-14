@@ -30,11 +30,11 @@
 }
 .LabelTitel{
 	-fx-font-family: "Calibri";
-     -fx-font-weight: bold;
-   -fx-text-alignment:center;
-   -fx-text-fill:#057DCD;
-   -fx-font-size: 20pt;
-   -fx-label-padding: 20 20 5 20;
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 20pt;
+    -fx-label-padding: 20 20 5 20;
  
 }
 

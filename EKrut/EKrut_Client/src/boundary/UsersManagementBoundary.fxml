@@ -108,7 +108,7 @@
       </VBox>
    </center>
    <stylesheets>
-      <URL value="@generalStyleSheet.css" />
+      <URL value="@../styles/css/generalStyleSheet.css" />
       <URL value="@../styles/css/generalStyleSheet.css" />
    </stylesheets>
 </BorderPane>

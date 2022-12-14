@@ -7,9 +7,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import utils.TooltipSetter;
 
 public class ViewCatalogContoller {
-
+	
+	private TooltipSetter tooltip;
+	
     @FXML
     private Button cancelOrderBtn;
 
@@ -162,7 +165,11 @@ public class ViewCatalogContoller {
 
     @FXML
     private Label totalPriceLabel;
-
+    
+    public void ViewCatalogController() {
+    	initialize();
+    }
+    
     @FXML
     void cancelOrder(ActionEvent event) {
 
@@ -171,6 +178,13 @@ public class ViewCatalogContoller {
     @FXML
     void placeOrder(ActionEvent event) {
 
+    }
+
+    public void initialize() {
+    	tooltip = new TooltipSetter("Cancel the order");
+    	cancelOrderBtn.setTooltip(tooltip.getTooltip());
+    	tooltip = new TooltipSetter("Place your order");
+    	placeOrderBtn.setTooltip(tooltip.getTooltip());
     }
 
 }

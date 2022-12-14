@@ -71,7 +71,7 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Label id="headLine" fx:id="headLine" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="100.0" prefWidth="314.0" style="-fx-background-color: 303841;" text="Server Connection" textFill="#eeeeee">
+            <Label id="headLine" fx:id="headLine" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="100.0" prefWidth="314.0" style="-fx-background-color: #303841;" text="Server Connection" textFill="#eeeeee">
                <font>
                   <Font name="HP Simplified Bold" size="35.0" />
                </font>
