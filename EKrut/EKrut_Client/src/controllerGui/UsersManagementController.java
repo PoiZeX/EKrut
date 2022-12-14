@@ -7,9 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import utils.TooltipSetter;
 
 public class UsersManagementController {
-
+	
+	private TooltipSetter tooltip;
+	
     @FXML
     private TableColumn<?, ?> ID;
 
@@ -52,6 +55,15 @@ public class UsersManagementController {
     @FXML
     private TableView<?> usersTable;
 
+    public void initialize() {
+    	tooltip = new TooltipSetter("Refresh the table");
+    	refreshBtn.setTooltip(tooltip.getTooltip());
+    	tooltip = new TooltipSetter("Approve all selected rows");
+    	approveBtn.setTooltip(tooltip.getTooltip());
+    	tooltip = new TooltipSetter("Select all rows");
+    	selectBtn.setTooltip(tooltip.getTooltip());
+    }
+    
     @FXML
     void approveSelected(ActionEvent event) {
 
