@@ -10,6 +10,7 @@ public enum ScreensNames {
 	ViewCatalog,
 	OrdersReport,
 	SupplyReport,
+	ReviewOrder,
 	//CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
 	// SupplyManagement,
