@@ -50,10 +50,14 @@
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
     -fx-background-radius: 0 0 15 15;
 }
-/* --------------------------------------scrollpanes------------------------------------------- */
+/* --------------------------------------catalog------------------------------------------- */
 #catalogScrollpane {
     -fx-background-color: linear-gradient(#f6f5f5 20%, #ffffff 60%);
 
+}
+
+#catalogMenu {
+    -fx-background-color: transparent;
 }
 
 /*---------------------------------------buttons--------------------------------------------------- */
