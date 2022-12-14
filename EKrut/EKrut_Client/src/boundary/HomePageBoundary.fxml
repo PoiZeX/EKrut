@@ -24,7 +24,7 @@
       </GridPane>
    </top>
    <center>
-      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="310.0" prefWidth="624.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="288.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -32,7 +32,7 @@
             <Insets />
          </BorderPane.margin>
          <children>
-            <GridPane prefHeight="218.0" prefWidth="578.0">
+            <GridPane prefHeight="218.0" prefWidth="357.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -50,7 +50,7 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <VBox.margin>
-                  <Insets left="150.0" right="150.0" />
+                  <Insets />
                </VBox.margin>
             </GridPane>
          </children>
@@ -73,4 +73,11 @@
          </children>
       </GridPane>
    </bottom>
+   <left>
+      <VBox fx:id="rigthVbox" alignment="CENTER" prefHeight="425.0" prefWidth="412.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="35.0" right="25.0" top="40.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
 </BorderPane>

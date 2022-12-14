@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -7,18 +9,30 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
    <center>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <BarChart fx:id="orderBarChart" categoryGap="5.0">
+            <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="527.0" prefWidth="463.0" stylesheets="@../styles/css/generalStyleSheet.css">
               <xAxis>
-                <CategoryAxis label="by sales" side="BOTTOM" tickMarkVisible="false" />
+                <CategoryAxis label="by sales" prefHeight="24.0" prefWidth="374.0" side="TOP" tickMarkVisible="false">
+                     <tickLabelFont>
+                        <Font size="1.0" />
+                     </tickLabelFont>
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis minorTickVisible="false" side="LEFT" />
+                <NumberAxis minorTickVisible="false" prefHeight="476.0" prefWidth="28.0" side="LEFT" />
               </yAxis>
+               <styleClass>
+                  <String fx:value="default-color0" />
+                  <String fx:value="default-color5" />
+                  <String fx:value="default-color1" />
+               </styleClass>
             </BarChart>
             <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="by orders numbers" />
          </children>
@@ -27,4 +41,7 @@
    <top>
       <Label alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" text="Orders Report" BorderPane.alignment="CENTER" />
    </top>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </BorderPane>

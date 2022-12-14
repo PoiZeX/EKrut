@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import utils.TooltipSetter;
 
@@ -54,6 +56,10 @@ public class HomePageController {
 	@FXML
 	private Label welcomeLabel;
 
+
+    @FXML
+    private VBox rigthVbox;
+    
 	public void initialize() {
 		// set hidden as default
 		topBtn.setVisible(false);
@@ -65,19 +71,20 @@ public class HomePageController {
 		User ceo = new User("CEO");
 		User regionManager = new User("RegionManager");
 		User register = new User("Register");
+	
 
-
-		//User selectedUser = ceo;
-		User selectedUser = regionManager;
-
-
+		User selectedUser = ceo;
+		//User selectedUser = regionManager;
+		Image image=null ;
 
 		// switch case by role
 		switch (selectedUser.role) {
 		case "CEO":
 		case "Register":
 			setTopButton(selectedUser.role);
-			setMiddleButton(selectedUser.role);			
+			setMiddleButton(selectedUser.role);
+			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
+			
 			break;
 
 		case "RegionManager":
@@ -85,6 +92,7 @@ public class HomePageController {
 			setTopButton(selectedUser.role);
 			setMiddleButton(selectedUser.role);
 			setBottomButton(selectedUser.role);
+			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
 		default:
@@ -93,6 +101,14 @@ public class HomePageController {
 		}
 
 		welcomeLabel.setText("Welcome " + selectedUser.friendlyName() + "!");
+		ImageView roleImg= new ImageView();
+		if (image!=null) {
+			roleImg.setImage(image);
+			roleImg.setFitHeight(350.0);
+			roleImg.setFitWidth(350.0);
+			rigthVbox.getChildren().addAll(roleImg);
+		}
+		
 		//updateButtonsSize();
 	}
 
@@ -196,6 +212,8 @@ public class HomePageController {
 		System.out.println("Im top");
 
 	}
+
+
 
 	@FXML
 	private void logOutAction(ActionEvent event) {
