@@ -67,7 +67,8 @@ public class HomePageController {
 		User register = new User("Register");
 
 
-		User selectedUser = ceo;
+		//User selectedUser = ceo;
+		User selectedUser = regionManager;
 
 
 
