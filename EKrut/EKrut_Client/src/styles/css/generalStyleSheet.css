@@ -56,10 +56,10 @@
 
 }
 
-.scroll-pane{
-    -fx-background-color:transparent;
+.viewport {  
+    -fx-background-color: rgba(255, 0, 0, 0.000000001);
  }
- 
+
 /*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
