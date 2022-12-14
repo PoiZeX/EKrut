@@ -644,10 +644,11 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="165.6666717529297" minHeight="8.33333969116211" prefHeight="59.666664123535156" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="300.0" minHeight="156.33333587646484" prefHeight="193.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="58.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="72.66665649414062" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="81.33334350585938" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="300.0" minHeight="156.33333587646484" prefHeight="207.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="28.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="236.0" minHeight="4.0" prefHeight="5.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="27.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="127.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Button fx:id="viewCartBtn" alignment="CENTER" ellipsisString="15%" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="64.0" prefWidth="150.0" styleClass="Button-NoBG" text="View Cart" textOverrun="WORD_ELLIPSIS" GridPane.halignment="LEFT" GridPane.valignment="TOP">
@@ -687,7 +688,7 @@
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="30₪" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                               <Label prefHeight="17.0" prefWidth="50.0" styleClass="Label-list" text="Bamba" GridPane.rowIndex="4" />
-                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="24₪" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                               <Label prefHeight="14.0" prefWidth="40.0" styleClass="Label-list" text="Name" />
                               <Label alignment="CENTER" prefHeight="14.0" prefWidth="29.0" styleClass="Label-list" text="Qty" GridPane.columnIndex="1" />
@@ -699,12 +700,30 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <Label styleClass="Label" text="Total ₪: " GridPane.halignment="LEFT" GridPane.rowIndex="2">
+            <Label style="-fx-font-size: 12pt;" styleClass="Label" text="TOTAL: " GridPane.halignment="LEFT" GridPane.rowIndex="4">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="totalPriceLabel" alignment="CENTER" styleClass="Label" text="74₪" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Label fx:id="totalPriceLabel" alignment="CENTER" style="-fx-font-size: 12pt;" styleClass="Label" text="74₪" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="BOTTOM_LEFT" prefHeight="31.0" prefWidth="104.0" style="-fx-text-fill: red; -fx-font-size: 12pt;" styleClass="Label" text="DISCOUNT: " textFill="RED" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="53.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Line endX="-4.022064208984375" endY="1.0836124420166016E-4" startX="-114.31495666503906" startY="7.748603820800781E-7" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Line>
+            <Label fx:id="disscountPriceLabel" alignment="BOTTOM_CENTER" prefHeight="26.0" prefWidth="21.0" style="-fx-text-fill: red; -fx-font-size: 12pt;" styleClass="Label" text="0₪" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
