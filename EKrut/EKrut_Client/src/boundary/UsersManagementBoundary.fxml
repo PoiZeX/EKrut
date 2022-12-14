@@ -59,11 +59,11 @@
                     <columns>
                       <TableColumn fx:id="customerID" prefWidth="75.0" text="Customer ID" />
                       <TableColumn fx:id="ID" prefWidth="63.33332824707031" text="ID" />
-                        <TableColumn fx:id="firstName" prefWidth="87.66667175292969" text="First name" />
-                        <TableColumn fx:id="lastName" prefWidth="103.0" text="Last name" />
+                        <TableColumn fx:id="firstName" prefWidth="87.66667175292969" text="First Name" />
+                        <TableColumn fx:id="lastName" prefWidth="103.0" text="Last Name" />
                         <TableColumn fx:id="phoneNumber" prefWidth="101.0" text="Phone Number" />
-                        <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-mail" />
-                        <TableColumn fx:id="creditCardNumber" prefWidth="124.0" text="Credit card number" />
+                        <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-Mail" />
+                        <TableColumn fx:id="creditCardNumber" prefWidth="124.0" text="Credit Card Number" />
                         <TableColumn fx:id="subscriberID" prefWidth="94.6666259765625" text="Subscriber ID" />
                         <TableColumn fx:id="approveCheckB" prefWidth="114.0" text="Approve" />
                     </columns>
