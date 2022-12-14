@@ -48,6 +48,9 @@ public class ReportSelectionController {
     	if (selectedReport == "ordersReport") {
     		Store.NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
     	}
+    	if (selectedReport == "supplyReport") {
+    		Store.NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+    	}
     }
      
     public void initialize() {

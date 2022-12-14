@@ -6,8 +6,10 @@ public enum ScreensNames {
 	HomePage,
 	UsersManagement,
 	ReportSelection,
+	CEOReportSelection,
 	ViewCatalog,
 	OrdersReport,
+	SupplyReport,
 	//CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
 	// SupplyManagement,
