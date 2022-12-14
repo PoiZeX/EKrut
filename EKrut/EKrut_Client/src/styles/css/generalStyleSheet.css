@@ -235,14 +235,17 @@
     -fx-text-fill: white;
 }
 
+.table-row-cell:hover {
+    -fx-background-color: transparent;
+    -fx-text-background-color: orange;
+}
+
+/*
+ * 
 .table-view .table-cell{
     -fx-border-color: #50b7f3;
 }
 
-.table-row-cell:hover {
-    -fx-background-color: transparent;
-    -fx-text-background-color: red;
-}
 
 .table-row-cell:odd {
     -fx-background-color: #64c6ff;
@@ -255,3 +258,4 @@
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
+ */

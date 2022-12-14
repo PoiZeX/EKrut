@@ -15,7 +15,7 @@
       <Label styleClass="LabelTitel" text="Supply Report" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="0.0" BorderPane.alignment="CENTER">
          <children>
             <ComboBox fx:id="saleMachineCmb" prefHeight="32.0" prefWidth="212.0" promptText="Choose Machine">
                <VBox.margin>
@@ -26,17 +26,20 @@
                   <String fx:value="ComboBox" />
                </styleClass>
             </ComboBox>
-            <TableView fx:id="supplyMachineTbl" prefHeight="228.0" prefWidth="560.0" stylesheets="@../../../../../Desktop/chartStyleSheet.css">
+            <TableView fx:id="supplyMachineTbl" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="620.0">
               <columns>
-                <TableColumn fx:id="itemIDCol" prefWidth="75.0" text="Item ID" />
-                <TableColumn fx:id="nameCol" prefWidth="170.0" text="Name" />
-                  <TableColumn fx:id="minAmountCol" prefWidth="114.0" text="Minimum Amount" />
-                  <TableColumn fx:id="startAmountCol" prefWidth="90.0" text=" Start Amount" />
-                  <TableColumn fx:id="currentAmountCol" prefWidth="110.0" text="Current Amount" />
+                <TableColumn fx:id="itemIDCol" prefWidth="62.0" text="Item ID" />
+                <TableColumn fx:id="nameCol" prefWidth="194.0" text="Name" />
+                  <TableColumn fx:id="minAmountCol" prefWidth="103.0" text="Minimum Amount" />
+                  <TableColumn fx:id="startAmountCol" prefWidth="130.0" text=" Start Amount" />
+                  <TableColumn fx:id="currentAmountCol" prefWidth="125.0" text="Current Amount" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </TableView>
          </children>
       </VBox>

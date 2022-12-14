@@ -73,7 +73,7 @@ public class HomePageController {
 		User register = new User("Register");
 	
 
-		User selectedUser = register;
+		User selectedUser = regionManager;
 		//User selectedUser = regionManager;
 		Image image=null ;
 
@@ -189,7 +189,7 @@ public class HomePageController {
 		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				bottomBtnAction(event);
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 			}
 			});
 		bottomBtn.setTooltip(tooltip.getTooltip());
