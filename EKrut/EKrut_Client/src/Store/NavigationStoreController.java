@@ -137,7 +137,7 @@ public class NavigationStoreController {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			Parent root = FXMLLoader.load(getClass().getResource(path));
 			if (screenName != ScreensNames.HostClient && screenName != ScreensNames.Login
-					&& screenName != ScreensNames.HomePage)
+					&& screenName != ScreensNames.HomePage && screenName != ScreensNames.ViewCatalog)//for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
@@ -179,7 +179,7 @@ public class NavigationStoreController {
 		returnBtn.setAlignment(Pos.CENTER);
 		returnBtn.setContentDisplay(ContentDisplay.BOTTOM);
 		returnBtn.setGraphic(returnImage);
-		returnBtn.setPrefSize(69.0, 55.0);
+		returnBtn.setPrefSize(24.0, 27.0);
 		returnBtn.getStyleClass().add("Button-return");
 
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {

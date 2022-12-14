@@ -19,7 +19,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCatalogContoller">
    <bottom>
-      <GridPane prefHeight="71.0" prefWidth="859.0" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="62.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="445.0" minWidth="10.0" prefWidth="432.0" />
@@ -28,22 +28,86 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Button fx:id="placeOrderBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="159.0" styleClass="Button" text="Place Order" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="cancelOrderBtn" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="40.0" prefWidth="140.0" styleClass="ButtonLogOut" text="Cancel Order" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+               <font>
+                  <Font size="96.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button mnemonicParsing="false" styleClass="Button-return">
+               <graphic>
+                  <ImageView fitHeight="79.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/return.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" top="10.0" />
+         </padding>
       </GridPane>
    </bottom>
    <top>
-      <GridPane id="headerBar" prefHeight="60.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
+      <GridPane id="headerBar" prefHeight="84.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="900.0" />
+          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="900.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="43.333335876464844" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.666664123535156" minHeight="10.0" prefHeight="40.666664123535156" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="53.0" prefWidth="354.0" styleClass="LabelTitel" text="Ort Braude Machine Catalog" GridPane.valignment="TOP" />
+            <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="53.0" prefWidth="354.0" styleClass="LabelTitel" text="Ort Braude Machine Catalog" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets top="-15.0" />
+               </GridPane.margin></Label>
+            <Button fx:id="filterBtn" mnemonicParsing="false" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/039-filter.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <GridPane.margin>
+                  <Insets right="400.0" />
+               </GridPane.margin>
+            </Button>
+            <TextField prefHeight="57.0" prefWidth="200.0" promptText="you can search prodcts here.." styleClass="TextField" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="200.0" />
+               </GridPane.margin>
+            </TextField>
+            <Button fx:id="sortBtn" mnemonicParsing="false" prefHeight="36.0" prefWidth="48.0" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <graphic>
+                  <ImageView fx:id="searchBtn" fitHeight="30.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/012-search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <GridPane.margin>
+                  <Insets right="200.0" />
+               </GridPane.margin>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="20.0" />
          </BorderPane.margin>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
       </GridPane>
    </top>
    <center>
@@ -55,9 +119,9 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ScrollPane hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="720.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
+            <ScrollPane hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="711.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
               <content>
-                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="804.0" prefWidth="708.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="814.0" prefWidth="708.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
                      <children>
                         <GridPane alignment="CENTER" prefHeight="276.0" prefWidth="719.0">
                            <columnConstraints>
@@ -564,7 +628,7 @@
                   </AnchorPane>
               </content>
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets bottom="10.0" left="15.0" />
                </GridPane.margin>
             </ScrollPane>
          </children>
@@ -645,23 +709,9 @@
                   <Insets right="20.0" />
                </GridPane.margin>
             </Label>
-            <Button fx:id="cancelOrderBtn" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="40.0" prefWidth="140.0" styleClass="ButtonLogOut" text="Cancel Order" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <font>
-                  <Font size="96.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-            <Button fx:id="placeOrderBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="140.0" styleClass="Button" text="Place Order" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
          </children>
          <BorderPane.margin>
-            <Insets right="20.0" />
+            <Insets bottom="10.0" right="20.0" />
          </BorderPane.margin>
       </GridPane>
    </right>
