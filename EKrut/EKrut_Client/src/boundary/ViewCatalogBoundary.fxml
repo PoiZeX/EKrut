@@ -55,7 +55,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ScrollPane hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="720.0" styleClass="root">
+            <ScrollPane hbarPolicy="NEVER" hvalue="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="720.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
               <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="804.0" prefWidth="708.0" styleClass="viewport" stylesheets="@../styles/css/generalStyleSheet.css">
                      <children>
