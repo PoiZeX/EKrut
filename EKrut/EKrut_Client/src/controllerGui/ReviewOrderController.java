@@ -11,11 +11,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import utils.TooltipSetter;
 
 public class ReviewOrderController {
-	
-	private TooltipSetter tooltip;
 
     @FXML
     private ComboBox<?> MachinesCmb;
@@ -125,53 +122,4 @@ public class ReviewOrderController {
     @FXML
     private Label totulProductsSumLbl;
 
-    @FXML
-    private Label addressDetailsLbl;
-    
-    private boolean isSelfPickup;
-    
-    public void initialize() {
-    	//tooltip = new TooltipSetter("Cancel the order");
-    	//cancelOrderBtn.setTooltip(tooltip.getTooltip());
-    	shippingToggleVisInit();
-
-    }
-    
-    private void shippingToggleVisInit() {
-		contactDetailsLbl.setVisible(false);
-		contactDetalisGridPane.setVisible(false);
-		
-		addressDetailsLbl.setVisible(false);
-		addressDetalisGridPane.setVisible(false);
-		MachinesCmb.setVisible(false);
-		
-    	deliveryRb.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-    		shippingChangeVisibility(false);
-    	}));
-
-    	selfPickRb.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-    		shippingChangeVisibility(true);
-
-    	}));
-    }
-    private void shippingChangeVisibility(boolean isSelfPickup) {
-    	if(isSelfPickup) {
-    		contactDetailsLbl.setVisible(false);
-    		contactDetalisGridPane.setVisible(false);
-    		
-    		addressDetailsLbl.setVisible(false);
-    		addressDetalisGridPane.setVisible(false);
-    		MachinesCmb.setVisible(true);
-
-    	}
-    	else {
-    		contactDetailsLbl.setVisible(true);
-    		contactDetalisGridPane.setVisible(true);
-    		
-    		addressDetailsLbl.setVisible(true);
-    		addressDetalisGridPane.setVisible(true);
-    		MachinesCmb.setVisible(false);
-    	}
-		this.isSelfPickup = isSelfPickup;
-    }
 }

@@ -1,7 +1,5 @@
 package controllerGui;
 
-import Store.NavigationStoreController;
-import common.ScreensNames;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -179,7 +177,7 @@ public class ViewCatalogContoller {
 
     @FXML
     void placeOrder(ActionEvent event) {
-    	NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReviewOrder);
+
     }
 
     public void initialize() {
