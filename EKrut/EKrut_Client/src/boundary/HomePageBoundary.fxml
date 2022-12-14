@@ -76,7 +76,7 @@
    <left>
       <VBox fx:id="rigthVbox" alignment="CENTER" prefHeight="425.0" prefWidth="412.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="35.0" right="25.0" top="40.0" />
+            <Insets bottom="35.0" left="25.0" top="40.0" />
          </BorderPane.margin>
       </VBox>
    </left>
