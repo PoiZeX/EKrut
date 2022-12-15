@@ -47,6 +47,7 @@ public class NavigationStoreController {
 		history = new Stack<>();
 		primaryStage = new Stage();
 		//setAllScenes(); // fill the hashMap
+		primaryStage.getIcons().add(new Image("/styles/icons/logo.png"));
 		primaryStage.show(); // show primary stage
 	}
 
@@ -75,7 +76,13 @@ public class NavigationStoreController {
 			scene = createSingleScene(scName);
 
 		// save to stack
-		primaryStage.setTitle(scName.toString());
+		String[] splitString = scName.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
+		if (splitString.length == 2) {
+			primaryStage.setTitle(splitString[0]+" "+splitString[1]);
+		}
+		else {
+			primaryStage.setTitle(scName.toString());
+		}
 		primaryStage.setScene(history.push(scene));
 
 	}
