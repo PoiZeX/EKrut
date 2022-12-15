@@ -47,7 +47,7 @@ public class NavigationStoreController {
 		history = new Stack<>();
 		primaryStage = new Stage();
 		//setAllScenes(); // fill the hashMap
-		primaryStage.getIcons().add(new Image("/styles/icons/logo.png"));
+		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.show(); // show primary stage
 	}
 

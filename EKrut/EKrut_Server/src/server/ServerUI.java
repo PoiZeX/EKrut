@@ -24,7 +24,7 @@ public class ServerUI extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Ekrut Server");
-		primaryStage.getIcons().add(new Image("/styles/icons/logo.png"));
+		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (EchoServer != null) {
