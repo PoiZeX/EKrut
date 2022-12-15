@@ -73,7 +73,7 @@ public class HomePageController {
 		User register = new User("Register");
 	
 
-		User selectedUser = regionManager;
+		User selectedUser = register;
 		//User selectedUser = regionManager;
 		Image image=null ;
 

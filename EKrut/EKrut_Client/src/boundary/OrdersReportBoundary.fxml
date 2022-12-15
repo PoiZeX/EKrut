@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
    <center>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="527.0" prefWidth="463.0" stylesheets="@../styles/css/generalStyleSheet.css">
+            <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="548.0" prefWidth="422.0" stylesheets="@../styles/css/generalStyleSheet.css">
               <xAxis>
-                <CategoryAxis label="by sales" prefHeight="24.0" prefWidth="374.0" side="TOP" tickMarkVisible="false">
+                <CategoryAxis label="by sales" prefHeight="37.0" prefWidth="343.0" side="TOP" styleClass="Label" tickMarkVisible="false">
                      <tickLabelFont>
                         <Font size="1.0" />
                      </tickLabelFont>
@@ -33,13 +33,19 @@
                   <String fx:value="default-color5" />
                   <String fx:value="default-color1" />
                </styleClass>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </BarChart>
-            <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="by orders numbers" />
+            <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="by orders numbers">
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin></PieChart>
          </children>
       </HBox>
    </center>
    <top>
-      <Label alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" text="Orders Report" BorderPane.alignment="CENTER" />
+      <Label alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" text="Orders Report - Karmiel" BorderPane.alignment="CENTER" />
    </top>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

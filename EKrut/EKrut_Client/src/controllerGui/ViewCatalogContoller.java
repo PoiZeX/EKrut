@@ -183,12 +183,17 @@ public class ViewCatalogContoller {
 
 
     }
+    @FXML
+    void viewCart(ActionEvent event) {
+    	NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCart);
+    }
+ 
 
     public void initialize() {
     	
     	tooltip = new TooltipSetter("Cancel the order");
     	cancelOrderBtn.setTooltip(tooltip.getTooltip());
-    	tooltip = new TooltipSetter("Place your order");
+    	tooltip = new TooltipSetter("Place your order and continue checkout");
     	placeOrderBtn.setTooltip(tooltip.getTooltip());
     }
 

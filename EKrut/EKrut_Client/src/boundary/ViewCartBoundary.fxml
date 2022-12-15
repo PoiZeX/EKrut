@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCartController">
    <top>
       <GridPane prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -215,52 +215,6 @@
                                           </Button>
                                        </children>
                                     </GridPane>
-                                    <GridPane alignment="CENTER" prefHeight="69.0" prefWidth="348.0" styleClass="Button-NoBG" GridPane.rowIndex="4">
-                                       <columnConstraints>
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="57.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="249.0" minWidth="0.0" prefWidth="243.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="158.0" minWidth="0.0" prefWidth="47.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="161.0" minWidth="0.0" prefWidth="55.0" />
-                                          <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="46.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="60.0" minHeight="9.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="60.0" minHeight="9.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Button fx:id="MinusQuantityBtn222111" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="Button-NoBG" GridPane.columnIndex="2" GridPane.rowSpan="3">
-                                             <graphic>
-                                                <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../styles/icons/minus.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <TextField fx:id="QuantityTxtField222111" alignment="CENTER" prefHeight="31.0" prefWidth="27.0" text="1" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="3" />
-                                          <Label fx:id="productNameLbl1111" prefHeight="18.0" prefWidth="113.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="Grape Water" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                          <Label fx:id="priceLbl1111" prefHeight="17.0" prefWidth="65.0" style="-fx-font-size: 12pt;" styleClass="Label-list" text="7₪" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="100.0" />
-                                             </GridPane.margin></Label>
-                                          <ImageView fx:id="productItemImg222111" fitHeight="55.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG" GridPane.rowSpan="3">
-                                             <image>
-                                                <Image url="@../styles/products/מים%20בטעם%20ענבים.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Line endX="405.29290771484375" endY="2.014589309692383" startY="0.7216961979866028" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                                          <Button fx:id="MinusQuantityBtn2221111" mnemonicParsing="false" prefHeight="24.0" prefWidth="34.0" styleClass="Button-NoBG" GridPane.columnIndex="4" GridPane.rowSpan="3">
-                                             <graphic>
-                                                <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../styles/icons/plus.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </GridPane>
                                  </children>
                               </GridPane>
                            </children>
@@ -293,7 +247,7 @@
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="totalPayLbl" prefHeight="32.0" prefWidth="36.0" styleClass="Label" text="81₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                        <Label fx:id="totalPayLbl" prefHeight="32.0" prefWidth="36.0" styleClass="Label" text="74₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                            <font>
                               <Font size="53.0" />
                            </font>
@@ -325,7 +279,7 @@
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="totalSumLbl" prefHeight="29.0" prefWidth="34.0" styleClass="Label" text="81₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                        <Label fx:id="totalSumLbl" prefHeight="29.0" prefWidth="34.0" styleClass="Label" text="74₪" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                            <font>
                               <Font size="53.0" />
                            </font>
@@ -348,7 +302,7 @@
                         </Line>
                      </children>
                   </GridPane>
-                  <Button fx:id="placeOrderBtn" layoutX="175.0" layoutY="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="201.0" styleClass="Button" text="Payment">
+                  <Button fx:id="placeOrderBtn" layoutX="175.0" layoutY="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#placeOrder" prefHeight="40.0" prefWidth="201.0" styleClass="Button" text="Place Order">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
