@@ -10,11 +10,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
 
+import common.MessageType;
+
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
 
 	static EchoServer EchoServer;
-
 	public static void main(String[] args) throws Exception {
 		launch(args);
 	}
@@ -54,6 +55,13 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
+		EchoServer.sendToAllClients(MessageType.ServerDisconnect);
+		try {
+			Thread.sleep(2000);  // enough time to update the clients table. More flexible way is to use semaphore...
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if (EchoServer == null) {
 			EchoServer.stopListening();
 		} else {

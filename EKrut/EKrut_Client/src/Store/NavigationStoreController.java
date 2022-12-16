@@ -213,7 +213,7 @@ public class NavigationStoreController {
 	/**
 	 * Close all screens, and exits from platform & system
 	 */
-	private void closeAllScreens() {
+	public static void closeAllScreens() {
 
 		Platform.exit(); // exit JavaFx
 		System.exit(0); // exit system
