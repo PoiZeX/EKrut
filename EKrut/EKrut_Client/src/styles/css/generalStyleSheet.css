@@ -1,0 +1,261 @@
+
+.root{
+	-fx-background-color: #E8EEF1;
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+   	-fx-text-alignment:center;
+    -fx-background-repeat: no-repeat;  
+    -fx-background-size: 500 500; 
+    -fx-background-position: center center;
+    -fx-background-image: url("/styles/images/BG.jpg");
+    -fx-background-size: cover;
+}
+
+.HomeScreen {
+	-fx-background-image: url("/styles/images/BGnoBLUE.png");
+}
+/*-----------------------------------------------GRID PANE -------------------------------------------- */
+/*first grid */
+.GridPane{
+    -fx-background-color:#f6f5f5;
+    -fx-effect: dropshadow( gaussian , #babfc2, 25, 0, 0, 0 );
+    -fx-background-radius: 15;
+}
+/*for grid in grid */
+.GridPaneChild {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius:15;
+}
+/*---------------------------------------------------- LABELs-------------------------------------------------- */
+.Label {
+	-fx-text-fill: #1E3D58;
+	-fx-font-size: 13pt;
+}
+.Label-list {
+	-fx-text-fill: #1E3D58;
+	-fx-font-size: 10pt;
+}
+
+.LabelTitel{
+
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 20pt;
+    -fx-label-padding: 20 20 5 20;
+
+}
+/* header */
+#headerBar {
+    -fx-background-color:#ffffff;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius: 0 0 15 15;
+}
+/* --------------------------------------TEXT FIELD------------------------------------------- */
+.TextField {
+	-fx-background-radius:15;
+	-fx-background-color:#f6f5f5;
+}
+
+/* --------------------------------------catalog------------------------------------------- */
+#catalogScrollpane {
+    -fx-background-color: linear-gradient(#f6f5f5 20%, #ffffff 60%);
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+
+}
+/*------------------------------- no BG */
+.viewport {  
+    -fx-background-color: rgba(255, 0, 0, 0.000000001);
+ }
+
+
+/*---------------------------------------buttons--------------------------------------------------- */
+.Button{
+	-fx-background-color:  #50b7f3;
+    -fx-effect: dropshadow( gaussian , #acaaaa , 10, 0, 0, 0 );
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 15pt;
+    cursor: pointer;
+}
+
+.Button:Text {
+    -fx-fill: white;
+}
+.Button:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+.Button:hover {
+    -fx-background-color: #64c6ff;
+}
+/*______________________ LOG OUT \ CANCEL BTNS */
+.ButtonLogOut{
+	-fx-background-color:  #FF9414;
+    -fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+	-fx-font-size: 15pt;
+    cursor: pointer;
+}
+
+.ButtonLogOut:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+.ButtonLogOut:hover {
+    -fx-background-color: #ffab45;
+}
+
+/*___________________ RETURN /NO BG */
+
+.Button-return{
+	 -fx-background-color:transparent;
+	 
+}
+.Button-NoBG{
+	 -fx-background-color:transparent;
+}
+/*___________________________ report icon btn */
+.Button-report:hover{
+    -fx-background-color:transparent;
+    -fx-border-color:#1E3D58;
+    -fx-border-radius:15;
+}
+
+.button-Report:focused {
+    -fx-border-color: transparent, white;
+    -fx-background-color:transparent;
+    -fx-border-color:#1E3D58;
+    -fx-border-radius:15;
+}
+
+.button-Report:pressed {
+    -fx-background-color: white;
+}
+/*____________________ ADD TO CART BTN */
+.button-AddToCart{
+	-fx-border-radius:15;
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:white;
+	-fx-text-fill: gray;
+	
+}
+.button-AddToCart:hover{
+	-fx-border-radius:15;
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:#43B0F1;
+	-fx-text-fill: white;
+	
+}
+
+
+/*------------------------------------------------ combo box----------------------------------------------------------- */
+.ComboBox{
+	-fx-text-base-color: #FFFFFF;
+		-fx-font-size: 14pt;	
+}
+/*litle arrow */
+.combo-box .arrow{
+    -fx-background-color:#FFFFFF;
+}
+/* arrow background */
+.combo-box .arrow-button{
+    -fx-background-color:#43B0F1;
+    -fx-border-style:none;
+}
+
+.combo-box .list-cell{
+    -fx-background-color:#43B0F1;
+   -fx-text-alignment:center;
+}
+
+.combo-box .arrow-button:hover{
+    -fx-background-color:#057DCD;
+    -fx-border-style:none;
+}
+
+.combo-box:hover{
+    -fx-background-color:#057DCD;
+}
+/*------------------------------------------------ CHARTS ---------------------------------------------------------------- */
+
+/*------------------------------------------------ pieChart ---------------------------------- */
+.default-color0.chart-pie { -fx-pie-color: #92f2ff; }
+.default-color2.chart-pie { -fx-pie-color: #fa317d; }
+.default-color3.chart-pie { -fx-pie-color: #bf7fdf; }
+.default-color1.chart-pie { -fx-pie-color: #F79256; }
+.default-color4.chart-pie { -fx-pie-color: #10a9ba; }
+.default-color5.chart-pie { -fx-pie-color: #FFE45E; }
+
+/*------------------------------------------------ barChart ---------------------------------- */
+.default-color0.chart-bar { -fx-bar-fill: #92f2ff; }
+.default-color1.chart-bar { -fx-bar-fill: #fa317d; }
+.default-color2.chart-bar { -fx-bar-fill: #bf7fdf; }
+.default-color3.chart-bar { -fx-bar-fill: #F79256; }
+.default-color4.chart-bar { -fx-bar-fill: #10a9ba; }
+.default-color5.chart-bar { -fx-bar-fill: #FFE45E; }
+
+ /*------------------------------------------------ TABLE---------------------------------- */
+/*TBL View */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    /* -fx-border-color: white; */
+    /* -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 ); */
+}
+
+/*title */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: #babfc2;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #64c6ff;
+    -fx-background-radius: 7px 7px 0px 0px;
+    -fx-padding: 4px;
+    -fx-text-fill: white;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: transparent;
+    -fx-text-background-color: orange;
+}
+
+/*
+ * 
+.table-view .table-cell{
+    -fx-border-color: #50b7f3;
+}
+
+
+.table-row-cell:odd {
+    -fx-background-color: #64c6ff;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:even{
+    -fx-background-color: #50b7f3;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+ */

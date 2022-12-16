@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.CEOReportSelectionController">
+   <bottom>
+      <GridPane prefHeight="66.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="returnBtn" fx:id="returnBtn" mnemonicParsing="false" styleClass="Button-return">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/return.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <left>
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="537.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label lineSpacing="12.0" prefHeight="75.0" prefWidth="127.0" styleClass="LabelTitel" text="Reports" underline="true" />
+            <GridPane alignment="CENTER" prefHeight="405.0" prefWidth="475.0" styleClass="GridPane">
+              <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="244.66665649414062" minWidth="10.0" prefWidth="222.66668701171875" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="249.66665649414062" minWidth="10.0" prefWidth="221.33331298828125" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="123.66668701171875" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="96.66668701171875" minHeight="9.999984741210938" prefHeight="44.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="192.66665649414062" minHeight="10.0" prefHeight="145.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label styleClass="Label" stylesheets="@../css/generalStyleSheet.css" text="Choose year:" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="25.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <ComboBox fx:id="monthItemsCmb" prefHeight="42.0" prefWidth="143.0" promptText="Month" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <ComboBox fx:id="yearItemsCmb" prefHeight="42.0" prefWidth="143.0" promptText="Year" styleClass="ComboBox" GridPane.rowIndex="3" />
+                  <Label alignment="BOTTOM_CENTER" prefHeight="40.0" prefWidth="144.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose report type:" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" GridPane.vgrow="SOMETIMES">
+                     <font>
+                        <Font name="SansSerif Bold" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" right="25.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose month:" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <font>
+                        <Font name="Verdana" size="12.0" />
+                     </font>
+                  </Label>
+                  <ToolBar prefHeight="128.0" prefWidth="445.0" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="5">
+                     <items>
+                        <Button fx:id="clientReportBtn" contentDisplay="TOP" mnemonicParsing="false" prefHeight="130.0" prefWidth="140.0" text="Clients report">
+                           <graphic>
+                              <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
+                                 <image>
+                                    <Image url="@../styles/icons/clientsreportIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="Button-report" />
+                              <String fx:value="Button-NoBG" />
+                              <String fx:value="Label" />
+                              <String fx:value="button-Report" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="supplyReportBtn" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="149.0" text="Supply report">
+                           <graphic>
+                              <ImageView fitHeight="83.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../styles/icons/supplyReport.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="Button-report" />
+                              <String fx:value="Button-NoBG" />
+                              <String fx:value="Label" />
+                              <String fx:value="button-Report" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="ordersReportBtn" alignment="TOP_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="130.0" text="Orders report">
+                           <graphic>
+                              <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
+                                 <image>
+                                    <Image url="@../styles/icons/ordersReporticon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
+                           <styleClass>
+                              <String fx:value="Button-report" />
+                              <String fx:value="Button-NoBG" />
+                              <String fx:value="Label" />
+                              <String fx:value="button-Report" />
+                           </styleClass>
+                        </Button>
+                     </items>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToolBar>
+                  <ComboBox fx:id="regionItemsCmb1" prefHeight="42.0" prefWidth="143.0" promptText="Region" styleClass="ComboBox" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <Label styleClass="Label" stylesheets="@../css/generalStyleSheet.css" text="Choose region:" GridPane.columnSpan="2">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="15.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </GridPane>
+            <GridPane alignment="CENTER" prefHeight="75.0" prefWidth="475.0" styleClass="GridPane">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints />
+              </columnConstraints>
+               <children>
+                  <Button fx:id="viewReportCmb" mnemonicParsing="false" prefHeight="42.0" prefWidth="176.0" styleClass="Button" text="View Report" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

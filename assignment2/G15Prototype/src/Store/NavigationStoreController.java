@@ -1,68 +1,205 @@
 package Store;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Stack;
 
-import controllerGui.WindowControllerBase;
+import common.MessageType;
+import common.ScreensNames;
+import controllerGui.HostClientController;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-// The class handles the navigation store for different pages
+/**
+ * The class handles the navigation store for different pages
+ * 
+ * @category Navigation
+ *
+ */
 public class NavigationStoreController {
-	private HashMap<Class<? extends WindowControllerBase>, WindowControllerBase> windowControllers;
-	private WindowControllerBase currentWindowController;
-	private LinkedList<WindowControllerBase> windowControllerHistory;
-	public NavigationStoreController() {
-		
-		windowControllers  = new HashMap<>();
-		windowControllerHistory = new LinkedList<>();
-		windowControllers.put(WindowControllerBase.class, new WindowControllerBase());
-	}
-	
-	public WindowControllerBase getCurrentScreenController() {
-		return currentWindowController;
-	}
-	
-	public void setCurrentScreen(WindowControllerBase wc) {
-		if(wc != null)
-			store(wc);
-	}
-	
-	public void store(WindowControllerBase wc) {
-		windowControllers.put(wc.getClass(), wc);
-	}
-	
-	/*
-	 * switch to other controller if saved. or create and switch
+	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
+	private Stack<Scene> history; // saves the history of screens changes
+	private static NavigationStoreController instance = null;
+	private Stage primaryStage;  // the main stage (window)
+
+	/**
+	 * Constructor, creates the new instances
 	 */
-	public <T extends WindowControllerBase> void switchView(T wc){
-		if(windowControllers.get(wc.getClass()) == null)
-			store(wc);
-		currentWindowController = windowControllers.get(wc.getClass());
-	
-		// need to insert here the 'hide' and 'set stage' and stuff to really change VIEW
-	
+	private NavigationStoreController() {
+		// create objects
+		screenScenes = new HashMap<>();
+		history = new Stack<>();
+		primaryStage = new Stage();
+
+		setAllScenes(); // fill the hashMap
+		primaryStage.show(); // show primary stage
 	}
-	
-	// set current to be the last instance
+
+
+	/**
+	 * singleton design pattern, create / get the instance
+	 * 
+	 * @return
+	 */
+	public static NavigationStoreController getInstance() {
+		if (instance == null)
+			instance = new NavigationStoreController();
+		return instance;
+	}
+
+	/**
+	 * Set the current screen as given in param
+	 * 
+	 * @param scName
+	 */
+	public void setCurrentScreen(ScreensNames scName) {
+		Scene scene = screenScenes.get(scName);
+
+		// if null create new instance (should not happens)
+		if (scene == null)
+			scene = createSingleScene(scName);
+
+		// save to stack
+		primaryStage.setTitle(scName.toString());
+		primaryStage.setScene(history.push(scene));
+
+	}
+
+	/**
+	 * sets the current view to previous
+	 */
 	public void goBack() {
-		if(getPrevious()!=null) {
-			currentWindowController = windowControllerHistory.pop();
+		// show the last stage
+		// history will never be null, you can't go back to login page (and even before)
+		if (history.size() >= 1) {
+			history.pop(); // throw the current
+			for (ScreensNames key : screenScenes.keySet()) {
+				if (screenScenes.get(key).equals(history.peek()))
+					primaryStage.setTitle(key.toString());
+			}
+			primaryStage.setScene(history.peek());
+
 		}
+
 	}
-	
-	// get the last node without pop
-	public WindowControllerBase getPrevious() {
-		return windowControllerHistory.peekLast();
-	}
-	
-	/*
-	 * add new instance of wc to linkedlist if doesn't exist
+
+	/**
+	 * Creates new instance of the screen
+	 * 
+	 * @param screenName
+	 * @return
 	 */
-	public <T extends WindowControllerBase> WindowControllerBase setNext(T wc) {
-		if(!windowControllerHistory.contains(currentWindowController))
-		{
-			windowControllerHistory.addLast(wc);	
-		}
-		return wc;
+	public boolean refreshStage(ScreensNames screenName) {
+		Scene scene = createSingleScene(screenName); // create new instance
+		if (scene == null)
+			return false;
+		screenScenes.replace(screenName, scene); // replace the last stage with new
+		
+		// REPLACE the stack head
+		primaryStage.setTitle(screenName.toString());
+		history.pop(); // remove the last instance of the current screen and sets a new one
+		primaryStage.setScene(history.push(scene));		
+		return true;
 	}
-	
+
+	/**
+	 * Set all stages into HashMap, using 'setSingleStage'
+	 */
+	private void setAllScenes() {
+		for (ScreensNames screenName : ScreensNames.values()) {
+			Scene scene = createSingleScene(screenName);
+			if (scene != null)
+				screenScenes.put(screenName, scene);
+		}
+	}
+
+	/**
+	 * Creates one scene and attach to the primary stage (to save in dictionary)
+	 * 
+	 * @param screenName
+	 * @return
+	 */
+	private Scene createSingleScene(ScreensNames screenName) {
+		Scene scene = null;
+		try {
+			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
+			Parent root = FXMLLoader.load(getClass().getResource(path));
+			if (screenName != ScreensNames.HostClient && screenName != ScreensNames.Login
+					&& screenName != ScreensNames.HomePage)
+				scene = new Scene(setBottomBar(root));
+			else
+				scene = new Scene(root);
+
+			// set actions
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					if (HostClientController.chat != null)
+						HostClientController.chat.acceptObj(MessageType.ClientDisconnect);
+					closeAllScreens();
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return scene;
+	}
+
+	/**
+	 * Set the navigation bottom bar for all pages after login
+	 * 
+	 * @param stage
+	 * @return
+	 */
+	private Parent setBottomBar(Parent stage) {
+		Button returnBtn = new Button();
+		ImageView returnImage = new ImageView();
+
+		Image image = new Image(getClass().getResourceAsStream("/styles/icons/return.png"));
+		returnImage.setImage(image);
+		returnImage.setFitHeight(62.0);
+		returnImage.setFitWidth(72.0);
+		returnImage.setPickOnBounds(true);
+		returnImage.setPreserveRatio(true);
+		returnImage.getStyleClass().add("Button-return");
+
+		returnBtn.setId("returnBtn");
+		returnBtn.setAlignment(Pos.CENTER);
+		returnBtn.setContentDisplay(ContentDisplay.BOTTOM);
+		returnBtn.setGraphic(returnImage);
+		returnBtn.setPrefSize(69.0, 55.0);
+		returnBtn.getStyleClass().add("Button-return");
+
+		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent ae) {
+				NavigationStoreController.getInstance().goBack();
+			}
+		});
+
+		((BorderPane) stage).setBottom(returnBtn);
+		return stage;
+
+	}
+
+	/**
+	 * Close all screens, and exits from platform & system
+	 */
+	private void closeAllScreens() {
+
+		Platform.exit(); // exit JavaFx
+		System.exit(0); // exit system
+
+	}
 }
