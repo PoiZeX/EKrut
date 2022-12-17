@@ -145,13 +145,14 @@ public class ReportsGenerator {
 				+ "JOIN regions ON machines.region_id = regions.region_id "
 				+ "WHERE orders.supply_method != 'Delivery' AND STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
 				+ "GROUP BY machines.machine_name";
+		String[] date = getFollowingDate(month,year);
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement psGet = conn.prepareStatement(query);
 			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
-			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+			psGet.setString(2, String.format("%s-%s-01 00:00:00", date[1],date[0]));
 			ResultSet res = psGet.executeQuery();
 			while (res.next()) {
 				if (regionDescription.get(res.getString(3)) == null) {
@@ -180,6 +181,12 @@ public class ReportsGenerator {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static String[] getFollowingDate(String month, String year) {
+		if (month.equals("12"))
+			return new String[] {"01", String.valueOf(Integer.parseInt(month)+1)};
+		return new String[] {String.valueOf(Integer.parseInt(month)+1),year};
 	}
 
 	/**
@@ -240,13 +247,14 @@ public class ReportsGenerator {
 				+ "JOIN users u ON o.user_id = u.id JOIN machines m ON m.machine_id = o.machine_id " 
 				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ?"
 				+ "GROUP BY u.role_type, m.region_name";
+		String[] date = getFollowingDate(month,year);
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement psGet = conn.prepareStatement(query);
 			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
-			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+			psGet.setString(2, String.format("%s-%s-31 23:59:59", date[1], date[0]));
 			ResultSet res = psGet.executeQuery();
 			while (res.next()) {
 				String region = res.getString(1);
@@ -288,13 +296,14 @@ public class ReportsGenerator {
 				+ "FROM orders o JOIN users u ON o.user_id = u.id JOIN machines m ON m.machine_id = o.machine_id "
 				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
 				+ "GROUP BY o.supply_method, m.region_name";
+		String[] date = getFollowingDate(month,year);
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement psGet = conn.prepareStatement(query);
 			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
-			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+			psGet.setString(2, String.format("%s-%s-31 23:59:59", date[1], date[0]));
 			ResultSet res = psGet.executeQuery();
 			while (res.next()) {
 				String region = res.getString(3);
@@ -343,13 +352,14 @@ public class ReportsGenerator {
 				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? " + "GROUP BY user_id, machine_id "
 				+ ") t" + " JOIN machines m ON t.machine_id = m.machine_id "
 				+ "GROUP BY t.totalUserMachine, m.region_name " + "ORDER BY region_name;";
+		String[] date = getFollowingDate(month,year);
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement psGet = con.prepareStatement(query);
 			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
-			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+			psGet.setString(2, String.format("%s-%s-31 23:59:59", date[1], date[0]));
 			ResultSet res = psGet.executeQuery();
 
 			// orders, amount of users, region -> for ex.: 1, 1, North (1 user made 1 order
