@@ -44,10 +44,10 @@ public class LoginController {
 			return; // something more
 		
 		
-		sendServerusernamePassword(new String[] { "username", "password" });
+		sendServerusernamePassword(new String[] {username, password});
 		while (isValidDetails == null) { // wait for answer
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -90,7 +90,7 @@ public class LoginController {
 		} else {
 			if (password.contains(" ")) // spaces are not allowed
 				error.append("* password cannot contains any spaces\n");
-			if (username.length() > passwordMaxLength || username.length() < passwordMinLength)
+			if (password.length() > passwordMaxLength || password.length() < passwordMinLength)
 				error.append("* password length must be between " + passwordMinLength + "-" + passwordMaxLength + "\n");
 		}
 
@@ -98,6 +98,7 @@ public class LoginController {
 			return true;
 		{
 			// show popup message for error
+			System.out.println(error.toString());
 			return false;
 
 		}
@@ -139,7 +140,7 @@ public class LoginController {
 	private void sendServerusernamePassword(String[] usernamePassword) {
 		// username and password match
 
-		chat.acceptObj((Object) usernamePassword);
+		chat.acceptObj(usernamePassword);
 		// not logged in
 
 		// is approved in manager

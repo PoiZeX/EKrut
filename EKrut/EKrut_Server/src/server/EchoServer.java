@@ -43,15 +43,17 @@ public class EchoServer extends AbstractServer {
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		System.out.println(msg.getClass().getTypeName());
 		if (msg instanceof ArrayList) {
 			// i know its ArrayList of subscribers but TODO check this
 			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
 			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
+			return;
 		} 
 		else if(msg instanceof String[]) {
 			// got username and password
-			LoginDbController.getUserEntity(new String[] {"username", "password"}, client);
-		
+			LoginDbController.getUserEntity((String[])msg, client);
+			return;
 		}
 		else if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;

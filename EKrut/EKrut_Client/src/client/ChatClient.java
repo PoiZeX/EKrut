@@ -22,6 +22,7 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	// public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
+	public static ObservableList<SubscriberEntity> subscribers;
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor

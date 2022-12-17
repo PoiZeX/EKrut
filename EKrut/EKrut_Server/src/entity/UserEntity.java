@@ -3,14 +3,15 @@ package entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class UserEntity implements Serializable{
+public class UserEntity implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {
 		return username;
 	}
-	
+
 	public UserEntity(String username, String password, String first_name, String last_name, String email,
 			String phone_number, String role_type, String region) {
 		this(username, password, first_name, last_name, email, phone_number, role_type);
@@ -29,7 +30,7 @@ public class UserEntity implements Serializable{
 		this.role_type = role_type;
 		this.logged_in = false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(username);
@@ -122,6 +123,11 @@ public class UserEntity implements Serializable{
 	public int getId() {
 		return id;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String username, password, first_name, last_name, email, phone_number, role_type, region;
 	private boolean logged_in;
 	private int id;
