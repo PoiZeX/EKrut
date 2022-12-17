@@ -16,10 +16,18 @@
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="37.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="29.0" minHeight="10.0" prefHeight="23.0" valignment="CENTER" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <Label fx:id="welcomeLabel" alignment="CENTER" prefHeight="81.0" prefWidth="493.0" styleClass="LabelTitel" text="." />
+            <Label fx:id="welcomeLabel" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="678.0" styleClass="LabelTitle" text="welcome title" textAlignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Label>
+            <Label fx:id="roleLabel" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="600.0" styleClass="LabelRoleTitle" text="role title" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>

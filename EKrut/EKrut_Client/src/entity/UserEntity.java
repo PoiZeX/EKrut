@@ -35,8 +35,8 @@ public class UserEntity implements Serializable {
 		this.logged_in = false;
 	}
 
-	public String friendlyName() {
-		return role_type + " " + first_name + " " + last_name;
+	public String fullName() {
+		return first_name + " " + last_name;
 	}
 
 	@Override

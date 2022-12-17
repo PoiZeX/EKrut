@@ -43,28 +43,22 @@ public class HomePageController {
 	@FXML
 	private Label welcomeLabel;
 
+	@FXML
+	private Label roleLabel;
 
-    @FXML
-    private VBox rigthVbox;
-    
+	@FXML
+	private VBox rigthVbox;
+
 	public void initialize() {
 		// set hidden as default
 		topBtn.setVisible(false);
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
 
-		// define stubs
-//		User ceo = new User("CEO");
-//		User regionManager = new User("RegionManager");
-//		User register = new User("Register");
-//	
-//
-//		User selectedUser = register;
-		//User selectedUser = regionManager;
-		Image image=null;
+		Image image = null;
+
 		// switch case by role
 		switch (currentUser.getRole_type()) {
-		case "CEO":
 		case "registered":
 		case "subscribed":
 			setTopButton();
@@ -72,7 +66,8 @@ public class HomePageController {
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			break;
 
-		case "RegionManager":
+		case "CEO":
+		case "regionManager":
 			// CEO has 3 buttons.
 			setTopButton();
 			setMiddleButton();
@@ -83,18 +78,20 @@ public class HomePageController {
 		default:
 			System.out.println("No role detected!");
 			break;
-		} 
+		}
 
-		welcomeLabel.setText("Welcome " + currentUser.friendlyName() + "!");
-		ImageView roleImg= new ImageView();
-		if (image!=null) {
+		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
+		roleLabel.setText(currentUser.getRole_type());
+
+		ImageView roleImg = new ImageView();
+		if (image != null) {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
-		
-		//updateButtonsSize();
+
+		// updateButtonsSize();
 	}
 
 //	// updates the buttons width by the max width
@@ -142,20 +139,21 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CollectOrder); // not working yet																					
+					// NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CollectOrder);
+					// // not working yet
 				}
 			});
-		}
-		else {
+		} else {
 			middleBtn.setText("View Reports");
 			tooltip = new TooltipSetter("View the current monthly reports");
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					if(userRole.equals("RegionManager")) {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); // not working yet	
-					}
-					else {
+					if (userRole.equals("RegionManager")) {
+						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); // not
+																												// working
+																												// yet
+					} else {
 						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CEOReportSelection);
 					}
 				}
@@ -163,22 +161,21 @@ public class HomePageController {
 		}
 		middleBtn.setTooltip(tooltip.getTooltip());
 		middleBtn.setVisible(true);
-		
+
 	}
-	
 
 	/// register and Manager share the same button.
 	private void setBottomButton() {
 		// ceo / manager etc
 		bottomBtn.setText("Supply Management");
 		tooltip = new TooltipSetter("Manage the available supply");
-		
+
 		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 			}
-			});
+		});
 		bottomBtn.setTooltip(tooltip.getTooltip());
 		bottomBtn.setVisible(true);
 	}
@@ -200,16 +197,15 @@ public class HomePageController {
 
 	}
 
-
-
 	/**
 	 * Log out from the system. sets the current user to null and changes the view
+	 * 
 	 * @param event
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
 		currentUser = null;
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 
 	}
 

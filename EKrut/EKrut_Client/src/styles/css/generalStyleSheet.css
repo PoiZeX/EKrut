@@ -37,16 +37,28 @@
 	-fx-font-size: 10pt;
 }
 
-.LabelTitel{
+.LabelTitle{
 
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
     -fx-text-alignment:center;
     -fx-text-fill:#057DCD;
     -fx-font-size: 20pt;
-    -fx-label-padding: 20 20 5 20;
+    -fx-label-padding: 5 20 0 20;
 
 }
+
+.LabelRoleTitle{
+
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 14pt;
+    -fx-label-padding: 0 20 5 20;
+
+}
+
 /* header */
 #headerBar {
     -fx-background-color:#ffffff;
