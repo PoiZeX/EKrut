@@ -4,5 +4,13 @@ public enum MessageType {
 	ClientConnect,
 	ClientDisconnect,
 	ServerDisconnect,
-	LoadSubscribers
+	LoadSubscribers,
+	
+	// Login enums
+	ValidUserNamePassword,
+	InvalidUsernamePassword,
+	UserIsLoggedIn,
+	UserNotApproved
+	
+	// -----
 }

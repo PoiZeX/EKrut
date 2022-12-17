@@ -3,23 +3,25 @@
 // license found at www.lloseng.com 
 
 package client;
+
 import ocsf.client.*;
 import common.ChatIF;
 import common.MessageType;
+import controllerGui.LoginController;
 
 import java.io.*;
 
 import Store.NavigationStoreController;
 import entity.SubscriberEntity;
+import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
-	public static ObservableList<SubscriberEntity> subscribers;
+	// public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
-
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
@@ -27,26 +29,29 @@ public class ChatClient extends AbstractClient {
 		// openConnection();
 	}
 
-
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-		if(msg instanceof SubscriberEntity) {
-			subscribers.add((SubscriberEntity)msg);
-		}
-		else if(msg instanceof MessageType)
-		{
+
+		// ---- Messages
+		if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;
-			switch(type){
+			switch (type) {
 			case ServerDisconnect:
 				try {
-					sendToServer((Object)MessageType.ClientDisconnect);
+					sendToServer((Object) MessageType.ClientDisconnect);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				NavigationStoreController.closeAllScreens();  // force closing since server is disconnected
+				NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 				break;
-			
+
+			default:
+				break;
 			}
+		}
+		// ---- Login
+		else if(msg instanceof UserEntity) {
+			LoginController.validInformation((UserEntity)msg);
 		}
 	}
 
@@ -70,7 +75,6 @@ public class ChatClient extends AbstractClient {
 		}
 	}
 
-
 	public void handleMessageFromClient(Object message) {
 		try {
 			openConnection();// in order to send more than one message
@@ -89,8 +93,8 @@ public class ChatClient extends AbstractClient {
 			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
-	}
 
+	}
 
 	/**
 	 * This method terminates the client.
@@ -102,18 +106,17 @@ public class ChatClient extends AbstractClient {
 		}
 		System.exit(0);
 	}
-	
-	
-	static {
-		ChatClient.subscribers = FXCollections.observableArrayList();
-	}
 
-	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
-		ChatClient.subscribers = subscribers;
-	}
+//	static {
+//		ChatClient.subscribers = FXCollections.observableArrayList();
+//	}
+//
+//	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
+//		ChatClient.subscribers = subscribers;
+//	}
+//
+//	public static ObservableList<SubscriberEntity> getClientList() {
+//		return ChatClient.subscribers;
+//	}
 
-	public static ObservableList<SubscriberEntity> getClientList() {
-		return ChatClient.subscribers;
-	}
-	
 }

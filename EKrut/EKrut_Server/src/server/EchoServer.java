@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 import common.MessageType;
+import controllerDb.LoginDbController;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
 import entity.SubscriberEntity;
@@ -46,7 +47,13 @@ public class EchoServer extends AbstractServer {
 			// i know its ArrayList of subscribers but TODO check this
 			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
 			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
-		} else if (msg instanceof MessageType) {
+		} 
+		else if(msg instanceof String[]) {
+			// got username and password
+			LoginDbController.getUserEntity(new String[] {"username", "password"}, client);
+		
+		}
+		else if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;
 			switch (type) {
 			case ClientConnect:
