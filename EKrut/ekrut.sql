@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `ekrut` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `ekrut`;
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: ekrut
+-- Host: localhost    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -16,6 +18,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `clients_report`
+--
+
+DROP TABLE IF EXISTS `clients_report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clients_report` (
+  `client_amount` int NOT NULL,
+  `order_amount` int DEFAULT NULL,
+  PRIMARY KEY (`client_amount`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clients_report`
+--
+
+LOCK TABLES `clients_report` WRITE;
+/*!40000 ALTER TABLE `clients_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clients_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `customers`
 --
 
@@ -23,14 +48,14 @@ DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customers` (
-  `costumerID` int NOT NULL,
+  `id` int NOT NULL,
   `creditCardNumber` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `expireMonth` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `expireYear` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `cvv` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `subscriberID` int DEFAULT NULL,
   `firstPurchase` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`costumerID`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `subscriberID_UNIQUE` (`subscriberID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -45,6 +70,82 @@ LOCK TABLES `customers` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `deliveries`
+--
+
+DROP TABLE IF EXISTS `deliveries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deliveries` (
+  `estimated_time` int unsigned NOT NULL,
+  `status` enum('pendingApproval','outForDelivery','delivered','canceled') DEFAULT NULL,
+  `arrival_status` enum('late','onTime') DEFAULT NULL,
+  PRIMARY KEY (`estimated_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `deliveries`
+--
+
+LOCK TABLES `deliveries` WRITE;
+/*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
+/*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `delivery_address`
+--
+
+DROP TABLE IF EXISTS `delivery_address`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `delivery_address` (
+  `city` varchar(45) NOT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `zipcode` varchar(45) DEFAULT NULL,
+  `house_num` int DEFAULT NULL,
+  `floor` int DEFAULT NULL,
+  `apparetment_num` int DEFAULT NULL,
+  PRIMARY KEY (`city`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery_address`
+--
+
+LOCK TABLES `delivery_address` WRITE;
+/*!40000 ALTER TABLE `delivery_address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delivery_address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item_in_machine`
+--
+
+DROP TABLE IF EXISTS `item_in_machine`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `item_in_machine` (
+  `min_amount` int DEFAULT NULL,
+  `current_amount` int DEFAULT NULL,
+  `shelf` varchar(45) DEFAULT NULL,
+  `call_Status` varchar(45) DEFAULT NULL,
+  `availability` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item_in_machine`
+--
+
+LOCK TABLES `item_in_machine` WRITE;
+/*!40000 ALTER TABLE `item_in_machine` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item_in_machine` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `items`
 --
 
@@ -52,12 +153,13 @@ DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
-  `itemId` int NOT NULL,
-  `itemName` varchar(45) NOT NULL,
-  `itemPrice` double NOT NULL,
-  `itemImage` varchar(45) NOT NULL,
-  PRIMARY KEY (`itemId`),
-  UNIQUE KEY `itemName_UNIQUE` (`itemName`)
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `price` double NOT NULL,
+  `manufacturer` varchar(45) DEFAULT NULL,
+  `description` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `itemName_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -71,6 +173,31 @@ LOCK TABLES `items` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `machines`
+--
+
+DROP TABLE IF EXISTS `machines`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `machines` (
+  `machine_id` int NOT NULL,
+  `region` varchar(45) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `address` varchar(45) NOT NULL,
+  PRIMARY KEY (`machine_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `machines`
+--
+
+LOCK TABLES `machines` WRITE;
+/*!40000 ALTER TABLE `machines` DISABLE KEYS */;
+/*!40000 ALTER TABLE `machines` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orders`
 --
 
@@ -78,12 +205,12 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `orderID` int NOT NULL,
-  `userId` int DEFAULT NULL,
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
   `time` varchar(45) DEFAULT NULL,
-  `totalSum` int DEFAULT NULL,
-  `machineID` int DEFAULT NULL,
-  PRIMARY KEY (`orderID`)
+  `total_sum` int DEFAULT NULL,
+  `machine_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -97,6 +224,130 @@ LOCK TABLES `orders` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `orders_online`
+--
+
+DROP TABLE IF EXISTS `orders_online`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders_online` (
+  `shipment_method` varchar(45) NOT NULL,
+  PRIMARY KEY (`shipment_method`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders_online`
+--
+
+LOCK TABLES `orders_online` WRITE;
+/*!40000 ALTER TABLE `orders_online` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders_online` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders_report`
+--
+
+DROP TABLE IF EXISTS `orders_report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders_report` (
+  `order_id` int NOT NULL,
+  `sum` int DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders_report`
+--
+
+LOCK TABLES `orders_report` WRITE;
+/*!40000 ALTER TABLE `orders_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `report`
+--
+
+DROP TABLE IF EXISTS `report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `report` (
+  `region` varchar(45) NOT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `machine_id` varchar(45) DEFAULT NULL,
+  `time` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `report`
+--
+
+LOCK TABLES `report` WRITE;
+/*!40000 ALTER TABLE `report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sales`
+--
+
+DROP TABLE IF EXISTS `sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales` (
+  `id` int NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `days` enum('Sundy','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday') DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `start_time` varchar(45) DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `end_time` varchar(45) DEFAULT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `hours` enum('06-12','12-18','18-00','00-06') DEFAULT NULL,
+  `region` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales`
+--
+
+LOCK TABLES `sales` WRITE;
+/*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `supply_report`
+--
+
+DROP TABLE IF EXISTS `supply_report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `supply_report` (
+  `current_stock` int NOT NULL,
+  `max_stock` int DEFAULT NULL,
+  PRIMARY KEY (`current_stock`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `supply_report`
+--
+
+LOCK TABLES `supply_report` WRITE;
+/*!40000 ALTER TABLE `supply_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `supply_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -105,19 +356,19 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `userName` varchar(128) NOT NULL,
+  `username` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `status` int NOT NULL,
-  `firstName` varchar(128) NOT NULL,
-  `lastName` varchar(128) NOT NULL,
+  `first_name` varchar(128) NOT NULL,
+  `last_name` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
-  `phoneNumber` varchar(128) NOT NULL,
-  `roleID` int NOT NULL,
+  `phone_number` varchar(128) NOT NULL,
+  `role_type` varchar(128) NOT NULL,
   `region` varchar(128) DEFAULT NULL,
+  `logged_in` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `userName_UNIQUE` (`userName`),
-  UNIQUE KEY `roleID_UNIQUE` (`roleID`)
+  UNIQUE KEY `userName_UNIQUE` (`username`),
+  UNIQUE KEY `roleID_UNIQUE` (`role_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,4 +390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-13 23:38:09
+-- Dump completed on 2022-12-17 11:08:27
