@@ -6,6 +6,7 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.ScreensNames;
+import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,22 +21,8 @@ public class HomePageController {
 
 ////--------------------------------
 
-	private String[] rolesStub;
 	private TooltipSetter tooltip;
-
-	protected class User {
-		private String role;
-		private String firstName = "Lidor", lastName = "Ankava";
-
-		public User(String role) {
-			this.role = role;
-		}
-
-		private String friendlyName() {
-			return role + " " + firstName + " " + lastName;
-
-		}
-	}
+	private UserEntity currentUser = NavigationStoreController.connectedUser;
 
 	//// --------------------------------
 	@FXML
@@ -67,40 +54,38 @@ public class HomePageController {
 		bottomBtn.setVisible(false);
 
 		// define stubs
-		rolesStub = new String[] { "CEO", "RegionManager", "Register" };
-		User ceo = new User("CEO");
-		User regionManager = new User("RegionManager");
-		User register = new User("Register");
-	
-
-		User selectedUser = register;
+//		User ceo = new User("CEO");
+//		User regionManager = new User("RegionManager");
+//		User register = new User("Register");
+//	
+//
+//		User selectedUser = register;
 		//User selectedUser = regionManager;
-		Image image=null ;
-
+		Image image=null;
 		// switch case by role
-		switch (selectedUser.role) {
+		switch (currentUser.getRole_type()) {
 		case "CEO":
-		case "Register":
-			setTopButton(selectedUser.role);
-			setMiddleButton(selectedUser.role);
+		case "registered":
+		case "subscribed":
+			setTopButton();
+			setMiddleButton();
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
-			
 			break;
 
 		case "RegionManager":
 			// CEO has 3 buttons.
-			setTopButton(selectedUser.role);
-			setMiddleButton(selectedUser.role);
-			setBottomButton(selectedUser.role);
+			setTopButton();
+			setMiddleButton();
+			setBottomButton();
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
 		default:
 			System.out.println("No role detected!");
 			break;
-		}
+		} 
 
-		welcomeLabel.setText("Welcome " + selectedUser.friendlyName() + "!");
+		welcomeLabel.setText("Welcome " + currentUser.friendlyName() + "!");
 		ImageView roleImg= new ImageView();
 		if (image!=null) {
 			roleImg.setImage(image);
@@ -123,8 +108,9 @@ public class HomePageController {
 //		bottomBtn.setMinWidth(200);
 //	}
 
-	private void setTopButton(String userRole) {
-		if (userRole.equals("Register")) {
+	private void setTopButton() {
+		String userRole = currentUser.getRole_type();
+		if (userRole.equals("registered")) {
 			topBtn.setText("Create New Order");
 			tooltip = new TooltipSetter("View the catalog and create a new order");
 			topBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -148,8 +134,9 @@ public class HomePageController {
 
 	}
 
-	private void setMiddleButton(String userRole) {
-		if (userRole.equals("Register")) {
+	private void setMiddleButton() {
+		String userRole = currentUser.getRole_type();
+		if (userRole.equals("registered")) {
 			middleBtn.setText("Collect An Order");
 			tooltip = new TooltipSetter("Collect any orders that are ready");
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,7 +168,7 @@ public class HomePageController {
 	
 
 	/// register and Manager share the same button.
-	private void setBottomButton(String userRole) {
+	private void setBottomButton() {
 		// ceo / manager etc
 		bottomBtn.setText("Supply Management");
 		tooltip = new TooltipSetter("Manage the available supply");
@@ -215,9 +202,14 @@ public class HomePageController {
 
 
 
+	/**
+	 * Log out from the system. sets the current user to null and changes the view
+	 * @param event
+	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
-		System.out.println("Im logout");
+		currentUser = null;
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
 
 	}
 

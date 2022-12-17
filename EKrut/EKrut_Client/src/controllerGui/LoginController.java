@@ -19,9 +19,11 @@ public class LoginController {
 
 	private final int usernameMaxLength = 16, usernameMinLength = 4;
 	private final int passwordMaxLength = 16, passwordMinLength = 4;
-	private static ClientController chat = HostClientController.chat;
+	private static ClientController chat = HostClientController.chat; // one instance
 	private static String username, password;
-
+	// those fields for server response
+	private static Boolean isValidDetails = null;
+	private static String returnedMsg = "";
 
 	@FXML
 	private Button loginBtn;
@@ -42,9 +44,8 @@ public class LoginController {
 		// validate
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
-		
-		
-		sendServerusernamePassword(new String[] {username, password});
+
+		sendServerusernamePassword(new String[] { username, password });
 		while (isValidDetails == null) { // wait for answer
 			try {
 				Thread.sleep(100);
@@ -53,16 +54,17 @@ public class LoginController {
 			}
 		}
 
-
-		if (isValidDetails)
+		if (isValidDetails) {
 			// Go to next screen (controller creates the screen)
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+		}
+
 		else
 			System.out.println(returnedMsg);
 	}
 
 	/**
-	 * return true if username and password are valid
+	 * return true if username and password are valid syntax and length
 	 * 
 	 * @return
 	 */
@@ -105,36 +107,41 @@ public class LoginController {
 
 	}
 
-	private static Boolean isValidDetails = null;
-	private static String returnedMsg = "";
-
-	public static void validInformation(UserEntity user) {
-		if(CommonFunctions.isNullOrEmpty(user.getUsername()))
-		{
+	/**
+	 * Validated the details of given user from server checks: User is not logged
+	 * in, user approved, and the username & password matches
+	 * 
+	 * @param user
+	 */
+	public static void validUserFromServer(UserEntity user) {
+		if (CommonFunctions.isNullOrEmpty(user.getUsername())
+				|| (user.getUsername().equals(username) && !user.getPassword().equals(password))) {
 			isValidDetails = false;
-			returnedMsg = "User name or password are invalid";
+			returnedMsg = "Username or Password are invalid"; // technically username doesn't exist but we don't want to
+																// show this
+			return;
 		}
-		
-		if(user.getUsername().equals(username) && user.getPassword().equals(password))
-		{
-			// good
-			isValidDetails = true;
-			returnedMsg = "Success";
-		}
-		
-		if(user.isLogged_in())
-		{
+
+		if (user.isLogged_in()) {
 			isValidDetails = false;
 			returnedMsg = "User is already logged in";
+			return;
 		}
-		
+
 		// user is approved ?
-		if(false) {
+		if (user.isNotApproved()) {
 			isValidDetails = false;
 			returnedMsg = "User is not approved yet";
+			return;
 		}
-		
-		
+
+		// got here - everything was good
+		isValidDetails = true;
+		returnedMsg = "Success";
+		user.setLogged_in(true);  // TODO: change in DB
+		NavigationStoreController.connectedUser = user; // set the current connected user to system
+		return;
+
 	}
 
 	private void sendServerusernamePassword(String[] usernamePassword) {

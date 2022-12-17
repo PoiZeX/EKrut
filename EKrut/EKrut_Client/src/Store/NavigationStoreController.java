@@ -9,6 +9,7 @@ import java.util.Stack;
 import common.MessageType;
 import common.ScreensNames;
 import controllerGui.HostClientController;
+import entity.UserEntity;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,7 +38,8 @@ public class NavigationStoreController {
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage;  // the main stage (window)
 	private ScreensNames[] isSkipped = {ScreensNames.HostClient,ScreensNames.HomePage, ScreensNames.Login};
-
+	public static UserEntity connectedUser;  // hold the current connected user
+	
 	/**
 	 * Constructor, creates the new instances
 	 */

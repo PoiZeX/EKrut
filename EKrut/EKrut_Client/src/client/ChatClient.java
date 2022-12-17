@@ -52,8 +52,12 @@ public class ChatClient extends AbstractClient {
 		}
 		// ---- Login
 		else if(msg instanceof UserEntity) {
-			LoginController.validInformation((UserEntity)msg);
+			LoginController.validUserFromServer((UserEntity)msg);
 		}
+		
+		// ---- Delivery
+		
+		
 	}
 
 	public void handleMessageFromClientUI(String message) {

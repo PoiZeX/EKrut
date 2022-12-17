@@ -6,6 +6,9 @@ import java.util.Objects;
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private String username, password, first_name, last_name, email, phone_number, role_type, region;
+	private boolean logged_in, isNotApproved;
+	private int id;
 
 	@Override
 	public String toString() {
@@ -13,14 +16,14 @@ public class UserEntity implements Serializable {
 	}
 
 	public UserEntity(String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type, String region) {
-		this(username, password, first_name, last_name, email, phone_number, role_type);
+			String phone_number, String role_type, String region, boolean logged_in, boolean isNotApproved) {
+		this(username, password, first_name, last_name, email, phone_number, role_type, logged_in, isNotApproved);
 
 		this.region = region;
 	}
 
 	public UserEntity(String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type) {
+			String phone_number, String role_type, boolean logged_in, boolean isNotApproved) {
 		this.username = username;
 		this.password = password;
 		this.first_name = first_name;
@@ -28,7 +31,12 @@ public class UserEntity implements Serializable {
 		this.email = email;
 		this.phone_number = phone_number;
 		this.role_type = role_type;
+		this.isNotApproved = isNotApproved;
 		this.logged_in = false;
+	}
+
+	public String friendlyName() {
+		return role_type + " " + first_name + " " + last_name;
 	}
 
 	@Override
@@ -128,8 +136,12 @@ public class UserEntity implements Serializable {
 		this.id = id;
 	}
 
-	private String username, password, first_name, last_name, email, phone_number, role_type, region;
-	private boolean logged_in;
-	private int id;
+	public boolean isNotApproved() {
+		return isNotApproved;
+	}
+
+	public void setNotApproved(boolean isApproved) {
+		this.isNotApproved = isApproved;
+	}
 
 }
