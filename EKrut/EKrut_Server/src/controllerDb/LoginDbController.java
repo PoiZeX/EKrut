@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import common.Message;
+import common.MessageType;
 import entity.SubscriberEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -40,7 +42,7 @@ public class LoginDbController {
 			// sql query //
 			UserEntity res = getUserFromDB();
 			try {
-				client.sendToClient(res);
+				client.sendToClient(new Message(MessageType.UserFromServerDB, res));
 				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -59,7 +61,6 @@ public class LoginDbController {
 			if (MySqlClass.getConnection() == null)
 				return user;
 			Connection conn = MySqlClass.getConnection();
-			//stmt = MySqlClass.getConnection().createStatement();
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE username=?;");
 			ps.setString(1, username);
 			ResultSet res = ps.executeQuery();

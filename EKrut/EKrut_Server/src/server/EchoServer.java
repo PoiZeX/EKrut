@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
+import common.Message;
 import common.MessageType;
 import controllerDb.LoginDbController;
 import entity.ConnectedClientEntity;
@@ -42,46 +42,23 @@ public class EchoServer extends AbstractServer {
 		this.DatabaseController = new DatabaseEntity(username, password, DBAddress);
 	}
 
+	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println(msg.getClass().getTypeName());
-		if (msg instanceof ArrayList) {
-			// i know its ArrayList of subscribers but TODO check this
-			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
-			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
-			return;
-		} 
-		else if(msg instanceof String[]) {
-			// got username and password
-			LoginDbController.getUserEntity((String[])msg, client);
-			return;
-		}
-		else if (msg instanceof MessageType) {
-			MessageType type = (MessageType) msg;
-			switch (type) {
-			case ClientConnect:
-				updateClientList(client, "Connect");
-				break;
-			case ClientDisconnect:
-				updateClientList(client, "Disconnect");
-				break;
-			case LoadSubscribers:
-				SubscribersDbController.getTable(client);
-				break;
-
-			default:
-				System.out.println("Message received: " + msg + " from " + client);
-				break;
+		if (msg instanceof String) {
+			System.out.println("Message received: " + msg + " from " + client);
+		} else if (msg instanceof Message) {
+			System.out.println("Message received: " + ((Message) msg).getTask().toString() + " from " + client);
+			try {
+				MessageHandlerServer.HandleMessage((Message) msg, client);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
 		}
-		
-		System.out.println("Message received: " + msg + " from " + client);
 		try {
 			client.sendToClient("Server done");
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
-
 	}
 
 	// Extract it from here later
@@ -110,4 +87,5 @@ public class EchoServer extends AbstractServer {
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
 	}
+
 }

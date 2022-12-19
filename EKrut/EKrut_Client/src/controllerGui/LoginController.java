@@ -6,6 +6,7 @@ import Store.NavigationStoreController;
 import client.ChatClient;
 import client.ClientController;
 import common.CommonFunctions;
+import common.Message;
 import common.MessageType;
 import common.ScreensNames;
 import entity.UserEntity;
@@ -146,8 +147,7 @@ public class LoginController {
 
 	private void sendServerusernamePassword(String[] usernamePassword) {
 		// username and password match
-
-		chat.acceptObj(usernamePassword);
+		chat.acceptObj(new Message(MessageType.LoginRequest, usernamePassword));
 		// not logged in
 
 		// is approved in manager

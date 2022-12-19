@@ -6,6 +6,7 @@ package client;
 import java.io.*;
 import client.*;
 import common.ChatIF;
+import common.Message;
 
 
 public class ClientController implements ChatIF {
@@ -34,9 +35,11 @@ public class ClientController implements ChatIF {
 
 	}
 
-	public void acceptObj(Object obj) {
-		client.handleMessageFromClient(obj);
+	public void acceptObj(Message msg) {
+		client.handleMessageFromClient(msg);
 	}
+	
+	
 	/**
 	 * This method overrides the method in the ChatIF interface. It displays a
 	 * message onto the screen.

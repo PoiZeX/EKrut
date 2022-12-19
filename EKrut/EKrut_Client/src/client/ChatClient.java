@@ -6,6 +6,7 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import common.Message;
 import common.MessageType;
 import controllerGui.LoginController;
 
@@ -32,32 +33,27 @@ public class ChatClient extends AbstractClient {
 
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-
-		// ---- Messages
-		if (msg instanceof MessageType) {
-			MessageType type = (MessageType) msg;
-			switch (type) {
-			case ServerDisconnect:
-				try {
-					sendToServer((Object) MessageType.ClientDisconnect);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
-				break;
-
-			default:
-				break;
+		Message msgFromServer = (Message) msg;
+		MessageType task = msgFromServer.getTask();
+		Object obj = msgFromServer.getObject();
+		// ---- Messages ---- //
+		switch (task) {
+		case ServerDisconnect:
+			try {
+				sendToServer((Object) MessageType.ClientDisconnect);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}
+			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
+			break;
 		// ---- Login
-		else if(msg instanceof UserEntity) {
-			LoginController.validUserFromServer((UserEntity)msg);
-		}
-		
+		case UserFromServerDB:
+			LoginController.validUserFromServer((UserEntity) obj);
 		// ---- Delivery
-		
-		
+		default:
+			break;
+		}
+
 	}
 
 	public void handleMessageFromClientUI(String message) {
@@ -80,7 +76,7 @@ public class ChatClient extends AbstractClient {
 		}
 	}
 
-	public void handleMessageFromClient(Object message) {
+	public void handleMessageFromClient(Message message) {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
