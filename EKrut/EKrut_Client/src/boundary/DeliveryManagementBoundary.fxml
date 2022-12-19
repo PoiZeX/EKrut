@@ -48,7 +48,7 @@
                     <columns>
                       <TableColumn fx:id="orderIdCol" prefWidth="86.0" text="Order Number" />
                       <TableColumn fx:id="costumerIdCol" prefWidth="74.0" text="CostumerID" />
-                        <TableColumn fx:id="adrressCol" prefWidth="214.0" text="Address" />
+                        <TableColumn fx:id="addressCol" prefWidth="214.0" text="Address" />
                         <TableColumn fx:id="estimatedTimeCol" prefWidth="152.0" text="Estimated delivery time" />
                         <TableColumn fx:id="actualTimeCol" prefWidth="158.0" text="Actual delivery date" />
                         <TableColumn fx:id="statusCol" prefWidth="175.0" text="Delivery Status" />

@@ -2,15 +2,16 @@ package controllerGui;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import client.ChatClient;
 import client.ClientController;
 import common.DeliveryStatus;
 import common.MessageType;
-import entity.AddressEntity;
 import entity.DeliveryEntity;
-import entity.SubscriberEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,8 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 
 public class DeliveryManagementController {
@@ -28,7 +29,7 @@ public class DeliveryManagementController {
     private TableColumn<DeliveryEntity, String> actualTimeCol;
 
     @FXML
-    private TableColumn<DeliveryEntity, AddressEntity> addressCol;
+    private TableColumn<DeliveryEntity, String> addressCol;
 
     @FXML
     private TableColumn<DeliveryEntity, Integer> costumerIdCol;
@@ -51,84 +52,119 @@ public class DeliveryManagementController {
     @FXML
     private TableColumn<DeliveryEntity, DeliveryStatus> statusCol;
 
-    ClientController chat = HostClientController.chat; // define the chat for the controller
-	private ArrayList<SubscriberEntity> changedSubscriberItems = new ArrayList<>();
+   // ClientController chat = HostClientController.chat; // define the chat for the controller
+	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
 
 	@FXML
 	// Setup screen before launching view
 	public void initialize() throws Exception {
-		refresh(null);
-		//setupTable(); // setup columns connection
+		//refresh(null);
+		DeliveryEntity e1=new DeliveryEntity(1, 1, "hapalmah 6 Karmiel", "25/12/22 12:00", "12/01/23",DeliveryStatus.pendingApproval);
+		DeliveryEntity e2=new DeliveryEntity(2, 2, "hapalmah 6 Karmiel", "23/12/22 12:00", "23/12/22 12:00",DeliveryStatus.outForDelivery);
+		ObservableList<DeliveryEntity> dl = FXCollections.observableArrayList(e1,e2);
+		deliveryTable.setItems(dl);
+		setupTable(); // setup columns connection
+		
 	}
-
+	//need to change
 	@FXML
 	private void refresh(ActionEvent event) {
-		if (ChatClient.subscribers != null)
-			ChatClient.subscribers.clear();
-		chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList from DB
-	}
+		/*
+		 * if (ChatClient.subscribers != null) ChatClient.subscribers.clear();
+		 * chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList
+		 * from DB
+		 */	}
 
 	@FXML
 	private void save(ActionEvent event) {
-		if (changedSubscriberItems.size() > 0) {
-			chat.acceptObj(changedSubscriberItems);
-			changedSubscriberItems.clear();
-		}
+		
+		/*
+		 * if (changedDeliveryItems.size() > 0) { chat.acceptObj(changedDeliveryItems);
+		 * changedDeliveryItems.clear(); }
+		 */
+		 
 
 	}
-	/*private void setupTable() {
-		usersTable.setEditable(true); // make table editable
-		usersTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-		if (ChatClient.subscribers == null)
-			return;
-		usersTable.setItems(ChatClient.subscribers);
+	
+	private void setupTable() {
+		deliveryTable.setEditable(true); // make table editable
+		deliveryTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+		//if (ChatClient.subscribers == null)
+		//	return;
+		//usersTable.setItems(ChatClient.subscribers);
 
 		// factory
-		idCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, Integer>("id"));
-		fnameCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("firstName"));
-		lnameCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("lastName"));
-		phoneCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("phoneNumber"));
-		emailCol.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("email"));
-		creditCol
-				.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("creditCardNumber"));
-		subscriberCol
-				.setCellValueFactory((Callback) new PropertyValueFactory<SubscriberEntity, String>("subscriberNumber"));
+		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
+		costumerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("costumerId"));
+		addressCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("address"));
+		estimatedTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
+		actualTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("actualTime"));
+		statusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatus>("status"));
+	
 
-		// define the editable cells
-		creditCol.setCellFactory(TextFieldTableCell.forTableColumn());
-		subscriberCol.setCellFactory(TextFieldTableCell.forTableColumn());
-
-		// define the event when submit / commit
-		// Handle subscriber credit card number change
-		creditCol.setOnEditCommit(new EventHandler<CellEditEvent<SubscriberEntity, String>>() {
+		// define the editable cells- delivery status
+		ObservableList<DeliveryStatus> statusLst = FXCollections.observableArrayList();
+		statusLst.addAll(DeliveryStatus.values());
+		statusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
+		
+		// Handle delivery status edit
+		statusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatus>>() {
 			@Override
-			public void handle(CellEditEvent<SubscriberEntity, String> event) {
-				SubscriberEntity subscriber = event.getRowValue();
-				subscriber.setCreditCardNumber(event.getNewValue());
-				if (!changedSubscriberItems.contains(subscriber))
-					changedSubscriberItems.add(subscriber);
-			}
-
-		});
-		// Handle subscriber number change
-		subscriberCol.setOnEditCommit(new EventHandler<CellEditEvent<SubscriberEntity, String>>() {
-			@Override
-			public void handle(CellEditEvent<SubscriberEntity, String> event) {
-				SubscriberEntity subscriber = event.getRowValue();
-				if (event.getNewValue() != null) {
-					// TODO check if not exists in the table
-					subscriber.setSubscriberNumber(event.getNewValue());
-
-				} else {
-					// TODO make null subscriber
-					subscriber.setSubscriberNumber(null);
+			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatus> event) {
+				DeliveryEntity deliveryEntity = event.getRowValue();
+				if(!deliveryEntity.equals(event.getNewValue())) {
+					deliveryEntity.setStatus(event.getNewValue());
+					//the delivery manager has confirmed the order
+					if(deliveryEntity.getStatus().equals(DeliveryStatus.outForDelivery)) {
+						deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
+						// TODO: send message to the costumer withe the EstimatedTime
+					}
 				}
-				if (!changedSubscriberItems.contains(subscriber))
-					changedSubscriberItems.add(subscriber);
+				if (!changedDeliveryItems.contains(deliveryEntity))
+					changedDeliveryItems.add(deliveryEntity);
 			}
+
 		});
 
-	}*/
+	}
+	
+	/*calculae the estimated delivery time
+	 * Between 6:00 to 16:00 the estimated arrival time is within 4 hours.
+	 * Between 00:00 to 06:00 the estimated arrival time is within 12 hours.
+	 * Between 16:00 to 00:00 the estimated arrival time is in the next day (about 18 hours).  */
+	
+	private String calculateEstimatedTime() {
+		 Calendar estimated = Calendar.getInstance();  
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+		 //System.out.println("estimated; "+estimated.getTime());
+		 
+		 Calendar fourPM = Calendar.getInstance();   
+		 fourPM.set(Calendar.HOUR_OF_DAY,16);
+		 fourPM.set(Calendar.MINUTE,0);
+		 
+		 //System.out.println("18:"+fourPM.getTime());
+		 
+		 Calendar sixAM = Calendar.getInstance();  
+		 sixAM.set(Calendar.HOUR_OF_DAY, 6);
+		 sixAM.set(Calendar.MINUTE,0);
+		 
+		 //System.out.println("6:"+sixAM.getTime());
+		
+		 if(estimated.after(fourPM)) {
+			 estimated.add(Calendar.DATE, 1);
+			 estimated.add(Calendar.HOUR, -6);
+		 }
+		 else if(estimated.before(sixAM)) {
+			 estimated.add(Calendar.HOUR, 12);
+		 }
+		 else {
+			 estimated.add(Calendar.HOUR, 4);
+		 }
+		 
+		 System.out.println(estimated.getTime());
+		return formatter.format(estimated.getTime());
+	
+	}
 
 
 }
