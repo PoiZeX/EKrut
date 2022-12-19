@@ -16,8 +16,8 @@ public enum MessageType {
 	UserNotApproved, 
 
 	// ----- SERVER SIDE ------ //
-	UserFromServerDB,
+	UserFromServerDB, 
 	
-
-	
+	// ---- CLIENT SIDE ------ //
+	RequestOrderReport,
 }

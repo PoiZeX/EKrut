@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import common.Message;
 import common.MessageType;
 import controllerDb.LoginDbController;
+import controllerDb.OrderReportDBController;
 import entity.SubscriberEntity;
 import ocsf.server.ConnectionToClient;
 
@@ -31,6 +32,8 @@ public class MessageHandler {
 		case LoadSubscribers:
 			SubscribersDbController.getTable(client);
 			break;
+		case RequestOrderReport:
+			OrderReportDBController.getOrderReportEntity((String[]) obj, client);
 		default:
 			System.out.println("Message received: " + msg + " from " + client);
 			break;

@@ -1,16 +1,16 @@
 package controllerGui;
 
-import java.util.HashMap;
+import java.util.Map;
 
+import entity.OrderReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Label;
 
 public class OrdersReportController {
 
@@ -18,44 +18,46 @@ public class OrdersReportController {
 	private PieChart pieChartOrders;
 	@FXML
 	private BarChart<String, Number> orderBarChart;
+    @FXML
+    private Label titleLabel;
+
+	
+	private static OrderReportEntity reportDetails;	
+	static boolean RecievedData = false;
 
 	public void initialize() {
-		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-				new PieChart.Data("Ort Brauda", 230), new PieChart.Data("Big Karmiel", 434),
-				new PieChart.Data("City hall", 388), new PieChart.Data("Psagot high-school", 234),
-				new PieChart.Data("Lev Karmiel mall", 152));
-		pieChartOrders.setData(pieChartData);
-
-		final CategoryAxis xAxis = new CategoryAxis();
-		final NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("Machine name");
-		yAxis.setLabel("Profit (in K)");
-		HashMap<String, Number> map = new HashMap<>();
-		map.put("Big Karmiel", 44);
-		map.put("Ort Brauda", 25);
-		map.put("City hall", 34);
-		map.put("Psagot high-school", 20);
-		map.put("Lev Karmiel mall", 14);
-
-		for (String key : map.keySet()) {
-			//was var
-			Series a = new XYChart.Series();
-			a.setName(key);
-			a.getData().add(new XYChart.Data(key, map.get(key)));
-			orderBarChart.getData().addAll(a);
-
+		titleLabel.setText("Orders Report : " + reportDetails.getRegion());
+		while (!RecievedData) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		initCharts();
+		return;
+	}
 
-//         
-//         
-//    	 ObservableList<BarChart.Data> orderBarChart =
-// 	            FXCollections.observableArrayList(
-// 	            new PieChart.Data("Ort Brauda", 25),
-// 	            new PieChart.Data("Big Karmiel", 44),
-// 	            new PieChart.Data("City hall",34),
-// 	 			new PieChart.Data("Psagot high-school", 20),
-// 	 			new PieChart.Data("Lev Karmiel mall", 14));
-// 	 pieChartOrders1.setData(pieChartData1);
+	public static void recieveDataFromServer(OrderReportEntity report) {
+		reportDetails = report;
+		RecievedData = true;
+		return;
+	}
+
+	private void initCharts() {
+		// TODO Verify array
+		Map<String,Double[]> itemsMap = reportDetails.getReportsList();
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+		for (String key : reportDetails.getReportsList().keySet()) {
+			pieChartData.add(new PieChart.Data(key, itemsMap.get(key)[0]));	
+			Series a = new Series();
+			a.setName(key);
+			a.getData().add(new XYChart.Data(key, itemsMap.get(key)[1]));
+			orderBarChart.getData().addAll(a);
+		}			
+		orderBarChart.getXAxis().setLabel("Machine Name");
+		orderBarChart.getYAxis().setLabel("Profit (in K)");
+		pieChartOrders.setData(pieChartData);	
 	}
 
 }

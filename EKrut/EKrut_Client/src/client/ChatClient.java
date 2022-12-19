@@ -9,10 +9,12 @@ import common.ChatIF;
 import common.Message;
 import common.MessageType;
 import controllerGui.LoginController;
+import controllerGui.OrdersReportController;
 
 import java.io.*;
 
 import Store.NavigationStoreController;
+import entity.OrderReportEntity;
 import entity.SubscriberEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
@@ -50,6 +52,9 @@ public class ChatClient extends AbstractClient {
 		// ---- Login
 		case UserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
+			break;
+		case RequestOrderReport:
+			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 		// ---- Delivery
 		default:
 			break;
