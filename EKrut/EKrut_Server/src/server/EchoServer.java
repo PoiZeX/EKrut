@@ -69,8 +69,14 @@ public class EchoServer extends AbstractServer {
 			case LoadSubscribers:
 				SubscribersDbController.getTable(client);
 				break;
+
 			case LoadDeliveries:
 				DeliveryManagementDBController.getTable(client);
+
+			case LoadItems:
+				ItemDbController.sendImgToClient(client);
+				break;
+
 			default:
 				System.out.println("Message received: " + msg + " from " + client);
 				break;

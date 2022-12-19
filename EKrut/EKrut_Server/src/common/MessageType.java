@@ -5,5 +5,7 @@ public enum MessageType {
 	ClientDisconnect,
 	ServerDisconnect,
 	LoadSubscribers,
-	LoadDeliveries
+	LoadDeliveries,
+	LoadItems
+
 }
