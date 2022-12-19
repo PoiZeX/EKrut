@@ -36,6 +36,7 @@ public class ChatClient extends AbstractClient {
 		Message msgFromServer = (Message) msg;
 		MessageType task = msgFromServer.getTask();
 		Object obj = msgFromServer.getObject();
+		
 		// ---- Messages ---- //
 		switch (task) {
 		case ServerDisconnect:

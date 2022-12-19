@@ -9,9 +9,9 @@ import controllerDb.LoginDbController;
 import entity.SubscriberEntity;
 import ocsf.server.ConnectionToClient;
 
-public class MessageHandlerServer {
+public class MessageHandler {
 
-	public static void HandleMessage(Message msg, ConnectionToClient client) throws IOException {
+	public static void Handle(Message msg, ConnectionToClient client) throws IOException {
 		MessageType task = msg.getTask();
 		Object obj = msg.getObject();
 		switch (task) {

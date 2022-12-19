@@ -49,7 +49,7 @@ public class EchoServer extends AbstractServer {
 		} else if (msg instanceof Message) {
 			System.out.println("Message received: " + ((Message) msg).getTask().toString() + " from " + client);
 			try {
-				MessageHandlerServer.HandleMessage((Message) msg, client);
+				MessageHandler.Handle((Message) msg, client);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
