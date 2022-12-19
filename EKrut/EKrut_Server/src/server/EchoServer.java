@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import common.MessageType;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
+import entity.DeliveryEntity;
 import entity.SubscriberEntity;
+import controllerDb.DeliveryManagementDBController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
@@ -42,10 +44,19 @@ public class EchoServer extends AbstractServer {
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		if (msg==null) {
+			return;
+		}
+		
 		if (msg instanceof ArrayList) {
-			// i know its ArrayList of subscribers but TODO check this
+			//if its DeliveryEntity ArrayList
+			if(((ArrayList<Object>)msg).get(0).getClass().equals(DeliveryEntity.class)) {
+				ArrayList<DeliveryEntity> deliveryLst = (ArrayList<DeliveryEntity>) msg;
+				DeliveryManagementDBController.updateDeliveryEntities(client,deliveryLst);
+			}
 			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
 			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
+			// i know its ArrayList of subscribers but TODO check this
 		} else if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;
 			switch (type) {
@@ -58,7 +69,8 @@ public class EchoServer extends AbstractServer {
 			case LoadSubscribers:
 				SubscribersDbController.getTable(client);
 				break;
-
+			case LoadDeliveries:
+				DeliveryManagementDBController.getTable(client);
 			default:
 				System.out.println("Message received: " + msg + " from " + client);
 				break;

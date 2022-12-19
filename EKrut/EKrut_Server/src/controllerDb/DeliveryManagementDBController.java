@@ -14,7 +14,7 @@ import ocsf.server.ConnectionToClient;
 public class DeliveryManagementDBController {
 	
 	/*update delivery status*/
-	protected static void updateDeliveryEntities(ConnectionToClient client, ArrayList<DeliveryEntity> delivaryLst) {
+	public static void updateDeliveryEntities(ConnectionToClient client, ArrayList<DeliveryEntity> delivaryLst) {
 		Statement stmt;
 		try {
 			if (MySqlClass.getConnection() == null)
@@ -35,7 +35,7 @@ public class DeliveryManagementDBController {
 	}
 
 	// 
-	protected static void getTable(ConnectionToClient client) {
+	public static void getTable(ConnectionToClient client) {
 		Statement stmt;
 		DeliveryEntity deliveryEntity;
 		try {
