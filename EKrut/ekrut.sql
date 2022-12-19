@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `ekrut` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ekrut`;
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: localhost    Database: ekrut
+-- Host: 127.0.0.1    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -77,10 +75,15 @@ DROP TABLE IF EXISTS `deliveries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deliveries` (
-  `estimated_time` int unsigned NOT NULL,
-  `status` enum('pendingApproval','outForDelivery','delivered','canceled') DEFAULT NULL,
+  `order_id` int NOT NULL,
+  `customer_id` int DEFAULT NULL,
+  `city` varchar(128) DEFAULT NULL,
+  `address` varchar(128) DEFAULT NULL,
+  `estimated_time` varchar(128) NOT NULL,
+  `actual_time` varchar(128) DEFAULT NULL,
   `arrival_status` enum('late','onTime') DEFAULT NULL,
-  PRIMARY KEY (`estimated_time`)
+  `deilvery_status` enum('pendingApproval','outForDelivery','delivered','canceled') DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,9 +106,7 @@ DROP TABLE IF EXISTS `delivery_address`;
 CREATE TABLE `delivery_address` (
   `city` varchar(45) NOT NULL,
   `street` varchar(45) DEFAULT NULL,
-  `zipcode` varchar(45) DEFAULT NULL,
   `house_num` int DEFAULT NULL,
-  `floor` int DEFAULT NULL,
   `apparetment_num` int DEFAULT NULL,
   PRIMARY KEY (`city`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -390,4 +391,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-17 11:08:27
+-- Dump completed on 2022-12-18 16:34:20
