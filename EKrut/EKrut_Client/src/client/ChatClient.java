@@ -8,8 +8,10 @@ import common.ChatIF;
 import common.MessageType;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import Store.NavigationStoreController;
+import entity.ItemEntity;
 import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +20,7 @@ public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
 	public static ObservableList<SubscriberEntity> subscribers;
+
 	public static boolean awaitResponse = false;
 
 
@@ -33,6 +36,9 @@ public class ChatClient extends AbstractClient {
 		if(msg instanceof SubscriberEntity) {
 			subscribers.add((SubscriberEntity)msg);
 		}
+		if(msg instanceof ItemEntity) {
+			ItemsController.getItemsFromServer((ItemEntity)msg);
+		}
 		else if(msg instanceof MessageType)
 		{
 			MessageType type = (MessageType) msg;
@@ -45,10 +51,12 @@ public class ChatClient extends AbstractClient {
 				}
 				NavigationStoreController.closeAllScreens();  // force closing since server is disconnected
 				break;
-			
 			}
 		}
 	}
+
+
+
 
 	public void handleMessageFromClientUI(String message) {
 		try {
@@ -116,4 +124,5 @@ public class ChatClient extends AbstractClient {
 		return ChatClient.subscribers;
 	}
 	
+
 }
