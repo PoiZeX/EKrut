@@ -45,12 +45,7 @@ public class ReportSelectionController {
     @FXML
     void viewReport(ActionEvent event) {
     	errorMsgLabel.setText(validateFields());
-    	if (selectedReport == "ordersReport") {
-    		Store.NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
-    	}
-    	if (selectedReport == "supplyReport") {
-    		Store.NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
-    	}
+    	
     }
      
     public void initialize() {

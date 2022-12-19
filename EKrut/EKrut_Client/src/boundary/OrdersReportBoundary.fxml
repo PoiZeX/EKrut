@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
    <center>
       <HBox BorderPane.alignment="CENTER">
          <children>
             <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="548.0" prefWidth="422.0" stylesheets="@../styles/css/generalStyleSheet.css">
               <xAxis>
-                <CategoryAxis label="by sales" prefHeight="37.0" prefWidth="343.0" side="TOP" styleClass="Label" tickMarkVisible="false">
+                <CategoryAxis label="By Sales" prefHeight="37.0" prefWidth="343.0" side="TOP" styleClass="Label" tickMarkVisible="false">
                      <tickLabelFont>
                         <Font size="1.0" />
                      </tickLabelFont>
@@ -37,7 +37,7 @@
                   <Insets />
                </HBox.margin>
             </BarChart>
-            <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="by orders numbers">
+            <PieChart fx:id="pieChartOrders" layoutX="10.0" layoutY="10.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" title="By Order Numbers">
                <HBox.margin>
                   <Insets top="15.0" />
                </HBox.margin></PieChart>

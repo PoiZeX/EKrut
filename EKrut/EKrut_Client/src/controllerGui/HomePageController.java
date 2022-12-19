@@ -149,7 +149,7 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					if (userRole.equals("RegionManager")) {
+					if (userRole.equals("regionManager")) {
 						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); // not
 																												// working
 																												// yet
@@ -178,23 +178,6 @@ public class HomePageController {
 		});
 		bottomBtn.setTooltip(tooltip.getTooltip());
 		bottomBtn.setVisible(true);
-	}
-
-	@FXML
-	private void bottomBtnAction(ActionEvent event) {
-		System.out.println("Im bottom");
-	}
-
-	@FXML
-	private void middleBtnAction(ActionEvent event) {
-		System.out.println("Im middle");
-
-	}
-
-	@FXML
-	private void topBtnAction(ActionEvent event) {
-		System.out.println("Im top");
-
 	}
 
 	/**
