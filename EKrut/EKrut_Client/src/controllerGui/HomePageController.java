@@ -54,7 +54,6 @@ public class HomePageController {
 		topBtn.setVisible(false);
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
-
 		Image image = null;
 
 		// switch case by role
@@ -66,7 +65,7 @@ public class HomePageController {
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			break;
 
-		case "CEO":
+		case "ceo":
 		case "regionManager":
 			// CEO has 3 buttons.
 			setTopButton();
@@ -149,10 +148,10 @@ public class HomePageController {
 			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					if (userRole.equals("RegionManager")) {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); // not
-																												// working
-																												// yet
+					if (userRole.equals("regionManager")) {
+						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); 
+																												
+																												
 					} else {
 						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CEOReportSelection);
 					}
