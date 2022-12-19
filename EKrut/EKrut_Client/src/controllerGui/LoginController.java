@@ -26,7 +26,7 @@ public class LoginController {
     @FXML
     void loginBtnAction(ActionEvent event) {
     	// Go to next screen (controller creates the screen)
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.DeliveryManagement);
     	//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection);
 
     }
