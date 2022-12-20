@@ -4,8 +4,6 @@
 
 package controllerGui;
 
-import java.sql.Date;
-
 import Store.NavigationStoreController;
 import common.ScreensNames;
 import entity.UserEntity;
