@@ -52,8 +52,9 @@ public class DeliveryManagementDBController {
 			while (rs.next()) {
 				System.out.println("deliveryEntity id/n");
 				System.out.println(rs.getInt(1));
+				DeliveryStatus status = DeliveryStatus.valueOf(rs.getString(6));
 				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), (DeliveryStatus)(rs.getObject(6)));
+						rs.getString(5), status);
 				System.out.println(deliveryEntity.getOrderId());
 				System.out.println(deliveryEntity.getAddress());
 				System.out.println(deliveryEntity.getStatus());
