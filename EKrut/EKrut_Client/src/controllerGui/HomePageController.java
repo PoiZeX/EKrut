@@ -4,6 +4,8 @@
 
 package controllerGui;
 
+import java.sql.Date;
+
 import Store.NavigationStoreController;
 import common.ScreensNames;
 import entity.UserEntity;
@@ -55,27 +57,26 @@ public class HomePageController {
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
 		Image image = null;
-
 		// switch case by role
 		switch (currentUser.getRole_type()) {
 		case "registered":
 		case "subscribed":
-			setTopButton();
-			setMiddleButton();
+			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			break;
 
 		case "ceo":
 		case "regionManager":
 			// CEO has 3 buttons.
-			setTopButton();
-			setMiddleButton();
-			setBottomButton();
+			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
+			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
+			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyReport);
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
 		default:
-			System.out.println("No role detected!");
+			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
 		}
 
@@ -93,107 +94,28 @@ public class HomePageController {
 		// updateButtonsSize();
 	}
 
-//	// updates the buttons width by the max width
-//	// bug here
-//	private void updateButtonsSize() {
-//		double maxWidth = 0;
-//		maxWidth = topBtn.getPrefWidth() > middleBtn.getPrefWidth() ? topBtn.getPrefWidth() : middleBtn.getPrefWidth();
-//		maxWidth = maxWidth > bottomBtn.getPrefWidth() ? maxWidth : bottomBtn.getPrefWidth();
-//		topBtn.setMinWidth(200);
-//		middleBtn.setMinWidth(200);
-//		bottomBtn.setMinWidth(200);
-//	}
-
-	private void setTopButton() {
-		String userRole = currentUser.getRole_type();
-		if (userRole.equals("registered")) {
-			topBtn.setText("Create New Order");
-			tooltip = new TooltipSetter("View the catalog and create a new order");
-			topBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
-				}
-			});
-		} else {
-			topBtn.setText("Approve Users");
-			tooltip = new TooltipSetter("View, manage and approve users");
-			topBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.UsersManagement);
-				}
-			});
-		}
-		topBtn.setTooltip(tooltip.getTooltip());
-		topBtn.setVisible(true);
-
-	}
-
-	private void setMiddleButton() {
-		String userRole = currentUser.getRole_type();
-		if (userRole.equals("registered")) {
-			middleBtn.setText("Collect An Order");
-			tooltip = new TooltipSetter("Collect any orders that are ready");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					// NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CollectOrder);
-					// // not working yet
-				}
-			});
-		} else {
-			middleBtn.setText("View Reports");
-			tooltip = new TooltipSetter("View the current monthly reports");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					if (userRole.equals("regionManager")) {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); 
-																												
-																												
-					} else {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CEOReportSelection);
-					}
-				}
-			});
-		}
-		middleBtn.setTooltip(tooltip.getTooltip());
-		middleBtn.setVisible(true);
-
-	}
-
-	/// register and Manager share the same button.
-	private void setBottomButton() {
-		// ceo / manager etc
-		bottomBtn.setText("Supply Management");
-		tooltip = new TooltipSetter("Manage the available supply");
-
-		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
+	/**
+	 * Generic method to handle buttons setup according to button text, tooltip and
+	 * the screen to go to
+	 * 
+	 * @param <T>
+	 * @param btn
+	 * @param btnText
+	 * @param tooltiptext
+	 * @param scName
+	 */
+	private <T extends Button> void setBtn(T btn, String btnText, String tooltiptext, ScreensNames scName) {
+		btn.setText(btnText);
+		tooltip = new TooltipSetter(tooltiptext);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+				if (scName != null)
+					NavigationStoreController.getInstance().setCurrentScreen(scName);
 			}
 		});
-		bottomBtn.setTooltip(tooltip.getTooltip());
-		bottomBtn.setVisible(true);
-	}
-
-	@FXML
-	private void bottomBtnAction(ActionEvent event) {
-		System.out.println("Im bottom");
-	}
-
-	@FXML
-	private void middleBtnAction(ActionEvent event) {
-		System.out.println("Im middle");
-
-	}
-
-	@FXML
-	private void topBtnAction(ActionEvent event) {
-		System.out.println("Im top");
-
+		btn.setTooltip(tooltip.getTooltip());
+		btn.setVisible(true);
 	}
 
 	/**

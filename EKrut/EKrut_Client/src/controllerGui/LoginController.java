@@ -3,10 +3,8 @@ package controllerGui;
 import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
-import client.ChatClient;
 import client.ClientController;
 import common.CommonFunctions;
-import common.MessageType;
 import common.ScreensNames;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
