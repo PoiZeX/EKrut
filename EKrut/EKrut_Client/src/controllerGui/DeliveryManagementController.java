@@ -85,7 +85,7 @@ public class DeliveryManagementController {
 		  if (changedDeliveryItems.size() > 0) {
 			  chat.acceptObj(changedDeliveryItems);
 			  changedDeliveryItems.clear(); 
-			  }
+			}
 		 
 
 	}

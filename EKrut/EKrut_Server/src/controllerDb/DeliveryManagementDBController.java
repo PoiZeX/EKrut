@@ -1,6 +1,8 @@
 package controllerDb;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,16 +19,23 @@ public class DeliveryManagementDBController {
 	public static void updateDeliveryEntities(ConnectionToClient client, ArrayList<DeliveryEntity> delivaryLst) {
 		Statement stmt;
 		try {
-			if (MySqlClass.getConnection() == null)
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
 				return;
 
 			stmt = MySqlClass.getConnection().createStatement();
 			for (DeliveryEntity delivery : delivaryLst) {
 				// TODO change this to another build method as we learned with question mark
 				// (?)...
-				
-				stmt.executeUpdate("UPDATE ekrut.deliveries SET deilvery_status=\"" + delivery.getStatus()
-						+ "\" WHERE id=" + delivery.getOrderId() + ";");
+				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.deliveries SET estimated_time=(?), actual_time=(?), "
+						+ "deilvery_status=(?) WHERE order_id=(?);");
+				ps.setString(1, delivery.getEstimatedTime());
+				ps.setString(2, delivery.getActualTime());
+				ps.setString(3, delivery.getStatus().toString());
+				ps.setInt(4, delivery.getOrderId());
+				ps.executeUpdate();
+				//stmt.executeUpdate("UPDATE ekrut.deliveries SET deilvery_status=\"" + delivery.getStatus().toString()
+						//+ "\" WHERE order_id=" + delivery.getOrderId() + ";");
 
 			}
 
@@ -37,7 +46,6 @@ public class DeliveryManagementDBController {
 
 	// 
 	public static void getTable(ConnectionToClient client) {
-		System.out.println("getTable /n");
 		Statement stmt;
 		DeliveryEntity deliveryEntity;
 		try {
@@ -46,18 +54,12 @@ public class DeliveryManagementDBController {
 				return;
 			}
 			stmt = (MySqlClass.getConnection()).createStatement();
-			System.out.println(stmt==null);
 			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.deliveries;");
 			
 			while (rs.next()) {
-				System.out.println("deliveryEntity id/n");
-				System.out.println(rs.getInt(1));
 				DeliveryStatus status = DeliveryStatus.valueOf(rs.getString(6));
 				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), status);
-				System.out.println(deliveryEntity.getOrderId());
-				System.out.println(deliveryEntity.getAddress());
-				System.out.println(deliveryEntity.getStatus());
 				try {
 					client.sendToClient(deliveryEntity); // finally send the entity
 				} catch (IOException e) {

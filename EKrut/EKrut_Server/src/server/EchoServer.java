@@ -54,8 +54,8 @@ public class EchoServer extends AbstractServer {
 				ArrayList<DeliveryEntity> deliveryLst = (ArrayList<DeliveryEntity>) msg;
 				DeliveryManagementDBController.updateDeliveryEntities(client,deliveryLst);
 			}
-			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
-			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
+			//ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
+			//SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
 			// i know its ArrayList of subscribers but TODO check this
 		} else if (msg instanceof MessageType) {
 			MessageType type = (MessageType) msg;
