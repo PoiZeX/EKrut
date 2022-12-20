@@ -7,6 +7,7 @@ import common.Message;
 import common.TaskType;
 import controllerDb.LoginDbController;
 import controllerDb.OrderReportDBController;
+import controllerDb.SupplyReportDBController;
 import entity.SubscriberEntity;
 import ocsf.server.ConnectionToClient;
 
@@ -34,14 +35,20 @@ public class MessageHandler {
 		case LoadSubscribers:
 			SubscribersDbController.getTable(client);
 			break;
+		// There are similiar, should think about merging //
 		case RequestOrderReport:
 			OrderReportDBController.getOrderReportEntity((String[]) obj, client);
 			break;
+		case RequestSupplyReport:
+			SupplyReportDBController.getSupplyReportEntity((String[]) obj, client);
+			break;
+//		case RequestClientReport:
+//			ClientReportDBController.getClientReportEntity((String[]) obj, client);
+//			break;
+		//****************//
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;
 		}
-
 	}
-
 }

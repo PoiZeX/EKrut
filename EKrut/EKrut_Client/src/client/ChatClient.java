@@ -11,12 +11,14 @@ import common.TaskType;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.ReportSelectionController;
+import controllerGui.SupplyReportController;
 
 import java.io.*;
 
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.SubscriberEntity;
+import entity.SupplyReportEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,11 +58,13 @@ public class ChatClient extends AbstractClient {
 			break;
 		case RequestOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity)obj);
+			break;
+		case RequestSupplyReport:
+			SupplyReportController.recieveDataFromServer((SupplyReportEntity)obj);
 		// ---- Delivery
 		default:
 			break;
 		}
-
 	}
 
 	public void handleMessageFromClientUI(String message) {

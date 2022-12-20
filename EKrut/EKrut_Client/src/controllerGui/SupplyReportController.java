@@ -1,7 +1,12 @@
 package controllerGui;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import client.ChatClient;
+import entity.OrderReportEntity;
 import entity.SubscriberEntity;
+import entity.SupplyReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -38,7 +43,10 @@ public class SupplyReportController {
 
 	@FXML
 	private TableView<item_supply> supplyMachineTbl;
-
+	
+	protected static SupplyReportEntity reportDetails;	
+	protected static boolean RecievedData = false;
+	
 	public class item_supply {
 		private int itemIDCol, startAmountCol, currentAmountCol, minAmountCol;
 		private String nameCol;
@@ -93,13 +101,27 @@ public class SupplyReportController {
 		}
 
 	}
-
+	
+	public static void recieveDataFromServer(SupplyReportEntity report) {
+		reportDetails = report;
+		RecievedData = true;
+		return;
+	}
+	
 	public void initialize() {
 		supplyMachineTbl.setVisible(false);
-
-		ObservableList<item_supply> ol = FXCollections.observableArrayList(new item_supply(1, 100, 50, 20, "Kif-Kef"),
-				new item_supply(2, 84, 12, 30, "Bamba"), // ---- RED MARK ----
-				new item_supply(3, 67, 44, 10, "Bissli"), new item_supply(4, 40, 3, 2, "Grape Water"));
+		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
+		ObservableList<item_supply> ol = FXCollections.observableArrayList();
+		for (int i = 0; i < itemsArray.size(); i++) {
+			ol.add(new item_supply(
+					Integer.parseInt(itemsArray.get(i)[0]),
+					Integer.parseInt(itemsArray.get(i)[1]),
+					Integer.parseInt(itemsArray.get(i)[2]),
+					Integer.parseInt(itemsArray.get(i)[3]),
+					itemsArray.get(i)[4]
+					)
+			);
+		}
 		supplyMachineTbl.setItems(ol);
 		setupTable();
 
@@ -127,17 +149,14 @@ public class SupplyReportController {
 
 			}
 		});
-
 	}
 
 	private void setupTable() {
-
 		// factory
 		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("currentAmountCol"));
 		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("itemIDCol"));
 		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("minAmountCol"));
 		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, String>("nameCol"));
 		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("startAmountCol"));
-
 	}
 }

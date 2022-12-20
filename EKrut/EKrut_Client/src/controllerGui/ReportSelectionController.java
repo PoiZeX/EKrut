@@ -55,15 +55,17 @@ public class ReportSelectionController {
     		String year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
     		switch (getSelectedReport()) {
     		case "supplyReport":
+    			chat.acceptObj(new Message(TaskType.RequestSupplyReport, new String[] {month, year} ));
+    			checkReportData();
     			break;
     		case "ordersReport":
-    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month,year} ));
+    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month, year} ));
     			checkReportData();
+    			break;
     		case "clientsReport":
     			break;
     		}
     	}
-    	
     }
 
 	private void checkReportData() {
