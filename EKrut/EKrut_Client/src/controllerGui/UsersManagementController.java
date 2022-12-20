@@ -97,15 +97,16 @@ public class UsersManagementController {
     }
     
     private void initTable() {
-    	customerIdCol
-    	IdCol
-    	firstNameCol
-    	lastNameCol
-    	phoneNumberCol
-    	emailCol
-    	creditCardNumberCol
-    	subscriberIdCol
-        approveCol
+    	//recieving arraylist of userentitys need to setup table.
+//    	customerIdCol
+//    	IdCol
+//    	firstNameCol
+//    	lastNameCol
+//    	phoneNumberCol
+//    	emailCol
+//    	creditCardNumberCol
+//    	subscriberIdCol
+//      approveCol
 //		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("currentAmountCol"));
 //		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("itemIDCol"));
 //		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("minAmountCol"));
