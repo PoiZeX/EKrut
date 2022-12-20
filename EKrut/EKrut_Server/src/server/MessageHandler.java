@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
-import controllerDb.LoginDbController;
+import controllerDb.LoginDBController;
 import controllerDb.OrderReportDBController;
+import controllerDb.UsersManagementDBController;
 import entity.SubscriberEntity;
 import ocsf.server.ConnectionToClient;
 
@@ -22,9 +23,6 @@ public class MessageHandler {
 			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) obj;
 			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
 			break;
-		case LoginRequest:
-			LoginDbController.getUserEntity((String[]) obj, client);
-			break;
 		case ClientConnect:
 			EchoServer.updateClientList(client, "Connect");
 			break;
@@ -37,6 +35,11 @@ public class MessageHandler {
 		case RequestOrderReport:
 			OrderReportDBController.getOrderReportEntity((String[]) obj, client);
 			break;
+		case RequestUserFromDB:
+			LoginDBController.getUserEntity((String[]) obj, client);
+			break;
+		case RequestUnapprovedUsers:
+			UsersManagementDBController.getUnapprovedUsersEntity(client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

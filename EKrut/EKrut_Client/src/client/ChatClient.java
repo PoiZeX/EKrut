@@ -51,10 +51,10 @@ public class ChatClient extends AbstractClient {
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
 		// ---- Login
-		case UserFromServerDB:
+		case RecieveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
-		case RequestOrderReport:
+		case RecieveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity)obj);
 		// ---- Delivery
 		default:

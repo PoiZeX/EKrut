@@ -6,7 +6,7 @@ import java.util.Objects;
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String username, password, first_name, last_name, email, phone_number, role_type, region;
+	private String username, password, first_name, last_name, email, phone_number, role_type, region, cc_num;
 	private boolean logged_in, isNotApproved;
 	private int id;
 
@@ -14,16 +14,17 @@ public class UserEntity implements Serializable {
 	public String toString() {
 		return username;
 	}
-
+	public UserEntity() {
+		this("","","","","","","","","", false, false);
+	}
 	public UserEntity(String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type, String region, boolean logged_in, boolean isNotApproved) {
-		this(username, password, first_name, last_name, email, phone_number, role_type, logged_in, isNotApproved);
-
+			String phone_number, String role_type, String region, String cc_num, boolean logged_in, boolean isNotApproved) {
+		this(username, password, first_name, last_name, email, phone_number, role_type, cc_num, logged_in, isNotApproved);
 		this.region = region;
 	}
 
 	public UserEntity(String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type, boolean logged_in, boolean isNotApproved) {
+			String phone_number, String role_type, String cc_num, boolean logged_in, boolean isNotApproved) {
 		this.username = username;
 		this.password = password;
 		this.first_name = first_name;
@@ -32,7 +33,9 @@ public class UserEntity implements Serializable {
 		this.phone_number = phone_number;
 		this.role_type = role_type;
 		this.isNotApproved = isNotApproved;
+		this.cc_num = cc_num;
 		this.logged_in = false;
+		this.isNotApproved = isNotApproved;
 	}
 
 	@Override
@@ -138,6 +141,10 @@ public class UserEntity implements Serializable {
 
 	public void setNotApproved(boolean isApproved) {
 		this.isNotApproved = isApproved;
+	}
+	
+	public String fullName() {
+		return first_name + " " + last_name;
 	}
 
 }

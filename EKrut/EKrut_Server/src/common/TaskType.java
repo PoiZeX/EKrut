@@ -9,15 +9,19 @@ public enum TaskType {
 	EditSubscribers,
 	
 	// Login Enums //
-	LoginRequest,
+	RequestUserFromDB,
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
 	UserIsLoggedIn,
 	UserNotApproved, 
 
 	// ----- SERVER SIDE ------ //
-	UserFromServerDB, 
+	RequestUserFromServerDB, 
+	RecieveUserFromServerDB,
 	
 	// ---- CLIENT SIDE ------ //
 	RequestOrderReport,
+	RecieveOrderReport,
+	RequestUnapprovedUsers, 
+	RecieveUnapprovedUsers,
 }
