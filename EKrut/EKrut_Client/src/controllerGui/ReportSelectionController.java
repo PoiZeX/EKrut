@@ -56,7 +56,11 @@ public class ReportSelectionController {
     		case "supplyReport":
     			break;
     		case "ordersReport":
-    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month,year} ));
+    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month, year} ));
+    			// add while on RecievedData
+    			// check if valid data
+    			// if yes go next
+    			// else error popup
     			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
     			break;
     		case "clientsReport":
