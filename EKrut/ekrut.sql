@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `ekrut` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ekrut`;
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ekrut
@@ -181,9 +179,9 @@ DROP TABLE IF EXISTS `machines`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `machines` (
   `machine_id` int NOT NULL,
-  `region` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
   `address` varchar(45) NOT NULL,
+  `region_name` varchar(45) NOT NULL,
+  `region_id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`machine_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -253,9 +251,12 @@ DROP TABLE IF EXISTS `orders_report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders_report` (
-  `order_id` int NOT NULL,
-  `sum` int DEFAULT NULL,
-  PRIMARY KEY (`order_id`)
+  `id` int NOT NULL,
+  `description` varchar(300) DEFAULT NULL,
+  `month` varchar(45) DEFAULT NULL,
+  `year` varchar(45) DEFAULT NULL,
+  `region` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -265,6 +266,7 @@ CREATE TABLE `orders_report` (
 
 LOCK TABLES `orders_report` WRITE;
 /*!40000 ALTER TABLE `orders_report` DISABLE KEYS */;
+INSERT INTO `orders_report` VALUES (0,'City Hall,20,30,Big Karmiel,40,20,Ort Braude,17,21,Lev Karmiel,129,25','01','2022','KARMIEL'),(1,'','02','2021','KARMIEL');
 /*!40000 ALTER TABLE `orders_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,9 +334,15 @@ DROP TABLE IF EXISTS `supply_report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `supply_report` (
-  `current_stock` int NOT NULL,
-  `max_stock` int DEFAULT NULL,
-  PRIMARY KEY (`current_stock`)
+  `id` int NOT NULL,
+  `item_id` varchar(500) DEFAULT NULL,
+  `item_name` varchar(500) DEFAULT NULL,
+  `min_stock` varchar(500) DEFAULT NULL,
+  `start_stock` varchar(500) DEFAULT NULL,
+  `cur_stock` varchar(500) DEFAULT NULL,
+  `year` varchar(45) DEFAULT NULL,
+  `month` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -365,11 +373,12 @@ CREATE TABLE `users` (
   `role_type` varchar(128) NOT NULL,
   `region` varchar(128) DEFAULT NULL,
   `logged_in` int NOT NULL,
+  `is_not_approved` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userName_UNIQUE` (`username`),
   UNIQUE KEY `roleID_UNIQUE` (`role_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -378,6 +387,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030','regionManager','Karmiel',0,0),(2,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024','CEO','KARMIEL',0,0),(3,'customer','123456','customer','customer','customer@customer','123123','registered','',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -390,4 +400,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-17 11:08:27
+-- Dump completed on 2022-12-20 16:03:18
