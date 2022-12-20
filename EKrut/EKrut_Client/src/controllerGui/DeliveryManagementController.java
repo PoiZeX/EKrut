@@ -52,7 +52,9 @@ public class DeliveryManagementController {
 
     @FXML
     private TableColumn<DeliveryEntity, DeliveryStatus> statusCol;
-
+    /* need to handle: 
+     *   send message to the costumer with the estimated Time
+     *   get customer approval and update the actual arrivel time*/
    private static ClientController chat = HostClientController.chat; // define the chat for the controller
 	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
 	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
@@ -61,17 +63,12 @@ public class DeliveryManagementController {
 	// Setup screen before launching view
 	public void initialize() throws Exception {
 		refresh(null);
-		//DeliveryEntity e1=new DeliveryEntity(1, 1, "hapalmah 6 Karmiel", "25/12/22 12:00", "12/01/23",DeliveryStatus.pendingApproval);
-		//DeliveryEntity e2=new DeliveryEntity(2, 2, "hapalmah 6 Karmiel", "23/12/22 12:00", "23/12/22 12:00",DeliveryStatus.outForDelivery);
-		//ObservableList<DeliveryEntity> dl = FXCollections.observableArrayList(e1,e2);
-		//deliveryTable.setItems(dl);
 		setupTable(); // setup columns connection
 		
 	}
-	//need to change
+	
 	@FXML
 	private void refresh(ActionEvent event) {
-		
 		  if (deliveries != null)
 			  deliveries.clear();
 		  chat.acceptObj(MessageType.LoadDeliveries); // get all entities to ArrayList from DB
@@ -80,8 +77,6 @@ public class DeliveryManagementController {
 
 	@FXML
 	private void save(ActionEvent event) {
-		
-		
 		  if (changedDeliveryItems.size() > 0) {
 			  chat.acceptObj(changedDeliveryItems);
 			  changedDeliveryItems.clear(); 
@@ -111,22 +106,36 @@ public class DeliveryManagementController {
 		statusLst.addAll(DeliveryStatus.values());
 		statusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
 		
-		// Handle delivery status edit
+		/* Handle delivery status edit:
+		 * can change from "pendingApproval" to "outForDelivery"
+		 * or from "outForDelivery" to "done".
+		 * in other cases, the changes aren't saved*/
 		statusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatus>>() {
 			@Override
 			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatus> event) {
 				DeliveryEntity deliveryEntity = event.getRowValue();
-				if(!deliveryEntity.equals(event.getNewValue())) { //Status hasn't changed
-					deliveryEntity.setStatus(event.getNewValue());
-					//the delivery manager has confirmed the order
-					if(deliveryEntity.getStatus().equals(DeliveryStatus.outForDelivery)) {
-						deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
-						// TODO: send message to the costumer withe the EstimatedTime
+				DeliveryStatus oldStatus=deliveryEntity.getStatus();
+				DeliveryStatus newStatus=event.getNewValue();
+				
+				if(!oldStatus.equals(newStatus)) {
+					switch (newStatus){
+					case outForDelivery:
+						if(oldStatus.equals(DeliveryStatus.pendingApproval)) {
+							deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
+							deliveryEntity.setStatus(newStatus);
+							//TODO add: send message to the costumer with the estimated Time
+						}	
+						break;
+					case done:
+						if(oldStatus.equals(DeliveryStatus.outForDelivery)) 
+							deliveryEntity.setStatus(newStatus);
+						break;
+					default:
+						break;
 					}
-					//TODO change to "done" is possible only after costumer approval
+					if (!changedDeliveryItems.contains(deliveryEntity))
+						changedDeliveryItems.add(deliveryEntity);
 				}
-				if (!changedDeliveryItems.contains(deliveryEntity))
-					changedDeliveryItems.add(deliveryEntity);
 			}
 
 		});
@@ -141,19 +150,16 @@ public class DeliveryManagementController {
 	private String calculateEstimatedTime() {
 		 Calendar estimated = Calendar.getInstance();  
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
-		 //System.out.println("estimated; "+estimated.getTime());
 		 
 		 Calendar fourPM = Calendar.getInstance();   
 		 fourPM.set(Calendar.HOUR_OF_DAY,16);
 		 fourPM.set(Calendar.MINUTE,0);
 		 
-		 //System.out.println("18:"+fourPM.getTime());
 		 
 		 Calendar sixAM = Calendar.getInstance();  
 		 sixAM.set(Calendar.HOUR_OF_DAY, 6);
 		 sixAM.set(Calendar.MINUTE,0);
 		 
-		 //System.out.println("6:"+sixAM.getTime());
 		
 		 if(estimated.after(fourPM)) {
 			 estimated.add(Calendar.DATE, 1);
@@ -166,10 +172,9 @@ public class DeliveryManagementController {
 			 estimated.add(Calendar.HOUR, 4);
 		 }
 		 
-		 System.out.println(estimated.getTime());
 		return formatter.format(estimated.getTime());
-	
 	}
+	/* adding the deliveryEntity to deliveries list  */
 	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
 		deliveries.add(deliveryEntity);
 	}
