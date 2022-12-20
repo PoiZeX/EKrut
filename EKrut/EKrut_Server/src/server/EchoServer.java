@@ -2,17 +2,10 @@
 package server;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 import common.Message;
-import common.MessageType;
-import controllerDb.LoginDbController;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
-import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
@@ -47,7 +40,6 @@ public class EchoServer extends AbstractServer {
 		if (msg instanceof String) {
 			System.out.println("Message received: " + msg + " from " + client);
 		} else if (msg instanceof Message) {
-			System.out.println("Message received: " + ((Message) msg).getTask().toString() + " from " + client);
 			try {
 				MessageHandler.Handle((Message) msg, client);
 			} catch (IOException e) {

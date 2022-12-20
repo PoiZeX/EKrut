@@ -11,7 +11,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
@@ -56,7 +56,7 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
-		EchoServer.sendToAllClients(new Message(MessageType.ClientDisconnect, null));
+		EchoServer.sendToAllClients(new Message(TaskType.ClientDisconnect, null));
 		try {
 			Thread.sleep(2000);  // enough time to update the clients table. More flexible way is to use semaphore...
 		} catch (InterruptedException e1) {

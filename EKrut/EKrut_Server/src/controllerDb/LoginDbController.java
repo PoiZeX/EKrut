@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import entity.SubscriberEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -42,7 +42,7 @@ public class LoginDbController {
 			// sql query //
 			UserEntity res = getUserFromDB();
 			try {
-				client.sendToClient(new Message(MessageType.UserFromServerDB, res));
+				client.sendToClient(new Message(TaskType.UserFromServerDB, res));
 				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();

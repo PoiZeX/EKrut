@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import common.ScreensNames;
 import controllerGui.HostClientController;
 import entity.UserEntity;
@@ -159,7 +159,7 @@ public class NavigationStoreController {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
 					if (HostClientController.chat != null)
-						HostClientController.chat.acceptObj(new Message(MessageType.ClientDisconnect, null));
+						HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
 					closeAllScreens();
 				}
 			});

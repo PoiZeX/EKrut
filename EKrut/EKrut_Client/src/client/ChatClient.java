@@ -7,7 +7,7 @@ package client;
 import ocsf.client.*;
 import common.ChatIF;
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 
@@ -36,14 +36,14 @@ public class ChatClient extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		Message msgFromServer = (Message) msg;
-		MessageType task = msgFromServer.getTask();
+		TaskType task = msgFromServer.getTask();
 		Object obj = msgFromServer.getObject();
 		
 		// ---- Messages ---- //
 		switch (task) {
 		case ServerDisconnect:
 			try {
-				sendToServer((Object) MessageType.ClientDisconnect);
+				sendToServer((Object) TaskType.ClientDisconnect);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

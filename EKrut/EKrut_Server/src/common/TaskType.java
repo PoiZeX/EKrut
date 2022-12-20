@@ -1,6 +1,6 @@
 package common;
 
-public enum MessageType {
+public enum TaskType {
 	
 	ClientConnect,
 	ClientDisconnect,

@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import entity.OrderReportEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
@@ -41,7 +41,7 @@ public class OrderReportDBController {
 			// sql query //
 			OrderReportEntity res = getOrderReportFromDB();
 			try {
-				client.sendToClient(new Message(MessageType.RequestOrderReport, res));
+				client.sendToClient(new Message(TaskType.RequestOrderReport, res));
 				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();

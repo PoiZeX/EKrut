@@ -3,7 +3,7 @@ package controllerGui;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import common.ScreensNames;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,7 +56,7 @@ public class ReportSelectionController {
     		case "supplyReport":
     			break;
     		case "ordersReport":
-    			chat.acceptObj(new Message(MessageType.RequestOrderReport, new String[] {month,year} ));
+    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month,year} ));
     			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
     			break;
     		case "clientsReport":

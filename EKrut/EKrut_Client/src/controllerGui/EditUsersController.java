@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import client.ChatClient;
 import client.ClientController;
 import common.Message;
-import common.MessageType;
+import common.TaskType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -63,7 +63,7 @@ public class EditUsersController {
 
 	@FXML
 	private void disconnect(ActionEvent event) {
-		chat.acceptObj(new Message(MessageType.ClientDisconnect, null));
+		chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
 		System.exit(1);
 	}
 
@@ -71,13 +71,13 @@ public class EditUsersController {
 	private void refresh(ActionEvent event) {
 		if (ChatClient.subscribers != null)
 			ChatClient.subscribers.clear();
-		chat.acceptObj(new Message(MessageType.LoadSubscribers, null)); // get all entities to ArrayList from DB
+		chat.acceptObj(new Message(TaskType.LoadSubscribers, null)); // get all entities to ArrayList from DB
 	}
 
 	@FXML
 	private void save(ActionEvent event) {
 		if (changedSubscriberItems.size() > 0) {
-			chat.acceptObj(new Message(MessageType.EditSubscribers, changedSubscriberItems));
+			chat.acceptObj(new Message(TaskType.EditSubscribers, changedSubscriberItems));
 			changedSubscriberItems.clear();
 		}
 

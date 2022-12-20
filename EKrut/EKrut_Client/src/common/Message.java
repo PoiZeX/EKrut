@@ -4,20 +4,20 @@ import java.io.Serializable;
 public class Message implements Serializable {
   private static final long serialVersionUID = 1L;
   
-  private MessageType task;
+  private TaskType task;
   
   private Object object;
   
-  public Message(MessageType task, Object object) {
+  public Message(TaskType task, Object object) {
     this.task = task;
     this.object = object;
   }
   
-  public MessageType getTask() {
+  public TaskType getTask() {
     return this.task;
   }
   
-  public void setTask(MessageType task) {
+  public void setTask(TaskType task) {
     this.task = task;
   }
   
