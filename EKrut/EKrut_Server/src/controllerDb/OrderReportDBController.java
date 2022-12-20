@@ -5,8 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-
 import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
@@ -23,7 +21,7 @@ public class OrderReportDBController {
 	 * @param usernamePassword
 	 * @return
 	 */
-	public static boolean setUser(String[] details) {
+	public static boolean setReport(String[] details) {
 		if (details.length == 2) {
 			month = details[0];
 			year = details[1];
@@ -39,8 +37,8 @@ public class OrderReportDBController {
 	 * @param client
 	 */
 	public static void getOrderReportEntity(String[] details, ConnectionToClient client) {
-		if (setUser(details)) {
-			// sql query //
+		if (setReport(details)) {
+			// SQL query //
 			OrderReportEntity res = getOrderReportFromDB();
 			try {
 				client.sendToClient(new Message(TaskType.RequestOrderReport, res));
@@ -53,12 +51,12 @@ public class OrderReportDBController {
 	}
 
 	/**
-	 * Handles the query of getting the user from DB
+	 * Handles the query of getting the report from DB
 	 * 
 	 * @return
 	 */
 	protected static OrderReportEntity getOrderReportFromDB() {
-		OrderReportEntity report = new OrderReportEntity(0, "noreport", "", "", "");
+		OrderReportEntity report = new OrderReportEntity();
 		try {
 			if (MySqlClass.getConnection() == null)
 				return report;
@@ -79,6 +77,7 @@ public class OrderReportDBController {
 		return report;
 
 	}
+	
 	private static String getNumericMonth(String month) {
 	    switch (month.toLowerCase()) {
 	        case "january":

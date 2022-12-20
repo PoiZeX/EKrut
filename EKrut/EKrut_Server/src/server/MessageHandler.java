@@ -36,6 +36,7 @@ public class MessageHandler {
 			break;
 		case RequestOrderReport:
 			OrderReportDBController.getOrderReportEntity((String[]) obj, client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

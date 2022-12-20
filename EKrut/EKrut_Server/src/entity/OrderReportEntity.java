@@ -1,24 +1,24 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import common.CommonFunctions;
 
-public class OrderReportEntity implements Serializable {
+public class OrderReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String month,year,region,description;
 	private Map<String,Double[]> reportsList; // {[Karmiel, Sales:30,Sum:40]}
 	
 
-
+	public OrderReportEntity() {
+		super();
+		description = "";
+	}
+	
 	public OrderReportEntity(int id, String description, String month, String year, String region) {
-		this.id = id;
-		this.month = month;
-		this.year = year;
-		this.region = region;
+		super(id,month,year,region);
 		setDescription(description);
 	}
 
@@ -30,45 +30,6 @@ public class OrderReportEntity implements Serializable {
 		this.description = description;
 		parserDetails(description);
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
-	public String getMonth() {
-		return month;
-	}
-
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-
-	public String getYear() {
-		return year;
-	}
-
-
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-
-	public String getRegion() {
-		return region;
-	}
-
-
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
 
 	public Map<String, Double[]> getReportsList() {
 		return reportsList;
@@ -85,7 +46,7 @@ public class OrderReportEntity implements Serializable {
 		if (CommonFunctions.isNullOrEmpty(description) || description.equals("noreport"))
 			return;
 		else if (description.equals("nosales")) {
-			reportsList.put("No Sales", new Double[] {100.0,100.0});
+			reportsList.put("No Sales", new Double[] {0.0,0.0});
 			return;
 		}
 		String[] details = description.split(",");
@@ -94,7 +55,7 @@ public class OrderReportEntity implements Serializable {
 		  String sum = details[i + 1];
 		  String sales = details[i + 2];
 		  Double[] pair = new Double[] {Double.parseDouble(sum),Double.parseDouble(sales)};
-		  reportsList.put(name,pair);
+		  reportsList.put(name,pair); // [Karmiel : [20,30], Tel Aviv : [32,15]]
 		}
 	}	
 }
