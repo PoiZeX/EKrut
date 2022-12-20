@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
@@ -104,6 +105,7 @@ public class UsersManagementController {
     	setFactoryCols();
     	ObservableList<UserEntity> ol = FXCollections.observableArrayList(unapprovedUsers);
 		usersTable.setItems(ol);
+		
     	
 	}
 
@@ -117,6 +119,7 @@ public class UsersManagementController {
     	emailCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("email"));
     	creditCardNumberCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("cc_num"));
     	subscriberIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,Integer>("id"));
+    	approveCol.setCellFactory(CheckBoxTableCell.forTableColumn(approveCol));
     	return;
 	}
 
