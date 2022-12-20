@@ -27,13 +27,6 @@ public class OrdersReportController {
 
 	public void initialize() {
 		titleLabel.setText("Orders Report : " + reportDetails.getRegion());
-//		while (!RecievedData) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 		initCharts();
 		return;
 	}
@@ -55,8 +48,6 @@ public class OrdersReportController {
 			a.getData().add(new XYChart.Data(key, itemsMap.get(key)[1]));
 			orderBarChart.getData().addAll(a);
 		}			
-//		orderBarChart.getXAxis().setLabel("Machine Name");
-		orderBarChart.getYAxis().setLabel("Profit (in K)");
 		pieChartOrders.setData(pieChartData);	
 	}
 

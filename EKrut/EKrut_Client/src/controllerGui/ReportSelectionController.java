@@ -2,8 +2,8 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.Message;
 import common.TaskType;
+import common.Message;
 import entity.OrderReportEntity;
 import common.ScreensNames;
 import javafx.collections.FXCollections;
@@ -75,7 +75,7 @@ public class ReportSelectionController {
 			}
 		}
 		if (OrdersReportController.reportDetails.getDescription().equals("noreport"))
-			System.out.println("NOREPORTFOUND");
+			errorMsgLabel.setText("No Report Found");
 		else
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
 	}
