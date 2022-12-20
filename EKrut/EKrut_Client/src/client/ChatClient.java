@@ -6,11 +6,13 @@ package client;
 import ocsf.client.*;
 import common.ChatIF;
 import common.MessageType;
+import controllerGui.DeliveryManagementController;
 
 import java.io.*;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
+import entity.DeliveryEntity;
 import entity.ItemEntity;
 import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
@@ -38,6 +40,9 @@ public class ChatClient extends AbstractClient {
 		}
 		if(msg instanceof ItemEntity) {
 			ItemsController.getItemsFromServer((ItemEntity)msg);
+		}
+		if(msg instanceof DeliveryEntity) {
+			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity)msg);
 		}
 		else if(msg instanceof MessageType)
 		{

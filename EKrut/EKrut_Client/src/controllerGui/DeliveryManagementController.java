@@ -10,6 +10,7 @@ import client.ClientController;
 import common.DeliveryStatus;
 import common.MessageType;
 import entity.DeliveryEntity;
+import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,36 +53,39 @@ public class DeliveryManagementController {
     @FXML
     private TableColumn<DeliveryEntity, DeliveryStatus> statusCol;
 
-   // ClientController chat = HostClientController.chat; // define the chat for the controller
+   private static ClientController chat = HostClientController.chat; // define the chat for the controller
 	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
+	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
 
 	@FXML
 	// Setup screen before launching view
 	public void initialize() throws Exception {
-		//refresh(null);
-		DeliveryEntity e1=new DeliveryEntity(1, 1, "hapalmah 6 Karmiel", "25/12/22 12:00", "12/01/23",DeliveryStatus.pendingApproval);
-		DeliveryEntity e2=new DeliveryEntity(2, 2, "hapalmah 6 Karmiel", "23/12/22 12:00", "23/12/22 12:00",DeliveryStatus.outForDelivery);
-		ObservableList<DeliveryEntity> dl = FXCollections.observableArrayList(e1,e2);
-		deliveryTable.setItems(dl);
+		refresh(null);
+		//DeliveryEntity e1=new DeliveryEntity(1, 1, "hapalmah 6 Karmiel", "25/12/22 12:00", "12/01/23",DeliveryStatus.pendingApproval);
+		//DeliveryEntity e2=new DeliveryEntity(2, 2, "hapalmah 6 Karmiel", "23/12/22 12:00", "23/12/22 12:00",DeliveryStatus.outForDelivery);
+		//ObservableList<DeliveryEntity> dl = FXCollections.observableArrayList(e1,e2);
+		//deliveryTable.setItems(dl);
 		setupTable(); // setup columns connection
 		
 	}
 	//need to change
 	@FXML
 	private void refresh(ActionEvent event) {
-		/*
-		 * if (ChatClient.subscribers != null) ChatClient.subscribers.clear();
-		 * chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList
-		 * from DB
-		 */	}
+		
+		  if (deliveries != null)
+			  deliveries.clear();
+		  chat.acceptObj(MessageType.LoadDeliveries); // get all entities to ArrayList from DB
+		  
+		 	}
 
 	@FXML
 	private void save(ActionEvent event) {
 		
-		/*
-		 * if (changedDeliveryItems.size() > 0) { chat.acceptObj(changedDeliveryItems);
-		 * changedDeliveryItems.clear(); }
-		 */
+		
+		  if (changedDeliveryItems.size() > 0) {
+			  chat.acceptObj(changedDeliveryItems);
+			  changedDeliveryItems.clear(); 
+			  }
 		 
 
 	}
@@ -89,9 +93,9 @@ public class DeliveryManagementController {
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
 		deliveryTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-		//if (ChatClient.subscribers == null)
-		//	return;
-		//usersTable.setItems(ChatClient.subscribers);
+		if (deliveries == null)
+			return;
+		deliveryTable.setItems(deliveries); 
 
 		// factory
 		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
@@ -112,13 +116,14 @@ public class DeliveryManagementController {
 			@Override
 			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatus> event) {
 				DeliveryEntity deliveryEntity = event.getRowValue();
-				if(!deliveryEntity.equals(event.getNewValue())) {
+				if(!deliveryEntity.equals(event.getNewValue())) { //Status hasn't changed
 					deliveryEntity.setStatus(event.getNewValue());
 					//the delivery manager has confirmed the order
 					if(deliveryEntity.getStatus().equals(DeliveryStatus.outForDelivery)) {
 						deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
 						// TODO: send message to the costumer withe the EstimatedTime
 					}
+					//TODO change to "done" is possible only after costumer approval
 				}
 				if (!changedDeliveryItems.contains(deliveryEntity))
 					changedDeliveryItems.add(deliveryEntity);
@@ -164,6 +169,9 @@ public class DeliveryManagementController {
 		 System.out.println(estimated.getTime());
 		return formatter.format(estimated.getTime());
 	
+	}
+	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
+		deliveries.add(deliveryEntity);
 	}
 
 

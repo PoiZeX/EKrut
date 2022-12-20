@@ -1,8 +1,10 @@
 package entity;
 
+import java.io.Serializable;
+
 import common.DeliveryStatus;
 
-public class DeliveryEntity {
+public class DeliveryEntity implements Serializable{
 	private String actualTime,estimatedTime;
 	private int costumerId,orderId;
 	//private AddressEntity address;
