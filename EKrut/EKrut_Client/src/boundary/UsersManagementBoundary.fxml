@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.UsersManagementController">
    <bottom>
       <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -25,15 +25,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="returnBtn" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return">
-               <graphic>
-                  <ImageView fitHeight="62.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-return">
-                     <image>
-                        <Image url="@../styles/icons/return.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button fx:id="returnBtn" alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="55.0" styleClass="Button-return" />
          </children>
       </GridPane>
    </bottom>
@@ -46,7 +38,7 @@
             <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitel" text="Approve New Users" underline="true" />
+            <Label alignment="CENTER" lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitle" text="Approve New Users" underline="true" />
          </children>
       </GridPane>
    </top>
@@ -57,15 +49,15 @@
                <children>
                   <TableView fx:id="usersTable" layoutX="19.0" layoutY="43.0" prefHeight="321.0" prefWidth="860.0">
                     <columns>
-                      <TableColumn fx:id="customerID" prefWidth="75.0" text="Customer ID" />
-                      <TableColumn fx:id="ID" prefWidth="63.33332824707031" text="ID" />
-                        <TableColumn fx:id="firstName" prefWidth="87.66667175292969" text="First Name" />
-                        <TableColumn fx:id="lastName" prefWidth="103.0" text="Last Name" />
-                        <TableColumn fx:id="phoneNumber" prefWidth="101.0" text="Phone Number" />
-                        <TableColumn fx:id="email" prefWidth="94.6666259765625" text="E-mail" />
-                        <TableColumn fx:id="creditCardNumber" prefWidth="124.0" text="Credit Card Number" />
-                        <TableColumn fx:id="subscriberID" prefWidth="94.6666259765625" text="Subscriber ID" />
-                        <TableColumn fx:id="approveCheckB" prefWidth="114.0" text="Approve" />
+                      <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID" />
+                      <TableColumn fx:id="IdCol" prefWidth="63.33332824707031" text="ID" />
+                        <TableColumn fx:id="firstNameCol" prefWidth="87.66667175292969" text="First Name" />
+                        <TableColumn fx:id="lastNameCol" prefWidth="103.0" text="Last Name" />
+                        <TableColumn fx:id="phoneNumberCol" prefWidth="101.0" text="Phone Number" />
+                        <TableColumn fx:id="emailCol" prefWidth="94.6666259765625" text="E-mail" />
+                        <TableColumn fx:id="creditCardNumberCol" prefWidth="124.0" text="Credit Card Number" />
+                        <TableColumn fx:id="subscriberIdCol" prefWidth="94.6666259765625" text="Subscriber ID" />
+                        <TableColumn fx:id="approveCol" prefWidth="114.0" text="Approve" />
                     </columns>
                      <opaqueInsets>
                         <Insets />

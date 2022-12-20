@@ -41,7 +41,7 @@ public class OrderReportDBController {
 			// SQL query //
 			OrderReportEntity res = getOrderReportFromDB();
 			try {
-				client.sendToClient(new Message(TaskType.RequestOrderReport, res));
+				client.sendToClient(new Message(TaskType.RecieveOrderReport, res));
 				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();

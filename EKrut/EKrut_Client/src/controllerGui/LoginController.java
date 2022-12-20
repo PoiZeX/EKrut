@@ -146,7 +146,7 @@ public class LoginController {
 
 	private void sendServerusernamePassword(String[] usernamePassword) {
 		// username and password match
-		chat.acceptObj(new Message(TaskType.LoginRequest, usernamePassword));
+		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
 		// not logged in
 
 		// is approved in manager
