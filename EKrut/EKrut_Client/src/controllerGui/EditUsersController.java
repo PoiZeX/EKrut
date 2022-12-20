@@ -3,6 +3,7 @@ package controllerGui;
 import java.util.ArrayList;
 import client.ChatClient;
 import client.ClientController;
+import common.Message;
 import common.MessageType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -62,7 +63,7 @@ public class EditUsersController {
 
 	@FXML
 	private void disconnect(ActionEvent event) {
-		chat.acceptObj(MessageType.ClientDisconnect);
+		chat.acceptObj(new Message(MessageType.ClientDisconnect, null));
 		System.exit(1);
 	}
 
@@ -70,13 +71,13 @@ public class EditUsersController {
 	private void refresh(ActionEvent event) {
 		if (ChatClient.subscribers != null)
 			ChatClient.subscribers.clear();
-		chat.acceptObj(MessageType.LoadSubscribers); // get all entities to ArrayList from DB
+		chat.acceptObj(new Message(MessageType.LoadSubscribers, null)); // get all entities to ArrayList from DB
 	}
 
 	@FXML
 	private void save(ActionEvent event) {
 		if (changedSubscriberItems.size() > 0) {
-			chat.acceptObj(changedSubscriberItems);
+			chat.acceptObj(new Message(MessageType.EditSubscribers, changedSubscriberItems));
 			changedSubscriberItems.clear();
 		}
 

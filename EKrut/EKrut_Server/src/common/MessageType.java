@@ -1,17 +1,23 @@
 package common;
 
 public enum MessageType {
+	
 	ClientConnect,
 	ClientDisconnect,
 	ServerDisconnect,
 	LoadSubscribers,
+	EditSubscribers,
 	
-	// Login enums
+	// Login Enums //
+	LoginRequest,
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
 	UserIsLoggedIn,
-	UserNotApproved
+	UserNotApproved, 
+
+	// ----- SERVER SIDE ------ //
+	UserFromServerDB, 
 	
-	// -----
-	
+	// ---- CLIENT SIDE ------ //
+	RequestOrderReport,
 }
