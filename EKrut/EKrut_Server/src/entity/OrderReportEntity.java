@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.CommonFunctions;
+
 public class OrderReportEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String month,year,region;
+	private String month,year,region,description;
 	private Map<String,Double[]> reportsList; // {[Karmiel, Sales:30,Sum:40]}
 	
 
@@ -17,6 +19,15 @@ public class OrderReportEntity implements Serializable {
 		this.month = month;
 		this.year = year;
 		this.region = region;
+		setDescription(description);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 		parserDetails(description);
 	}
 
@@ -70,9 +81,13 @@ public class OrderReportEntity implements Serializable {
 	
 
 	private void parserDetails(String description) {
-		if (description.equals(""))
-			return;
 		reportsList = new HashMap<String, Double[]>();
+		if (CommonFunctions.isNullOrEmpty(description) || description.equals("noreport"))
+			return;
+		else if (description.equals("nosales")) {
+			reportsList.put("No Sales", new Double[] {100.0,100.0});
+			return;
+		}
 		String[] details = description.split(",");
 		for (int i = 0; i < details.length; i += 3) {
 		  String name = details[i];
@@ -81,9 +96,7 @@ public class OrderReportEntity implements Serializable {
 		  Double[] pair = new Double[] {Double.parseDouble(sum),Double.parseDouble(sales)};
 		  reportsList.put(name,pair);
 		}
-	}
-	
-	
+	}	
 }
 
 

@@ -4,6 +4,7 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.Message;
 import common.TaskType;
+import entity.OrderReportEntity;
 import common.ScreensNames;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,21 +57,29 @@ public class ReportSelectionController {
     		case "supplyReport":
     			break;
     		case "ordersReport":
-    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month, year} ));
-    			// add while on RecievedData
-    			// check if valid data
-    			// if yes go next
-    			// else error popup
-    			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
-    			break;
+    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month,year} ));
+    			checkReportData();
     		case "clientsReport":
     			break;
     		}
     	}
-    
     	
     }
 
+	private void checkReportData() {
+		while (!OrdersReportController.RecievedData) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (OrdersReportController.reportDetails.getDescription().equals("noreport"))
+			System.out.println("NOREPORTFOUND");
+		else
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
+	}
+	
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
 		for (int i = 2016; i <= 2023; i++) {

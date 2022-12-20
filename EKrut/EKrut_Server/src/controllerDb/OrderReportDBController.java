@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+
+import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 import entity.OrderReportEntity;
@@ -56,18 +58,20 @@ public class OrderReportDBController {
 	 * @return
 	 */
 	protected static OrderReportEntity getOrderReportFromDB() {
-		OrderReportEntity report = new OrderReportEntity(0, "", "", "", "");
+		OrderReportEntity report = new OrderReportEntity(0, "noreport", "", "", "");
 		try {
 			if (MySqlClass.getConnection() == null)
 				return report;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.orders_report WHERE month=? AND year=?;");
-			ps.setString(1, getMonth(month));
+			ps.setString(1, getNumericMonth(month));
 			ps.setString(2, year);
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
 				report = new OrderReportEntity(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
 						res.getString(5));
+				if (CommonFunctions.isNullOrEmpty(report.getDescription()))
+					report.setDescription("nosales");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,7 +79,7 @@ public class OrderReportDBController {
 		return report;
 
 	}
-	private static String getMonth(String month) {
+	private static String getNumericMonth(String month) {
 	    switch (month.toLowerCase()) {
 	        case "january":
 	            return "01";

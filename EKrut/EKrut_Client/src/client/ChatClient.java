@@ -10,6 +10,7 @@ import common.Message;
 import common.TaskType;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
+import controllerGui.ReportSelectionController;
 
 import java.io.*;
 
@@ -54,7 +55,7 @@ public class ChatClient extends AbstractClient {
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
 		case RequestOrderReport:
-			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
+			OrdersReportController.recieveDataFromServer((OrderReportEntity)obj);
 		// ---- Delivery
 		default:
 			break;

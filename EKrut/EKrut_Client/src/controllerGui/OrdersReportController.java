@@ -22,18 +22,18 @@ public class OrdersReportController {
     private Label titleLabel;
 
 	
-	private static OrderReportEntity reportDetails;	
-	static boolean RecievedData = false;
+	protected static OrderReportEntity reportDetails;	
+	protected static boolean RecievedData = false;
 
 	public void initialize() {
 		titleLabel.setText("Orders Report : " + reportDetails.getRegion());
-		while (!RecievedData) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+//		while (!RecievedData) {
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		initCharts();
 		return;
 	}
@@ -55,7 +55,7 @@ public class OrdersReportController {
 			a.getData().add(new XYChart.Data(key, itemsMap.get(key)[1]));
 			orderBarChart.getData().addAll(a);
 		}			
-		orderBarChart.getXAxis().setLabel("Machine Name");
+//		orderBarChart.getXAxis().setLabel("Machine Name");
 		orderBarChart.getYAxis().setLabel("Profit (in K)");
 		pieChartOrders.setData(pieChartData);	
 	}
