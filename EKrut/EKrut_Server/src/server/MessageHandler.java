@@ -40,6 +40,7 @@ public class MessageHandler {
 			break;
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

@@ -7,6 +7,8 @@ import common.Message;
 import common.TaskType;
 import controllerGui.SupplyReportController.item_supply;
 import entity.UserEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -97,22 +99,25 @@ public class UsersManagementController {
     }
     
     private void initTable() {
+    	if (unapprovedUsers == null || unapprovedUsers.isEmpty())
+    		return;
+    	setFactoryCols();
+    	ObservableList<UserEntity> ol = FXCollections.observableArrayList(unapprovedUsers);
+		usersTable.setItems(ol);
+    	
+	}
+
+	private void setFactoryCols() {
     	//recieving arraylist of userentitys need to setup table.
-//    	customerIdCol
-//    	IdCol
-//    	firstNameCol
-//    	lastNameCol
-//    	phoneNumberCol
-//    	emailCol
-//    	creditCardNumberCol
-//    	subscriberIdCol
-//      approveCol
-//		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("currentAmountCol"));
-//		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("itemIDCol"));
-//		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("minAmountCol"));
-//		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, String>("nameCol"));
-//		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<item_supply, Integer>("startAmountCol"));
-		
+    	customerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,Integer>("id"));
+    	IdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("id_num"));
+    	firstNameCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("first_name"));
+    	lastNameCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("last_name"));
+    	phoneNumberCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("phone_number"));
+    	emailCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("email"));
+    	creditCardNumberCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("cc_num"));
+    	subscriberIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,Integer>("id"));
+    	return;
 	}
 
 }
