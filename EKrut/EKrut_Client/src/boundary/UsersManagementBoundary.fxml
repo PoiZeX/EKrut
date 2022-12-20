@@ -57,7 +57,7 @@
                         <TableColumn fx:id="emailCol" prefWidth="94.6666259765625" text="E-mail" />
                         <TableColumn fx:id="creditCardNumberCol" prefWidth="124.0" text="Credit Card Number" />
                         <TableColumn fx:id="subscriberIdCol" prefWidth="94.6666259765625" text="Subscriber ID" />
-                        <TableColumn fx:id="approveCB" prefWidth="114.0" text="Approve" />
+                        <TableColumn fx:id="approveCol" prefWidth="114.0" text="Approve" />
                     </columns>
                      <opaqueInsets>
                         <Insets />

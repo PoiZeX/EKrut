@@ -6,7 +6,7 @@ import java.util.Objects;
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String username, password, first_name, last_name, email, phone_number, role_type, region, cc_num;
+	private String username, password, first_name, last_name, email, phone_number, role_type, region, cc_num, id_num;
 	private boolean logged_in, isNotApproved;
 	private int id;
 
@@ -15,16 +15,17 @@ public class UserEntity implements Serializable {
 		return username;
 	}
 	public UserEntity() {
-		this("","","","","","","","","", false, false);
+		this("","","","","","","","","","", false, false);
 	}
-	public UserEntity(String username, String password, String first_name, String last_name, String email,
+	public UserEntity(String id_num, String username, String password, String first_name, String last_name, String email,
 			String phone_number, String role_type, String region, String cc_num, boolean logged_in, boolean isNotApproved) {
-		this(username, password, first_name, last_name, email, phone_number, role_type, cc_num, logged_in, isNotApproved);
+		this(id_num	,username, password, first_name, last_name, email, phone_number, role_type, cc_num, logged_in, isNotApproved);
 		this.region = region;
 	}
 
-	public UserEntity(String username, String password, String first_name, String last_name, String email,
+	public UserEntity(String id_num , String username, String password, String first_name, String last_name, String email,
 			String phone_number, String role_type, String cc_num, boolean logged_in, boolean isNotApproved) {
+		this.id_num = id_num;
 		this.username = username;
 		this.password = password;
 		this.first_name = first_name;
@@ -38,6 +39,18 @@ public class UserEntity implements Serializable {
 		this.isNotApproved = isNotApproved;
 	}
 
+	public String getCc_num() {
+		return cc_num;
+	}
+	public void setCc_num(String cc_num) {
+		this.cc_num = cc_num;
+	}
+	public String getId_num() {
+		return id_num;
+	}
+	public void setId_num(String id_num) {
+		this.id_num = id_num;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(username);

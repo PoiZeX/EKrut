@@ -11,8 +11,10 @@ import common.TaskType;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.ReportSelectionController;
+import controllerGui.UsersManagementController;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
@@ -34,12 +36,13 @@ public class ChatClient extends AbstractClient {
 		// openConnection();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		Message msgFromServer = (Message) msg;
 		TaskType task = msgFromServer.getTask();
 		Object obj = msgFromServer.getObject();
-		
+
 		// ---- Messages ---- //
 		switch (task) {
 		case ServerDisconnect:
@@ -55,8 +58,11 @@ public class ChatClient extends AbstractClient {
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
 		case RecieveOrderReport:
-			OrdersReportController.recieveDataFromServer((OrderReportEntity)obj);
-		// ---- Delivery
+			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
+			break;
+		case RecieveUnapprovedUsers:
+			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
+			// ---- Delivery
 		default:
 			break;
 		}
