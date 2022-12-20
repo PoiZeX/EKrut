@@ -56,11 +56,11 @@ public class ReportSelectionController {
     		switch (getSelectedReport()) {
     		case "supplyReport":
     			chat.acceptObj(new Message(TaskType.RequestSupplyReport, new String[] {month, year} ));
-    			checkReportData();
+    			checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
     			break;
     		case "ordersReport":
     			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month, year} ));
-    			checkReportData();
+    			checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
     			break;
     		case "clientsReport":
     			break;
@@ -68,18 +68,28 @@ public class ReportSelectionController {
     	}
     }
 
-	private void checkReportData() {
-		while (!OrdersReportController.RecievedData) {
+	private void checkReportData(boolean RecievedData, ScreensNames screen) {
+		while (!RecievedData) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		if (OrdersReportController.reportDetails.getDescription().equals("noreport"))
-			errorMsgLabel.setText("No Report Found");
-		else
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
+		switch(screen) {
+		case OrdersReport:
+			if (OrdersReportController.reportDetails.getDescription().equals("noreport"))
+				errorMsgLabel.setText("No Report Found");
+			else
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
+			break;
+		case SupplyReport:
+			break;
+		default:
+			break;
+			
+		}
+
 	}
 	
 	public void initialize() {
