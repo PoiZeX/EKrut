@@ -21,7 +21,8 @@ public enum TaskType {
 	
 	// ---- CLIENT SIDE ------ //
 	RequestSupplyReport,
+	RequestOrderReport,
 	RecieveOrderReport,
 	RequestUnapprovedUsers, 
-	RecieveUnapprovedUsers,
+	RecieveUnapprovedUsers, 
 }
