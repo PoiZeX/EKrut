@@ -5,12 +5,10 @@ package controllerGui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import client.ChatClient;
 import client.ClientController;
 import common.DeliveryStatus;
 import common.MessageType;
 import entity.DeliveryEntity;
-import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -116,13 +114,15 @@ public class DeliveryManagementController {
 				DeliveryEntity deliveryEntity = event.getRowValue();
 				DeliveryStatus oldStatus=deliveryEntity.getStatus();
 				DeliveryStatus newStatus=event.getNewValue();
-				
+				String msg="Hi!\nyour delivery is on the way,\nthe estimated ariivel time is ";
 				if(!oldStatus.equals(newStatus)) {
 					switch (newStatus){
 					case outForDelivery:
 						if(oldStatus.equals(DeliveryStatus.pendingApproval)) {
 							deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
 							deliveryEntity.setStatus(newStatus);
+							msg+=calculateEstimatedTime();
+							System.out.println(msg);
 							//TODO add: send message to the costumer with the estimated Time
 						}	
 						break;
