@@ -20,7 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utils.PopupWindow;
+import utils.EKTPopupController;
 
 public class LoginController {
 
@@ -175,8 +175,7 @@ public class LoginController {
 	 */
 	@FXML
 	void ektLoginAction(ActionEvent event) {
-		PopupWindow pop = new PopupWindow();
-		// pop.startEKTPopup(NavigationStoreController.getInstance().getPrimaryStage());
+		EKTPopupController pop = new EKTPopupController();
 		Stage primaryStage = new Stage();
 
 		Parent root;
@@ -192,25 +191,26 @@ public class LoginController {
 			e.printStackTrace();
 
 		}
-		Task task = new Task<Void>() {
-			@Override
-			public Void call() {
-				while (PopupWindow.isFinishAndSuccess == 0) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				if (PopupWindow.isFinishAndSuccess == 1) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
-				}
-				primaryStage.close();
-				return null;
-			}
-		};
-		new Thread(task).start();
+		
+//		Task task = new Task<Void>() {
+//			@Override
+//			public Void call() {
+//				while (EKTPopupController.isFinishAndSuccess == 0) {
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//				if (EKTPopupController.isFinishAndSuccess == 1) {
+//					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+//				}
+//				primaryStage.close();
+//				return null;
+//			}
+//		};
+//		new Thread(task).start();
 
 
 
