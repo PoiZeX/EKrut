@@ -58,7 +58,7 @@ public class HomePageController {
 		Image image = null;
 		// switch case by role
 		switch (currentUser.getRole_type()) {
-		case registerd:
+		case registered:
 		case subscribed:
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
