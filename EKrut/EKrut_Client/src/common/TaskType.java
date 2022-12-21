@@ -33,6 +33,9 @@ public enum TaskType {
 	RecieveItemsFromServer, 
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
-	RequestUpdateDeliveries
+	RequestUpdateDeliveries,
 	
+	
+	// Common Data's Init
+	InitRegions
 }
