@@ -37,12 +37,14 @@ public class ItemsController {
 	
 	private static boolean convertStreamToImg(ImgEntity img) {
 		 int fileSize =img.getSize(); 
-		 
+		 System.out.println(""+fileSize);
+		 img.setImgName("/EKrut_Client/src/styles/products/"+img.getImgName());
 		 File newFile= new File("/EKrut_Client/src/styles/products/"+img.getImgName());
 		 byte[] mybytearray = new byte[fileSize];
 		 
 		try {
 			 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(img.getImgName()));
+			
 			 bis.read(mybytearray, 0, fileSize);
 			 FileOutputStream fos = new FileOutputStream(newFile.getName());
 			 BufferedOutputStream bos = new BufferedOutputStream(fos);
