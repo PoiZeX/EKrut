@@ -24,7 +24,7 @@ public class ItemDbController {
 				return;
 
 			stmt = MySqlClass.getConnection().createStatement();
-			//get from DB
+			//TODO get from DB the items -> next step will be to take it from the items in machine 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM items;");
 			while (rs.next()) 
 			{
@@ -32,35 +32,23 @@ public class ItemDbController {
 				/*        1          2             3                4                   5                 6
 				 * (int item_id, String name, double price, String manufacturer, String description, String item_img_name)*/
 				itemEntity = new ItemEntity(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getString(5),rs.getString(6));
-				//crate an image set it in the entity on the item and send it to client
-				System.out.println( itemEntity.toString());
-				String LocalfilePath="Bamba.png";
-				System.out.println(itemEntity.getItemImg().getImgName());
-				itemEntity.getItemImg().setImgName(LocalfilePath);
+		
+				String LocalfilePath= "../EKrut_Server/src/styles/products/"+itemEntity.getItemImg().getImgName();
 				  try{
-					      File newFile = new File (LocalfilePath);
-					      		      
+					  	  
+					      File newFile = new File (LocalfilePath);	
 					      byte [] mybytearray  = new byte [(int)newFile.length()];
 					      FileInputStream fis = new FileInputStream(newFile);
 					      BufferedInputStream bis = new BufferedInputStream(fis);
 					      itemEntity.getItemImg().initArray(mybytearray.length);
 					      itemEntity.getItemImg().setSize(mybytearray.length);
-					      System.out.println("trying to read");
 					      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-					      System.out.println(mybytearray.length +"");
 					      client.sendToClient(itemEntity); // finally send the entity
-					      
 					    } 
-					catch (Exception e) {
-						System.out.println("Error send msg to Client");
-					}
-			
-				
-			}
+					catch (Exception e) {System.out.println("Error send item to Client");}
+			 }
 			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {e.printStackTrace();}
 	}
 	
 }

@@ -1,9 +1,7 @@
 package client;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,40 +18,31 @@ public class ItemsController {
 	private static ArrayList<ItemEntity> items= new ArrayList<>();
 	private static ClientController chat = HostClientController.chat; // define the chat for the controller
 	
+	/*request the DB to load the items*/
 	public static void requestItemsFromServer() {
 		chat.acceptObj(MessageType.LoadItems);	
 	}
-//	private void save() {
-//	
-//		 // get all entities to ArrayList from DB
-//	}
-	/*convert byts to img and saves the imge*/
+
+	/*add the item to array list*/
 	public static void getItemsFromServer(ItemEntity item) {
-		item.setImg_relative_path("EKrut_Client/src/styles/products/");
-		System.out.println(item.toString()); 
+		item.setImg_relative_path("../EKrut_Client/src/styles/products/");
+		//System.out.println(item.toString()); 
 		items.add(item);
 		convertStreamToImg(item.getItemImg());
-		
 	}
-	
-	private static boolean convertStreamToImg(ImgEntity img) {
+	/*convert bytes to image and saves the image*/
+	private static void convertStreamToImg(ImgEntity img) {
 		 int fileSize =img.getSize(); 
-		 ImgEntity myImg= img;
-		 System.out.println(""+fileSize);
-		 System.out.println(img.getImgName());
-		 
-		
+
 		 byte[] mybytearray = new byte[fileSize];
 		 
 		try {
-		//	 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myImg.getImgName()));
-			
-			 //bis.read(mybytearray, 0, fileSize);
-			 File newFile= new File(img.getImgName());
-			 
-			 FileOutputStream fos = new FileOutputStream(newFile.getName());
+			String LocalfilePath="../EKrut_Client/src/styles/products/"+img.getImgName();
+			 File newFile= new File(LocalfilePath);
+			 //save in folder
+			 FileOutputStream fos = new FileOutputStream(newFile.getPath());
 			 BufferedOutputStream bos = new BufferedOutputStream(fos);
-			 bos.write(mybytearray, 0, mybytearray.length);
+			 bos.write(img.mybytearray, 0, mybytearray.length);
 			 bos.close();
 			
 		} catch (FileNotFoundException e) {
@@ -63,6 +52,6 @@ public class ItemsController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+
 	}
 }
