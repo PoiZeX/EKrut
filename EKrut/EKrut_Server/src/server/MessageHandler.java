@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
+import controllerDb.CommonDataDBController;
 import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
@@ -13,6 +14,7 @@ import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
 import entity.SubscriberEntity;
+import entity.UserEntity;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
@@ -61,6 +63,12 @@ public class MessageHandler {
 			break;
 		case RequestUpdateDeliveries:
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
+			break;
+		case RequestUsersAprroval:
+			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>)obj, client);
+			break;
+		case InitRegions:
+			CommonDataDBController.getAllRegionsFromDB(client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());

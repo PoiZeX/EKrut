@@ -1,14 +1,21 @@
 package controllerGui;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.TaskType;
+import common.CommonData;
 import common.Message;
+import common.RolesEnum;
 import entity.OrderReportEntity;
 import common.ScreensNames;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +31,9 @@ public class ReportSelectionController {
 
 	@FXML
 	private ComboBox<Integer> yearItemsCmb;
+
+	@FXML
+	private ComboBox<String> regionCmb;
 
 	@FXML
 	private Label errorMsgLabel;
@@ -43,30 +53,33 @@ public class ReportSelectionController {
 	@FXML
 	private Button viewReportBtn;
 
+	@FXML
+	private Label regionLabel;
+
+	private String region;
 	ClientController chat = HostClientController.chat; // define the chat for the controller
 
 	@FXML
-    void viewReport(ActionEvent event) {
-    	String error = validateFields();
-    	errorMsgLabel.setText(error);
-    	if (error.equals("")) 
-    	{
-    		String month = monthItemsCmb.getSelectionModel().getSelectedItem();
-    		String year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
-    		switch (getSelectedReport()) {
-    		case "supplyReport":
-    			chat.acceptObj(new Message(TaskType.RequestSupplyReport, new String[] {month, year} ));
-    			checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
-    			break;
-    		case "ordersReport":
-    			chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] {month, year} ));
-    			checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
-    			break;
-    		case "clientsReport":
-    			break;
-    		}
-    	}
-    }
+	void viewReport(ActionEvent event) {
+		String error = validateFields();
+		errorMsgLabel.setText(error);
+		if (error.equals("")) {
+			String month = monthItemsCmb.getSelectionModel().getSelectedItem();
+			String year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
+			switch (getSelectedReport()) {
+			case "supplyReport":
+				chat.acceptObj(new Message(TaskType.RequestSupplyReport, new String[] { month, year }));
+				checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
+				break;
+			case "ordersReport":
+				chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] { region, month, year }));
+				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
+				break;
+			case "clientsReport":
+				break;
+			}
+		}
+	}
 
 	private void checkReportData(boolean RecievedData, ScreensNames screen) {
 		while (!RecievedData) {
@@ -76,9 +89,9 @@ public class ReportSelectionController {
 				e.printStackTrace();
 			}
 		}
-		switch(screen) {
+		switch (screen) {
 		case OrdersReport:
-			if (OrdersReportController.reportDetails.getDescription().equals("noreport") 
+			if (OrdersReportController.reportDetails.getDescription().equals("noreport")
 					|| OrdersReportController.reportDetails.getReportsList() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
@@ -87,17 +100,15 @@ public class ReportSelectionController {
 		case SupplyReport:
 			if (SupplyReportController.reportDetails.getReportsList() == null) {
 				errorMsgLabel.setText("No Report Found");
-			}
-			else
+			} else
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 			break;
 		default:
 			break;
-			
-		}
 
+		}
 	}
-	
+
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
 		for (int i = 2016; i <= 2023; i++) {
@@ -106,10 +117,27 @@ public class ReportSelectionController {
 		ObservableList<String> months = FXCollections.observableArrayList();
 		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 				"November", "December");
-
+		ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
 		setReportButtons();
+		regionCmb.setItems(regions);
 		monthItemsCmb.setItems(months);
 		yearItemsCmb.setItems(years);
+
+		regionCmb.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				region = regionCmb.getValue();
+			}
+		});
+
+		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.CEO)) {
+			regionLabel.setDisable(false);
+			regionCmb.setDisable(false);
+		} else {
+			region = NavigationStoreController.connectedUser.getRegion();
+			regionCmb.getSelectionModel().select(region);
+		}
+
 	}
 
 	String validateFields() {

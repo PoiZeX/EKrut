@@ -6,8 +6,11 @@ package client;
 
 import ocsf.client.*;
 import common.ChatIF;
+import common.CommonData;
 import common.Message;
+import common.ScreensNames;
 import common.TaskType;
+import controller.ItemsController;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.SupplyReportController;
@@ -75,6 +78,9 @@ public class ChatClient extends AbstractClient {
 			break;
 		case RecieveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
+			break;
+		case InitRegions:
+			CommonData.recieveRegions((ArrayList<String>) obj);
 			break;
 		default:
 			break;

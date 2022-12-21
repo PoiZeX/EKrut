@@ -12,7 +12,7 @@ public class OrderReportEntity extends ReportEntity {
 	
 	public OrderReportEntity() {
 		super();
-		description = "";
+		description = "noreport";
 	}
 	
 	public OrderReportEntity(int id, String description, String month, String year, String region) {

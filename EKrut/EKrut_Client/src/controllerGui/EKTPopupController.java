@@ -1,4 +1,4 @@
-package utils;
+package controllerGui;
 
 import javafx.fxml.FXML;
 import java.util.Timer;
@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import utils.AppConfig;
 
 public class EKTPopupController {
 
@@ -22,11 +23,6 @@ public class EKTPopupController {
 
 	private Timer timerSuccess;
 	private Timer timerTimeLimit;
-	private final int waitBeforeSimulateLogin = 4000; // define time to simulate success
-	private final int waitAfterValidationSuccess = 4000; // define time to simulate success
-
-	private final int waitBeforeMsgMillis = 15000; // define time to simulate success
-	private final int waitAfterMsgMillis = 5000;
 	/**
 	 * Initialize screen
 	 */
@@ -70,11 +66,11 @@ public class EKTPopupController {
 
 							});
 						}
-					}, waitAfterValidationSuccess);
+					}, AppConfig.WAIT_AFTER_VALIDATION_SUCCESS);
 
 				});
 			}
-		}, waitBeforeSimulateLogin);
+		}, AppConfig.WAIT_BEFORE_SIMULATE_LOGIN);
 	}
 	
 	private void setTimeLimitBackgroundTask() {
@@ -96,10 +92,10 @@ public class EKTPopupController {
 								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
 							});
 						}
-					}, waitAfterMsgMillis);
+					}, AppConfig.WAIT_AFTER_MSG);
 
 				});
 			}
-		}, waitBeforeMsgMillis);
+		}, AppConfig.WAIT_BEFORE_MSG);
 	}
 }

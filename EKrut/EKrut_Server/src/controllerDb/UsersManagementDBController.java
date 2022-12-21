@@ -20,7 +20,6 @@ public class UsersManagementDBController {
 		ArrayList<UserEntity> res = getUnapprovedUsersFromDB();
 		try {
 			client.sendToClient(new Message(TaskType.RecieveUnapprovedUsers, res));
-			System.out.println("Server: success");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,5 +54,26 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		return unapprovedUsersList;
+	}
+
+	public static void setUnapprovedUsersEntity(ArrayList<UserEntity> toApprove, ConnectionToClient client) {
+		try {
+			if (MySqlClass.getConnection() == null)
+				return;
+			Connection conn = MySqlClass.getConnection();
+			for (UserEntity user : toApprove) {
+				PreparedStatement ps = conn.prepareStatement("UPDATE ekrut.users SET is_not_approved = 0 WHERE username=?;");
+				ps.setString(1, user.getUsername());
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient(new Message(TaskType.RecieveUsersApproval, null));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
 	}
 }
