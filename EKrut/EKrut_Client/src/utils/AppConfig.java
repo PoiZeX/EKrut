@@ -15,8 +15,8 @@ public final class AppConfig {
 	
 	// EKT timers in millis
 	public static final int WAIT_BEFORE_SIMULATE_LOGIN = 4000; 				// define time to simulate success
-	public static final int WAIT_AFTER_VALIDATION_SUCCESS = 4000; 			// define time to simulate success
-	public static final int WAIT_BEFORE_MSG = 15000; 						// define time to simulate success
+	public static final int WAIT_AFTER_VALIDATION_SUCCESS = 4000; 			// define time to simulate data validation
+	public static final int WAIT_BEFORE_MSG = 15000; 						// define time to simulate timeout of connection
 	public static final int WAIT_AFTER_MSG = 5000;   						// define timer to read a message before closing the window
 
 	// Path

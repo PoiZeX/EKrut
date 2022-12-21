@@ -1,4 +1,4 @@
-package client;
+package controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import client.ClientController;
 import common.Message;
 import common.TaskType;
 import controllerGui.HostClientController;
