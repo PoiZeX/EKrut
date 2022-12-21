@@ -88,7 +88,7 @@
                         <Font name="Calibri" size="12.0" />
                      </font>
                      <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
+                        <ImageView disable="true" fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
                            <image>
                               <Image url="@../styles/icons/015-check.png" />
                            </image>
