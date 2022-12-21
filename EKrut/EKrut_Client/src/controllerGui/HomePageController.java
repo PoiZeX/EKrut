@@ -5,6 +5,7 @@
 package controllerGui;
 
 import Store.NavigationStoreController;
+import common.CommonData;
 import common.RolesEnum;
 import client.ItemsController;
 import common.ScreensNames;
@@ -57,6 +58,7 @@ public class HomePageController {
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
 		Image image = null;
+		
 		// switch case by role
 		switch (currentUser.getRole_type()) {
 		case registered:
@@ -108,11 +110,8 @@ public class HomePageController {
 		default:
 			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
-			
-
-			
-
 		}
+		CommonData.initData();	// initialize all common data's from DB.
 		
 		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
 		String[] splitString = currentUser.getRole_type().toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
