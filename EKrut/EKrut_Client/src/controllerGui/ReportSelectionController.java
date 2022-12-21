@@ -78,12 +78,18 @@ public class ReportSelectionController {
 		}
 		switch(screen) {
 		case OrdersReport:
-			if (OrdersReportController.reportDetails.getDescription().equals("noreport"))
+			if (OrdersReportController.reportDetails.getDescription().equals("noreport") 
+					|| OrdersReportController.reportDetails.getReportsList() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
 			break;
 		case SupplyReport:
+			if (SupplyReportController.reportDetails.getReportsList() == null) {
+				errorMsgLabel.setText("No Report Found");
+			}
+			else
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 			break;
 		default:
 			break;

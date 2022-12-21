@@ -50,5 +50,4 @@ public class OrdersReportController {
 		}			
 		pieChartOrders.setData(pieChartData);	
 	}
-
 }
