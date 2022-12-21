@@ -29,7 +29,8 @@ public class ItemsController {
 //	}
 	/*convert byts to img and saves the imge*/
 	public static void getItemsFromServer(ItemEntity item) {
-		item.setImg_relative_path("/EKrut_Client/src/styles/products/");
+		item.setImg_relative_path("EKrut_Client/src/styles/products/");
+		System.out.println(item.toString()); 
 		items.add(item);
 		convertStreamToImg(item.getItemImg());
 		
@@ -37,15 +38,19 @@ public class ItemsController {
 	
 	private static boolean convertStreamToImg(ImgEntity img) {
 		 int fileSize =img.getSize(); 
+		 ImgEntity myImg= img;
 		 System.out.println(""+fileSize);
-		 img.setImgName("/EKrut_Client/src/styles/products/"+img.getImgName());
-		 File newFile= new File("/EKrut_Client/src/styles/products/"+img.getImgName());
+		 System.out.println(img.getImgName());
+		 
+		
 		 byte[] mybytearray = new byte[fileSize];
 		 
 		try {
-			 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(img.getImgName()));
+		//	 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myImg.getImgName()));
 			
-			 bis.read(mybytearray, 0, fileSize);
+			 //bis.read(mybytearray, 0, fileSize);
+			 File newFile= new File(img.getImgName());
+			 
 			 FileOutputStream fos = new FileOutputStream(newFile.getName());
 			 BufferedOutputStream bos = new BufferedOutputStream(fos);
 			 bos.write(mybytearray, 0, mybytearray.length);

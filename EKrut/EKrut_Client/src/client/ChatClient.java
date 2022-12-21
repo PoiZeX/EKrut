@@ -40,7 +40,8 @@ public class ChatClient extends AbstractClient {
 		}
 		if(msg instanceof ItemEntity) {
 			System.out.println("sent Item to Items controller");
-			ItemsController.getItemsFromServer((ItemEntity)msg);
+			ItemEntity item= (ItemEntity)msg;
+			ItemsController.getItemsFromServer(item);
 		}
 		if(msg instanceof DeliveryEntity) {
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity)msg);
