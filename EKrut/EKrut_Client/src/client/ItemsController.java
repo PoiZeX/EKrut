@@ -20,7 +20,7 @@ public class ItemsController {
 	private static ArrayList<ItemEntity> items= new ArrayList<>();
 	private static ClientController chat = HostClientController.chat; // define the chat for the controller
 	
-	public void requestItemsFromServer(ItemEntity item) {
+	public static void requestItemsFromServer() {
 		chat.acceptObj(MessageType.LoadItems);	
 	}
 //	private void save() {

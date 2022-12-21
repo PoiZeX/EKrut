@@ -5,6 +5,7 @@
 package controllerGui;
 
 import Store.NavigationStoreController;
+import client.ItemsController;
 import common.ScreensNames;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -131,6 +132,9 @@ public class HomePageController {
 				@Override
 				public void handle(ActionEvent event) {
 					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
+					System.out.println(" home page uplode catalog");
+					ItemsController.requestItemsFromServer();
+					System.out.println(" home page request items from server");
 				}
 			});
 		} else {

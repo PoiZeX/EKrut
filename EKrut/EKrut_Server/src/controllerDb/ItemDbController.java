@@ -1,4 +1,4 @@
-package server;
+package controllerDb;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -15,7 +15,7 @@ import ocsf.server.ConnectionToClient;
 public class ItemDbController {
 	
 	/*send to client item Object */
-	protected static void sendImgToClient(ConnectionToClient client) {
+	public static void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
 		ItemEntity itemEntity;
 
@@ -33,30 +33,31 @@ public class ItemDbController {
 				 * (int item_id, String name, double price, String manufacturer, String description, String item_img_name)*/
 				itemEntity = new ItemEntity(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getString(5),rs.getString(6));
 				//crate an image set it in the entity on the item and send it to client
-				String LocalfilePath=itemEntity.getItem_img_name();
+				
+				String LocalfilePath="Bamba.png";
+				System.out.println(itemEntity.getItemImg().getImgName());
 				
 				  try{
-					      File newFile = new File (LocalfilePath);
+					      File newFile = new File ("Bamba.png");
 					      		      
 					      byte [] mybytearray  = new byte [(int)newFile.length()];
 					      FileInputStream fis = new FileInputStream(newFile);
-					      BufferedInputStream bis = new BufferedInputStream(fis);			  
-					      
+					      BufferedInputStream bis = new BufferedInputStream(fis);
 					      itemEntity.getItemImg().initArray(mybytearray.length);
 					      itemEntity.getItemImg().setSize(mybytearray.length);
-					      
+					      System.out.println("trying to read");
 					      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-					      
+								  
+					   
+					      System.out.println(mybytearray.toString());
+					      client.sendToClient(itemEntity); // finally send the entity
 					      
 					    }
 					catch (Exception e) {
-						System.out.println("Error send (Files)msg) to Client");
+						System.out.println("Error send msg to Client");
 					}
-				try {
-					client.sendToClient(itemEntity); // finally send the entity
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			
+				
 			}
 			rs.close();
 		} catch (SQLException e) {

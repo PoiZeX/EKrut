@@ -1,6 +1,6 @@
 package entity;
 
-public class ItemEntity  {
+public class ItemEntity extends MainEntity {
 	private int item_id;
 	private String name;
 	private double price;
@@ -15,7 +15,7 @@ public class ItemEntity  {
 	/*constructor to get from DB*/
 	public ItemEntity(int item_id, String name, double price, String manufacturer, String description,
 			 String item_img_name) {
-		super();
+		super(item_id);
 		this.item_id = item_id;
 		this.name = name;
 		this.price = price;
@@ -28,7 +28,7 @@ public class ItemEntity  {
 	/*constructor to send to DB*/
 	public ItemEntity(int item_id, String name, double price, String manufacturer, String description,
 			 ImgEntity itemImg) {
-		super();
+		super(item_id);
 		this.item_id = item_id;
 		this.name = name;
 		this.price = price;
