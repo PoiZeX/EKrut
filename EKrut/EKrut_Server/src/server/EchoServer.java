@@ -6,6 +6,10 @@ import java.io.IOException;
 import common.Message;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
+import entity.DeliveryEntity;
+import entity.SubscriberEntity;
+import controllerDb.DeliveryManagementDBController;
+import controllerDb.ItemDbController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
@@ -44,6 +48,32 @@ public class EchoServer extends AbstractServer {
 				MessageHandler.Handle((Message) msg, client);
 			} catch (IOException e) {
 				e.printStackTrace();
+		if (msg==null) {
+			return;
+		}
+		
+		if (msg instanceof ArrayList) {
+			//if its DeliveryEntity ArrayList
+			// if(((ArrayList<Object>)msg).get(0).getClass().equals(DeliveryEntity.class)) {
+			// 	ArrayList<DeliveryEntity> deliveryLst = (ArrayList<DeliveryEntity>) msg;
+			// 	DeliveryManagementDBController.updateDeliveryEntities(client,deliveryLst);
+			// }
+			//ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
+			//SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
+			// i know its ArrayList of subscribers but TODO check this
+		} else if (msg instanceof MessageType) {
+			
+
+			// case LoadDeliveries:
+			// 	DeliveryManagementDBController.getTable(client);
+
+			// case LoadItems:
+			// 	ItemDbController.sendImgToClient(client);
+			// 	break;
+
+			default:
+				System.out.println("Message received: " + msg + " from " + client);
+				break;
 			}
 		}
 		try {

@@ -13,13 +13,15 @@ import controllerGui.OrdersReportController;
 import controllerGui.ReportSelectionController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
+import common.MessageType;
+import controllerGui.DeliveryManagementController;
 
 import java.io.*;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
-import entity.SubscriberEntity;
+import entity.ItemEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
@@ -29,6 +31,8 @@ public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
 	// public static ObservableList<SubscriberEntity> subscribers;
+	public static ObservableList<SubscriberEntity> subscribers;
+
 	public static boolean awaitResponse = false;
 	public static ObservableList<SubscriberEntity> subscribers;
 
@@ -53,6 +57,7 @@ public class ChatClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
 		// ---- Login
@@ -69,10 +74,21 @@ public class ChatClient extends AbstractClient {
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity)obj);
 			break;
 			// ---- Delivery
+		case ItemEntity:
+			System.out.println("sent Item to Items controller");
+			ItemEntity item= (ItemEntity)msg;
+			ItemsController.getItemsFromServer(item);
+		break;
+			case DeliveryEntity:
+			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity)msg);
+		break;
 		default:
 			break;
 		}
 	}
+
+
+
 
 	public void handleMessageFromClientUI(String message) {
 		try {

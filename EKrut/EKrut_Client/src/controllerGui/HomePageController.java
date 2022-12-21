@@ -6,8 +6,8 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.RolesEnum;
+import client.ItemsController;
 import common.ScreensNames;
-import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -63,6 +63,7 @@ public class HomePageController {
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
+			ItemsController.requestItemsFromServer();
 			break;
 
 		case CEO:
