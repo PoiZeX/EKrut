@@ -1,6 +1,7 @@
 package controllerGui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import client.ClientController;
 import common.Message;
@@ -12,7 +13,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -64,6 +69,7 @@ public class UsersManagementController {
 
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
+	private ArrayList<UserEntity> toApprove;
 	private static ClientController chat = HostClientController.chat; // one instance
 	
 	public void initialize() {
@@ -75,6 +81,7 @@ public class UsersManagementController {
 				e.printStackTrace();
 			}
 		}
+		toApprove = new ArrayList<UserEntity>();
 		initTable();
 	}
 	
@@ -109,6 +116,7 @@ public class UsersManagementController {
     	
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setFactoryCols() {
     	//recieving arraylist of userentitys need to setup table.
     	customerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,Integer>("id"));
@@ -119,7 +127,24 @@ public class UsersManagementController {
     	emailCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("email"));
     	creditCardNumberCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,String>("cc_num"));
     	subscriberIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity,Integer>("id"));
-    	approveCol.setCellFactory(CheckBoxTableCell.forTableColumn(approveCol));
+    	
+    	approveCol.setCellFactory(column -> {
+    	    TableCell<UserEntity, Boolean> cell = new CheckBoxTableCell<>();
+    	    cell.setOnMouseClicked(event -> {
+    	        if (event.getClickCount() > 0) {
+    	            CheckBox checkBox = (CheckBox) cell.getGraphic();
+    	            TableRow<UserEntity> row = cell.getTableRow();
+    	            if (checkBox.isSelected()) {
+    	                checkBox.setSelected(false);
+    	                toApprove.remove(row.getItem());
+    	            } else {
+    	                checkBox.setSelected(true);
+    	                toApprove.add(row.getItem());
+    	            }
+    	        }
+    	    });
+    	    return cell;
+    	});
     	return;
 	}
 
