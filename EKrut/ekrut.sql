@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: localhost    Database: ekrut
+-- Host: 127.0.0.1    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -46,15 +46,15 @@ DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customers` (
-  `id` int NOT NULL,
-  `creditCardNumber` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `expireMonth` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `expireYear` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `costumer_id` varchar(8) NOT NULL,
+  `credit_card_number` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `expire_month` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `expire_year` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `cvv` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `subscriberID` int DEFAULT NULL,
-  `firstPurchase` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `subscriberID_UNIQUE` (`subscriberID`)
+  `subscriber_id` int DEFAULT NULL,
+  `first_purchase` tinyint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`costumer_id`),
+  UNIQUE KEY `subscriberID_UNIQUE` (`subscriber_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -81,6 +81,7 @@ CREATE TABLE `deliveries` (
   `estimated_time` varchar(128) DEFAULT NULL,
   `actual_time` varchar(128) DEFAULT NULL,
   `deilvery_status` enum('pendingApproval','outForDelivery','done') NOT NULL DEFAULT 'pendingApproval',
+  `cutomer_status` enum('APPROVED','NOT_APPROVED') DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `customer_id_UNIQUE` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -92,7 +93,7 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
-INSERT INTO `deliveries` VALUES (1,1,'abcd 3/5 Karmiel','22/12/2022 14:43',NULL,'outForDelivery'),(2,2,'aaa 2/3 Karmiel',NULL,NULL,'pendingApproval');
+INSERT INTO `deliveries` VALUES (1,1,'abcd 3/5 Karmiel','22/12/2022 14:43',NULL,'outForDelivery',NULL),(2,2,'aaa 2/3 Karmiel',NULL,NULL,'pendingApproval',NULL);
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,10 +107,9 @@ DROP TABLE IF EXISTS `delivery_address`;
 CREATE TABLE `delivery_address` (
   `city` varchar(45) NOT NULL,
   `street` varchar(45) DEFAULT NULL,
-  `zipcode` varchar(45) DEFAULT NULL,
   `house_num` int DEFAULT NULL,
-  `floor` int DEFAULT NULL,
   `apparetment_num` int DEFAULT NULL,
+  `floor` int DEFAULT NULL,
   PRIMARY KEY (`city`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -131,12 +131,14 @@ DROP TABLE IF EXISTS `item_in_machine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `item_in_machine` (
+  `machine_id` varchar(45) DEFAULT NULL,
+  `item_id` varchar(45) DEFAULT NULL,
   `min_amount` int DEFAULT NULL,
   `current_amount` int DEFAULT NULL,
-  `shelf` varchar(45) DEFAULT NULL,
   `call_Status` varchar(45) DEFAULT NULL,
   `availability` tinyint DEFAULT NULL,
-  `amount_under_min` int DEFAULT NULL
+  `amount_under_min` int DEFAULT NULL,
+  `amount_calls` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,7 +159,7 @@ DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
-  `item_id` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `item_id` int(3) unsigned zerofill NOT NULL,
   `name` varchar(45) NOT NULL,
   `price` double NOT NULL,
   `manufacturer` varchar(45) DEFAULT NULL,
@@ -165,7 +167,7 @@ CREATE TABLE `items` (
   `item_img_name` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `itemName_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +176,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (00001,'Bamba',12,'Osem','penuts snack','Bamba.png'),(00002,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png');
+INSERT INTO `items` VALUES (001,'Bamba',12,'Osem','penuts snack','Bamba.png'),(002,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,8 +239,11 @@ DROP TABLE IF EXISTS `orders_online`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders_online` (
-  `shipment_method` varchar(45) NOT NULL,
-  PRIMARY KEY (`shipment_method`)
+  `shipment_method` enum('PickUp','Delivery') NOT NULL,
+  `order_id` int NOT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `reigon` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -300,31 +305,6 @@ LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
 INSERT INTO `regions` VALUES (001,'Karmiel'),(002,'Haifa'),(003,'Acre'),(004,'Nesher'),(005,'Kiryat Ata'),(006,'Tel Aviv');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `report`
---
-
-DROP TABLE IF EXISTS `report`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `report` (
-  `region` varchar(45) NOT NULL,
-  `city` varchar(45) DEFAULT NULL,
-  `machine_id` varchar(45) DEFAULT NULL,
-  `time` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `report`
---
-
-LOCK TABLES `report` WRITE;
-/*!40000 ALTER TABLE `report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -435,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-21 21:39:32
+-- Dump completed on 2022-12-21 22:59:47
