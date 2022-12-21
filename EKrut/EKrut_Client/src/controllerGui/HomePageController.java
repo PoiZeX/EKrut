@@ -5,6 +5,7 @@
 package controllerGui;
 
 import Store.NavigationStoreController;
+import common.RolesEnum;
 import common.ScreensNames;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
@@ -57,29 +58,67 @@ public class HomePageController {
 		Image image = null;
 		// switch case by role
 		switch (currentUser.getRole_type()) {
-		case "registered":
-		case "subscribed":
+		case registerd:
+		case subscribed:
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			break;
 
-		case "ceo":
-		case "regionManager":
+		case CEO:
+		case regionManager:
 			// CEO has 3 buttons.
 			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
 			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
 			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyReport);
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
-
+			
+		case customerServiceWorker:
+			setBtn(topBtn, "Open New Account", "open new registered / subscribed account", null);
+			break;
+			
+		case deliveryWorker:
+			setBtn(topBtn, "Handle Delivery", "see details and change status of current delivery", null);
+			break;
+			
+		case deliveryManager:
+			setBtn(topBtn, "Manage deliveries", "see details about all deliveries", null);
+			break;
+			
+		case marketingWorker:
+			setBtn(topBtn, "Activate New Sale", "activate sale for region", null); // just if the manager activated it already
+			break;
+			
+		case marketingManager:
+			setBtn(topBtn, "Activate New Sale", "activate global sale by pattern", null);
+			break;
+			
+		case supplyWorker:
+			setBtn(topBtn, "Update supply", "update supplies for item(s)", null);
+			break;
+			
+			// not existing i think
+//		case supplyManager:
+//			break;
+//			
+			
 		default:
 			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
-		}
+			
 
+			
+
+		}
+		
 		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
-		roleLabel.setText(currentUser.getRole_type());
+		String[] splitString = currentUser.getRole_type().toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
+		String role = "";
+		if (splitString.length > 1) 
+			for(String s : splitString)
+			role += s + " ";
+		roleLabel.setText(role);
 
 		ImageView roleImg = new ImageView();
 		if (image != null) {

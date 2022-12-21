@@ -1,5 +1,6 @@
 package controllerGui;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
@@ -9,11 +10,17 @@ import common.TaskType;
 import common.Message;
 import common.ScreensNames;
 import entity.UserEntity;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import utils.PopupWindow;
 
 public class LoginController {
 
@@ -37,6 +44,11 @@ public class LoginController {
 	@FXML
 	private Button EKTLoginBtn;
 
+	/**
+	 * Handles login with username and password for EKrut clients
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void loginBtnAction(ActionEvent event) {
 		username = usernameTxtField.getText();
@@ -45,8 +57,11 @@ public class LoginController {
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
 
-		sendServerusernamePassword(new String[] { username, password });
-		while (isValidDetails == null) { // wait for answer
+		// sends the user information to server
+		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, new String[] { username, password }));
+
+		// wait for answer
+		while (isValidDetails == null) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -138,24 +153,67 @@ public class LoginController {
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
-		user.setLogged_in(true);  // TODO: change in DB
+		user.setLogged_in(true); // TODO: change in DB
 		NavigationStoreController.connectedUser = user; // set the current connected user to system
 		return;
 
 	}
 
+	/**
+	 * sends a user
+	 * 
+	 * @param usernamePassword
+	 */
 	private void sendServerusernamePassword(String[] usernamePassword) {
-		// username and password match
 		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
-		// not logged in
-
-		// is approved in manager
-
 	}
 
+	/**
+	 * Handles the login via EKT with popup
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void ektLoginAction(ActionEvent event) {
-		//
+		PopupWindow pop = new PopupWindow();
+		// pop.startEKTPopup(NavigationStoreController.getInstance().getPrimaryStage());
+		Stage primaryStage = new Stage();
+
+		Parent root;
+		try {
+
+			String path = "/boundary/EKTPopupBoundary.fxml";
+			root = FXMLLoader.load(getClass().getResource(path));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.setTitle("Login with EKT");
+			primaryStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+		Task task = new Task<Void>() {
+			@Override
+			public Void call() {
+				while (PopupWindow.isFinishAndSuccess == 0) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (PopupWindow.isFinishAndSuccess == 1) {
+					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+				}
+				primaryStage.close();
+				return null;
+			}
+		};
+		new Thread(task).start();
+
+
+
 	}
 
 }

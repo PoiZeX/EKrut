@@ -44,7 +44,7 @@ public class MessageHandler {
 //			ClientReportDBController.getClientReportEntity((String[]) obj, client);
 //			break;
 		//****************//
-		case RequestUserFromDB:
+		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
 		case RequestUnapprovedUsers:

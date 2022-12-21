@@ -43,7 +43,6 @@ public class LoginDBController {
 			UserEntity res = getUserFromDB();
 			try {
 				client.sendToClient(new Message(TaskType.RecieveUserFromServerDB, res));
-				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
