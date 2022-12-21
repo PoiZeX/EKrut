@@ -12,7 +12,7 @@ public class OrderReportEntity extends ReportEntity {
 	
 	public OrderReportEntity() {
 		super();
-		description = "";
+		description = "noreport";
 	}
 	
 	public OrderReportEntity(int id, String description, String month, String year, String region) {
@@ -38,12 +38,13 @@ public class OrderReportEntity extends ReportEntity {
 		this.reportsList = reportsList;
 	}
 	
+
 	private void parserDetails(String description) {
-		reportsList = new HashMap <String, Double[]> ();
+		reportsList = new HashMap<String, Double[]>();
 		if (CommonFunctions.isNullOrEmpty(description) || description.equals("noreport"))
 			return;
 		else if (description.equals("nosales")) {
-			reportsList.put("No Sales", new Double[] {0.0, 0.0});
+			reportsList.put("No Sales", new Double[] {0.0,0.0});
 			return;
 		}
 		String[] details = description.split(",");

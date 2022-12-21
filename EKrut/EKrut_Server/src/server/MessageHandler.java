@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
+import controllerDb.CommonDataDBController;
 import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
@@ -62,6 +63,8 @@ public class MessageHandler {
 		case RequestUpdateDeliveries:
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
+		case InitRegions:
+			CommonDataDBController.getAllRegionsFromDB(client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;
