@@ -2,38 +2,48 @@ package entity;
 
 import java.io.Serializable;
 
+import common.CustomerStatus;
 import common.DeliveryStatus;
 
 public class DeliveryEntity implements Serializable{
 	private String actualTime,estimatedTime;
-	private int costumerId,orderId;
+	private int customerId,orderId;
 	//private AddressEntity address;
-	private String address; //change later to AddressEntity
-	private DeliveryStatus status;
+	private String address, city; //change later to AddressEntity
+	private DeliveryStatus deliveryStatus;
+	private CustomerStatus customerStatus;
 
 	
-	public DeliveryEntity(int costumerId, int orderId, String address, String estimatedTime, String actualTime,
-			DeliveryStatus status) {
+	
+
+	public DeliveryEntity(int orderId,int costumerId, String address,String city, String estimatedTime, String actualTime,
+			DeliveryStatus deliveryStatus,CustomerStatus customerStatus) {
 		this.orderId = orderId;
-		this.costumerId = costumerId;
+		this.customerId = costumerId;
 		this.address = address;
+		this.city = city;
 		this.estimatedTime = estimatedTime;
 		this.actualTime = actualTime;
-		this.status = status;
+		this.deliveryStatus = deliveryStatus;
+		this.customerStatus=customerStatus;
 	}
 
 
 
-	public DeliveryEntity(int orderId, int costumerId, String address, String estimatedTime ) {
+	public DeliveryEntity(int orderId, int customerId, String address,String city, String estimatedTime ) {
 		this.orderId = orderId;
-		this.costumerId = costumerId;
+		this.customerId = customerId;
 		this.address=address;
+		this.city = city;
 		this.estimatedTime = estimatedTime;
-		this.status = DeliveryStatus.pendingApproval;
+		this.deliveryStatus = DeliveryStatus.pendingApproval;
+		this.customerStatus= CustomerStatus.NOT_APPROVED;
 	}
 	
 
-
+	public String getCity() {
+		return city;
+	}
 	public String getActualTime() {
 		return actualTime;
 	}
@@ -46,20 +56,26 @@ public class DeliveryEntity implements Serializable{
 	public void setEstimatedTime(String estimatedTime) {
 		this.estimatedTime = estimatedTime;
 	}
-	public int getCostumerId() {
-		return costumerId;
+	public int getCustomerId() {
+		return customerId;
 	}
 	public int getOrderId() {
 		return orderId;
 	}
-	public DeliveryStatus getStatus() {
-		return status;
+	public DeliveryStatus getDeliveryStatus() {
+		return deliveryStatus;
 	}
-	public void setStatus(DeliveryStatus status) {
-		this.status = status;
+	public void setDeliveryStatus(DeliveryStatus status) {
+		this.deliveryStatus = status;
 	}
 	public String getAddress() {
 		return address;
+	}
+	public CustomerStatus getCustomerStatus() {
+		return customerStatus;
+	}
+	public void setCustomerStatus(CustomerStatus customerStatus) {
+		this.customerStatus = customerStatus;
 	}
 	/*
 	public AddressEntity getAddress() {

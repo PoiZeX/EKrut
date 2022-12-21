@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import common.CustomerStatus;
 import common.DeliveryStatus;
 import common.Message;
 import common.TaskType;
@@ -18,7 +19,7 @@ import ocsf.server.ConnectionToClient;
 public class DeliveryManagementDBController {
 	
 	/*update delivery status*/
-	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> delivaryLst, ConnectionToClient client) {
+	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		Statement stmt;
 		try {
 			Connection con = MySqlClass.getConnection();
@@ -26,18 +27,15 @@ public class DeliveryManagementDBController {
 				return;
 
 			stmt = MySqlClass.getConnection().createStatement();
-			for (DeliveryEntity delivery : delivaryLst) {
-				// TODO change this to another build method as we learned with question mark
-				// (?)...
+			for (DeliveryEntity delivery : deliveryLst) {
 				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.deliveries SET estimated_time=(?), actual_time=(?), "
-						+ "deilvery_status=(?) WHERE order_id=(?);");
+						+ "deilvery_status=(?), customer_status=(?) WHERE order_id=(?);");
 				ps.setString(1, delivery.getEstimatedTime());
 				ps.setString(2, delivery.getActualTime());
-				ps.setString(3, delivery.getStatus().toString());
-				ps.setInt(4, delivery.getOrderId());
+				ps.setString(3, delivery.getDeliveryStatus().toString());
+				ps.setString(4, delivery.getCustomerStatus().toString());
+				ps.setInt(5, delivery.getOrderId());
 				ps.executeUpdate();
-				//stmt.executeUpdate("UPDATE ekrut.deliveries SET deilvery_status=\"" + delivery.getStatus().toString()
-						//+ "\" WHERE order_id=" + delivery.getOrderId() + ";");
 
 			}
 
@@ -59,9 +57,10 @@ public class DeliveryManagementDBController {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.deliveries;");
 			
 			while (rs.next()) {
-				DeliveryStatus status = DeliveryStatus.valueOf(rs.getString(6));
+				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(7));
+				CustomerStatus customerStatus= CustomerStatus.valueOf(rs.getString(8));
 				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), status);
+						rs.getString(5),rs.getString(6), deliveryStatus, customerStatus);
 				try {
 					client.sendToClient(new Message(TaskType.RecieveDeliveriesFromServer, deliveryEntity)); // finally send the entity
 				} catch (IOException e) {
