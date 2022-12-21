@@ -8,6 +8,7 @@ import ocsf.client.*;
 import common.ChatIF;
 import common.CommonData;
 import common.Message;
+import common.ScreensNames;
 import common.TaskType;
 import controller.ItemsController;
 import controllerGui.LoginController;

@@ -66,9 +66,8 @@ public class HostClientController  {
 
     }
 	 
-    public void start(Stage primaryStage) throws Exception {	
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);
-		
+    public void start(Stage primaryStage) throws Exception {
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);	
 	}
     
    
