@@ -37,10 +37,10 @@ public class NavigationStoreController {
 	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
 	private Stack<Scene> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
-	private Stage primaryStage;  // the main stage (window)
-	private ScreensNames[] isSkipped = {ScreensNames.HostClient,ScreensNames.HomePage, ScreensNames.Login};
-	public static UserEntity connectedUser;  // hold the current connected user
-	
+	private Stage primaryStage; // the main stage (window)
+	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
+	public static UserEntity connectedUser; // hold the current connected user
+
 	/**
 	 * Constructor, creates the new instances
 	 */
@@ -49,11 +49,10 @@ public class NavigationStoreController {
 		screenScenes = new HashMap<>();
 		history = new Stack<>();
 		primaryStage = new Stage();
-		//setAllScenes(); // fill the hashMap
+		// setAllScenes(); // fill the hashMap
 		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.show(); // show primary stage
 	}
-
 
 	/**
 	 * singleton design pattern, create / get the instance
@@ -77,16 +76,20 @@ public class NavigationStoreController {
 		// if null create new instance (should not happens)
 		if (scene == null)
 			scene = createSingleScene(scName);
-
+		handleTitle(scName);
 		// save to stack
+		primaryStage.setScene(history.push(scene));
+
+	}
+
+	private void handleTitle(ScreensNames scName) {
+		// Set title
 		String[] splitString = scName.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
 		if (splitString.length == 2) {
-			primaryStage.setTitle(splitString[0]+" "+splitString[1]);
-		}
-		else {
+			primaryStage.setTitle(splitString[0] + " " + splitString[1]);
+		} else {
 			primaryStage.setTitle(scName.toString());
 		}
-		primaryStage.setScene(history.push(scene));
 
 	}
 
@@ -119,11 +122,11 @@ public class NavigationStoreController {
 		if (scene == null)
 			return false;
 		screenScenes.replace(screenName, scene); // replace the last stage with new
-		
+
 		// REPLACE the stack head
-		primaryStage.setTitle(screenName.toString());
+		handleTitle(screenName);
 		history.pop(); // remove the last instance of the current screen and sets a new one
-		primaryStage.setScene(history.push(scene));		
+		primaryStage.setScene(history.push(scene));
 		return true;
 	}
 
@@ -150,7 +153,7 @@ public class NavigationStoreController {
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			Parent root = FXMLLoader.load(getClass().getResource(path));
-			if (!skippedScreens.contains(screenName))//for submit
+			if (!skippedScreens.contains(screenName))// for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
@@ -204,11 +207,10 @@ public class NavigationStoreController {
 		if (((BorderPane) stage).bottomProperty().getValue() instanceof GridPane) {
 			GridPane t = (GridPane) ((BorderPane) stage).bottomProperty().getValue();
 			t.add(returnBtn, 0, 0);
-		}
-		else {
+		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
-		
+
 		return stage;
 
 	}
@@ -221,5 +223,9 @@ public class NavigationStoreController {
 		Platform.exit(); // exit JavaFx
 		System.exit(0); // exit system
 
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
 	}
 }
