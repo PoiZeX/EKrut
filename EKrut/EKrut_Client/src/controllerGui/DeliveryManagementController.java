@@ -149,7 +149,7 @@ public class DeliveryManagementController {
 	
 	private String calculateEstimatedTime() {
 		 Calendar estimated = Calendar.getInstance();  
-		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 		 
 		 Calendar fourPM = Calendar.getInstance();   
 		 fourPM.set(Calendar.HOUR_OF_DAY,16);
