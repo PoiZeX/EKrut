@@ -11,6 +11,7 @@ import common.TaskType;
 import controllerGui.HostClientController;
 import entity.ImgEntity;
 import entity.ItemEntity;
+import utils.AppConfig;
 
 public class ItemsController {
 
@@ -24,7 +25,7 @@ public class ItemsController {
 
 	/* add the item to array list */
 	public static void getItemsFromServer(ItemEntity item) {
-		item.setImg_relative_path("../EKrut_Client/src/styles/products/");
+		item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
 		// System.out.println(item.toString());
 		items.add(item);
 		convertStreamToImg(item.getItemImg());
@@ -37,7 +38,7 @@ public class ItemsController {
 		byte[] mybytearray = new byte[fileSize];
 
 		try {
-			String LocalfilePath = "../EKrut_Client/src/styles/products/" + img.getImgName();
+			String LocalfilePath = AppConfig.PRODUCTS_PATH_CLIENT + img.getImgName();
 			File newFile = new File(LocalfilePath);
 			// save in folder
 			FileOutputStream fos = new FileOutputStream(newFile.getPath());
