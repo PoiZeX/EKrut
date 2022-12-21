@@ -29,7 +29,7 @@ public class ItemsController {
 //	}
 	/*convert byts to img and saves the imge*/
 	public static void getItemsFromServer(ItemEntity item) {
-		item.setImg_relative_path("/src/styles/products/");
+		item.setImg_relative_path("/EKrut_Client/src/styles/products/");
 		items.add(item);
 		convertStreamToImg(item.getItemImg());
 		
@@ -38,7 +38,7 @@ public class ItemsController {
 	private static boolean convertStreamToImg(ImgEntity img) {
 		 int fileSize =img.getSize(); 
 		 
-		 File newFile= new File("/src/styles/products/"+img.getImgName());
+		 File newFile= new File("/EKrut_Client/src/styles/products/"+img.getImgName());
 		 byte[] mybytearray = new byte[fileSize];
 		 
 		try {

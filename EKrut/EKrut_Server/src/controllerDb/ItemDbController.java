@@ -33,12 +33,12 @@ public class ItemDbController {
 				 * (int item_id, String name, double price, String manufacturer, String description, String item_img_name)*/
 				itemEntity = new ItemEntity(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getString(5),rs.getString(6));
 				//crate an image set it in the entity on the item and send it to client
-				
+				System.out.println( itemEntity.toString());
 				String LocalfilePath="Bamba.png";
 				System.out.println(itemEntity.getItemImg().getImgName());
-				
+				itemEntity.getItemImg().setImgName(LocalfilePath);
 				  try{
-					      File newFile = new File ("Bamba.png");
+					      File newFile = new File (LocalfilePath);
 					      		      
 					      byte [] mybytearray  = new byte [(int)newFile.length()];
 					      FileInputStream fis = new FileInputStream(newFile);
@@ -47,12 +47,10 @@ public class ItemDbController {
 					      itemEntity.getItemImg().setSize(mybytearray.length);
 					      System.out.println("trying to read");
 					      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-								  
-					   
-					      System.out.println(mybytearray.toString());
+					      System.out.println(mybytearray.length +"");
 					      client.sendToClient(itemEntity); // finally send the entity
 					      
-					    }
+					    } 
 					catch (Exception e) {
 						System.out.println("Error send msg to Client");
 					}

@@ -1,6 +1,12 @@
 package entity;
 
 public class ItemEntity extends MainEntity {
+	@Override
+	public String toString() {
+		return "ItemEntity [item_id=" + item_id + ", name=" + name + ", price=" + price + ", manufacturer="
+				+ manufacturer + ", description=" + description + ", itemImg=" + itemImg + ", item_img_name="
+				+ item_img_name + ", img_relative_path=" + img_relative_path + "]";
+	}
 	private int item_id;
 	private String name;
 	private double price;
@@ -23,7 +29,7 @@ public class ItemEntity extends MainEntity {
 		this.description = description;
 		this.itemImg = new ImgEntity(item_img_name);
 	}
-	
+	 
 	
 	/*constructor to send to DB*/
 	public ItemEntity(int item_id, String name, double price, String manufacturer, String description,
