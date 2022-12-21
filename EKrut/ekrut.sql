@@ -75,10 +75,14 @@ DROP TABLE IF EXISTS `deliveries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deliveries` (
-  `estimated_time` int unsigned NOT NULL,
-  `status` enum('pendingApproval','outForDelivery','delivered','canceled') DEFAULT NULL,
-  `arrival_status` enum('late','onTime') DEFAULT NULL,
-  PRIMARY KEY (`estimated_time`)
+  `order_id` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `address` varchar(128) NOT NULL,
+  `estimated_time` varchar(128) DEFAULT NULL,
+  `actual_time` varchar(128) DEFAULT NULL,
+  `deilvery_status` enum('pendingApproval','outForDelivery','done') NOT NULL DEFAULT 'pendingApproval',
+  PRIMARY KEY (`order_id`),
+  UNIQUE KEY `customer_id_UNIQUE` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,6 +92,7 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
+INSERT INTO `deliveries` VALUES (1,1,'abcd 3/5 Karmiel',NULL,NULL,'pendingApproval'),(2,2,'aaa 2/3 Karmiel',NULL,NULL,'pendingApproval');
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,21 +369,22 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `id_number` varchar(45) DEFAULT NULL,
   `username` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
   `first_name` varchar(128) NOT NULL,
   `last_name` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
   `phone_number` varchar(128) NOT NULL,
-  `role_type` varchar(128) NOT NULL,
+  `cc_number` varchar(45) DEFAULT NULL,
   `region` varchar(128) DEFAULT NULL,
-  `logged_in` int NOT NULL,
-  `is_not_approved` int DEFAULT NULL,
+  `role_type` varchar(128) NOT NULL,
+  `logged_in` tinyint(1) NOT NULL,
+  `is_not_approved` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `userName_UNIQUE` (`username`),
-  UNIQUE KEY `roleID_UNIQUE` (`role_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `userName_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -387,7 +393,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030','regionManager','Karmiel',0,0),(2,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024','CEO','KARMIEL',0,0),(3,'customer','123456','customer','customer','customer@customer','123123','registered','',0,0);
+INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Karmiel','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'KARMIEL','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -400,4 +406,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-20 16:03:18
+-- Dump completed on 2022-12-21 17:24:44
