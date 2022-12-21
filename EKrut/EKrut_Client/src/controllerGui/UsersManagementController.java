@@ -103,7 +103,16 @@ public class UsersManagementController {
 
     @FXML
     void selectAll(ActionEvent event) {
-
+    	//TODO IDK FIX IT
+//        for (CheckBox data : usersTable.getColumns().get) {
+//            // Get the checkbox in the approveCol column for the current row
+//            CheckBox checkBox = (CheckBox) table.getColumns().get(0).getCellObservableValue(data).getValue();
+//            
+//            // Set the value of the checkbox to true if it is not already selected
+//            if (!checkBox.isSelected()) {
+//                checkBox.setSelected(true);
+//            }
+//        }
     }
     
     private void initTable() {
@@ -134,13 +143,16 @@ public class UsersManagementController {
     	        if (event.getClickCount() > 0) {
     	            CheckBox checkBox = (CheckBox) cell.getGraphic();
     	            TableRow<UserEntity> row = cell.getTableRow();
-    	            if (checkBox.isSelected()) {
-    	                checkBox.setSelected(false);
-    	                toApprove.remove(row.getItem());
-    	            } else {
-    	                checkBox.setSelected(true);
-    	                toApprove.add(row.getItem());
+    	            if (checkBox != null) {
+        	            if (checkBox.isSelected()) {
+        	                checkBox.setSelected(false);
+        	                toApprove.remove(row.getItem());
+        	            } else {
+        	                checkBox.setSelected(true);
+        	                toApprove.add(row.getItem());
+        	            }
     	            }
+
     	        }
     	    });
     	    return cell;
