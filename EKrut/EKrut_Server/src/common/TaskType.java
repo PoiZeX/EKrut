@@ -28,4 +28,11 @@ public enum TaskType {
 	
 	RequestUnapprovedUsers, 
 	RecieveUnapprovedUsers, 
+	
+	RequestItemsFromServer, 
+	RecieveItemsFromServer, 
+	RequestDeliveriesFromServer, 
+	RecieveDeliveriesFromServer,
+	RequestUpdateDeliveries
+	
 }

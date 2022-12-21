@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import common.DeliveryStatus;
+import common.Message;
+import common.TaskType;
 import entity.DeliveryEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
@@ -16,7 +18,7 @@ import ocsf.server.ConnectionToClient;
 public class DeliveryManagementDBController {
 	
 	/*update delivery status*/
-	public static void updateDeliveryEntities(ConnectionToClient client, ArrayList<DeliveryEntity> delivaryLst) {
+	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> delivaryLst, ConnectionToClient client) {
 		Statement stmt;
 		try {
 			Connection con = MySqlClass.getConnection();
@@ -61,7 +63,7 @@ public class DeliveryManagementDBController {
 				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), status);
 				try {
-					client.sendToClient(deliveryEntity); // finally send the entity
+					client.sendToClient(new Message(TaskType.RecieveDeliveriesFromServer, deliveryEntity)); // finally send the entity
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -5,10 +5,13 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
+import controllerDb.DeliveryManagementDBController;
+import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
 import controllerDb.OrderReportDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
+import entity.DeliveryEntity;
 import entity.SubscriberEntity;
 import ocsf.server.ConnectionToClient;
 
@@ -49,6 +52,15 @@ public class MessageHandler {
 			break;
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
+			break;
+		case RequestItemsFromServer:
+			ItemDBController.sendImgToClient(client);
+			break;
+		case RequestDeliveriesFromServer:
+			DeliveryManagementDBController.getTable(client);
+			break;
+		case RequestUpdateDeliveries:
+			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());

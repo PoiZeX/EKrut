@@ -10,31 +10,27 @@ import common.Message;
 import common.TaskType;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
-import controllerGui.ReportSelectionController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
-import common.MessageType;
 import controllerGui.DeliveryManagementController;
-
 import java.io.*;
 import java.util.ArrayList;
-
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
+import entity.DeliveryEntity;
 import entity.ItemEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
 	// public static ObservableList<SubscriberEntity> subscribers;
-	public static ObservableList<SubscriberEntity> subscribers;
+	//public static ObservableList<SubscriberEntity> subscribers;
 
 	public static boolean awaitResponse = false;
-	public static ObservableList<SubscriberEntity> subscribers;
+	//public static ObservableList<SubscriberEntity> subscribers;
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
@@ -57,9 +53,9 @@ public class ChatClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
+
 		// ---- Login
 		case RecieveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
@@ -71,24 +67,19 @@ public class ChatClient extends AbstractClient {
 			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
 			break;
 		case RequestSupplyReport:
-			SupplyReportController.recieveDataFromServer((SupplyReportEntity)obj);
+			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
-			// ---- Delivery
-		case ItemEntity:
-			System.out.println("sent Item to Items controller");
-			ItemEntity item= (ItemEntity)msg;
-			ItemsController.getItemsFromServer(item);
-		break;
-			case DeliveryEntity:
-			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity)msg);
-		break;
+		// ---- Delivery
+		case RecieveItemsFromServer:
+			ItemsController.getItemsFromServer((ItemEntity) obj);
+			break;
+		case RecieveDeliveriesFromServer:
+			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
+			break;
 		default:
 			break;
 		}
 	}
-
-
-
 
 	public void handleMessageFromClientUI(String message) {
 		try {

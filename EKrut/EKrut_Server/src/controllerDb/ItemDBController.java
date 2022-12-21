@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import common.Message;
+import common.TaskType;
 import entity.ImgEntity;
 import entity.ItemEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
-public class ItemDbController {
+public class ItemDBController {
 	
 	/*send to client item Object */
 	public static void sendImgToClient(ConnectionToClient client) {
@@ -43,13 +46,12 @@ public class ItemDbController {
 					      itemEntity.getItemImg().initArray(mybytearray.length);
 					      itemEntity.getItemImg().setSize(mybytearray.length);
 					      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-					      client.sendToClient(itemEntity); // finally send the entity
+					      client.sendToClient(new Message(TaskType.RecieveItemsFromServer, itemEntity)); // finally send the entity
 					    } 
 					catch (Exception e) {System.out.println("Error send item to Client");}
 			 }
 			rs.close();
 		} catch (SQLException e) {e.printStackTrace();}
 	}
-	
 }
 

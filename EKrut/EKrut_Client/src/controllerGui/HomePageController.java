@@ -8,6 +8,7 @@ import Store.NavigationStoreController;
 import common.RolesEnum;
 import client.ItemsController;
 import common.ScreensNames;
+import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -80,7 +81,7 @@ public class HomePageController {
 			break;
 			
 		case deliveryWorker:
-			setBtn(topBtn, "Handle Delivery", "see details and change status of current delivery", null);
+			setBtn(topBtn, "Handle Delivery", "see details and change status of current delivery", ScreensNames.DeliveryManagement);
 			break;
 			
 		case deliveryManager:

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import client.ClientController;
 import common.DeliveryStatus;
-import common.MessageType;
+import common.Message;
+import common.TaskType;
 import entity.DeliveryEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,14 +70,13 @@ public class DeliveryManagementController {
 	private void refresh(ActionEvent event) {
 		  if (deliveries != null)
 			  deliveries.clear();
-		  chat.acceptObj(MessageType.LoadDeliveries); // get all entities to ArrayList from DB
-		  
-		 	}
+		  chat.acceptObj(new Message(TaskType.RequestDeliveriesFromServer, null)); // get all entities to ArrayList from DB
+		 }
 
 	@FXML
 	private void save(ActionEvent event) {
 		  if (changedDeliveryItems.size() > 0) {
-			  chat.acceptObj(changedDeliveryItems);
+			  chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries, changedDeliveryItems));
 			  changedDeliveryItems.clear(); 
 			}
 		 
