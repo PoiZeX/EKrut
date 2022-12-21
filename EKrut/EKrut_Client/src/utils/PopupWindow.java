@@ -12,9 +12,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Store.NavigationStoreController;
+import common.RolesEnum;
 import common.ScreensNames;
 import entity.UserEntity;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,7 +39,7 @@ public class PopupWindow {
 	private ImageView loadingImage;
 
 	private Stage primaryStage;
-	
+
 	public void startEKTPopup(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Login with EKT - waiting");
@@ -75,7 +78,6 @@ public class PopupWindow {
 
 		}
 		// start timer
-
 
 //		
 //		Timer timerOvertime = new Timer();
@@ -127,40 +129,60 @@ public class PopupWindow {
 	}
 
 	public static int isFinishAndSuccess = 0; // 0: not finish, 1: success, -1: failed
+
 	public void initialize() {
-		//this.primaryStage = primaryStage;
+		// this.primaryStage = primaryStage;
 
 		headlineLabel.setText("Waiting for EKT connection");
-	
+
 		Timer timerSuccess = new Timer();
 		int successMillis = 1500; // define time to simulate success
 
-		timerSuccess.schedule(new TimerTask() {
+		Task<Void> task = new Task<Void>() {
+
+			@Override
+			protected Void call() throws Exception {
+
+				return null;
+			}
+		};
+		Platform.runLater(new Runnable() {
+
 			@Override
 			public void run() {
-				// simulate: after X seconds:
-				// validate proccess
-				Image image = new Image(getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
-				loadingImage.setImage(image); // get information gif
+				timerSuccess.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						// simulate: after X seconds:
+						// validate proccess
+						Image image = new Image(
+								getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
+						loadingImage.setImage(image); // get information gif
 
-				// ------------- enter validation here!!! -------------
+						// ------------- enter validation here!!! -------------
 
-				// login success
-				headlineLabel.setText("Login with EKT success!");
-				// wait for 2 seconds
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				// set current user
-				NavigationStoreController.connectedUser = new UserEntity("", "", "", "", "", "", "", "registered", null, false, false);
-				isFinishAndSuccess = 1;
-//
-//				// close window, set new screen
-//				((Stage)headlineLabel.getScene().getWindow()).close(); // close the popup window
+						// login success
+						headlineLabel.setText("Login with EKT success!");
+
+						// wait for 2 seconds
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// set current user
+						NavigationStoreController.connectedUser = new UserEntity("", "", "", "", "", "", "",
+								"registered", null, false, false);
+						isFinishAndSuccess = 1;
+						//
+//						// close window, set new screen
+//						((Stage)headlineLabel.getScene().getWindow()).close(); // close the popup window
+					}
+				}, successMillis);
+
 			}
-		}, successMillis);
+		});
+
 	}
 }

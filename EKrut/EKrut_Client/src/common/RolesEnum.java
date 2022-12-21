@@ -1,7 +1,7 @@
 package common;
 
 public enum RolesEnum {
-	registerd, 
+	registered, 
 	subscribed,
 	customerServiceWorker,
 	deliveryWorker,
