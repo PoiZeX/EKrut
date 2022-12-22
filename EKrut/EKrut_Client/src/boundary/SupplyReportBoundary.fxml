@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="0.0" BorderPane.alignment="CENTER">
          <children>
@@ -33,10 +32,6 @@
          </children>
       </VBox>
    </center>
-   <stylesheets>
-      <URL value="@../../../../../Desktop/chartStyleSheet.css" />
-      <URL value="@../styles/css/generalStyleSheet.css" />
-   </stylesheets>
    <top>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
         <columnConstraints>

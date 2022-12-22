@@ -24,10 +24,10 @@ public class SupplyReportDBController {
 	 * @return
 	 */
 	public static boolean setReport(String[] details) {
-		if (details.length == 2) {
+		if (details.length == 3) {
 			region = details[0];
 			month = details[1];
-			year = details[3];
+			year = details[2];
 			return true;
 		}
 		return false;
@@ -43,7 +43,7 @@ public class SupplyReportDBController {
 			// SQL query //
 			SupplyReportEntity res = getSupplyReportFromDB();
 			try {
-				client.sendToClient(new Message(TaskType.RequestSupplyReport, res));
+				client.sendToClient(new Message(TaskType.RecieveSupplyReport, res));
 				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -68,7 +68,7 @@ public class ChatClient extends AbstractClient {
 		case RecieveClientsReport:
 			ClientsReportController.recieveDataFromServer((ClientsReportEntity) obj);
 			break;
-		case RequestSupplyReport:
+		case RecieveSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
 		case RecieveUnapprovedUsers:

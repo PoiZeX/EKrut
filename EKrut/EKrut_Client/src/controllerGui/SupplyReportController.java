@@ -40,7 +40,7 @@ public class SupplyReportController {
     private TableColumn<?, ?> startAmountCol;
 
     @FXML
-    private TableView<?> supplyMachineTbl;
+    private TableView<ItemInTable> supplyMachineTbl;
 
     @FXML
     private Label titleLabel;
@@ -48,8 +48,35 @@ public class SupplyReportController {
 	protected static SupplyReportEntity reportDetails;	
 	protected static boolean RecievedData = false;
 	
+	private class ItemInTable {
+		private String itemID, itemName, minStock, startStock, curStock;
+		public ItemInTable(String itemID, String itemName, String minStock, String startStock, String curStock) {
+			this.itemID = itemID;
+			this.itemName = itemName;
+			this.minStock = minStock;
+			this.startStock = startStock;
+			this.curStock = curStock;
+		}
+		public String getItemID() {
+			return itemID;
+		}
+		public String getItemName() {
+			return itemID;
+		}
+		public String getMinStock() {
+			return itemID;
+		}
+		public String getStartStock() {
+			return itemID;
+		}
+		public String getCurStock() {
+			return itemID;
+		}
+
+	}
+	
 	public void initialize() {
-		titleLabel.setText("Suplly Report : " + reportDetails.getRegion());
+		titleLabel.setText("Supply Report : " + reportDetails.getRegion());
 		initCharts();
 		return;
 	}
@@ -61,9 +88,17 @@ public class SupplyReportController {
 	}
 	
 
-
 	private void initCharts() {
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
+		itemIDCol.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+		nameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+		minAmountCol.setCellValueFactory(new PropertyValueFactory<>("minStock"));
+		startAmountCol.setCellValueFactory(new PropertyValueFactory<>("startStock"));
+		currentAmountCol.setCellValueFactory(new PropertyValueFactory<>("curStock"));
+		for (String[] item : itemsArray) {
+			ItemInTable newItem = new ItemInTable(item[0], item[4], item[3], item[1], item[2]);
+			supplyMachineTbl.getItems().add(newItem);
+		}
 
 	}
 }

@@ -23,7 +23,7 @@ public enum TaskType {
 	// Registration
 	RequestRegistrationForm,
 	RequestSupplyReport,
-
+	RecieveSupplyReport,
 	// RequestClientReport
 	RequestOrderReport,
 	RecieveOrderReport,
