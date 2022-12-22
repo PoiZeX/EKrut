@@ -41,7 +41,7 @@ public class OrderReportEntity extends ReportEntity {
 
 	private void parserDetails(String description) {
 		reportsList = new HashMap<String, Double[]>();
-		if (CommonFunctions.isNullOrEmpty(description) || description.equals("noreport"))
+		if (CommonFunctions.isNullOrEmpty(description))
 			return;
 		else if (description.equals("nosales")) {
 			reportsList.put("No Sales", new Double[] {0.0,0.0});
