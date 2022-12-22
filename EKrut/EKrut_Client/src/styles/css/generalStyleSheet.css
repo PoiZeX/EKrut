@@ -1,7 +1,7 @@
 
 .root{
 	-fx-background-color: #E8EEF1;
-    -fx-font-family: "Calibri";
+    -fx-font-family: "Century Gothic";
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
     -fx-background-repeat: no-repeat;  
@@ -169,7 +169,7 @@
 /*------------------------------------------------ combo box----------------------------------------------------------- */
 .ComboBox{
 	-fx-text-base-color: #FFFFFF;
-		-fx-font-size: 14pt;	
+		-fx-font-size: 12pt;	
 }
 /*litle arrow */
 .combo-box .arrow{
