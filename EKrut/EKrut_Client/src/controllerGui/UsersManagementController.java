@@ -79,6 +79,8 @@ public class UsersManagementController {
 	private static ClientController chat = HostClientController.chat; // one instance
 	ArrayList<TableCell<UserEntity, Boolean>> checkboxCellsList = new ArrayList<>();
 
+	private boolean allSelected;
+
 	public void initialize() {
 		chat.acceptObj(new Message(TaskType.RequestUnapprovedUsers, null));
 		while (!recievedData) {
@@ -105,23 +107,27 @@ public class UsersManagementController {
 
 	@FXML
 	void refresh(ActionEvent event) {
+		System.out.println(toApprove);
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
 	}
 
 	@FXML
 	void selectAll(ActionEvent event) {
-		// Iterate over the items
-//		for (TableColumn<UserEntity, ?> column : usersTable.getColumns()) {
-//			// Get the cell value for each column
-//			for (int i = 0; i < usersTable.getItems().size(); i++) {
-//				System.out.println(column.getCellObservableValue(i));
-//			}
-//		}
-//		
-
 		for (TableCell<UserEntity, Boolean> cell : checkboxCellsList)
-			if ((CheckBox) cell.getGraphic() != null)
-				((CheckBox) cell.getGraphic()).setSelected(true);
+			if ((CheckBox) cell.getGraphic() != null) {
+				CheckBox checkBox = (CheckBox) cell.getGraphic();
+				UserEntity user = (UserEntity) cell.getTableRow().getItem();
+				if (!allSelected) {
+					checkBox.setSelected(true);
+					if (!toApprove.contains(user))
+						toApprove.add(user);
+				} else {
+					checkBox.setSelected(false);
+					if (toApprove.contains(user))
+						toApprove.remove(user);
+				}
+			}
+		allSelected = !allSelected;
 	}
 
 	private void initTable() {
@@ -132,7 +138,6 @@ public class UsersManagementController {
 		usersTable.setItems(ol);
 
 	}
-
 
 	@SuppressWarnings("unchecked")
 	private void setFactoryCols() {
@@ -152,14 +157,17 @@ public class UsersManagementController {
 			cell.setOnMouseClicked(event -> {
 				if (event.getClickCount() > 0) {
 					CheckBox checkBox = (CheckBox) cell.getGraphic();
-					TableRow<UserEntity> row = cell.getTableRow();
+					UserEntity user = (UserEntity) cell.getTableRow().getItem();
 					if (checkBox != null) {
 						if (checkBox.isSelected()) {
 							checkBox.setSelected(false);
-							toApprove.remove(row.getItem());
+							toApprove.remove(user);
+							if (allSelected)
+								allSelected = false;
+
 						} else {
 							checkBox.setSelected(true);
-							toApprove.add(row.getItem());
+							toApprove.add(user);
 						}
 					}
 				}
