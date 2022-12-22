@@ -1,5 +1,13 @@
 package controllerGui;
 
+import client.ClientController;
+import common.Message;
+import common.TaskType;
+
+import entity.ItemInMachineEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,75 +15,116 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 public class SupplyManagmentController {
-
-    @FXML
-    private TableColumn<?, ?> callStatusCall;
-
-    @FXML
-    private ComboBox<?> callStatusCmb;
+	
+	
 
     @FXML
     private Label callStatusLbl;
 
     @FXML
     private Label callStatusTitleLbl;
-
+    
     @FXML
-    private ComboBox<?> chooseWorkerCmb;
-
+    private Label workerLbl;
+ 
     @FXML
-    private TableColumn<?, ?> currentAmountCol;
-
-    @FXML
-    private Label currentAmountLbl;
-
+    private Label titleLbl;
+   
+   /**items info get from items in machine in data base*/
     @FXML
     private GridPane itemDisplayGridPane;
-
-    @FXML
-    private TableColumn<?, ?> itemIdCol;
-
-    @FXML
-    private ImageView itemImg;
-
+   
     @FXML
     private Label itemNameLbl;
-
+    
     @FXML
-    private ComboBox<?> machineCmb;
-
-    @FXML
-    private TableColumn<?, ?> minAmountCol;
+    private Label currentAmountLbl;
 
     @FXML
     private TextField minAmountTxtField;
 
     @FXML
-    private TableColumn<?, ?> previewEyeBtnCol;
+    private ImageView itemImg;
+    /** Call status selection*/
+    @FXML
+	private ComboBox<?> chooseWorkerCmb;
+
+	@FXML
+    private ComboBox<?> callStatusCmb;
+
+    @FXML
+    private Button saveItemChangesBtn;
+
+   
 
     @FXML
     private Button refreshBtn;
 
     @FXML
-    private Button saveItemChangesBtn;
-
-    @FXML
     private Button sendCallBtn;
-
+    
+  /** machine to display her items in machine supply status table*/
     @FXML
-    private Button showItemsInTableBtn;
-
+    private ComboBox<?> machineCmb;
+    
     @FXML
     private TableView<?> supplyMangmentTbl;
+    
+    @FXML
+    private TableColumn<?, ?> itemIdCol;
+   
+    @FXML
+    private TableColumn<?, ?> minAmountCol;
+    
+    @FXML
+    private TableColumn<?, ?> currentAmountCol;
 
     @FXML
-    private Label titleLbl;
+    private TableColumn<?, ?> callStatusCall;
 
     @FXML
-    private Label workerLbl;
+    private TableColumn<?, ?> previewEyeBtnCol;
 
+   
+    
+    private static ClientController chat = HostClientController.chat; // define the chat for th
+    public static ObservableList<ItemInMachineEntity> deliveries=FXCollections.observableArrayList();
+   
+    /** Setup screen before launching view*/
+    @FXML
+	public void initialize() throws Exception {
+    	
+    }
+    /** press refresh button to refresh table and item displayed ask from data base to load updated table*/
+    @FXML
+    void refresh(ActionEvent event) {
+
+    }
+    /** save changes that was made in the item */
+    @FXML
+    void saveItemChanges(ActionEvent event) {
+
+    }
+    /** send a task to the workers for update the requested items*/
+    @FXML
+    void send(ActionEvent event) {
+
+    }
+    /**get from DB the data for setting the table, and puttin a preview ('eye') button on the preview col*/
+    private void setupTable() {
+    	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, null));
+    	// factory
+    			itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
+    			currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
+    			minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("minAmount"));
+    			callStatusCall.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.call_Status>("callStatus"));
+    }
+    
+    
 }

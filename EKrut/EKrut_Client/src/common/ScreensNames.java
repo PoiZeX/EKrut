@@ -13,7 +13,8 @@ public enum ScreensNames {
 	ReviewOrder,
 	ViewCart,
 	DeliveryManagement, 
-	ClientsReport
+	ClientsReport,
+	SupplyManagment
 //CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
 	// SupplyManagement,
