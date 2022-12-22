@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
@@ -72,11 +73,11 @@ public class UsersManagementController {
 	@FXML
 	private Button refreshBtn;
 
-	ArrayList<TableCell<UserEntity, Boolean>> list;
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
 	private static ArrayList<UserEntity> toApprove;
 	private static ClientController chat = HostClientController.chat; // one instance
+	ArrayList<TableCell<UserEntity, Boolean>> checkboxCellsList = new ArrayList<>();
 
 	public void initialize() {
 		chat.acceptObj(new Message(TaskType.RequestUnapprovedUsers, null));
@@ -110,12 +111,17 @@ public class UsersManagementController {
 	@FXML
 	void selectAll(ActionEvent event) {
 		// Iterate over the items
-		for (TableColumn<UserEntity, ?> column : usersTable.getColumns()) {
-			// Get the cell value for each column
-			for (int i = 0; i < usersTable.getItems().size(); i++) {
-				System.out.println(column.getCellObservableValue(i));
-			}
-		}
+//		for (TableColumn<UserEntity, ?> column : usersTable.getColumns()) {
+//			// Get the cell value for each column
+//			for (int i = 0; i < usersTable.getItems().size(); i++) {
+//				System.out.println(column.getCellObservableValue(i));
+//			}
+//		}
+//		
+
+		for (TableCell<UserEntity, Boolean> cell : checkboxCellsList)
+			if ((CheckBox) cell.getGraphic() != null)
+				((CheckBox) cell.getGraphic()).setSelected(true);
 	}
 
 	private void initTable() {
@@ -126,6 +132,7 @@ public class UsersManagementController {
 		usersTable.setItems(ol);
 
 	}
+
 
 	@SuppressWarnings("unchecked")
 	private void setFactoryCols() {
@@ -140,6 +147,8 @@ public class UsersManagementController {
 		subscriberIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity, Integer>("id"));
 		approveCol.setCellFactory(column -> {
 			TableCell<UserEntity, Boolean> cell = new CheckBoxTableCell<>();
+			checkboxCellsList.add(cell); // save the checkbox
+
 			cell.setOnMouseClicked(event -> {
 				if (event.getClickCount() > 0) {
 					CheckBox checkBox = (CheckBox) cell.getGraphic();
