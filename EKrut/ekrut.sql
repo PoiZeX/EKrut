@@ -159,11 +159,11 @@ DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
-  `item_id` int(3) unsigned zerofill NOT NULL,
+  `item_id` int unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `price` double NOT NULL,
-  `manufacturer` varchar(45) DEFAULT NULL,
-  `description` varchar(128) DEFAULT NULL,
+  `manufacturer` varchar(1024) DEFAULT NULL,
+  `description` varchar(1024) DEFAULT NULL,
   `item_img_name` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `itemName_UNIQUE` (`name`)
@@ -176,7 +176,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (001,'Bamba',12,'Osem','penuts snack','Bamba.png'),(002,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png');
+INSERT INTO `items` VALUES (1,'Bamba',12,'Osem','penuts snack','Bamba.png'),(2,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png'),(3,'Apple flavored water',9,'neviyot','Apple flavored water neviyot 500 ml','Apple flavored water.png'),(4,'Click biscuit',8,'Uniliver','Milk chocolate covered biscuit','Click_Biscuit.png'),(5,'Click cornflakes',8,'Uniliver','Cornflakes covered in milk chocolate','Click_Cornflakes.png'),(6,'m&m peanut',8,'MARS MULTISALES ISRAEL LTD','Peanut Chocolate Candies Made of whole peanuts covered with milk chocolate, inside colorful sugar shells','m&m peanuts.png'),(7,'orange juice prigat',6,'Prigat','Prigat Orange juice has a delicious blend of natural flavors and contains 15% fruit juice','Orange juice Prigat 500 ml.png'),(8,'oreo pack',10,' Nabisco','4 packs of 4','Oreo_pack.png'),(9,'Beasley BBQ',8,'osem','0','Beasley BBQ.png'),(10,'bottle of Coca-Cola Zero 500 ml',7,'Coca cola','0','bottle of Coca-Cola Zero 500 ml.png'),(11,'Coca Cola can',5,'Coca cola','330 ml','Coca Cola can.png'),(12,'Coca Cola Zero can',5,'Coca cola','330 ml','Coca Cola Zero can.png'),(13,'Coke bottle 500 ml',7,'Coca cola','0','Coke bottle 500 ml.png'),(14,'Dorietos mexican flavor',8,'Elite','0','Dorietos mexican flavor.png'),(15,'Dorietos spicey sour',8,'Elite','0','Dorietos spicey sour.png'),(16,'Elite Karanz milk chocolate',6,'Elite','0','Elite Karanz milk chocolate.png'),(17,'Fanta',5,'Coca cola','330 ml can','Fanta.png'),(18,'Grapes flavored water',6,'neviyot','0','Grapes flavored water.png'),(19,'Kief Kef',5,'Elite','0','Kief Kef.png'),(20,'Kinder Bueno White Chocolate',6,'Kinder','0','Kinder Bueno White Chocolate.png'),(21,'Kinder chocolate 4 sticks',6,'Kinder','0','Kinder chocolate 4 sticks.png'),(22,'Orbit mint gum',5,'Orbit','0','Orbit mint gum.png'),(23,'Peach flavored protein yogurt',5,'Yople','0','Peach flavored protein yogurt.png'),(24,'Peach flavored water',6,'neviyot','0','Peach flavored water.png'),(25,'Snickers',6,'MARS MULTISALES ISRAEL LTD','0','Snickers.png'),(26,'Twix',6,'MARS MULTISALES ISRAEL LTD','0','Twix.png');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -415,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-21 22:59:47
+-- Dump completed on 2022-12-22 11:44:34
