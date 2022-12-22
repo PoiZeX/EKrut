@@ -10,7 +10,6 @@ import common.TaskType;
 import common.Message;
 import common.ScreensNames;
 import entity.UserEntity;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +19,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utils.EKTPopupController;
+import utils.AppConfig;
 
 public class LoginController {
 
-	private final int usernameMaxLength = 16, usernameMinLength = 4;
-	private final int passwordMaxLength = 16, passwordMinLength = 4;
-	private static ClientController chat = HostClientController.chat; // one instance
+	protected static ClientController chat = HostClientController.chat; // one instance
 	private static String username, password;
 	// those fields for server response
 	private static Boolean isValidDetails = null;
@@ -56,9 +53,19 @@ public class LoginController {
 		// validate
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
+		
+		// call login proccess
+		loginProccess(new String[] { username, password });
 
+	}
+
+	/**
+	 * Handle the login and validation of user; extracted to use in sub-class as well
+	 * @return
+	 */
+	protected boolean loginProccess(String[] usernamePassword) {
 		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, new String[] { username, password }));
+		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
 
 		// wait for answer
 		while (isValidDetails == null) {
@@ -75,9 +82,13 @@ public class LoginController {
 		}
 
 		else
+		{
 			System.out.println(returnedMsg);
+			return false;
+		}
+		return true;
 	}
-
+	
 	/**
 	 * return true if username and password are valid syntax and length
 	 * 
@@ -93,10 +104,10 @@ public class LoginController {
 			error.append("* username cannot be empty\n");
 		} else {
 			// validate username
-			if (username.length() > usernameMaxLength || username.length() < usernameMinLength)
-				error.append("* username length must be between " + usernameMinLength + "-" + usernameMaxLength + "\n");
+			if (username.length() > AppConfig.USERNAME_MAX_LENGTH || username.length() < AppConfig.USERNAME_MIN_LENGTH)
+				error.append("* username length must be between " + AppConfig.USERNAME_MIN_LENGTH + "-" + AppConfig.USERNAME_MAX_LENGTH + "\n");
 
-			if (!Pattern.matches("^[a-zA-Z][\\w]*$", username)) // allow digits, alpha and underscore. and must starts
+			if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, username)) // allow digits, alpha and underscore. and must starts
 																// with a char
 				error.append("* username can contains just alphabet, digits and underscore\n");
 		}
@@ -107,8 +118,8 @@ public class LoginController {
 		} else {
 			if (password.contains(" ")) // spaces are not allowed
 				error.append("* password cannot contains any spaces\n");
-			if (password.length() > passwordMaxLength || password.length() < passwordMinLength)
-				error.append("* password length must be between " + passwordMinLength + "-" + passwordMaxLength + "\n");
+			if (password.length() > AppConfig.PASSWORD_MAX_LENGTH || password.length() < AppConfig.PASSWORD_MIN_LENGTH)
+				error.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-" + AppConfig.PASSWORD_MAX_LENGTH + "\n");
 		}
 
 		if (error.toString().equals("Error in:\n"))
@@ -132,7 +143,7 @@ public class LoginController {
 		if (CommonFunctions.isNullOrEmpty(user.getUsername())
 				|| (user.getUsername().equals(username) && !user.getPassword().equals(password))) {
 			isValidDetails = false;
-			returnedMsg = "Username or Password are invalid"; // technically username doesn't exist but we don't want to
+			returnedMsg = "Username or Password are incorrect"; // technically username doesn't exist but we don't want to
 																// show this
 			return;
 		}
@@ -160,15 +171,6 @@ public class LoginController {
 	}
 
 	/**
-	 * sends a user
-	 * 
-	 * @param usernamePassword
-	 */
-	private void sendServerusernamePassword(String[] usernamePassword) {
-		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
-	}
-
-	/**
 	 * Handles the login via EKT with popup
 	 * 
 	 * @param event
@@ -191,28 +193,7 @@ public class LoginController {
 			e.printStackTrace();
 
 		}
-		
-//		Task task = new Task<Void>() {
-//			@Override
-//			public Void call() {
-//				while (EKTPopupController.isFinishAndSuccess == 0) {
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//				if (EKTPopupController.isFinishAndSuccess == 1) {
-//					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
-//				}
-//				primaryStage.close();
-//				return null;
-//			}
-//		};
-//		new Thread(task).start();
-
-
+	
 
 	}
 

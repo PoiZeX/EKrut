@@ -34,6 +34,8 @@ public enum TaskType {
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
 	RequestUpdateDeliveries,
+	RequestUsersAprroval,
+	RecieveUsersApproval,
 	
 	
 	// Common Data's Init

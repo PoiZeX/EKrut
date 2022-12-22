@@ -1,18 +1,21 @@
-package utils;
+package controllerGui;
 
 import javafx.fxml.FXML;
 import java.util.Timer;
 import java.util.TimerTask;
 import Store.NavigationStoreController;
+import common.Message;
 import common.ScreensNames;
+import common.TaskType;
 import entity.UserEntity;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import utils.AppConfig;
 
-public class EKTPopupController {
+public class EKTPopupController extends LoginController{
 
 	@FXML
 	private Label headlineLabel;
@@ -22,11 +25,7 @@ public class EKTPopupController {
 
 	private Timer timerSuccess;
 	private Timer timerTimeLimit;
-	private final int waitBeforeSimulateLogin = 4000; // define time to simulate success
-	private final int waitAfterValidationSuccess = 4000; // define time to simulate success
-
-	private final int waitBeforeMsgMillis = 15000; // define time to simulate success
-	private final int waitAfterMsgMillis = 5000;
+	
 	/**
 	 * Initialize screen
 	 */
@@ -46,12 +45,10 @@ public class EKTPopupController {
 		timerSuccess.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				// simulate: after X seconds:
-				// validate proccess
-
-				// ------------- enter validation here!!! -------------
-
+				// simulate: after <APPCONFIG> seconds:				
 				Platform.runLater(() -> {
+					loginProccess(usernamePasswordStub);  // call the super.loginProcess 
+
 					// login success
 					headlineLabel.setText("Login with EKT success!");
 					Image image = new Image(getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
@@ -63,20 +60,23 @@ public class EKTPopupController {
 						public void run() {
 							// set current user
 							Platform.runLater(() -> {
-								NavigationStoreController.connectedUser = new UserEntity("", "", "Lidi", "ankava", "", "", "",
-										"subscribed", null, false, false);
-								NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+//								NavigationStoreController.connectedUser = new UserEntity("", "", "Lidi", "ankava", "", "", "",
+//										"subscribed", null, false, false);
+//								NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
 
 							});
 						}
-					}, waitAfterValidationSuccess);
+					}, AppConfig.WAIT_AFTER_VALIDATION_SUCCESS);
 
 				});
 			}
-		}, waitBeforeSimulateLogin);
+		}, AppConfig.WAIT_BEFORE_SIMULATE_LOGIN);
 	}
 	
+	/**
+	 * Sets a background task; Limit the time for waiting to connection from the user via EKT
+	 */
 	private void setTimeLimitBackgroundTask() {
 
 		timerTimeLimit.schedule(new TimerTask() {
@@ -96,10 +96,21 @@ public class EKTPopupController {
 								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
 							});
 						}
-					}, waitAfterMsgMillis);
+					}, AppConfig.WAIT_AFTER_MSG);
 
 				});
 			}
-		}, waitBeforeMsgMillis);
+		}, AppConfig.WAIT_BEFORE_MSG);
 	}
+
+
+	private String[] usernamePasswordStub = new String[]{"subscribed", "123456"};
+	
+//	/**
+//	 * Sends a waits for an answer if user valid or not
+//	 */
+//	protected void sendServerUsernamePassword(String[] usernamePassword) {
+//		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
+//	}
+//	
 }

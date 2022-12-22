@@ -14,6 +14,7 @@ import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
 import entity.SubscriberEntity;
+import entity.UserEntity;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
@@ -63,8 +64,12 @@ public class MessageHandler {
 		case RequestUpdateDeliveries:
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
+		case RequestUsersAprroval:
+			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>)obj, client);
+			break;
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

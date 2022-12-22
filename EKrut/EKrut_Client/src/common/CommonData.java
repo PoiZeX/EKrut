@@ -10,8 +10,6 @@ public class CommonData {
 	private static ArrayList<String> allRegions;
 	public static void initData() {
 		chat.acceptObj(new Message(TaskType.InitRegions, null));
-			
-		
 	}
 	
 	public static void recieveRegions(ArrayList<String> regions) {

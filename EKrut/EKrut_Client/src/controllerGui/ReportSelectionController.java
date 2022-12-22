@@ -107,7 +107,6 @@ public class ReportSelectionController {
 			break;
 
 		}
-
 	}
 
 	public void initialize() {
