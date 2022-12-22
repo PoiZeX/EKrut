@@ -9,7 +9,7 @@ import common.CommonFunctions;
 public class SupplyReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
 	// {[1, Bamba], [20, 45, 60]}
-	private String item_id, item_name;
+	private String item_id, item_name, missing_sev;
 	private int min_stock, cur_stock, start_stock;
 	private ArrayList<String[]> reportsList;
 	private String[] details;
@@ -18,10 +18,10 @@ public class SupplyReportEntity extends ReportEntity {
 		super();
 	}
 	
-	public SupplyReportEntity(int id, String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String month, String year, String region) {
+	public SupplyReportEntity(int id, String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String month, String year, String region, String missing_sev) {
 		super(id, month, year, region);
-		details = new String[] {item_id, item_name, min_stock, start_stock, cur_stock};
-		parserDetails(item_id, item_name, min_stock, start_stock, cur_stock);
+		details = new String[] {item_id, item_name, min_stock, start_stock, cur_stock, missing_sev};
+		parserDetails(item_id, item_name, min_stock, start_stock, cur_stock, missing_sev);
 	}
 	
 	public String getItem_id() {
@@ -57,7 +57,7 @@ public class SupplyReportEntity extends ReportEntity {
 	public ArrayList<String[]> getReportsList() {
 		return reportsList;
 	}
-	private void parserDetails(String item_id, String item_name, String min_stock, String start_stock, String cur_stock) {
+	private void parserDetails(String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String missing_sev) {
 		for (String col : details) {
 			if (CommonFunctions.isNullOrEmpty(col)) {
 				reportsList = null;
@@ -69,6 +69,8 @@ public class SupplyReportEntity extends ReportEntity {
 		String[] min_stock_list = min_stock.split(",");
 		String[] start_stock_list = start_stock.split(",");
 		String[] cur_stock_list = cur_stock.split(",");
+		String[] missing_sev_list = missing_sev.split(",");
+		
 		int validLength = item_id_list.length;
 		int[] lengths = new int[] {item_id_list.length,
 				item_name_list.length,
@@ -88,7 +90,8 @@ public class SupplyReportEntity extends ReportEntity {
 			String min = min_stock_list[i];
 			String start = start_stock_list[i];
 			String cur = cur_stock_list[i];
-			reportsList.add(new String[] {id, name, min, start, cur});
+			String sev = missing_sev_list[i];
+			reportsList.add(new String[] {id, name, min, start, cur, sev});
 		}
 	}
 }

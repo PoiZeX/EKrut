@@ -15,7 +15,7 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class SupplyReportDBController {
-	private static String month, year;
+	private static String month, year, region;
 
 	/**
 	 * Parse the string array into username and password
@@ -25,8 +25,9 @@ public class SupplyReportDBController {
 	 */
 	public static boolean setReport(String[] details) {
 		if (details.length == 2) {
-			month = details[0];
-			year = details[1];
+			region = details[0];
+			month = details[1];
+			year = details[3];
 			return true;
 		}
 		return false;
@@ -60,14 +61,14 @@ public class SupplyReportDBController {
 			if (MySqlClass.getConnection() == null)
 				return report;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.supply_report WHERE month=? AND year=?;");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.supply_report WHERE month=? AND year=? AND region=?;");
 			ps.setString(1, CommonFunctions.getNumericMonth(month));
 			ps.setString(2, year);
+			ps.setString(3, region);
 			ResultSet res = ps.executeQuery();
-			
 			if (res.next()) {
 				report = new SupplyReportEntity(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
-						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9));
+						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10));
 			}
 			
 		} catch (SQLException e) {
