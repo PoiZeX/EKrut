@@ -8,13 +8,13 @@ import ocsf.client.*;
 import common.ChatIF;
 import common.CommonData;
 import common.Message;
-import common.ScreensNames;
 import common.TaskType;
 import controller.ItemsController;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
+import controllerGui.ClientsReportController;
 import controllerGui.DeliveryManagementController;
 import java.io.*;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
+import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
 
@@ -58,21 +59,21 @@ public class ChatClient extends AbstractClient {
 			}
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
-
-		// ---- Login
 		case RecieveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
 		case RecieveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 			break;
-		case RecieveUnapprovedUsers:
-			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
+		case RecieveClientsReport:
+			ClientsReportController.recieveDataFromServer((ClientsReportEntity) obj);
 			break;
 		case RequestSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
-		// ---- Delivery
+		case RecieveUnapprovedUsers:
+			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
+			break;
 		case RecieveItemsFromServer:
 			ItemsController.getItemsFromServer((ItemEntity) obj);
 			break;

@@ -76,6 +76,8 @@ public class ReportSelectionController {
 				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
 				break;
 			case "clientsReport":
+				chat.acceptObj(new Message(TaskType.RequestClientsReport, new String[] { region, month, year }));
+				checkReportData(ClientsReportController.RecievedData, ScreensNames.ClientsReport);
 				break;
 			}
 		}
@@ -98,11 +100,18 @@ public class ReportSelectionController {
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
 			break;
 		case SupplyReport:
-			if (SupplyReportController.reportDetails.getReportsList() == null) {
+			if (SupplyReportController.reportDetails.getReportsList() == null) 
 				errorMsgLabel.setText("No Report Found");
-			} else
+			 else
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 			break;
+		case ClientsReport:
+			if (ClientsReportController.reportDetails.getDescription().equals("noreport")
+					|| ClientsReportController.reportDetails.getTotalSalesArr() == null
+					|| ClientsReportController.reportDetails.getSupplyMethodsArr() == null)
+				errorMsgLabel.setText("No Report Found");
+			else
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ClientsReport);
 		default:
 			break;
 

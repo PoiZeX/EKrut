@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
+import controllerDb.ClientsReportDBController;
 import controllerDb.CommonDataDBController;
 import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
@@ -45,10 +46,9 @@ public class MessageHandler {
 		case RequestSupplyReport:
 			SupplyReportDBController.getSupplyReportEntity((String[]) obj, client);
 			break;
-//		case RequestClientReport:
-//			ClientReportDBController.getClientReportEntity((String[]) obj, client);
-//			break;
-		//****************//
+		case RequestClientsReport:
+			ClientsReportDBController.getClientReportEntity((String[]) obj, client);
+			break;
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
@@ -67,6 +67,7 @@ public class MessageHandler {
 		case RequestUsersAprroval:
 			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>)obj, client);
 			break;
+
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
 			break;
