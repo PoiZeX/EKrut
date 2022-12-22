@@ -22,14 +22,9 @@ public enum TaskType {
 	// ---- CLIENT SIDE ------ //
 	// Registration
 	RequestRegistrationForm,
-	
 	RequestSupplyReport,
 	RecieveSupplyReport,
-<<<<<<< Updated upstream
 	// RequestClientReport
-=======
-
->>>>>>> Stashed changes
 	RequestOrderReport,
 	RecieveOrderReport,
 	
@@ -38,15 +33,11 @@ public enum TaskType {
 	
 	RequestItemsFromServer, 
 	RecieveItemsFromServer, 
-	
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
-	
 	RequestUpdateDeliveries,
-	
 	RequestUsersAprroval,
 	RecieveUsersApproval,
-	
 	RequestClientsReport,
 	RecieveClientsReport,
 	
