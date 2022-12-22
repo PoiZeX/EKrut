@@ -23,7 +23,7 @@ import utils.AppConfig;
 
 public class LoginController {
 
-	private static ClientController chat = HostClientController.chat; // one instance
+	protected static ClientController chat = HostClientController.chat; // one instance
 	private static String username, password;
 	// those fields for server response
 	private static Boolean isValidDetails = null;
@@ -53,9 +53,19 @@ public class LoginController {
 		// validate
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
+		
+		// call login proccess
+		loginProccess(new String[] { username, password });
 
+	}
+
+	/**
+	 * Handle the login and validation of user; extracted to use in sub-class as well
+	 * @return
+	 */
+	protected boolean loginProccess(String[] usernamePassword) {
 		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, new String[] { username, password }));
+		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
 
 		// wait for answer
 		while (isValidDetails == null) {
@@ -72,9 +82,13 @@ public class LoginController {
 		}
 
 		else
+		{
 			System.out.println(returnedMsg);
+			return false;
+		}
+		return true;
 	}
-
+	
 	/**
 	 * return true if username and password are valid syntax and length
 	 * 
@@ -154,15 +168,6 @@ public class LoginController {
 		NavigationStoreController.connectedUser = user; // set the current connected user to system
 		return;
 
-	}
-
-	/**
-	 * sends a user
-	 * 
-	 * @param usernamePassword
-	 */
-	private void sendServerusernamePassword(String[] usernamePassword) {
-		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
 	}
 
 	/**
