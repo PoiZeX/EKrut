@@ -14,10 +14,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="GridPane" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/generalStyleSheet.css" vgap="25.0" BorderPane.alignment="CENTER">
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="GridPane" vgap="25.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="275.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="280.0" minWidth="10.0" prefWidth="275.0" />
@@ -46,41 +45,41 @@
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </padding>
                <children>
-                  <TextField fx:id="phonenumberTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Phone Number" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <TextField fx:id="firstnameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="First Name" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="lastnameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Last Name" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="emailTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Email" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField fx:id="idnumberTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="ID Number" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <TextField fx:id="creditcardTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Credit Card Number" styleClass="TextField" stylesheets="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/loginStyleSheet.css" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <TextField fx:id="phonenumberTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Phone Number" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="firstnameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="First Name" styleClass="TextField" stylesheets="@../styles/css/generalizedCss.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="lastnameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Last Name" styleClass="TextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="emailTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Email" styleClass="TextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="idnumberTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="ID Number" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <TextField fx:id="creditcardTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Credit Card Number" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <Label styleClass="Label" text="Registration Form" GridPane.columnSpan="4" GridPane.halignment="CENTER" />
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/006-user.png" />
+                        <Image url="@../styles/icons/006-user.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/006-user.png" />
+                        <Image url="@../styles/icons/006-user.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/030-mail.png" />
+                        <Image url="@../styles/icons/030-mail.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/053-call.png" />
+                        <Image url="@../styles/icons/053-call.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/092-document.png" />
+                        <Image url="@../styles/icons/092-document.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/icons/017-credit%20card.png" />
+                        <Image url="@../styles/icons/017-credit%20card.png" />
                      </image>
                   </ImageView>
                   <Label styleClass="Label" text="Sign-Up as a Club Member?" GridPane.columnSpan="2" GridPane.rowIndex="4" />
@@ -97,26 +96,39 @@
             </GridPane>
             <GridPane fx:id="membershipGridpaneBox" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.rowIndex="1">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="234.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="266.0" minWidth="10.0" prefWidth="266.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <children>
+                  <Label styleClass="Label" text="As a Club Member you will receive:" />
+                  <Label styleClass="Label-list" text="A personal Membership ID" GridPane.columnIndex="1" />
+                  <Label styleClass="Label-list" text="Postponed payment on purchases" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="Label-list" text="Members sale events" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="And More!" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
             </GridPane>
             <GridPane styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.rowIndex="2">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="130.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="370.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="268.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="103.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancelBtnAaction" prefHeight="37.0" prefWidth="103.0" styleClass="ButtonLogOut" text="Cancel" />
-                  <Button mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="37.0" prefWidth="144.0" styleClass="Button" text="Submit" GridPane.columnIndex="1" />
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelBtnAaction" prefHeight="37.0" prefWidth="103.0" styleClass="ButtonLogOut" text="Cancel" />
+                  <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="37.0" prefWidth="144.0" styleClass="Button" text="Submit" GridPane.columnIndex="1" />
+                  <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#clearBtnAction" prefHeight="37.0" prefWidth="103.0" styleClass="Button" text="Clear" GridPane.columnIndex="2" />
                </children>
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

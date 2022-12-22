@@ -20,6 +20,8 @@ public enum TaskType {
 	RecieveUserFromServerDB,
 	
 	// ---- CLIENT SIDE ------ //
+	// Registration
+	RequestRegistrationForm,
 	RequestSupplyReport,
 
 	// RequestClientReport
