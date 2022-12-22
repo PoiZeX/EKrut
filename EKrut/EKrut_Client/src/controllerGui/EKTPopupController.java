@@ -15,7 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import utils.AppConfig;
 
-public class EKTPopupController extends LoginController{
+public class EKTPopupController extends LoginController {
 
 	@FXML
 	private Label headlineLabel;
@@ -23,9 +23,9 @@ public class EKTPopupController extends LoginController{
 	@FXML
 	private ImageView loadingImage;
 
-	private Timer timerSuccess;
-	private Timer timerTimeLimit;
-	
+	protected static Timer timerSuccess;
+	protected static Timer timerTimeLimit;
+
 	/**
 	 * Initialize screen
 	 */
@@ -38,44 +38,46 @@ public class EKTPopupController extends LoginController{
 	}
 
 	/**
-	 * Sets a background task; Waiting to subscriber connection via EKT, to validate information
+	 * Sets a background task; Waiting to subscriber connection via EKT, to validate
+	 * information
 	 */
 	private void setBackgroundTask() {
 
 		timerSuccess.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				// simulate: after <APPCONFIG> seconds:				
+				// simulate: after <APPCONFIG> seconds:
 				Platform.runLater(() -> {
-					loginProccess(usernamePasswordStub);  // call the super.loginProcess 
+					if (!loginProccess(usernamePasswordStub))
+						cancelOperation();
+					else {
+						timerTimeLimit.cancel(); // time limit is irrelevant now
+						
+						// login success
+						headlineLabel.setText("Login with EKT success!");
+						Image image = new Image(
+								getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
+						loadingImage.setImage(image); // get information gif
 
-					// login success
-					headlineLabel.setText("Login with EKT success!");
-					Image image = new Image(getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
-					loadingImage.setImage(image); // get information gif
-
-					// wait for 2 seconds
-					(new Timer()).schedule(new TimerTask() {
-						@Override
-						public void run() {
-							// set current user
-							Platform.runLater(() -> {
-//								NavigationStoreController.connectedUser = new UserEntity("", "", "Lidi", "ankava", "", "", "",
-//										"subscribed", null, false, false);
-//								NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
-								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
-
-							});
-						}
-					}, AppConfig.WAIT_AFTER_VALIDATION_SUCCESS);
+						// wait for 2 seconds
+						(new Timer()).schedule(new TimerTask() {
+							@Override
+							public void run() {
+								Platform.runLater(() -> {
+									((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+								});
+							}
+						}, AppConfig.WAIT_AFTER_VALIDATION_SUCCESS);
+					}
 
 				});
 			}
 		}, AppConfig.WAIT_BEFORE_SIMULATE_LOGIN);
 	}
-	
+
 	/**
-	 * Sets a background task; Limit the time for waiting to connection from the user via EKT
+	 * Sets a background task; Limit the time for waiting to connection from the
+	 * user via EKT
 	 */
 	private void setTimeLimitBackgroundTask() {
 
@@ -83,17 +85,18 @@ public class EKTPopupController extends LoginController{
 			@Override
 			public void run() {
 				Platform.runLater(() -> {
+
 					// login success
 					headlineLabel.setText("Login time limit exceed, window will close in few seconds");
 					loadingImage.setVisible(false);
-					timerSuccess.cancel();  // cancel the other timer
-					
+					timerSuccess.cancel(); // cancel the other timer
+
 					// wait for 5 seconds
 					(new Timer()).schedule(new TimerTask() {
 						@Override
 						public void run() {
 							Platform.runLater(() -> {
-								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+								cancelOperation();
 							});
 						}
 					}, AppConfig.WAIT_AFTER_MSG);
@@ -103,9 +106,17 @@ public class EKTPopupController extends LoginController{
 		}, AppConfig.WAIT_BEFORE_MSG);
 	}
 
+	/**
+	 * When cancel the operation for any reason, also close the current popup and
+	 * enable the regular login btn
+	 */
+	protected void cancelOperation() {
+		((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+		setLoginBtnDisable(false); // enable the button again
+	}
 
-	private String[] usernamePasswordStub = new String[]{"subscribed", "123456"};
-	
+	private String[] usernamePasswordStub = new String[] { "subscribed", "123456" };
+
 //	/**
 //	 * Sends a waits for an answer if user valid or not
 //	 */

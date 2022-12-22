@@ -1,6 +1,7 @@
 package controllerGui;
 
 import java.io.IOException;
+import java.util.Timer;
 import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
@@ -11,6 +12,7 @@ import common.Message;
 import common.ScreensNames;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import utils.AppConfig;
 
 public class LoginController {
@@ -53,14 +56,16 @@ public class LoginController {
 		// validate
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
-		
+
 		// call login proccess
 		loginProccess(new String[] { username, password });
 
 	}
 
 	/**
-	 * Handle the login and validation of user; extracted to use in sub-class as well
+	 * Handle the login and validation of user; extracted to use in sub-class as
+	 * well
+	 * 
 	 * @return
 	 */
 	protected boolean loginProccess(String[] usernamePassword) {
@@ -81,14 +86,13 @@ public class LoginController {
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 		}
 
-		else
-		{
+		else {
 			System.out.println(returnedMsg);
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * return true if username and password are valid syntax and length
 	 * 
@@ -105,10 +109,12 @@ public class LoginController {
 		} else {
 			// validate username
 			if (username.length() > AppConfig.USERNAME_MAX_LENGTH || username.length() < AppConfig.USERNAME_MIN_LENGTH)
-				error.append("* username length must be between " + AppConfig.USERNAME_MIN_LENGTH + "-" + AppConfig.USERNAME_MAX_LENGTH + "\n");
+				error.append("* username length must be between " + AppConfig.USERNAME_MIN_LENGTH + "-"
+						+ AppConfig.USERNAME_MAX_LENGTH + "\n");
 
-			if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, username)) // allow digits, alpha and underscore. and must starts
-																// with a char
+			if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, username)) // allow digits, alpha and underscore. and
+																				// must starts
+				// with a char
 				error.append("* username can contains just alphabet, digits and underscore\n");
 		}
 
@@ -119,7 +125,8 @@ public class LoginController {
 			if (password.contains(" ")) // spaces are not allowed
 				error.append("* password cannot contains any spaces\n");
 			if (password.length() > AppConfig.PASSWORD_MAX_LENGTH || password.length() < AppConfig.PASSWORD_MIN_LENGTH)
-				error.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-" + AppConfig.PASSWORD_MAX_LENGTH + "\n");
+				error.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-"
+						+ AppConfig.PASSWORD_MAX_LENGTH + "\n");
 		}
 
 		if (error.toString().equals("Error in:\n"))
@@ -143,7 +150,8 @@ public class LoginController {
 		if (CommonFunctions.isNullOrEmpty(user.getUsername())
 				|| (user.getUsername().equals(username) && !user.getPassword().equals(password))) {
 			isValidDetails = false;
-			returnedMsg = "Username or Password are incorrect"; // technically username doesn't exist but we don't want to
+			returnedMsg = "Username or Password are incorrect"; // technically username doesn't exist but we don't want
+																// to
 																// show this
 			return;
 		}
@@ -188,13 +196,29 @@ public class LoginController {
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setTitle("Login with EKT");
 			primaryStage.show();
+			// set actions
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					if(EKTPopupController.timerSuccess != null)
+						EKTPopupController.timerSuccess.cancel();
+					if(EKTPopupController.timerTimeLimit != null)
+						EKTPopupController.timerTimeLimit .cancel();
+					setLoginBtnDisable(false);
+					//chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+				}
+			});
+			setLoginBtnDisable(true);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 
 		}
-	
 
+	}
+
+	protected void setLoginBtnDisable(boolean disable) {
+		loginBtn.setDisable(disable);
+		EKTLoginBtn.setDisable(disable);
 	}
 
 }
