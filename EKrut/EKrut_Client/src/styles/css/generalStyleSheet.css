@@ -29,8 +29,8 @@
 }
 /*---------------------------------------------------- LABELs-------------------------------------------------- */
 .Label {
-	-fx-text-fill: #1E3D58;
-	-fx-font-size: 13pt;
+	-fx-text-fill: #8e8e8e;
+	-fx-font-size: 11pt;
 }
 .Label-list {
 	-fx-text-fill: #1E3D58;
