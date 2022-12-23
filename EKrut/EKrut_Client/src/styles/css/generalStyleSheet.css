@@ -164,6 +164,23 @@
 	-fx-text-fill: white;
 	
 }
+/*____________________ New Sale BTN */
+.Button-newSale{
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:  #4093c3;
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+ 
+}
+
+.Button-newSale:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+.Button-newSale:hover {
+    -fx-background-color: #64c6ff;
+}
 
 
 /*------------------------------------------------ combo box----------------------------------------------------------- */
