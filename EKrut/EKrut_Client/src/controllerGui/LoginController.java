@@ -185,7 +185,6 @@ public class LoginController {
 	 */
 	@FXML
 	void ektLoginAction(ActionEvent event) {
-		EKTPopupController pop = new EKTPopupController();
 		Stage primaryStage = new Stage();
 
 		Parent root;
@@ -213,7 +212,7 @@ public class LoginController {
 			e.printStackTrace();
 
 		}
-
+		
 	}
 
 	protected void setLoginBtnDisable(boolean disable) {

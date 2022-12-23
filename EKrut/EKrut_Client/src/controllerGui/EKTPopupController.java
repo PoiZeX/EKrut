@@ -112,7 +112,10 @@ public class EKTPopupController extends LoginController {
 	 */
 	protected void cancelOperation() {
 		((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
-		setLoginBtnDisable(false); // enable the button again
+		timerSuccess.cancel();
+		timerTimeLimit.cancel();
+		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
+		s.setLoginBtnDisable(false);
 	}
 
 	private String[] usernamePasswordStub = new String[] { "subscribed", "123456" };

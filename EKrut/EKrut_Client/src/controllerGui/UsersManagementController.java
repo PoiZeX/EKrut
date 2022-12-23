@@ -1,8 +1,10 @@
 package controllerGui;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -10,6 +12,7 @@ import common.Message;
 import common.ScreensNames;
 import common.TaskType;
 import entity.UserEntity;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -72,16 +76,18 @@ public class UsersManagementController {
 
 	@FXML
 	private Button refreshBtn;
+	
 
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
 	private static ArrayList<UserEntity> toApprove;
 	private static ClientController chat = HostClientController.chat; // one instance
 	ArrayList<TableCell<UserEntity, Boolean>> checkboxCellsList = new ArrayList<>();
-
+	Timer timer;
 	private boolean allSelected;
 
 	public void initialize() {
+		timer = new Timer();
 		chat.acceptObj(new Message(TaskType.RequestUnapprovedUsers, null));
 		while (!recievedData) {
 			try {
@@ -102,17 +108,25 @@ public class UsersManagementController {
 
 	@FXML
 	public void approveSelected(ActionEvent event) throws InterruptedException {
-		chat.acceptObj(new Message(TaskType.RequestUsersAprroval, toApprove));
+		chat.acceptObj(new Message(TaskType.RequestUsersApproval, toApprove));
+
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> {
+					NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
+				});
+			}
+		}, 1000);
 	}
 
 	@FXML
 	void refresh(ActionEvent event) {
-		System.out.println(toApprove);
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
 	}
 
 	@FXML
-	void selectAll(ActionEvent event) {
+	private void selectAll(ActionEvent event) {
 		for (TableCell<UserEntity, Boolean> cell : checkboxCellsList)
 			if ((CheckBox) cell.getGraphic() != null) {
 				CheckBox checkBox = (CheckBox) cell.getGraphic();
