@@ -44,6 +44,9 @@ public class HomePageController {
 	private Button topBtn;
 
 	@FXML
+	private Button mailBtn;
+	
+	@FXML
 	private Label welcomeLabel;
 
 	@FXML
@@ -53,19 +56,23 @@ public class HomePageController {
 	private VBox rigthVbox;
 
 	public void initialize() {
+		
 		// set hidden as default
 		topBtn.setVisible(false);
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
+		mailBtn.setVisible(false);
 		Image image = null;
 		
 		// switch case by role
 		switch (currentUser.getRole_type()) {
 		case registered:
 		case subscribed:
+			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
 			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", null); // need to change later
+			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
 			break;

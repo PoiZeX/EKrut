@@ -1,5 +1,9 @@
 package common;
 
+/**
+ * The enum saves all screens names
+ *
+ */
 public enum ScreensNames {
 	HostClient,
 	Login,
@@ -13,7 +17,8 @@ public enum ScreensNames {
 	ReviewOrder,
 	ViewCart,
 	DeliveryManagement, 
-	ClientsReport
+	ClientsReport,
+	PersonalMessages
 //CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
 	// SupplyManagement,
