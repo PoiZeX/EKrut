@@ -44,7 +44,6 @@ public class SupplyReportDBController {
 			SupplyReportEntity res = getSupplyReportFromDB();
 			try {
 				client.sendToClient(new Message(TaskType.RequestSupplyReport, res));
-				System.out.println("Server: success");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
