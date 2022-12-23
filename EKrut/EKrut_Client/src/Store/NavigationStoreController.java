@@ -152,12 +152,14 @@ public class NavigationStoreController {
 		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
-			Parent root = FXMLLoader.load(getClass().getResource(path));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+			Parent root = loader.load();
+			
 			if (!skippedScreens.contains(screenName))// for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
-
+			scene.setUserData(loader.getController());
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
@@ -225,6 +227,10 @@ public class NavigationStoreController {
 
 	}
 
+	public Object getController () {
+		return primaryStage.getScene().getUserData();
+	}
+	
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}

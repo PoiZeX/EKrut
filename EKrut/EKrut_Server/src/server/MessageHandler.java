@@ -64,7 +64,7 @@ public class MessageHandler {
 		case RequestUpdateDeliveries:
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
-		case RequestUsersAprroval:
+		case RequestUsersApproval:
 			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>)obj, client);
 			break;
 

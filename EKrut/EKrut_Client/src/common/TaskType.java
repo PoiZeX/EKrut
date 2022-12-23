@@ -36,7 +36,7 @@ public enum TaskType {
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
 	RequestUpdateDeliveries,
-	RequestUsersAprroval,
+	RequestUsersApproval,
 	RecieveUsersApproval,
 	RequestClientsReport,
 	RecieveClientsReport,
