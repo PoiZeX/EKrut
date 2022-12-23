@@ -24,36 +24,8 @@ public enum TaskType {
 	// Requests From Server //
 	RequestUserFromDB,
 	RequestUserFromServerDB, 
-<<<<<<< Updated upstream
-	RecieveUserFromServerDB,
-	
-	// ---- CLIENT SIDE ------ //
-	// Registration
-	RequestRegistrationForm,
-=======
->>>>>>> Stashed changes
 	RequestSupplyReport,
 	RequestItemsFromServer, 
-<<<<<<< Updated upstream
-	RecieveItemsFromServer,
-	
-	RequestDeliveriesFromServer, 
-	RecieveDeliveriesFromServer,
-	
-	RequestUpdateDeliveries,
-	RequestUsersApproval,
-	RecieveUsersApproval,
-	
-	RequestClientsReport,
-	RecieveClientsReport,
-	
-	// Common Data's Init
-	InitRegions,
-	
-	// personal messages
-	RequestPersonalMessages,
-	RecievePersonalMessages
-=======
 	RequestUnapprovedUsers,
 	RequestReport,
 	RequestPersonalMessages,
@@ -63,5 +35,4 @@ public enum TaskType {
 	// Common Data Initialization //
 	InitRegions
 
->>>>>>> Stashed changes
 }
