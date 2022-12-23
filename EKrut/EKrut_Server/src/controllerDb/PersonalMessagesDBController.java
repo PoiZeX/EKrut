@@ -27,7 +27,7 @@ public class PersonalMessagesDBController {
 			// SQL query //
 			ArrayList<PersonalMessageEntity> res = getClientsReportFromDB(user);
 			try {
-				client.sendToClient(new Message(TaskType.RecievePersonalMessages, res));
+				client.sendToClient(new Message(TaskType.ReceivePersonalMessages, res));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

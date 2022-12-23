@@ -62,7 +62,7 @@ public class DeliveryManagementDBController {
 				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
 						rs.getString(5),rs.getString(6), deliveryStatus, customerStatus);
 				try {
-					client.sendToClient(new Message(TaskType.RecieveDeliveriesFromServer, deliveryEntity)); // finally send the entity
+					client.sendToClient(new Message(TaskType.ReceiveDeliveriesFromServer, deliveryEntity)); // finally send the entity
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

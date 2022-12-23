@@ -44,7 +44,7 @@ public class LoginDBController {
 			// sql query //
 			UserEntity res = getUserFromDB();
 			try {
-				client.sendToClient(new Message(TaskType.RecieveUserFromServerDB, res));
+				client.sendToClient(new Message(TaskType.ReceiveUserFromServerDB, res));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -19,7 +19,7 @@ public class UsersManagementDBController {
 		// sql query //
 		ArrayList<UserEntity> res = getUnapprovedUsersFromDB();
 		try {
-			client.sendToClient(new Message(TaskType.RecieveUnapprovedUsers, res));
+			client.sendToClient(new Message(TaskType.ReceiveUnapprovedUsers, res));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +70,7 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		try {
-			client.sendToClient(new Message(TaskType.RecieveUsersApproval, null));
+			client.sendToClient(new Message(TaskType.ReceiveUsersApproval, null));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

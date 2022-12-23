@@ -63,29 +63,29 @@ public class ChatClient extends AbstractClient {
 			break;
 		case InitRegions:
 			CommonData.recieveRegions((ArrayList<String>) obj);
-		case RecieveUserFromServerDB:
+		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
-		case RecieveOrderReport:
+		case ReceiveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 			break;
-		case RecieveClientsReport:
+		case ReceiveClientsReport:
 			ClientsReportController.recieveDataFromServer((ClientsReportEntity) obj);
 			break;
 		case RequestSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
-		case RecieveUnapprovedUsers:
+		case ReceiveUnapprovedUsers:
 			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
 			break;
-		case RecieveItemsFromServer:
+		case ReceiveItemsFromServer:
 			ItemsController.getItemsFromServer((ItemEntity) obj);
 			break;
-		case RecieveDeliveriesFromServer:
+		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
 
-		case RecievePersonalMessages:
+		case ReceivePersonalMessages:
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
 		default:

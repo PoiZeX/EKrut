@@ -1,53 +1,38 @@
 package common;
 
 public enum TaskType {
-	
+	// Host - Client E-NUMS //
 	ClientConnect,
 	ClientDisconnect,
 	ServerDisconnect,
 	LoadSubscribers,
 	EditSubscribers,
-	
-	// Login Enums //
-	RequestUserFromDB,
+	// Login E-NUMS //
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
 	SetUserLoggedIn,
 	UserNotApproved, 
-
-	// ----- SERVER SIDE ------ //
+	// Receive Answers From Server //
+	ReceiveUsersApproval,
+	ReceiveDeliveriesFromServer,
+	ReceiveItemsFromServer,
+	ReceiveClientsReport,
+	ReceivePersonalMessages,
+	ReceiveOrderReport,
+	ReceiveUnapprovedUsers, 
+	ReceiveUserFromServerDB,
+	// Requests From Server //
+	RequestUserFromDB,
 	RequestUserFromServerDB, 
-	RecieveUserFromServerDB,
-	
-	// ---- CLIENT SIDE ------ //
-	// Registration
-	RequestRegistrationForm,
 	RequestSupplyReport,
-
-	// RequestClientReport
-	RequestOrderReport,
-	RecieveOrderReport,
-	
-	RequestUnapprovedUsers, 
-	RecieveUnapprovedUsers, 
-	
 	RequestItemsFromServer, 
-	RecieveItemsFromServer,
-	
-	RequestDeliveriesFromServer, 
-	RecieveDeliveriesFromServer,
-	
+	RequestUnapprovedUsers,
+	RequestReport,
+	RequestPersonalMessages,
 	RequestUpdateDeliveries,
 	RequestUsersApproval,
-	RecieveUsersApproval,
-	
-	RequestClientsReport,
-	RecieveClientsReport,
-	
-	// Common Data's Init
-	InitRegions,
-	
-	// personal messages
-	RequestPersonalMessages,
-	RecievePersonalMessages
+	RequestDeliveriesFromServer ,
+	// Common Data Initialization //
+	InitRegions
+
 }
