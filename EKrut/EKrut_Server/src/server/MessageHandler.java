@@ -37,6 +37,10 @@ public class MessageHandler {
 		case ClientDisconnect:
 			EchoServer.updateClientList(client, "Disconnect");
 			break;
+		case SetUserLoggedIn:
+			LoginDBController.setUserLoggedIn((UserEntity) obj);
+			client.sendToClient("success logged in");
+			break;
 		case LoadSubscribers:
 			SubscribersDbController.getTable(client);
 			break;

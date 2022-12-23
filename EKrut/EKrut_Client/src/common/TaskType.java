@@ -12,7 +12,7 @@ public enum TaskType {
 	RequestUserFromDB,
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
-	UserIsLoggedIn,
+	SetUserLoggedIn,
 	UserNotApproved, 
 
 	// ----- SERVER SIDE ------ //

@@ -12,7 +12,7 @@ public enum TaskType {
 	RequestUserFromDB,
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
-	UserIsLoggedIn,
+	SetUserLoggedIn,
 	UserNotApproved, 
 
 	// ----- SERVER SIDE ------ //
@@ -20,6 +20,8 @@ public enum TaskType {
 	RecieveUserFromServerDB,
 	
 	// ---- CLIENT SIDE ------ //
+	// Registration
+	RequestRegistrationForm,
 	RequestSupplyReport,
 
 	// RequestClientReport
@@ -30,12 +32,15 @@ public enum TaskType {
 	RecieveUnapprovedUsers, 
 	
 	RequestItemsFromServer, 
-	RecieveItemsFromServer, 
+	RecieveItemsFromServer,
+	
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
+	
 	RequestUpdateDeliveries,
 	RequestUsersApproval,
 	RecieveUsersApproval,
+	
 	RequestClientsReport,
 	RecieveClientsReport,
 	

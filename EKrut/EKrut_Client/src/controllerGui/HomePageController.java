@@ -6,8 +6,10 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.CommonData;
+import common.Message;
 import common.RolesEnum;
 import common.ScreensNames;
+import common.TaskType;
 import controller.ItemsController;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
@@ -176,6 +178,8 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
+		currentUser.setLogged_in(false);  // logout user
+		HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, currentUser)); 
 		currentUser = null;
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 
