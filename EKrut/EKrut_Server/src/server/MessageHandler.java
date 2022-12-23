@@ -11,6 +11,7 @@ import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
 import controllerDb.OrderReportDBController;
+import controllerDb.PersonalMessagesDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
@@ -70,6 +71,10 @@ public class MessageHandler {
 
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
+			break;
+			
+		case RequestPersonalMessages:
+			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());

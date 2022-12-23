@@ -32,15 +32,22 @@ public enum TaskType {
 	RecieveUnapprovedUsers, 
 	
 	RequestItemsFromServer, 
-	RecieveItemsFromServer, 
+	RecieveItemsFromServer,
+	
 	RequestDeliveriesFromServer, 
 	RecieveDeliveriesFromServer,
+	
 	RequestUpdateDeliveries,
 	RequestUsersApproval,
 	RecieveUsersApproval,
+	
 	RequestClientsReport,
 	RecieveClientsReport,
 	
 	// Common Data's Init
-	InitRegions
+	InitRegions,
+	
+	// personal messages
+	RequestPersonalMessages,
+	RecievePersonalMessages
 }

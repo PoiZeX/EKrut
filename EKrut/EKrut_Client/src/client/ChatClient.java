@@ -12,6 +12,7 @@ import common.TaskType;
 import controller.ItemsController;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
+import controllerGui.PersonalMessagesController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
@@ -20,6 +21,7 @@ import java.io.*;
 import java.util.ArrayList;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
+import entity.PersonalMessageEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
 import entity.ClientsReportEntity;
@@ -59,6 +61,8 @@ public class ChatClient extends AbstractClient {
 			}
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
+		case InitRegions:
+			CommonData.recieveRegions((ArrayList<String>) obj);
 		case RecieveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
@@ -80,8 +84,9 @@ public class ChatClient extends AbstractClient {
 		case RecieveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
-		case InitRegions:
-			CommonData.recieveRegions((ArrayList<String>) obj);
+
+		case RecievePersonalMessages:
+			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
 		default:
 			break;

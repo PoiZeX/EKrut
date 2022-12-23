@@ -40,5 +40,9 @@ public enum TaskType {
 	RecieveClientsReport,
 	
 	// Common Data's Init
-	InitRegions
+	InitRegions,
+	
+	// personal messages
+	RequestPersonalMessages,
+	RecievePersonalMessages
 }
