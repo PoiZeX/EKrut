@@ -131,14 +131,18 @@ DROP TABLE IF EXISTS `item_in_machine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `item_in_machine` (
-  `machine_id` varchar(45) DEFAULT NULL,
-  `item_id` varchar(45) DEFAULT NULL,
+  `machine_id` int NOT NULL,
+  `item_id` int NOT NULL,
   `min_amount` int DEFAULT NULL,
   `current_amount` int DEFAULT NULL,
-  `call_Status` varchar(45) DEFAULT NULL,
+  `call_Status` enum('Opend','Processed','Complete','NotOpened') DEFAULT NULL,
   `availability` tinyint DEFAULT NULL,
   `amount_under_min` int DEFAULT NULL,
-  `amount_calls` varchar(45) DEFAULT NULL
+  `amount_calls` int DEFAULT NULL,
+  PRIMARY KEY (`machine_id`,`item_id`),
+  KEY `item_id_idx` (`item_id`),
+  CONSTRAINT `item_id` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`),
+  CONSTRAINT `machine_id` FOREIGN KEY (`machine_id`) REFERENCES `machines` (`machine_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -159,7 +163,7 @@ DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
-  `item_id` int unsigned NOT NULL,
+  `item_id` int NOT NULL,
   `name` varchar(45) NOT NULL,
   `price` double NOT NULL,
   `manufacturer` varchar(1024) DEFAULT NULL,
@@ -190,8 +194,8 @@ DROP TABLE IF EXISTS `machines`;
 CREATE TABLE `machines` (
   `machine_id` int NOT NULL,
   `address` varchar(45) NOT NULL,
-  `region_name` varchar(45) NOT NULL,
-  `region_id` varchar(45) DEFAULT NULL,
+  `region_name` varchar(100) NOT NULL,
+  `region_id` int DEFAULT NULL,
   PRIMARY KEY (`machine_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -291,7 +295,7 @@ DROP TABLE IF EXISTS `regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `regions` (
-  `region_id` int(3) unsigned zerofill NOT NULL,
+  `region_id` int NOT NULL,
   `region_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`region_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -303,7 +307,7 @@ CREATE TABLE `regions` (
 
 LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` VALUES (001,'Karmiel'),(002,'Haifa'),(003,'Acre'),(004,'Nesher'),(005,'Kiryat Ata'),(006,'Tel Aviv');
+INSERT INTO `regions` VALUES (1,'Karmiel'),(2,'Haifa'),(3,'Acre'),(4,'Nesher'),(5,'Kiryat Ata'),(6,'Tel Aviv');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -415,4 +419,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-22 12:06:06
+-- Dump completed on 2022-12-22 17:46:39

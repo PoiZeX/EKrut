@@ -20,6 +20,7 @@ import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
+import entity.MachineEntity;
 import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
@@ -64,10 +65,11 @@ public class MessageHandler {
 		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
-
 		case ReceivePersonalMessages:
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
+		case InitMachines:
+			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 		default:
 			break;
 		}

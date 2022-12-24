@@ -46,7 +46,7 @@
       </GridPane>
    </top>
    <center>
-      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="408.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="375.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -64,9 +64,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="256.0" styleClass="Button" />
-                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="256.0" styleClass="Button" GridPane.rowIndex="1" />
-                  <Button fx:id="bottomBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="256.0" styleClass="Button" GridPane.rowIndex="2" />
+                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" />
+                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="bottomBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
