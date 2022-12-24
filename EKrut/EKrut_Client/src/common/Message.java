@@ -13,7 +13,11 @@ public class Message implements Serializable {
     this.object = object;
   }
   
-  public TaskType getTask() {
+  public Message(TaskType task) {
+	this.task = task;
+}
+
+public TaskType getTask() {
     return this.task;
   }
   
