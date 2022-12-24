@@ -15,6 +15,7 @@ public class Message implements Serializable {
   
   public Message(TaskType task) {
 	this.task = task;
+	this.object = null;
 }
 
 public TaskType getTask() {

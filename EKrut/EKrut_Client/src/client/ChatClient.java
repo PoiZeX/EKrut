@@ -3,40 +3,20 @@
 // license found at www.lloseng.com 
 
 package client;
-
 import ocsf.client.*;
 import common.ChatIF;
-import common.CommonData;
 import common.Message;
-import common.TaskType;
-import controller.ItemsController;
-import controllerGui.LoginController;
-import controllerGui.OrdersReportController;
-import controllerGui.PersonalMessagesController;
-import controllerGui.SupplyReportController;
-import controllerGui.UsersManagementController;
-import controllerGui.ClientsReportController;
-import controllerGui.DeliveryManagementController;
 import java.io.*;
-import java.util.ArrayList;
-import Store.NavigationStoreController;
-import entity.OrderReportEntity;
-import entity.PersonalMessageEntity;
-import entity.DeliveryEntity;
-import entity.ItemEntity;
-import entity.ClientsReportEntity;
-import entity.SupplyReportEntity;
-import entity.UserEntity;
-
+import entity.SubscriberEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
-	// public static ObservableList<SubscriberEntity> subscribers;
-	//public static ObservableList<SubscriberEntity> subscribers;
-
+	public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
-	//public static ObservableList<SubscriberEntity> subscribers;
+
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
@@ -44,52 +24,17 @@ public class ChatClient extends AbstractClient {
 		// openConnection();
 	}
 
-	@SuppressWarnings("unchecked")
+
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-		Message msgFromServer = (Message) msg;
-		TaskType task = msgFromServer.getTask();
-		Object obj = msgFromServer.getObject();
-
-		// ---- Messages ---- //
-		switch (task) {
-		case ServerDisconnect:
+		if (msg instanceof String) {
+			System.out.println("Message received: " + msg);
+		} else if (msg instanceof Message) {
 			try {
-				sendToServer((Object) TaskType.ClientDisconnect);
-			} catch (IOException e) {
+				MessageHandler.Handle(this, (Message) msg);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
-			break;
-		case InitRegions:
-			CommonData.recieveRegions((ArrayList<String>) obj);
-		case ReceiveUserFromServerDB:
-			LoginController.validUserFromServer((UserEntity) obj);
-			break;
-		case ReceiveOrderReport:
-			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
-			break;
-		case ReceiveClientsReport:
-			ClientsReportController.recieveDataFromServer((ClientsReportEntity) obj);
-			break;
-		case RequestSupplyReport:
-			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
-			break;
-		case ReceiveUnapprovedUsers:
-			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
-			break;
-		case ReceiveItemsFromServer:
-			ItemsController.getItemsFromServer((ItemEntity) obj);
-			break;
-		case ReceiveDeliveriesFromServer:
-			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
-			break;
-
-		case ReceivePersonalMessages:
-			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -113,7 +58,8 @@ public class ChatClient extends AbstractClient {
 		}
 	}
 
-	public void handleMessageFromClient(Message message) {
+
+	public void handleMessageFromClient(Object message) {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
@@ -131,8 +77,8 @@ public class ChatClient extends AbstractClient {
 			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
-
 	}
+
 
 	/**
 	 * This method terminates the client.
@@ -144,17 +90,18 @@ public class ChatClient extends AbstractClient {
 		}
 		System.exit(0);
 	}
+	
+	
+	static {
+		ChatClient.subscribers = FXCollections.observableArrayList();
+	}
 
-//	static {
-//		ChatClient.subscribers = FXCollections.observableArrayList();
-//	}
-//
-//	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
-//		ChatClient.subscribers = subscribers;
-//	}
-//
-//	public static ObservableList<SubscriberEntity> getClientList() {
-//		return ChatClient.subscribers;
-//	}
+	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
+		ChatClient.subscribers = subscribers;
+	}
 
+	public static ObservableList<SubscriberEntity> getClientList() {
+		return ChatClient.subscribers;
+	}
+	
 }

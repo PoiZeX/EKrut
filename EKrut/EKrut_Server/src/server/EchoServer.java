@@ -2,7 +2,6 @@
 package server;
 
 import java.io.IOException;
-
 import common.Message;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
@@ -35,7 +34,6 @@ public class EchoServer extends AbstractServer {
 		this.DatabaseController = new DatabaseEntity(username, password, DBAddress);
 	}
 
-	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg instanceof String) {
 			System.out.println("Message received: " + msg + " from " + client);
@@ -79,5 +77,4 @@ public class EchoServer extends AbstractServer {
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
 	}
-
 }
