@@ -50,11 +50,16 @@
                   <Insets />
                </opaqueInsets>
             </TableView>
+            <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="820.0" styleClass="LabelRoleTitle" text="Full message:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="-15.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
             <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="messageLabel" layoutX="2.0" layoutY="10.0" lineSpacing="0.4" maxHeight="1.7976931348623157E308" prefHeight="193.0" prefWidth="785.0" text="Click on a message and it will be shown here" textOverrun="WORD_ELLIPSIS">                           
+                        <Label fx:id="messageLabel" layoutX="2.0" layoutY="10.0" lineSpacing="0.4" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="785.0" text="Click on a message and it will be shown here">                           
                         </Label>
                      </children>
                   </AnchorPane>
@@ -63,11 +68,6 @@
                   <Insets top="20.0" />
                </GridPane.margin>
             </ScrollPane>
-            <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="820.0" styleClass="LabelRoleTitle" text="Full message:" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="-15.0" top="5.0" />
-               </GridPane.margin>
-            </Label>
          </children>
       </GridPane>
    </center>

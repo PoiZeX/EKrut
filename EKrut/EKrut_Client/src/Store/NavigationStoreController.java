@@ -9,6 +9,7 @@ import java.util.Stack;
 import common.Message;
 import common.TaskType;
 import common.ScreensNames;
+import controllerGui.HomePageController;
 import controllerGui.HostClientController;
 import entity.UserEntity;
 import javafx.application.Platform;
@@ -125,7 +126,8 @@ public class NavigationStoreController {
 
 		// REPLACE the stack head
 		handleTitle(screenName);
-		history.pop(); // remove the last instance of the current screen and sets a new one
+		if(history.size() > 0)
+			history.pop(); // remove the last instance of the current screen and sets a new one
 		primaryStage.setScene(history.push(scene));
 		return true;
 	}
@@ -163,6 +165,11 @@ public class NavigationStoreController {
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
+					if(connectedUser.isLogged_in())
+					{
+						connectedUser.setLogged_in(false);  // logout the user
+						HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser)); 
+					}
 					if (HostClientController.chat != null)
 						HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
 					closeAllScreens();

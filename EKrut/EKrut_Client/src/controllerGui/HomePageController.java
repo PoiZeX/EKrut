@@ -185,5 +185,6 @@ public class HomePageController {
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 
 	}
+	
 
 }
