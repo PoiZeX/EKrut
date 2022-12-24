@@ -1,83 +1,54 @@
 package controllerGui;
-
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Arrays;
 
-import client.ChatClient;
-import entity.OrderReportEntity;
-import entity.SubscriberEntity;
+import Store.NavigationStoreController;
+import common.ScreensNames;
 import entity.SupplyReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.skin.TableHeaderRow;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 public class SupplyReportController {
 
     @FXML
-    private TableColumn<?, ?> currentAmountCol;
+    private TableColumn<SupplyReportEntity, String> currentAmountCol;
 
     @FXML
-    private TableColumn<?, ?> itemIDCol;
+    private TableColumn<SupplyReportEntity, String> itemIDCol;
 
     @FXML
-    private TableColumn<?, ?> minAmountCol;
+    private TableColumn<SupplyReportEntity, Integer> minAmountCol;
 
     @FXML
-    private TableColumn<?, ?> nameCol;
+    private TableColumn<SupplyReportEntity, Integer> nameCol;
 
     @FXML
-    private TableColumn<?, ?> startAmountCol;
+    private TableColumn<SupplyReportEntity, Integer> startAmountCol;
 
     @FXML
-    private TableView<ItemInTable> supplyMachineTbl;
+    private TableView<SupplyReportEntity> supplyMachineTbl;
 
     @FXML
     private Label titleLabel;
     
 	protected static SupplyReportEntity reportDetails;	
 	protected static boolean RecievedData = false;
-	
-	private class ItemInTable {
-		private String itemID, itemName, minStock, startStock, curStock;
-		public ItemInTable(String itemID, String itemName, String minStock, String startStock, String curStock) {
-			this.itemID = itemID;
-			this.itemName = itemName;
-			this.minStock = minStock;
-			this.startStock = startStock;
-			this.curStock = curStock;
-		}
-		public String getItemID() {
-			return itemID;
-		}
-		public String getItemName() {
-			return itemID;
-		}
-		public String getMinStock() {
-			return itemID;
-		}
-		public String getStartStock() {
-			return itemID;
-		}
-		public String getCurStock() {
-			return itemID;
-		}
-
-	}
+	private static ArrayList<SupplyReportEntity> supplyReports;
 	
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportDetails.getRegion());
-		initCharts();
+		initTable();
+		checkCurAmount();
 		return;
 	}
 	
@@ -87,18 +58,47 @@ public class SupplyReportController {
 		return;
 	}
 	
+		
+	public void checkCurAmount() {
+		supplyMachineTbl.setRowFactory(row -> new TableRow<SupplyReportEntity>(){
+		    @Override
+		    public void updateItem(SupplyReportEntity report, boolean empty){
+		        super.updateItem(report, empty);
 
-	private void initCharts() {
+		        if (report == null || empty) {
+		            setStyle("");
+		        } else {
+		            if (report.getCur_stock() <= report.getMin_stock()) {
+		                //We apply now the changes in all the cells of the row
+		                for(int i=0; i<getChildren().size();i++){
+		                    ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
+		                    //((Labeled) getChildren().get(i)).setStyle("-fx-background-color: yellow");
+		                }                        
+		            }
+		        }
+		    }
+		});
+		supplyMachineTbl.refresh();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initTable() {
+		supplyReports = new ArrayList<>();
+		SupplyReportEntity newReport = null;
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		itemIDCol.setCellValueFactory(new PropertyValueFactory<>("itemID"));
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-		minAmountCol.setCellValueFactory(new PropertyValueFactory<>("minStock"));
-		startAmountCol.setCellValueFactory(new PropertyValueFactory<>("startStock"));
-		currentAmountCol.setCellValueFactory(new PropertyValueFactory<>("curStock"));
+		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
+		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
+		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
+		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("start_stock"));
+		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("cur_stock"));
 		for (String[] item : itemsArray) {
-			ItemInTable newItem = new ItemInTable(item[0], item[4], item[3], item[1], item[2]);
-			supplyMachineTbl.getItems().add(newItem);
+			newReport = new SupplyReportEntity(reportDetails.getId(), item[0], item[1], item[2], item[3], item[4], reportDetails.getMonth(), reportDetails.getYear());
+			supplyReports.add(newReport);
 		}
-
+		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
+		supplyMachineTbl.setItems(ol);
+		supplyMachineTbl.setEditable(false);
+		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
+		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
 	}
 }

@@ -8,7 +8,6 @@ import common.CommonFunctions;
 
 public class SupplyReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
-	// {[1, Bamba], [20, 45, 60]}
 	private String item_id, item_name;
 	private int min_stock, cur_stock, start_stock;
 	private ArrayList<String[]> reportsList; 
@@ -19,6 +18,11 @@ public class SupplyReportEntity extends ReportEntity {
 	
 	public SupplyReportEntity(int id, String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String month, String year) {
 		super(id, month, year, "");
+		this.item_id = item_id;
+		this.item_name = item_name;
+		this.min_stock = Integer.parseInt(min_stock);
+		this.start_stock = Integer.parseInt(start_stock);
+		this.cur_stock = Integer.parseInt(cur_stock);
 		parserDetails(item_id, item_name, min_stock, start_stock, cur_stock);
 	}
 	

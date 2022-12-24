@@ -213,17 +213,8 @@
 .default-color5.chart-bar { -fx-bar-fill: #FFE45E; }
 
  /*------------------------------------------------ TABLE---------------------------------- */
-/*TBL View */
 .table-view {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 15;
-    /* -fx-border-color: white; */
-    /* -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 ); */
-}
-
-/*title */
-.table-view {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #ffffffc3;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
 }
@@ -247,27 +238,20 @@
     -fx-text-fill: white;
 }
 
-.table-row-cell:hover {
-    -fx-background-color: transparent;
-    -fx-text-background-color: orange;
-}
-
-/*
- * 
+/* 
 .table-view .table-cell{
-    -fx-border-color: #50b7f3;
+    -fx-border-color: #ffffff;
 }
 
 
 .table-row-cell:odd {
-    -fx-background-color: #64c6ff;
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:even{
-    -fx-background-color: #50b7f3;
+    -fx-background-color: #f2f2f2;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
-}
- */
+} */

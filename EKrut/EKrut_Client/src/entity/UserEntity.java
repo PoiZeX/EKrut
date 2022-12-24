@@ -26,7 +26,7 @@ public class UserEntity implements Serializable {
 	}
 
 	public UserEntity(String id_num , String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type, String cc_num, boolean logged_in, boolean isNotApproved) {
+		String phone_number, String role_type, String cc_num, boolean logged_in, boolean isNotApproved) {
 		this.id_num = id_num;
 		this.username = username;
 		this.password = password;
