@@ -234,4 +234,12 @@ public class NavigationStoreController {
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
+	
+	/**
+	 * logout should call this method
+	 */
+	public void clearAll() {
+		screenScenes.clear();
+		history.clear();
+	}
 }
