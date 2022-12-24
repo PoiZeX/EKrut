@@ -1,7 +1,13 @@
 package entity;
 
 public class ItemInMachineEntity extends ItemEntity {
-	public enum call_Status{ Opend, Processed, Complete, NotOpened } ;
+	
+	public enum call_Status{ Opend, Processed, Complete, NotOpened;
+		
+	
+
+	
+		} ;
 	private int machineID;
 	private int minAmount ,currentAmount;	
 
@@ -25,8 +31,8 @@ public class ItemInMachineEntity extends ItemEntity {
 		this.amount_calls = amount_calls;
 	}
 
-	public call_Status getCallStatus() {
-		return callStatus;
+	public String getCallStatus() {
+		return callStatus.toString();
 	}
 
 	public void setCallStatus(call_Status callStatus) {

@@ -1,7 +1,20 @@
 package entity;
 
+import entity.ItemInMachineEntity.call_Status;
+
 public class ItemInMachineEntity extends ItemEntity {
-	public enum call_Status{ Opend, Processed, Complete, NotOpened } ;
+	
+	public enum call_Status{ Opend("Opened"), Processed("Processed"), Complete("Complete"), NotOpened("NotOpened");
+		 call_Status(String string) {
+		this.name=string;
+	}
+
+		public String getName() {
+			return name;
+		}
+
+		private final String name;
+		} ;
 	private int machineID;
 	private int minAmount ,currentAmount;	
 

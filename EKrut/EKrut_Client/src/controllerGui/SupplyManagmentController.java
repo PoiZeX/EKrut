@@ -2,6 +2,7 @@ package controllerGui;
 
 import java.util.ArrayList;
 
+import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
 import common.Message;
@@ -12,6 +13,8 @@ import entity.MachineEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -57,10 +60,10 @@ public class SupplyManagmentController {
     private ImageView itemImg;
     /** Call status selection*/
     @FXML
-	private ComboBox<?> chooseWorkerCmb;
+	private ComboBox<String> chooseWorkerCmb;
 
 	@FXML
-    private ComboBox<?> callStatusCmb;
+    private ComboBox<ItemInMachineEntity.call_Status> callStatusCmb;
 
     @FXML
     private Button saveItemChangesBtn;
@@ -78,19 +81,19 @@ public class SupplyManagmentController {
     private ComboBox<String> machineCmb;
     
     @FXML
-    private TableView<?> supplyMangmentTbl;
+    private TableView<ItemInMachineEntity> supplyMangmentTbl;
     
     @FXML
-    private TableColumn<?, ?> itemIdCol;
+    private TableColumn<ItemInMachineEntity, Integer> itemIdCol;
    
     @FXML
-    private TableColumn<?, ?> minAmountCol;
+    private TableColumn<ItemInMachineEntity, Integer> minAmountCol;
     
     @FXML
-    private TableColumn<?, ?> currentAmountCol;
+    private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;
 
     @FXML
-    private TableColumn<?, ?> callStatusCall;
+    private TableColumn<ItemInMachineEntity, ItemInMachineEntity.call_Status> callStatusCall;
 
     @FXML
     private TableColumn<?, ?> previewEyeBtnCol;
@@ -99,12 +102,23 @@ public class SupplyManagmentController {
     
     private static ClientController chat = HostClientController.chat; // define the chat for th
     public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
-    
+    private String machineName;
     /** Setup screen before launching view*/
     @FXML
 		public void initialize() throws Exception {
 	    	ObservableList<String> machinesNames=FXCollections.observableArrayList(getMachines(CommonData.getMachines()));
 	    	machineCmb.setItems(machinesNames);
+	    	ObservableList<String> statusLst = FXCollections.observableArrayList();
+	    	statusLst.addAll(ItemInMachineEntity.call_Status.values());
+	    	callStatusCmb.setItems(statusLst);
+	    	machineCmb.addEventHandler(ComboBox.ON_SHOWN, new EventHandler<Event>() {
+				@Override
+				public void handle(Event event) {
+					machineName = machineCmb.getValue();
+					setupTable();
+				}
+			});
+	    	
     }
     /** press refresh button to refresh table and item displayed ask from data base to load updated table*/
     @FXML
@@ -133,15 +147,36 @@ public class SupplyManagmentController {
    
     /**get machines and put them in a combo box*/
     public ArrayList<String> getMachines(ArrayList<MachineEntity> allMachines) {
+    	String region =NavigationStoreController.connectedUser.getRegion();
     	ArrayList<String> machinesNames =  new ArrayList<String>();
     	for(MachineEntity m : allMachines) {
-    		machinesNames.add(m.getMachineName());
-    	
+    		if(region.equals(m.reigonName))
+    			{
+    			machinesNames.add(m.getMachineName());
+    			}
     	}
-    
 		return machinesNames;
-    	
     }
+    /*TODO - 
+     * filter by region the machines
+     * get the workers from DB and put them in CMB 
+     * TABLE
+     * load items in the table
+     * add in the last col a button of an eye 
+     * eye button - 
+     * 	need to upllod the product preview on the side 
+     * add css to whats under the minimum amount 
+     * - colors
+     * 		- red- under min and the call is not opened yet
+     * 		-green- completed
+     * 		-yellow - under min and the call is on process
+     * 		-orange - under min and the call is opend
+     * 
+     * Machine CMB - 
+     * 	add listener to the selection and link it to the setup table
+     * 
+     *  */
+    
     
    
     
