@@ -124,7 +124,11 @@ public class SupplyManagmentController {
     			currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
     			minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("minAmount"));
     			callStatusCall.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.call_Status>("callStatus"));
+     }
+   
+    /**get machines and put them in a combo box*/
+    public void getMachines() {
+    	
     }
-    
     
 }
