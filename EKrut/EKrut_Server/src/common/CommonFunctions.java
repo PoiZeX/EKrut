@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,7 +65,7 @@ public class CommonFunctions {
 	}
 
 	private static void generateOrdersReport(String month, String year) {
-		HashMap<String, String> regionDescription = new HashMap<>(); // " Haifa : { .... }
+		HashMap<String, String> regionDescription = new HashMap<>(); 
 		String query = "SELECT machines.machine_id, machines.location, regions.region_name, orders.buytime, SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders "
 				+ "FROM orders " + "JOIN machines ON orders.machine_id = machines.machine_id "
 				+ "JOIN regions ON machines.region_id = regions.region_id "
@@ -99,10 +100,7 @@ public class CommonFunctions {
 				psInsert.setString(2, month);
 				psInsert.setString(3, year);
 				psInsert.setString(4, reportKey);
-				int count = psInsert.executeUpdate();
-				if (count!=0) {
-					System.out.println("DID");
-				}
+				psInsert.executeUpdate();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
