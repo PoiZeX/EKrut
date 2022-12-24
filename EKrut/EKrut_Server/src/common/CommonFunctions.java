@@ -17,6 +17,11 @@ public class CommonFunctions {
 
 	private static Timer timerTimeLimit;
 
+	/**
+	 * checks whether the string is null or empty
+	 * @param txt
+	 * @return
+	 */
 	public static boolean isNullOrEmpty(String txt) {
 		return (txt == null || txt.isEmpty());
 	}
@@ -35,6 +40,11 @@ public class CommonFunctions {
 		return "Invalid month";
 	}
 
+	/**
+	 * General function to invoke in <num> seconds without sleeping
+	 * @param num
+	 * @param callback
+	 */
 	public static void SleepFor(long num, Runnable callback) {
 		timerTimeLimit = new Timer();
 		timerTimeLimit.schedule(new TimerTask() {
@@ -52,6 +62,7 @@ public class CommonFunctions {
 		}, num);
 	}
 
+	
 	public static void generateReportsDB(String reportType, String month, String year) {
 		switch (reportType) {
 		case "clients":

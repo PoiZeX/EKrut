@@ -17,12 +17,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import mysql.MySqlClass;
 import server.EchoServer;
 import server.ServerUI;
 import common.CommonFunctions;
 import entity.ConnectedClientEntity;
 
-public class ServerConfigurationController  {
+public class ServerConfigurationController {
 
 	@FXML
 	private TextField txtIP;
@@ -45,19 +46,21 @@ public class ServerConfigurationController  {
 	@FXML
 	private Button disconnectBtn;
 
+	@FXML
+	private Button importUsersBtn;
 
 	@FXML
-    private TableView<ConnectedClientEntity> connectedClients;
-	
-    @FXML
-    private TableColumn<ConnectedClientEntity, String> IP;
-    
-    @FXML
-    private TableColumn<ConnectedClientEntity, String> Host;
-    
-    @FXML
-    private TableColumn<ConnectedClientEntity, String> Status;
-    
+	private TableView<ConnectedClientEntity> connectedClients;
+
+	@FXML
+	private TableColumn<ConnectedClientEntity, String> IP;
+
+	@FXML
+	private TableColumn<ConnectedClientEntity, String> Host;
+
+	@FXML
+	private TableColumn<ConnectedClientEntity, String> Status;
+
 	@FXML
 	private TextArea consoleOutput;
 
@@ -77,6 +80,13 @@ public class ServerConfigurationController  {
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
 		setDisableTextFieldValues(true);
+		
+		CommonFunctions.SleepFor(300, () -> {
+			if(MySqlClass.isConnectionSuccess) 
+				importUsersBtn.setDisable(false);
+		}
+		);
+		
 	}
 
 	@FXML
@@ -85,12 +95,13 @@ public class ServerConfigurationController  {
 		connectBtn.setDisable(false);
 		disconnectBtn.setDisable(true);
 		setDisableTextFieldValues(false);
+		importUsersBtn.setDisable(true);
 	}
 
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
 		txtIP.setText(getIPValue());
-        connectedClients.setItems(EchoServer.getClientList());
+		connectedClients.setItems(EchoServer.getClientList());
 		connectTableColumnToObject();
 
 		txtPort.setText("5555");
@@ -99,6 +110,8 @@ public class ServerConfigurationController  {
 		txtDBPassword.setText("root");
 		disconnectBtn.setDisable(true);
 		changeConsoleToUI();
+
+		importUsersBtn.setDisable(true); // disable as default until connect to DB
 
 	}
 
@@ -129,12 +142,17 @@ public class ServerConfigurationController  {
 
 	/*
 	 * Making a connection between the ConnectedClient object to the columns
-	 *  PropertyValueFactory search for a getters like "getIp", "getHost" in entity object
+	 * PropertyValueFactory search for a getters like "getIp", "getHost" in entity
+	 * object
 	 */
 	private void connectTableColumnToObject() {
-		IP.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("ip"));
-		Host.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("host"));
-		Status.setCellValueFactory((Callback)new PropertyValueFactory<ConnectedClientEntity, String>("status"));
+		IP.setCellValueFactory((Callback) new PropertyValueFactory<ConnectedClientEntity, String>("ip"));
+		Host.setCellValueFactory((Callback) new PropertyValueFactory<ConnectedClientEntity, String>("host"));
+		Status.setCellValueFactory((Callback) new PropertyValueFactory<ConnectedClientEntity, String>("status"));
 	}
 
+	@FXML
+	public void importUsersFromDB(ActionEvent event) {
+
+	}
 }

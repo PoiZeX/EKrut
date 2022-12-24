@@ -11,7 +11,7 @@ import mysql.MySqlClass;
 import ocsf.server.*;
 
 public class EchoServer extends AbstractServer {
-	DatabaseEntity DatabaseController;
+	DatabaseEntity databaseEntity;
 	private static ObservableList<ConnectedClientEntity> clientList;
 
 	static {
@@ -31,7 +31,7 @@ public class EchoServer extends AbstractServer {
 
 	public EchoServer(int port, String DBAddress, String username, String password) {
 		super(port);
-		this.DatabaseController = new DatabaseEntity(username, password, DBAddress);
+		this.databaseEntity = new DatabaseEntity(username, password, DBAddress);
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -67,8 +67,8 @@ public class EchoServer extends AbstractServer {
 	protected void serverStarted() {
 		System.out.println("Server listening for connections on port " + getPort());
 		try {
-			MySqlClass.connectToDb(this.DatabaseController.getDBAddress(), this.DatabaseController.getUsername(),
-					this.DatabaseController.getPassword());
+			MySqlClass.connectToDb(this.databaseEntity.getDBAddress(), this.databaseEntity.getUsername(),
+					this.databaseEntity.getPassword());
 		} catch (Exception ex) {
 			System.out.println("Error! DataBase Connection Failed");
 		}

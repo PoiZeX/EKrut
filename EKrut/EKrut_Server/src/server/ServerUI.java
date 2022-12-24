@@ -35,7 +35,6 @@ public class ServerUI extends Application {
 		});
 		primaryStage.show();
 	}
-
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
 		try {
@@ -73,4 +72,5 @@ public class ServerUI extends Application {
 		}
 		System.out.println("Server Disconnected");
 	}
+	
 }

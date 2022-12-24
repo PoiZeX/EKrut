@@ -1,0 +1,10 @@
+"id","id_number","username","password","first_name","last_name","email","phone_number","cc_number","region","role_type","logged_in","is_not_approved"
+1,"","regionm","123456","david","asulin","dudyas6@gmmgm.com","500535030","","Karmiel","regionManager",0,0
+2,"","ceom","123456","ceo","ceo","ceo@ceo.ceo","12319024","","","CEO",0,0
+3,"","customer","123456","customer","customer","customer@customer","123123","","","registered",0,0
+4,"205905050","customer1","123456","customer1","customer1","customer1@customer1","123123123","205905050","","registered",0,1
+5,"205905050","customer2","123456","customer1","customer1","customer1@customer1","123123123","205905050","","registered",0,1
+6,"205905050","customer3","123456","customer1","customer1","customer1@customer1","123123123","205905050","","registered",0,0
+7,"205905050","customer4","123456","customer1","customer1","customer1@customer1","123123123","205905050","","registered",0,0
+31,"","regionm2","123456","david","asulin","dudyas6@gmmgm.com","500535030","","Haifa","regionManager",0,0
+32,"205050951","subscribed","123456","lidor","ankava","lidi@gmail.com","0501231233","1234123412341234","","subscribed",0,0

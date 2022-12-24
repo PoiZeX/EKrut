@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.regex.Pattern;
 
+import javax.management.relation.Role;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.TaskType;
 import common.Message;
+import common.RolesEnum;
 import common.ScreensNames;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
@@ -170,6 +173,13 @@ public class LoginController {
 			return;
 		}
 
+		if(user.getRole_type().equals(RolesEnum.user))
+		{
+			isValidDetails = false;
+			returnedMsg = "User is not registered yet.\nPlease contact customer service for registreation";
+			return;
+		}
+		
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
