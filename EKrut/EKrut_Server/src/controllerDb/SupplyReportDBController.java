@@ -24,10 +24,10 @@ public class SupplyReportDBController {
 	 * @return
 	 */
 	public static boolean setReport(String[] details) {
-		if (details.length == 2) {
+		if (details.length == 3) {
 			region = details[0];
 			month = details[1];
-			year = details[3];
+			year = details[2];
 			return true;
 		}
 		return false;
