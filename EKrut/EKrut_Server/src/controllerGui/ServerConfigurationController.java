@@ -2,12 +2,22 @@ package controllerGui;
 
 import utils.ConsoleStream;
 
+import java.awt.Desktop;
 import java.awt.Event;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Inet4Address;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -16,11 +26,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import mysql.MySqlClass;
 import server.EchoServer;
 import server.ServerUI;
 import common.CommonFunctions;
+import controllerDb.UsersSimulationDBController;
 import entity.ConnectedClientEntity;
 
 public class ServerConfigurationController {
@@ -80,13 +93,17 @@ public class ServerConfigurationController {
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
 		setDisableTextFieldValues(true);
+
+		while (MySqlClass.isConnectionSuccess == null)
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		if(MySqlClass.isConnectionSuccess == true)
+			importUsersBtn.setDisable(false);
 		
-		CommonFunctions.SleepFor(300, () -> {
-			if(MySqlClass.isConnectionSuccess) 
-				importUsersBtn.setDisable(false);
-		}
-		);
-		
+
 	}
 
 	@FXML
@@ -112,6 +129,18 @@ public class ServerConfigurationController {
 		changeConsoleToUI();
 
 		importUsersBtn.setDisable(true); // disable as default until connect to DB
+
+		// set import action
+		importUsersBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				Stage stage = (Stage) importUsersBtn.getScene().getWindow();
+				File file = fileChooser.showOpenDialog(stage);
+				if (file != null) {
+					parseFile(file);
+				}
+			}
+		});
 
 	}
 
@@ -153,6 +182,42 @@ public class ServerConfigurationController {
 
 	@FXML
 	public void importUsersFromDB(ActionEvent event) {
+		// nothing to do here now
+	}
+
+	final FileChooser fileChooser = new FileChooser();
+	private Desktop desktop = Desktop.getDesktop();
+
+	/**
+	 * Parse file into tuples
+	 * 
+	 * @param file
+	 */
+	private void parseFile(File file) {
+		String line = "";
+		String cvsSplitBy = ",";
+		boolean isTitle = true;
+		ArrayList<String[]> res = new ArrayList<>();
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			while ((line = br.readLine()) != null) {
+				if(isTitle) {
+					isTitle = false;
+					continue;
+				}
+				
+				String[] fields = line.split(cvsSplitBy);
+				res.add(fields);
+				System.out.println(Arrays.toString(fields));
+			}
+			UsersSimulationDBController.insertTuples(res); 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
+	
+	
+	
 }
