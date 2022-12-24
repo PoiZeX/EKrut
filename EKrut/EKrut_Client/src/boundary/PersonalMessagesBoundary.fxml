@@ -21,7 +21,7 @@
             <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label lineSpacing="12.0" prefHeight="60.0" prefWidth="301.0" styleClass="LabelTitle" text="Personal Messages" underline="true" />
+            <Label alignment="CENTER" lineSpacing="12.0" prefHeight="60.0" prefWidth="902.0" styleClass="LabelTitle" text="Personal Messages" underline="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </top>
@@ -34,13 +34,13 @@
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="151.0" minHeight="8.0" prefHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="284.0" minHeight="10.0" prefHeight="242.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="254.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="151.0" minHeight="8.0" prefHeight="37.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="284.0" minHeight="10.0" prefHeight="192.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="237.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView fx:id="messageTable" prefHeight="401.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TableView fx:id="messageTable" prefHeight="233.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="dateCol" prefWidth="149.0" text="Date" />
                 <TableColumn fx:id="typeCol" prefWidth="129.0" text="Type" />
@@ -54,7 +54,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="messageLabel" layoutX="2.0" layoutY="10.0" lineSpacing="0.4" maxHeight="1.7976931348623157E308" prefHeight="202.0" prefWidth="785.0" text="Click on a message and it will be shown here" textOverrun="WORD_ELLIPSIS">                           
+                        <Label fx:id="messageLabel" layoutX="2.0" layoutY="10.0" lineSpacing="0.4" maxHeight="1.7976931348623157E308" prefHeight="193.0" prefWidth="785.0" text="Click on a message and it will be shown here" textOverrun="WORD_ELLIPSIS">                           
                         </Label>
                      </children>
                   </AnchorPane>
@@ -63,6 +63,11 @@
                   <Insets top="20.0" />
                </GridPane.margin>
             </ScrollPane>
+            <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="820.0" styleClass="LabelRoleTitle" text="Full message:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="-15.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
          </children>
       </GridPane>
    </center>
