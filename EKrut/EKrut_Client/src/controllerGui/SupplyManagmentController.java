@@ -19,10 +19,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -78,7 +80,7 @@ public class SupplyManagmentController {
     
   /** machine to display her items in machine supply status table*/
     @FXML
-    private ComboBox<String> machineCmb;
+    private ComboBox<MachineEntity> machineCmb;
     
     @FXML
     private TableView<ItemInMachineEntity> supplyMangmentTbl;
@@ -96,26 +98,30 @@ public class SupplyManagmentController {
     private TableColumn<ItemInMachineEntity, ItemInMachineEntity.call_Status> callStatusCall;
 
     @FXML
-    private TableColumn<?, ?> previewEyeBtnCol;
+    private TableColumn<ItemInMachineEntity, Void> previewEyeBtnCol;;
 
    
     
     private static ClientController chat = HostClientController.chat; // define the chat for th
     public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
+    public static ObservableList<MachineEntity> machineLst=FXCollections.observableArrayList(CommonData.getMachines());
     private String machineName;
+    private int machineId;
+    private MachineEntity machine;
     /** Setup screen before launching view*/
     @FXML
 		public void initialize() throws Exception {
-	    	ObservableList<String> machinesNames=FXCollections.observableArrayList(getMachines(CommonData.getMachines()));
-	    	machineCmb.setItems(machinesNames);
-	    	ObservableList<String> statusLst = FXCollections.observableArrayList();
+    		getMachinesInRegion(machineLst);
+	    	machineCmb.setItems(machineLst);
+	    	ObservableList<ItemInMachineEntity.call_Status> statusLst = FXCollections.observableArrayList();
 	    	statusLst.addAll(ItemInMachineEntity.call_Status.values());
 	    	callStatusCmb.setItems(statusLst);
-	    	machineCmb.addEventHandler(ComboBox.ON_SHOWN, new EventHandler<Event>() {
+	    	machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
-					machineName = machineCmb.getValue();
-					setupTable();
+					
+					machine=machineCmb.getValue();
+					setupTable(machine.machineID);
 				}
 			});
 	    	
@@ -136,26 +142,50 @@ public class SupplyManagmentController {
 
     }
     /**get from DB the data for setting the table, and puttin a preview ('eye') button on the preview col*/
-    private void setupTable() {
-    	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, null));
+    private void setupTable(int machineId) {
+    	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));//errorfix
     	// factory
     			itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
     			currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
     			minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("minAmount"));
     			callStatusCall.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.call_Status>("callStatus"));
+    			previewEyeBtnCol.setCellFactory(column -> {
+    			    return new TableCell<ItemInMachineEntity, Void>() {
+    			        private final Button button = new Button();
+
+    			        {
+    			            ImageView imageView = new ImageView(new Image("../EKrut_Client/src/styles/icons/eye.png"));
+    			            button.setGraphic(imageView);
+    			            button.setOnAction(event -> {
+    			                // Handle button click event
+    			            	//TODO load item on the side with his image
+    			            });
+    			        }
+
+    			        @Override
+    			        public void updateItem(Void item, boolean empty) {
+    			            super.updateItem(item, empty);
+    			            if (empty) {
+    			                setGraphic(null);
+    			            } else {
+    			                setGraphic(button);
+    			            }
+    			        }
+    			    };
+    			});
+    			    
      }
    
     /**get machines and put them in a combo box*/
-    public ArrayList<String> getMachines(ArrayList<MachineEntity> allMachines) {
+    public void getMachinesInRegion(ObservableList<MachineEntity> machineLst2) {
     	String region =NavigationStoreController.connectedUser.getRegion();
-    	ArrayList<String> machinesNames =  new ArrayList<String>();
-    	for(MachineEntity m : allMachines) {
-    		if(region.equals(m.reigonName))
+    	for(MachineEntity m : machineLst2) {
+    		if(!region.equals(m.reigonName))
     			{
-    			machinesNames.add(m.getMachineName());
+    			machineLst.remove(m);
     			}
     	}
-		return machinesNames;
+
     }
     /*TODO - 
      * filter by region the machines
@@ -176,6 +206,11 @@ public class SupplyManagmentController {
      * 	add listener to the selection and link it to the setup table
      * 
      *  */
+	//errorfix
+	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+		// TODO Auto-generated method stub
+		itemsInMachineLst.addAll(obj);
+	}
     
     
    

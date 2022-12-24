@@ -9,6 +9,7 @@ import controller.ItemsController;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
+import controllerGui.SupplyManagmentController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
@@ -20,6 +21,7 @@ import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
+import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
@@ -70,6 +72,8 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+		case ReceiveItemsInMachine:
+			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 		default:
 			break;
 		}

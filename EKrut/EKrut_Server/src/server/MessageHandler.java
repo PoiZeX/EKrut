@@ -10,6 +10,7 @@ import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
 import controllerDb.PersonalMessagesDBController;
 import controllerDb.ReportsDBController;
+import controllerDb.SupplyManagmentDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
@@ -77,6 +78,8 @@ public class MessageHandler {
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
+		case RequestItemsInMachine:
+			SupplyManagmentDBController.getMachineItems((int)obj,client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

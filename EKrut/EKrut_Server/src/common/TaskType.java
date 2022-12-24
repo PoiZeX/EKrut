@@ -21,6 +21,7 @@ public enum TaskType {
 	ReceiveOrderReport,
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
+	ReceiveItemsInMachine,
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,

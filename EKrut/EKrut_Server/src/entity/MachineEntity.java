@@ -1,6 +1,8 @@
 package entity;
 
 public class MachineEntity extends MainEntity {
+	
+
 	public int reigonID;
 	public String reigonName;
 	public int machineID;
@@ -27,6 +29,10 @@ public class MachineEntity extends MainEntity {
 	}
 
 	public String getMachineName() {
+		return machineName;
+	}
+	@Override
+	public String toString() {
 		return machineName;
 	}
 }
