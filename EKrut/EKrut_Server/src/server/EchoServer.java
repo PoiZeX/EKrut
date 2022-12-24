@@ -45,7 +45,7 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 		try {
-			client.sendToClient("Server done");
+			client.sendToClient(true);
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
