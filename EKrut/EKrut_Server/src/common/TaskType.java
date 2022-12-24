@@ -35,4 +35,12 @@ public enum TaskType {
 	// Common Data Initialization //
 	InitRegions
 
+	RequestUsersAprroval,
+	RecieveUsersApproval,
+	RequestClientsReport,
+	RecieveClientsReport,
+	InitMachines,
+	// Common Data's Init
+	InitRegions
+	
 }

@@ -74,6 +74,8 @@ public class MessageHandler {
 
 		case RequestPersonalMessages:
 			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
+		case InitMachines:
+			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
