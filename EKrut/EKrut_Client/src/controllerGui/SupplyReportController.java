@@ -78,7 +78,8 @@ public class SupplyReportController {
 		        }
 		    }
 		});
-		supplyMachineTbl.refresh();
+		supplyMachineTbl.getColumns().get(0).setVisible(false);
+		supplyMachineTbl.getColumns().get(0).setVisible(true);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -100,5 +101,6 @@ public class SupplyReportController {
 		supplyMachineTbl.setEditable(false);
 		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
 		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
+		
 	}
 }
