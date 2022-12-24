@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
-
 import common.Message;
 import common.TaskType;
 
@@ -56,7 +55,7 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
-		EchoServer.sendToAllClients(new Message(TaskType.ClientDisconnect, null));
+		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		try {
 			Thread.sleep(2000);  // enough time to update the clients table. More flexible way is to use semaphore...
 		} catch (InterruptedException e1) {
