@@ -66,11 +66,11 @@ public class CommonFunctions {
 
 	private static void generateOrdersReport(String month, String year) {
 		HashMap<String, String> regionDescription = new HashMap<>(); 
-		String query = "SELECT machines.machine_id, machines.location, regions.region_name, orders.buytime, SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders "
+		String query = "SELECT machines.machine_id, machines.machine_name, regions.region_name, orders.buytime, SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders "
 				+ "FROM orders " + "JOIN machines ON orders.machine_id = machines.machine_id "
 				+ "JOIN regions ON machines.region_id = regions.region_id "
 				+ "WHERE orders.is_delivery = 0 AND STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
-				+ "GROUP BY machines.location";
+				+ "GROUP BY machines.machine_name";
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
