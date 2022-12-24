@@ -137,12 +137,14 @@ DROP TABLE IF EXISTS `item_in_machine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `item_in_machine` (
-  `min_amount` int DEFAULT NULL,
+  `machine_id` int NOT NULL,
+  `item_id` int NOT NULL,
   `current_amount` int DEFAULT NULL,
-  `shelf` varchar(45) DEFAULT NULL,
-  `call_Status` varchar(45) DEFAULT NULL,
-  `availability` tinyint DEFAULT NULL,
-  `amount_under_min` int DEFAULT NULL
+  `minimum_amount` int DEFAULT NULL,
+  `call_status` varchar(45) DEFAULT NULL,
+  `times_under_min` int DEFAULT NULL,
+  `calls_amount` int DEFAULT NULL,
+  PRIMARY KEY (`machine_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -192,11 +194,12 @@ DROP TABLE IF EXISTS `machines`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `machines` (
-  `machine_id` int NOT NULL AUTO_INCREMENT,
-  `location` varchar(45) NOT NULL,
   `region_id` int DEFAULT NULL,
+  `region_name` varchar(45) NOT NULL,
+  `machine_id` int NOT NULL,
+  `machine_name` varchar(256) NOT NULL,
   PRIMARY KEY (`machine_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +208,7 @@ CREATE TABLE `machines` (
 
 LOCK TABLES `machines` WRITE;
 /*!40000 ALTER TABLE `machines` DISABLE KEYS */;
-INSERT INTO `machines` VALUES (0,'Ort Braude',1),(1,'Karmiel Center',1),(2,'Karmiel Mall',1),(3,'Karmiel City',1),(4,'Ort Haifa',2),(5,'Haifa Center',2),(6,'Haifa Mall',2),(7,'Haifa City',2),(8,'Rogozin',3),(9,'Ata Center',3),(10,'Kiryat Ata Mall',3),(11,'Nevei Hen',3);
+INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage'),(1,'North',2,'Big Karmiel'),(1,'North',3,'City hall'),(1,'North',4,'Ort Pasgot'),(1,'North',5,'Karmiel Train Station'),(1,'North',6,'Lev Karmiel Mall'),(1,'North',7,'Thecnion'),(1,'North',8,'Rambam hospital'),(1,'North',9,'Ofer Grand Kenyon'),(1,'North',10,'Beni Zion Hospital'),(1,'North',11,'Haifa University'),(1,'North',12,'Academic Gordon Collage'),(1,'North',13,'Galil Maarvi Academic Collage'),(2,'Center',19,'Dizingoffe Center'),(2,'Center',20,'TLV fashion mall'),(2,'Center',21,'Savidor center Train sation'),(2,'Center',22,'Hashalom Train station'),(2,'Center',23,'Tel Aviv university'),(2,'Center',24,'Tel Aviv Yafo acadimic Collage'),(3,'South',25,'Beer Sheva rail station'),(3,'South',26,'Dimona Atomic reactor');
 /*!40000 ALTER TABLE `machines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +238,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (0,1,112,3,'22/12/2022 14:43','3',NULL,0),(1,1,112,3,'22/12/2022 14:43','3',NULL,0),(2,1,142,3,'22/12/2022 14:43','3',NULL,0),(3,2,155,3,'22/12/2022 14:43','13',NULL,0),(4,2,41,3,'22/12/2022 14:43','3',NULL,0),(5,3,77,3,'22/12/2022 14:43','3',NULL,1),(6,3,17,3,'22/12/2022 14:43','3',NULL,1),(7,1,12,3,'22/12/2022 14:43','3',NULL,0),(8,2,115,3,'22/12/2022 14:43','3',NULL,0),(9,1,11,3,'22/12/2022 14:43','3',NULL,0),(10,3,110,3,'22/12/2022 14:43','3',NULL,0),(11,2,142,3,'22/12/2022 14:43','3',NULL,0),(12,6,155,3,'22/12/2022 14:43','13',NULL,0),(13,2,41,3,'22/12/2022 14:43','3',NULL,0),(14,7,77,3,'22/12/2022 14:43','3',NULL,1),(15,3,17,3,'22/12/2022 14:43','3',NULL,1),(16,6,12,3,'22/12/2022 14:43','3',NULL,0),(17,4,115,3,'22/12/2022 14:43','3',NULL,0),(18,5,11,3,'22/12/2022 14:43','3',NULL,0),(19,6,110,3,'22/12/2022 14:43','3',NULL,0),(20,4,112,3,'11/12/2022 14:43','3',NULL,0),(21,2,142,3,'20/12/2022 14:43','3',NULL,0),(22,6,155,3,'26/12/2022 14:43','13',NULL,0),(23,2,41,3,'13/12/2022 14:43','3',NULL,0),(24,7,77,3,'17/12/2022 14:43','3',NULL,1),(25,3,17,3,'16/12/2022 14:43','3',NULL,1),(26,6,12,3,'05/12/2022 14:43','3',NULL,0),(27,4,115,3,'11/12/2022 14:43','3',NULL,0),(28,5,11,3,'12/12/2022 14:43','3',NULL,0),(29,6,110,3,'25/12/2022 14:43','3',NULL,0),(30,11,37,1,'22/12/2022 14:43','1',NULL,0);
+INSERT INTO `orders` VALUES (0,1,112,3,'22/12/2022 14:43','3',NULL,0),(1,1,112,3,'22/12/2022 14:43','3',NULL,0),(2,1,142,3,'22/12/2022 14:43','3',NULL,0),(3,2,155,3,'22/12/2022 14:43','13',NULL,0),(4,2,41,3,'22/12/2022 14:43','3',NULL,0),(5,3,77,3,'22/12/2022 14:43','3',NULL,1),(6,3,17,3,'22/12/2022 14:43','3',NULL,1),(7,1,12,3,'22/12/2022 14:43','3',NULL,0),(8,2,115,3,'22/12/2022 14:43','3',NULL,0),(9,1,11,3,'22/12/2022 14:43','3',NULL,0),(10,3,110,3,'22/12/2022 14:43','3',NULL,0),(11,2,142,3,'22/12/2022 14:43','3',NULL,0),(12,6,155,3,'22/12/2022 14:43','13',NULL,0),(13,2,41,3,'22/12/2022 14:43','3',NULL,0),(14,7,77,3,'22/12/2022 14:43','3',NULL,1),(15,3,17,3,'22/12/2022 14:43','3',NULL,1),(16,6,12,3,'22/12/2022 14:43','3',NULL,0),(17,4,115,3,'22/12/2022 14:43','3',NULL,0),(18,5,11,3,'22/12/2022 14:43','3',NULL,0),(19,6,110,3,'22/12/2022 14:43','3',NULL,0),(20,4,112,3,'11/12/2022 14:43','3',NULL,0),(21,2,142,3,'20/12/2022 14:43','3',NULL,0),(22,26,155,3,'26/12/2022 14:43','13',NULL,0),(23,2,41,3,'13/12/2022 14:43','3',NULL,0),(24,2,77,3,'17/12/2022 14:43','3',NULL,1),(25,24,17,3,'16/12/2022 14:43','3',NULL,1),(26,6,12,3,'05/12/2022 14:43','3',NULL,0),(27,21,115,3,'11/12/2022 14:43','3',NULL,0),(28,23,11,3,'12/12/2022 14:43','3',NULL,0),(29,6,110,3,'25/12/2022 14:43','3',NULL,0),(30,11,37,1,'22/12/2022 14:43','1',NULL,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +278,7 @@ CREATE TABLE `orders_report` (
   `year` varchar(45) DEFAULT NULL,
   `region` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +287,7 @@ CREATE TABLE `orders_report` (
 
 LOCK TABLES `orders_report` WRITE;
 /*!40000 ALTER TABLE `orders_report` DISABLE KEYS */;
-INSERT INTO `orders_report` VALUES (1,'City Hall,20,30,Big Karmiel,40,20,Ort Braude,17,21,Lev Karmiel,129,25','01','2022','Karmiel'),(3,'Nevei Hen,1,37','12','2022','Acre'),(4,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(5,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(6,'Nevei Hen,1,37','12','2022','Acre'),(7,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(8,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(9,'Nevei Hen,1,37','12','2022','Acre'),(10,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(11,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(12,'Nevei Hen,1,37','12','2022','Acre'),(13,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(14,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(15,'Nevei Hen,1,37','12','2022','Acre'),(16,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(17,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(19,'3','2','2','2'),(20,'3','2','2','2'),(21,'3','2','2','2'),(22,'Nevei Hen,1,37','12','2022','Acre'),(23,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(24,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(25,'Nevei Hen,1,37','12','2022','Acre'),(26,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(27,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(28,'Nevei Hen,1,37','12','2022','Acre'),(29,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(30,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(32,'Nevei Hen,1,37','12','2022','Acre'),(33,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(34,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa'),(36,'Nevei Hen,1,37','12','2022','Acre'),(37,'Karmiel Center,5,389,Karmiel Mall,7,677,Karmiel City,1,110','12','2022','Karmiel'),(38,'Haifa Mall,6,554,Ort Haifa,3,342,Haifa Center,2,22','12','2022','Haifa');
+INSERT INTO `orders_report` VALUES (40,'Ort Braude Academic Collage,5,389,Big Karmiel,7,677,City hall,1,110,Lev Karmiel Mall,6,554,Ort Pasgot,3,342,Karmiel Train Station,2,22,Haifa University,1,37','12','2022','North'),(41,'Savidor center Train sation,1,115,Tel Aviv university,1,11','12','2022','Center'),(42,'Dimona Atomic reactor,1,155','12','2022','South'),(43,'Ort Braude Academic Collage,5,389,Big Karmiel,7,677,City hall,1,110,Lev Karmiel Mall,5,399,Ort Pasgot,2,227,Karmiel Train Station,1,11,Haifa University,1,37','12','2022','North');
 /*!40000 ALTER TABLE `orders_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +299,7 @@ DROP TABLE IF EXISTS `regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `regions` (
-  `region_id` int unsigned NOT NULL,
+  `region_id` int NOT NULL,
   `region_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`region_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -308,7 +311,7 @@ CREATE TABLE `regions` (
 
 LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` VALUES (1,'Karmiel'),(2,'Haifa'),(3,'Acre'),(4,'Nesher'),(5,'Kiryat Ata'),(6,'Tel Aviv');
+INSERT INTO `regions` VALUES (1,'North'),(2,'Center'),(3,'South');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -432,7 +435,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Karmiel','regionManager',1,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Haifa','regionManager',0,0);
+INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Karmiel','regionManager',1,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',1,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Haifa','regionManager',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -445,4 +448,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-24 11:31:46
+-- Dump completed on 2022-12-24 15:14:09
