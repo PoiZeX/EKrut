@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import common.Message;
 import common.TaskType;
+import entity.MachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
@@ -38,6 +39,32 @@ public class CommonDataDBController {
 			e.printStackTrace();
 		}
 		return regions;
+	}
+
+	public static void getAllMachinesFromDB(ConnectionToClient client) {
+		ArrayList<MachineEntity> res = getMachineListFromDB();
+		try {
+			client.sendToClient(new Message(TaskType.InitMachines, res));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ArrayList<MachineEntity> getMachineListFromDB() {
+		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return machines;
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.machines;");
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				machines.add(new MachineEntity(res.getInt(1),res.getString(2),res.getInt(3),res.getString(4)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return machines;
 	}
 	
 

@@ -42,9 +42,9 @@ public enum TaskType {
 	RecieveClientsReport,
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
-	
+	InitMachines,
 	
 	// Common Data's Init
-	InitRegions,
-	InitMachines
+	InitRegions
+
 }

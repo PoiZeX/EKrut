@@ -71,6 +71,9 @@ public class MessageHandler {
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
 			break;
+		case InitMachines:
+			CommonDataDBController.getAllMachinesFromDB(client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

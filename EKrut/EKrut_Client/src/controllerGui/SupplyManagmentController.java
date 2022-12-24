@@ -1,10 +1,14 @@
 package controllerGui;
 
+import java.util.ArrayList;
+
 import client.ClientController;
+import common.CommonData;
 import common.Message;
 import common.TaskType;
 
 import entity.ItemInMachineEntity;
+import entity.MachineEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -71,7 +75,7 @@ public class SupplyManagmentController {
     
   /** machine to display her items in machine supply status table*/
     @FXML
-    private ComboBox<?> machineCmb;
+    private ComboBox<String> machineCmb;
     
     @FXML
     private TableView<?> supplyMangmentTbl;
@@ -94,12 +98,13 @@ public class SupplyManagmentController {
    
     
     private static ClientController chat = HostClientController.chat; // define the chat for th
-    public static ObservableList<ItemInMachineEntity> deliveries=FXCollections.observableArrayList();
-   
+    public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
+    
     /** Setup screen before launching view*/
     @FXML
-	public void initialize() throws Exception {
-    	
+		public void initialize() throws Exception {
+	    	ObservableList<String> machinesNames=FXCollections.observableArrayList(getMachines(CommonData.getMachines()));
+	    	machineCmb.setItems(machinesNames);
     }
     /** press refresh button to refresh table and item displayed ask from data base to load updated table*/
     @FXML
@@ -127,8 +132,17 @@ public class SupplyManagmentController {
      }
    
     /**get machines and put them in a combo box*/
-    public void getMachines() {
+    public ArrayList<String> getMachines(ArrayList<MachineEntity> allMachines) {
+    	ArrayList<String> machinesNames =  new ArrayList<String>();
+    	for(MachineEntity m : allMachines) {
+    		machinesNames.add(m.getMachineName());
+    	
+    	}
+    
+		return machinesNames;
     	
     }
+    
+   
     
 }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.DeliveryEntity;
-import entity.ItemEntity;
+import entity.ItemEntity;import entity.MachineEntity;
 import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
@@ -83,6 +83,8 @@ public class ChatClient extends AbstractClient {
 		case InitRegions:
 			CommonData.recieveRegions((ArrayList<String>) obj);
 			break;
+		case InitMachines:
+			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 		default:
 			break;
 		}
