@@ -104,24 +104,21 @@ public class SupplyManagmentController {
     
     private static ClientController chat = HostClientController.chat; // define the chat for th
     public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
-    public static ObservableList<MachineEntity> machineLst=FXCollections.observableArrayList(CommonData.getMachines());
+    public static ObservableList<MachineEntity> machineLst=FXCollections.observableArrayList();
     private String machineName;
     private int machineId;
     private MachineEntity machine;
     /** Setup screen before launching view*/
     @FXML
 		public void initialize() throws Exception {
-    		getMachinesInRegion(machineLst);
-	    	machineCmb.setItems(machineLst);
-	    	ObservableList<ItemInMachineEntity.call_Status> statusLst = FXCollections.observableArrayList();
-	    	statusLst.addAll(ItemInMachineEntity.call_Status.values());
-	    	callStatusCmb.setItems(statusLst);
+    		getMachinesInRegion(CommonData.getMachines());
+	    	machineCmb.setItems(machineLst);	
 	    	machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
 					
 					machine=machineCmb.getValue();
-					setupTable(machine.machineID);
+					//setupTable(machine.machineID);
 				}
 			});
 	    	
@@ -176,13 +173,14 @@ public class SupplyManagmentController {
     			    
      }
    
-    /**get machines and put them in a combo box*/
-    public void getMachinesInRegion(ObservableList<MachineEntity> machineLst2) {
+    /**get machines and put them in a combo box
+     * @param arrayList */
+    public void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
     	String region =NavigationStoreController.connectedUser.getRegion();
-    	for(MachineEntity m : machineLst2) {
-    		if(!region.equals(m.reigonName))
+    	for(MachineEntity m : arrayList) {
+    		if(region.equals(m.reigonName))
     			{
-    			machineLst.remove(m);
+    			machineLst.add(m);
     			}
     	}
 
@@ -207,10 +205,10 @@ public class SupplyManagmentController {
      * 
      *  */
 	//errorfix
-	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+	//public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
-		itemsInMachineLst.addAll(obj);
-	}
+	//	itemsInMachineLst.addAll(obj);
+//	}
     
     
    

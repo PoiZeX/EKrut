@@ -72,8 +72,8 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
-		case ReceiveItemsInMachine:
-			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+	//	case ReceiveItemsInMachine:
+		//	SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 		default:
 			break;
 		}
