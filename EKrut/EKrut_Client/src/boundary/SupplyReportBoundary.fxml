@@ -24,7 +24,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ComboBox fx:id="machineIdComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                  <ComboBox fx:id="machineIdComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="ComboBox" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                      </GridPane.margin>
