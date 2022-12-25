@@ -109,15 +109,10 @@ public class UsersManagementController {
 	@FXML
 	public void approveSelected(ActionEvent event) throws InterruptedException {
 		chat.acceptObj(new Message(TaskType.RequestUsersApproval, toApprove));
-
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				Platform.runLater(() -> {
-					NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
-				});
-			}
-		}, 1000);
+		CommonFunctions.SleepFor(1000, () -> 
+		{
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
+		});
 	}
 
 	@FXML

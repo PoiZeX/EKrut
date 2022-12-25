@@ -82,6 +82,7 @@ public class LoginController {
 		}
 
 		if (isValidDetails) {
+			
 			// Go to next screen (controller creates the screen)
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 		}
@@ -172,7 +173,12 @@ public class LoginController {
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
-		user.setLogged_in(true); // TODO: change in DB
+		
+		user.setLogged_in(true); // change in entity and send the entity for update in DB
+		CommonFunctions.SleepFor(1000, () -> 
+		{
+			chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user));
+		});
 		NavigationStoreController.connectedUser = user; // set the current connected user to system
 		return;
 
@@ -198,12 +204,12 @@ public class LoginController {
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					if(EKTPopupController.timerSuccess != null)
+					if (EKTPopupController.timerSuccess != null)
 						EKTPopupController.timerSuccess.cancel();
-					if(EKTPopupController.timerTimeLimit != null)
-						EKTPopupController.timerTimeLimit .cancel();
+					if (EKTPopupController.timerTimeLimit != null)
+						EKTPopupController.timerTimeLimit.cancel();
 					setLoginBtnDisable(false);
-					//chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+					// chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
 				}
 			});
 			setLoginBtnDisable(true);
@@ -212,7 +218,7 @@ public class LoginController {
 			e.printStackTrace();
 
 		}
-		
+
 	}
 
 	protected void setLoginBtnDisable(boolean disable) {

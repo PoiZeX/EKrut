@@ -6,8 +6,10 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.CommonData;
+import common.Message;
 import common.RolesEnum;
 import common.ScreensNames;
+import common.TaskType;
 import controller.ItemsController;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
@@ -82,7 +84,7 @@ public class HomePageController {
 			// CEO has 3 buttons.
 			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
 			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
-			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyReport);
+			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagment);
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
@@ -176,6 +178,8 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
+		currentUser.setLogged_in(false);  // logout user
+		HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, currentUser)); 
 		currentUser = null;
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 

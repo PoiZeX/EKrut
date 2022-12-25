@@ -1,46 +1,43 @@
 package common;
 
 public enum TaskType {
-	
+	// Host - Client E-NUMS //
 	ClientConnect,
 	ClientDisconnect,
 	ServerDisconnect,
 	LoadSubscribers,
 	EditSubscribers,
-	
-	// Login Enums //
-	RequestUserFromDB,
+	// Login E-NUMS //
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
-	UserIsLoggedIn,
+	SetUserLoggedIn,
 	UserNotApproved, 
-
-	// ----- SERVER SIDE ------ //
-	RequestUserFromServerDB, 
-	RecieveUserFromServerDB,
-	
-	// ---- CLIENT SIDE ------ //
-	// Registration
-	RequestRegistrationForm,
-	RequestSupplyReport,
-
-	// RequestClientReport
-	RequestOrderReport,
-	RecieveOrderReport,
-	
-	RequestUnapprovedUsers, 
-	RecieveUnapprovedUsers, 
-	
-	RequestItemsFromServer, 
-	RecieveItemsFromServer, 
-	RequestDeliveriesFromServer, 
-	RecieveDeliveriesFromServer,
-	RequestUpdateDeliveries,
+	// Receive Answers From Server //
+	ReceiveUsersApproval,
+	ReceiveDeliveriesFromServer,
+	ReceiveItemsFromServer,
+	ReceiveClientsReport,
+	ReceivePersonalMessages,
+	ReceiveOrderReport,
+	ReceiveUnapprovedUsers, 
+	ReceiveUserFromServerDB,
+	ReceiveItemsInMachine,
+	// Requests From Server //
 	RequestUsersApproval,
-	RecieveUsersApproval,
-	RequestClientsReport,
-	RecieveClientsReport,
+	RequestUserFromDB,
+	RequestUserFromServerDB, 
+	RequestSupplyReport,
+	RequestItemsFromServer, 
+	RequestUnapprovedUsers,
+	RequestReport,
+	RequestPersonalMessages,
+	RequestUpdateDeliveries,
+	RequestDeliveriesFromServer,
+	RequestItemsInMachine,
+	RequestUpdateItemsInMachine,
 	
-	// Common Data's Init
-	InitRegions
+	// Common Data Initialization //
+	InitRegions,
+	InitMachines,
+	
 }

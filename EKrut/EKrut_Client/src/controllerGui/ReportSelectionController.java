@@ -1,17 +1,12 @@
 package controllerGui;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.TaskType;
 import common.CommonData;
 import common.Message;
 import common.RolesEnum;
-import entity.OrderReportEntity;
 import common.ScreensNames;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,11 +67,11 @@ public class ReportSelectionController {
 				checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
 				break;
 			case "ordersReport":
-				chat.acceptObj(new Message(TaskType.RequestOrderReport, new String[] { region, month, year }));
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
 				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
 				break;
 			case "clientsReport":
-				chat.acceptObj(new Message(TaskType.RequestClientsReport, new String[] { region, month, year }));
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"clients", region, month, year }));
 				checkReportData(ClientsReportController.RecievedData, ScreensNames.ClientsReport);
 				break;
 			}

@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyManagmentController">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
@@ -49,162 +48,142 @@
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
-   <center>
+   <left>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="172.6666717529297" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="46.666656494140625" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="214.33334350585938" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="73.0" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="186.0" />
             <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.3333435058594" minWidth="10.0" prefWidth="451.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints fillHeight="false" maxHeight="106.0" minHeight="7.0" prefHeight="37.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="363.0" minHeight="8.0" prefHeight="363.0" vgrow="SOMETIMES" />
-          <RowConstraints fillHeight="false" maxHeight="163.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+          <RowConstraints fillHeight="false" maxHeight="106.0" minHeight="7.0" prefHeight="31.0" vgrow="SOMETIMES" />
+          <RowConstraints fillHeight="false" maxHeight="438.0" minHeight="8.0" prefHeight="438.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ComboBox fx:id="machineCmb" prefHeight="34.0" prefWidth="135.0" promptText="Machine" styleClass="ComboBox" GridPane.columnSpan="2" GridPane.halignment="LEFT">
+            <ComboBox fx:id="machineCmb" prefHeight="34.0" prefWidth="230.0" promptText="Machine" styleClass="ComboBox" stylesheets="@../styles/css" GridPane.columnSpan="2" GridPane.halignment="LEFT">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets left="25.0" />
                </GridPane.margin>
             </ComboBox>
-            <TableView fx:id="supplyMangmentTbl" prefHeight="363.0" prefWidth="390.0" styleClass="column-header" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-              <columns>
-                <TableColumn fx:id="itemIdCol" prefWidth="67.0" text="item id" />
-                <TableColumn fx:id="minAmountCol" prefWidth="93.66665649414062" text="min amount" />
-                  <TableColumn fx:id="currentAmountCol" prefWidth="94.33334350585938" text="current amount" />
-                  <TableColumn fx:id="callStatusCall" prefWidth="67.0" text="call status" />
-                  <TableColumn fx:id="previewEyeBtnCol" prefWidth="67.0" text="preview" />
-              </columns>
+            <GridPane prefHeight="382.0" prefWidth="390.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-            </TableView>
-            <GridPane prefHeight="51.0" prefWidth="268.0" styleClass="GridPane" GridPane.columnSpan="4" GridPane.rowIndex="2">
-              <columnConstraints>
-                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="310.0" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Button fx:id="sendCallBtn" contentDisplay="TOP" mnemonicParsing="false" styleClass="Button-NoBG" text="send" GridPane.columnIndex="1">
-                     <graphic>
-                        <ImageView fitHeight="27.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../styles/icons/030-send.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="refreshBtn" contentDisplay="TOP" mnemonicParsing="false" styleClass="Button-NoBG" text="refresh">
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../styles/icons/043-sync.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font name="Segoe UI Semibold" size="12.0" />
-                     </font>
-                  </Button>
-               </children>
-            </GridPane>
-            <GridPane fx:id="itemDisplayGridPane" prefHeight="363.0" prefWidth="376.0" styleClass="GridPaneChild" GridPane.columnIndex="3" GridPane.rowIndex="1">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.33331298828125" minWidth="10.0" prefWidth="173.33331298828125" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="202.66668701171875" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints maxHeight="147.6666717529297" minHeight="10.0" prefHeight="41.33332824707031" vgrow="SOMETIMES" />
-                <RowConstraints fillHeight="false" maxHeight="173.0" minHeight="10.0" prefHeight="153.66668701171875" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="168.66668701171875" minHeight="10.0" prefHeight="28.33331298828125" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="168.66668701171875" minHeight="10.0" prefHeight="105.33334350585938" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="195.66668701171875" minHeight="10.0" prefHeight="57.666656494140625" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <GridPane prefHeight="90.0" prefWidth="198.0" styleClass="Label-list" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TableView fx:id="supplyMangmentTbl" prefHeight="310.0" prefWidth="338.0" styleClass="column-header">
+                    <columns>
+                      <TableColumn fx:id="itemIdCol" prefWidth="67.0" text="item id" />
+                        <TableColumn fx:id="currentAmountCol" prefWidth="94.33334350585938" text="current amount" />
+                      <TableColumn fx:id="minAmountCol" prefWidth="93.66665649414062" text="min amount" />
+                        <TableColumn fx:id="callStatusCall" prefWidth="67.0" text="call status" />
+                    </columns>
+                  </TableView>
+                  <GridPane prefHeight="59.0" prefWidth="390.0" styleClass="GridPaneChild" GridPane.columnSpan="4" GridPane.rowIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="142.0" />
-                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="87.33331298828125" minWidth="10.0" prefWidth="56.0" />
+                      <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints fillHeight="false" maxHeight="55.333343505859375" minHeight="10.0" prefHeight="33.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                      <RowConstraints fillHeight="false" maxHeight="40.33332824707031" minHeight="10.0" prefHeight="29.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                      <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Name:" />
-                        <Label text="current amount:" GridPane.rowIndex="1" />
-                        <Label text="set minimum amount" GridPane.rowIndex="2" />
-                        <Label fx:id="itemNameLbl" GridPane.columnIndex="1" />
-                        <Label fx:id="currentAmountLbl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="minAmountTxtField" prefHeight="25.0" prefWidth="31.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
-                  <ImageView fx:id="itemImg" fitHeight="131.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../styles/icons/error.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="saveItemChangesBtn" mnemonicParsing="false" prefHeight="37.0" prefWidth="135.0" style="-fx-background-color: #2CB103;" styleClass="Button" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets right="5.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Label styleClass="Label" text="Item Details" underline="true" GridPane.columnSpan="2" GridPane.halignment="LEFT">
-                     <GridPane.margin>
-                        <Insets left="5.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="callStatusTitleLbl" styleClass="Label" text="Call Status:" underline="true" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="5.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <GridPane prefHeight="98.0" prefWidth="331.0" styleClass="Label-list" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                     <columnConstraints>
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="286.6666259765625" minWidth="10.0" prefWidth="139.0" />
-                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="248.33331298828125" minWidth="0.0" prefWidth="227.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label fx:id="callStatusLbl" text="Call Status:">
-                           <GridPane.margin>
-                              <Insets left="5.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label fx:id="workerLbl" text="Worker:" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets left="5.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <ComboBox fx:id="callStatusCmb" prefHeight="19.0" prefWidth="150.0" styleClass="ComboBox" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="chooseWorkerCmb" prefHeight="25.0" prefWidth="150.0" promptText="workers" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </ComboBox>
+                        <Button fx:id="sendCallBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#send" styleClass="Button-NoBG" text="send" GridPane.columnIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="27.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../styles/icons/030-send.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="refreshBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#refresh" styleClass="Button-NoBG" text="refresh">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../styles/icons/043-sync.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="Segoe UI Semibold" size="12.0" />
+                           </font>
+                        </Button>
                      </children>
                      <GridPane.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </GridPane.margin>
                   </GridPane>
                </children>
+            </GridPane>
+            <GridPane prefHeight="413.0" prefWidth="386.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="191.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="222.0" minHeight="10.0" prefHeight="222.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <GridPane fx:id="itemDisplayGridPane" prefHeight="195.0" prefWidth="376.0" styleClass="GridPaneChild">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.33331298828125" minWidth="10.0" prefWidth="173.33331298828125" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="202.66668701171875" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints fillHeight="false" maxHeight="147.6666717529297" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="285.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <GridPane prefHeight="139.0" prefWidth="198.0" styleClass="Label-list" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="142.0" />
+                            <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="87.33331298828125" minWidth="10.0" prefWidth="56.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints fillHeight="false" maxHeight="55.333343505859375" minHeight="10.0" prefHeight="49.0" valignment="CENTER" vgrow="SOMETIMES" />
+                            <RowConstraints fillHeight="false" maxHeight="82.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints fillHeight="false" maxHeight="82.0" minHeight="10.0" prefHeight="45.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Name:" GridPane.valignment="CENTER" />
+                              <Label text="Set minimum amount" GridPane.rowIndex="1" />
+                              <Label fx:id="itemNameLbl" GridPane.columnIndex="1" />
+                              <Button fx:id="saveItemChangesBtn" contentDisplay="CENTER" minHeight="-Infinity" mnemonicParsing="false" onAction="#saveItemChanges" prefHeight="26.0" prefWidth="85.0" style="-fx-background-color: #2CB103; -fx-font-size: 12pt;" styleClass="ButtonLogOut" text="Save" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="25.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <TextField fx:id="minAmountTxtField" prefHeight="25.0" prefWidth="31.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                        <ImageView fx:id="itemImg" fitHeight="131.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                           <image>
+                              <Image url="@../styles/icons/error.png" />
+                           </image>
+                        </ImageView>
+                        <Label styleClass="Label" text="Machine Details" underline="true" GridPane.columnSpan="2" GridPane.halignment="LEFT">
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </GridPane>
+               </children>
             </GridPane>
-            <Button fx:id="showItemsInTableBtn" mnemonicParsing="false" prefHeight="37.0" prefWidth="42.0" styleClass="Button-NoBG" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
          </children>
       </GridPane>
-   </center>
+   </left>
 </BorderPane>

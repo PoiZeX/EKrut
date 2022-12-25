@@ -46,7 +46,7 @@ public class ItemDBController {
 					      itemEntity.getItemImg().initArray(mybytearray.length);
 					      itemEntity.getItemImg().setSize(mybytearray.length);
 					      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-					      client.sendToClient(new Message(TaskType.RecieveItemsFromServer, itemEntity)); // finally send the entity
+					      client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntity)); // finally send the entity
 					    } 
 					catch (Exception e) {System.out.println("Error send item to Client");}
 			 }

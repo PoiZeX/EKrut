@@ -20,6 +20,7 @@ public enum ScreensNames {
 	ClientsReport,
 	PersonalMessages,
 	MarketingManager
+	SupplyManagment
 //CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
 	// SupplyManagement,

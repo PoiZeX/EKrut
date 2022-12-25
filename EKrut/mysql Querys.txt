@@ -1,0 +1,16 @@
+# SELECT ALL ORDERS AND GET MACHINE LOCATION + REGION for orders report #
+SELECT machines.machine_id, machines.location, regions.region_name, orders.total_sum
+FROM orders
+JOIN machines ON orders.machine_id = machines.machine_id
+JOIN regions ON machines.region_id = regions.region_id
+WHERE regions.region_name = 'regionname' AND orders.is_delivery = 0;
+
+# GROUPED BY LOCATION OF MACHINE # 
+
+SELECT machines.machine_id, machines.location, regions.region_name, orders.time,
+SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders
+FROM orders
+JOIN machines ON orders.machine_id = machines.machine_id
+JOIN regions ON machines.region_id = regions.region_id
+WHERE orders.is_delivery = 0
+GROUP BY machines.location 

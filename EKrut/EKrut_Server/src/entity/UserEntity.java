@@ -35,7 +35,7 @@ public class UserEntity implements Serializable {
 		this.role_type = role_type;
 		this.isNotApproved = isNotApproved;
 		this.cc_num = cc_num;
-		this.logged_in = false;
+		this.logged_in = logged_in;
 		this.isNotApproved = isNotApproved;
 	}
 

@@ -2,15 +2,15 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import common.Message;
 import common.TaskType;
-import controllerDb.ClientsReportDBController;
 import controllerDb.CommonDataDBController;
 import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
-import controllerDb.OrderReportDBController;
+import controllerDb.PersonalMessagesDBController;
+import controllerDb.ReportsDBController;
+import controllerDb.SupplyManagmentDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
@@ -36,18 +36,19 @@ public class MessageHandler {
 		case ClientDisconnect:
 			EchoServer.updateClientList(client, "Disconnect");
 			break;
+		case SetUserLoggedIn:
+			LoginDBController.setUserLoggedIn((UserEntity) obj);
+			client.sendToClient("success logged in");
+			break;
 		case LoadSubscribers:
 			SubscribersDbController.getTable(client);
 			break;
 		// There are similiar, should think about merging //
-		case RequestOrderReport:
-			OrderReportDBController.getOrderReportEntity((String[]) obj, client);
+		case RequestReport:
+			ReportsDBController.getReportEntity((String[]) obj, client);
 			break;
 		case RequestSupplyReport:
 			SupplyReportDBController.getSupplyReportEntity((String[]) obj, client);
-			break;
-		case RequestClientsReport:
-			ClientsReportDBController.getClientReportEntity((String[]) obj, client);
 			break;
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
@@ -65,12 +66,20 @@ public class MessageHandler {
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
 		case RequestUsersApproval:
-			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>)obj, client);
+			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>) obj, client);
 			break;
 
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
 			break;
+
+		case RequestPersonalMessages:
+			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
+		case InitMachines:
+			CommonDataDBController.getAllMachinesFromDB(client);
+			break;
+		case RequestItemsInMachine:
+			SupplyManagmentDBController.getMachineItems((int)obj,client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: ekrut
+-- Host: localhost    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -154,7 +154,6 @@ CREATE TABLE `item_in_machine` (
 
 LOCK TABLES `item_in_machine` WRITE;
 /*!40000 ALTER TABLE `item_in_machine` DISABLE KEYS */;
-INSERT INTO `item_in_machine` VALUES (0,0,NULL,0,NULL,NULL,NULL),(1,1,1,5,NULL,NULL,NULL),(2,1,3,5,NULL,NULL,NULL),(3,1,1,5,NULL,NULL,NULL),(4,1,5,5,NULL,NULL,NULL),(5,1,5,5,NULL,NULL,NULL),(6,1,5,5,NULL,NULL,NULL),(7,1,5,5,NULL,NULL,NULL),(8,1,5,5,NULL,NULL,NULL),(9,1,5,5,NULL,NULL,NULL),(10,1,5,5,NULL,NULL,NULL),(11,1,5,5,NULL,NULL,NULL),(12,1,5,5,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `item_in_machine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +208,7 @@ CREATE TABLE `machines` (
 
 LOCK TABLES `machines` WRITE;
 /*!40000 ALTER TABLE `machines` DISABLE KEYS */;
-INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage'),(1,'North',2,'Karmiel Train Station'),(1,'North',3,'Thecnion'),(1,'North',4,'Rambam hospital'),(1,'North',5,'Ofer Grand Kenyon'),(1,'North',6,'Haifa University'),(2,'Center',7,'Dizingoffe Center'),(2,'Center',8,'TLV fashion mall'),(2,'Center',9,'Savidor center Train sation'),(2,'Center',10,'Hashalom Train station'),(2,'Center',11,'Tel Aviv university'),(2,'Center',12,'Tel Aviv Yafo acadimic Collage'),(3,'South',13,'Beer Sheva rail station'),(3,'South',14,'Dimona Atomic reactor');
+INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage'),(1,'North',2,'Big Karmiel'),(1,'North',3,'City hall'),(1,'North',4,'Ort Pasgot'),(1,'North',5,'Karmiel Train Station'),(1,'North',6,'Lev Karmiel Mall'),(1,'North',7,'Thecnion'),(1,'North',8,'Rambam hospital'),(1,'North',9,'Ofer Grand Kenyon'),(1,'North',10,'Beni Zion Hospital'),(1,'North',11,'Haifa University'),(1,'North',12,'Academic Gordon Collage'),(1,'North',13,'Galil Maarvi Academic Collage'),(2,'Center',19,'Dizingoffe Center'),(2,'Center',20,'TLV fashion mall'),(2,'Center',21,'Savidor center Train sation'),(2,'Center',22,'Hashalom Train station'),(2,'Center',23,'Tel Aviv university'),(2,'Center',24,'Tel Aviv Yafo acadimic Collage'),(3,'South',25,'Beer Sheva rail station'),(3,'South',26,'Dimona Atomic reactor');
 /*!40000 ALTER TABLE `machines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,7 +435,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0);
+INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Karmiel','regionManager',1,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',1,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Haifa','regionManager',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -449,4 +448,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-24 18:55:19
+-- Dump completed on 2022-12-24 15:14:09
