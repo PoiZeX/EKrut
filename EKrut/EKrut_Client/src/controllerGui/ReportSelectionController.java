@@ -71,7 +71,7 @@ public class ReportSelectionController {
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
 				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
 				break;
-			case "clientsReport":
+			case "clientsReport": 
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"clients", region, month, year }));
 				checkReportData(ClientsReportController.RecievedData, ScreensNames.ClientsReport);
 				break;
@@ -144,12 +144,18 @@ public class ReportSelectionController {
 
 	String validateFields() {
 		String errorMsg = "";
+		monthItemsCmb.setStyle("-fx-border-color: none;");
+		yearItemsCmb.setStyle("-fx-border-color: none;");
 		if (monthItemsCmb.getSelectionModel().isEmpty() && yearItemsCmb.getSelectionModel().isEmpty()) {
 			errorMsg = "Please Select Month and Year";
+			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
+			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
 		} else if (monthItemsCmb.getSelectionModel().isEmpty()) {
 			errorMsg = "Please Select Month";
+			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
 		} else if (yearItemsCmb.getSelectionModel().isEmpty()) {
 			errorMsg = "Please Select Year";
+			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
 		}
 		if (errorMsg != "" && selectedReport == "") {
 			errorMsg += " and Report Type";

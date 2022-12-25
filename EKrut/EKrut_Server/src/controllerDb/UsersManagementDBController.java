@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 import entity.UserEntity;
@@ -75,5 +76,55 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		return;
+	}
+	/**
+	 * Handles the query of getting the from DB
+	 * 
+	 * @return
+	 */
+	
+	public static UserEntity getUserFromDB(String[] details, ConnectionToClient client) {
+		String searchBy = "id_number";
+		switch (details[0]) {
+			case "ID":
+				searchBy = "id_number";
+				break;
+			case "Name":
+				searchBy = "first_name";
+				break;
+		}
+		String searchWhat = details[1];
+		try {
+			Integer.parseInt(searchWhat);
+		}catch (Exception e) {
+			// Couldn't parse int because string isn't numeric
+			searchWhat = "'" + searchWhat + "'";
+		}
+		UserEntity user = new UserEntity();
+		
+		try {
+			if (MySqlClass.getConnection() == null)
+				return new UserEntity();
+			Connection conn = MySqlClass.getConnection();
+			String query = "SELECT * FROM ekrut.users WHERE " + searchBy + "=" + searchWhat + " AND role_type='user' AND is_not_approved=0 OR username='';";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(11),
+						res.getString(9), res.getBoolean(12), res.getBoolean(13));
+				user.setId(res.getInt(1));
+				if (res.getString(10) != null) // region column
+					user.setRegion(res.getString(10));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient(new Message(TaskType.ReceiveUserInfoFromServerDB, user));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 }
