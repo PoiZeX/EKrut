@@ -102,12 +102,13 @@ public class HomePageController {
 			break;
 
 		case marketingWorker:
-			setBtn(topBtn, "Activate New Sale", "Activate sale for region", null); // just if the manager activated it
+			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if the manager activated it
 																					// already
 			break;
 
 		case marketingManager:
 			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNames.MarketingManager);
+			image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			break;
 
 		case supplyWorker:
