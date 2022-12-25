@@ -143,7 +143,10 @@ public class SupplyReportController {
 		}
 		//System.out.println(Arrays.asList(reportDetails.getReportsList())); 
 		if (reportDetails.getReportsList() == null) {
-			System.out.println("Bad supply report");
+			System.out.println("Empty Report");
+			for ( int i = 0; i < supplyMachineTbl.getItems().size(); i++) {
+				supplyMachineTbl.getItems().clear();
+			}
 			return;
 		}
 			

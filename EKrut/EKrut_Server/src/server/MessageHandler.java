@@ -49,6 +49,9 @@ public class MessageHandler {
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
+		case RequestUserInfoFromServerDB:
+			UsersManagementDBController.getUserFromDB((String[]) obj, client);
+			break;
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
 			break;

@@ -9,6 +9,7 @@ import controller.ItemsController;
 import controllerGui.LoginController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
+import controllerGui.RegistrationFormController;
 import controllerGui.SupplyReportController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
@@ -46,6 +47,9 @@ public class MessageHandler {
 			break;
 		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
+			break;
+		case ReceiveUserInfoFromServerDB:
+			RegistrationFormController.recieveDataFromServer((UserEntity) obj);
 			break;
 		case ReceiveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);

@@ -22,10 +22,12 @@ public enum TaskType {
 	ReceiveSupplyReport,
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
+	ReceiveUserInfoFromServerDB,
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,
 	RequestUserFromServerDB, 
+	RequestUserInfoFromServerDB,
 	RequestSupplyReport,
 	RequestItemsFromServer, 
 	RequestUnapprovedUsers,

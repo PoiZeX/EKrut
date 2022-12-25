@@ -87,7 +87,7 @@ public class LoginController {
 		if (isValidDetails) {
 			
 			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.RegistrationForm);
 		}
 
 		else {
