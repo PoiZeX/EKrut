@@ -2,8 +2,6 @@ package controllerGui;
 
 import utils.ConsoleStream;
 
-import java.awt.Desktop;
-import java.awt.Event;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Inet4Address;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -100,9 +99,8 @@ public class ServerConfigurationController {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		if(MySqlClass.isConnectionSuccess == true)
+		if (MySqlClass.isConnectionSuccess == true)
 			importUsersBtn.setDisable(false);
-		
 
 	}
 
@@ -186,7 +184,6 @@ public class ServerConfigurationController {
 	}
 
 	final FileChooser fileChooser = new FileChooser();
-	private Desktop desktop = Desktop.getDesktop();
 
 	/**
 	 * Parse file into tuples
@@ -196,28 +193,45 @@ public class ServerConfigurationController {
 	private void parseFile(File file) {
 		String line = "";
 		String cvsSplitBy = ",";
-		boolean isTitle = true;
+		final int num_of_fields = 7;
 		ArrayList<String[]> res = new ArrayList<>();
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			while ((line = br.readLine()) != null) {
-				if(isTitle) {
-					isTitle = false;
-					continue;
+				if (line == null || CommonFunctions.isNullOrEmpty(line.strip()))
+					continue; // skip empty lines
+				String[] fields = line.split(cvsSplitBy);
+				
+				// normalization form
+				if (fields.length < num_of_fields) {
+					fields = Arrays.copyOf(fields, num_of_fields);
+					if (fields[5] == null)
+						fields[5] = "";
+					fields[6] = "";
 				}
 				
-				String[] fields = line.split(cvsSplitBy);
+				// remove white spaces
+				for (int i = 0; i < fields.length; i++) {
+					if (fields[i] == null)fields[i] = "";
+					fields[i] = fields[i].strip(); 
+				}
+				
+				// add tuple to list
 				res.add(fields);
-				System.out.println(Arrays.toString(fields));
+				// System.out.println(Arrays.toString(fields));
 			}
-			UsersSimulationDBController.insertTuples(res); 
+			UsersSimulationDBController.insertTuples(res);
+			System.out.println("Import success");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Import failed: Can't open file");
+		} catch (SQLException e) {
+
+			System.out.println("Import failed:" + e.toString().split("Exception:")[1] + "\n"
+					+ "Please check tuples rules again\n"
+					+ "The format is: <id_number>, <first_name>, <last_name>, <email>, <phone_number>[, <role_type>, <region>]");
 		}
 
 	}
-	
-	
-	
+
 }
