@@ -81,16 +81,15 @@ DROP TABLE IF EXISTS `deliveries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deliveries` (
-  `order_id` int NOT NULL,
+  `order_id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int NOT NULL,
   `address` varchar(128) NOT NULL,
-  `city` varchar(128) NOT NULL,
   `estimated_time` varchar(128) DEFAULT NULL,
   `actual_time` varchar(128) DEFAULT NULL,
   `deilvery_status` enum('pendingApproval','outForDelivery','done') NOT NULL DEFAULT 'pendingApproval',
-  `customer_status` enum('APPROVED','NOT_APPROVED') NOT NULL DEFAULT 'NOT_APPROVED',
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`order_id`),
+  UNIQUE KEY `customer_id_UNIQUE` (`customer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +98,7 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
-INSERT INTO `deliveries` VALUES (1,1,'abcd 3/5 ','Karmiel','25/12/2022 16:50',NULL,'done','APPROVED'),(2,2,'aaa 2/3 ','Karmiel',NULL,NULL,'pendingApproval','NOT_APPROVED'),(3,2,'cc 2','haifa',NULL,NULL,'pendingApproval','NOT_APPROVED');
+INSERT INTO `deliveries` VALUES (1,1,'abcd 3/5 Karmiel','22/12/2022 14:43',NULL,'outForDelivery'),(2,2,'aaa 2/3 Karmiel',NULL,NULL,'pendingApproval');
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,10 +140,9 @@ CREATE TABLE `item_in_machine` (
   `machine_id` int NOT NULL,
   `item_id` int NOT NULL,
   `current_amount` int DEFAULT NULL,
-  `minimum_amount` int DEFAULT NULL,
   `call_status` varchar(45) DEFAULT NULL,
-  `times_under_min` int DEFAULT NULL,
-  `calls_amount` int DEFAULT NULL,
+  `times_under_min` int DEFAULT '0',
+  `calls_amount` int DEFAULT '0',
   PRIMARY KEY (`machine_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -155,7 +153,7 @@ CREATE TABLE `item_in_machine` (
 
 LOCK TABLES `item_in_machine` WRITE;
 /*!40000 ALTER TABLE `item_in_machine` DISABLE KEYS */;
-INSERT INTO `item_in_machine` VALUES (0,0,NULL,0,NULL,NULL,NULL),(1,1,1,5,NULL,NULL,NULL),(2,1,3,5,NULL,NULL,NULL),(3,1,1,5,NULL,NULL,NULL),(4,1,5,5,NULL,NULL,NULL),(5,1,5,5,NULL,NULL,NULL),(6,1,5,5,NULL,NULL,NULL),(7,1,5,5,NULL,NULL,NULL),(8,1,5,5,NULL,NULL,NULL),(9,1,5,5,NULL,NULL,NULL),(10,1,5,5,NULL,NULL,NULL),(11,1,5,5,NULL,NULL,NULL),(12,1,5,5,NULL,NULL,NULL);
+INSERT INTO `item_in_machine` VALUES (0,0,NULL,'NotOpened',NULL,NULL),(1,1,1,'NotOpened',NULL,NULL),(2,1,3,'NotOpened',NULL,NULL),(3,1,1,'NotOpened',NULL,NULL),(4,1,5,'NotOpened',NULL,NULL),(5,1,5,'NotOpened',NULL,NULL),(6,1,5,'NotOpened',NULL,NULL),(7,1,5,'NotOpened',NULL,NULL),(8,1,5,'NotOpened',NULL,NULL),(9,1,5,'NotOpened',NULL,NULL),(10,1,5,'NotOpened',NULL,NULL),(11,1,5,'NotOpened',NULL,NULL),(12,1,5,'NotOpened',NULL,NULL);
 /*!40000 ALTER TABLE `item_in_machine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,14 +166,14 @@ DROP TABLE IF EXISTS `items`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
   `item_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
+  `name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `price` double NOT NULL,
-  `manufacturer` varchar(45) DEFAULT NULL,
-  `description` varchar(128) DEFAULT NULL,
-  `item_img_name` varchar(1024) DEFAULT NULL,
+  `manufacturer` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `item_img_name` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `itemName_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +182,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (1,'Bamba',12,'Osem','penuts snack','Bamba.png'),(2,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png');
+INSERT INTO `items` VALUES (1,'Bamba',12,'Osem','penuts snack','Bamba.png'),(2,'Bamba nugat',10,'Osem','penuts snack fiiled with nugat ','Bamba_Nugat.png'),(3,'Apple flavored water',9,'neviyot','Apple flavored water neviyot 500 ml','Apple flavored water.png'),(4,'Click biscuit',8,'Uniliver','Milk chocolate covered biscuit','Click_Biscuit.png'),(5,'Click cornflakes',8,'Uniliver','Cornflakes covered in milk chocolate','Click_Cornflakes.png'),(6,'m&m peanut',8,'MARS MULTISALES ISRAEL LTD','Peanut Chocolate Candies Made of whole peanuts covered with milk chocolate, inside colorful sugar shells','m&m peanuts.png'),(7,'orange juice prigat',6,'Prigat','Prigat Orange juice has a delicious blend of natural flavors and contains 15% fruit juice','Orange juice Prigat 500 ml.png'),(8,'oreo pack',10,' Nabisco','4 packs of 4','Oreo_pack.png'),(9,'Beasley BBQ',8,'osem','0','Beasley BBQ.png'),(10,'bottle of Coca-Cola Zero 500 ml',7,'Coca cola','0','bottle of Coca-Cola Zero 500 ml.png'),(11,'Coca Cola can',5,'Coca cola','330 ml','Coca Cola can.png'),(12,'Coca Cola Zero can',5,'Coca cola','330 ml','Coca Cola Zero can.png'),(13,'Coke bottle 500 ml',7,'Coca cola','0','Coke bottle 500 ml.png'),(14,'Dorietos mexican flavor',8,'Elite','0','Dorietos mexican flavor.png'),(15,'Dorietos spicey sour',8,'Elite','0','Dorietos spicey sour.png'),(16,'Elite Karanz milk chocolate',6,'Elite','0','Elite Karanz milk chocolate.png'),(17,'Fanta',5,'Coca cola','330 ml can','Fanta.png'),(18,'Grapes flavored water',6,'neviyot','0','Grapes flavored water.png'),(19,'Kief Kef',5,'Elite','0','Kief Kef.png'),(20,'Kinder Bueno White Chocolate',6,'Kinder','0','Kinder Bueno White Chocolate.png'),(21,'Kinder chocolate 4 sticks',6,'Kinder','0','Kinder chocolate 4 sticks.png'),(22,'Orbit mint gum',5,'Orbit','0','Orbit mint gum.png'),(23,'Peach flavored protein yogurt',5,'Yople','0','Peach flavored protein yogurt.png'),(24,'Peach flavored water',6,'neviyot','0','Peach flavored water.png'),(25,'Snickers',6,'MARS MULTISALES ISRAEL LTD','0','Snickers.png'),(26,'Twix',6,'MARS MULTISALES ISRAEL LTD','0','Twix.png');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,6 +198,7 @@ CREATE TABLE `machines` (
   `region_name` varchar(45) NOT NULL,
   `machine_id` int NOT NULL,
   `machine_name` varchar(256) NOT NULL,
+  `min_amount` int DEFAULT NULL,
   PRIMARY KEY (`machine_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -210,7 +209,7 @@ CREATE TABLE `machines` (
 
 LOCK TABLES `machines` WRITE;
 /*!40000 ALTER TABLE `machines` DISABLE KEYS */;
-INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage'),(1,'North',2,'Karmiel Train Station'),(1,'North',3,'Thecnion'),(1,'North',4,'Rambam hospital'),(1,'North',5,'Ofer Grand Kenyon'),(1,'North',6,'Haifa University'),(2,'Center',7,'Dizingoffe Center'),(2,'Center',8,'TLV fashion mall'),(2,'Center',9,'Savidor center Train sation'),(2,'Center',10,'Hashalom Train station'),(2,'Center',11,'Tel Aviv university'),(2,'Center',12,'Tel Aviv Yafo acadimic Collage'),(3,'South',13,'Beer Sheva rail station'),(3,'South',14,'Dimona Atomic reactor');
+INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage',5),(1,'North',2,'Karmiel Train Station',5),(1,'North',3,'Thecnion',5),(1,'North',4,'Rambam hospital',5),(1,'North',5,'Ofer Grand Kenyon',5),(1,'North',6,'Haifa University',5),(2,'Center',7,'Dizingoffe Center',5),(2,'Center',8,'TLV fashion mall',5),(2,'Center',9,'Savidor center Train sation',5),(2,'Center',10,'Hashalom Train station',5),(2,'Center',11,'Tel Aviv university',0),(2,'Center',12,'Tel Aviv Yafo acadimic Collage',0),(3,'South',13,'Beer Sheva rail station',0),(3,'South',14,'Dimona Atomic reactor',0);
 /*!40000 ALTER TABLE `machines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,30 +373,6 @@ LOCK TABLES `sales` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `sales_type`
---
-
-DROP TABLE IF EXISTS `sales_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sales_type` (
-  `type_id` int NOT NULL,
-  `type_name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sales_type`
---
-
-LOCK TABLES `sales_type` WRITE;
-/*!40000 ALTER TABLE `sales_type` DISABLE KEYS */;
-INSERT INTO `sales_type` VALUES (1,'\'1+1\''),(2,'\'10%\''),(3,'\'20%\''),(4,'\'30%\'');
-/*!40000 ALTER TABLE `sales_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `supply_report`
 --
 
@@ -461,7 +436,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(8,'205905050','marketingm','123456','yossi','levi','a@a.com','123123123',NULL,NULL,'marketingManager',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0);
+INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',1,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -474,4 +449,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-25 15:37:55
+-- Dump completed on 2022-12-25 21:44:08
