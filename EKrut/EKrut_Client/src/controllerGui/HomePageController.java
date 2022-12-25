@@ -89,7 +89,7 @@ public class HomePageController {
 			break;
 
 		case customerServiceWorker:
-			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account", null);
+			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account", ScreensNames.RegistrationForm);
 			break;
 
 		case deliveryWorker:

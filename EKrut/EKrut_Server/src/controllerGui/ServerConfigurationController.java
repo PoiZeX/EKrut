@@ -186,7 +186,7 @@ public class ServerConfigurationController {
 	final FileChooser fileChooser = new FileChooser();
 
 	/**
-	 * Parse file into tuples
+	 * Parse file into tuples and send the info to DBController for insertion
 	 * 
 	 * @param file
 	 */
@@ -202,7 +202,7 @@ public class ServerConfigurationController {
 				if (line == null || CommonFunctions.isNullOrEmpty(line.strip()))
 					continue; // skip empty lines
 				String[] fields = line.split(cvsSplitBy);
-				
+
 				// normalization form
 				if (fields.length < num_of_fields) {
 					fields = Arrays.copyOf(fields, num_of_fields);
@@ -210,13 +210,14 @@ public class ServerConfigurationController {
 						fields[5] = "";
 					fields[6] = "";
 				}
-				
+
 				// remove white spaces
 				for (int i = 0; i < fields.length; i++) {
-					if (fields[i] == null)fields[i] = "";
-					fields[i] = fields[i].strip(); 
+					if (fields[i] == null)
+						fields[i] = "";
+					fields[i] = fields[i].strip();
 				}
-				
+
 				// add tuple to list
 				res.add(fields);
 				// System.out.println(Arrays.toString(fields));
@@ -227,9 +228,9 @@ public class ServerConfigurationController {
 			System.out.println("Import failed: Can't open file");
 		} catch (SQLException e) {
 
-			System.out.println("Import failed:" + e.toString().split("Exception:")[1] + "\n"
-					+ "Please check tuples rules again\n"
-					+ "The format is: <id_number>, <first_name>, <last_name>, <email>, <phone_number>[, <role_type>, <region>]");
+			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1]
+					+ "Tuples rules reminder:\n"
+					+ "<id_number>, <first_name>, <last_name>, <email>, <phone_number>[, <role_type>, <region>]\n");
 		}
 
 	}
