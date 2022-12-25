@@ -10,6 +10,7 @@ import common.TaskType;
 
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
+import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,12 +18,14 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,9 +42,7 @@ public class SupplyManagmentController {
     @FXML
     private Label callStatusTitleLbl;
     
-    @FXML
-    private Label workerLbl;
- 
+
     @FXML
     private Label titleLbl;
    
@@ -60,17 +61,9 @@ public class SupplyManagmentController {
 
     @FXML
     private ImageView itemImg;
-    /** Call status selection*/
-    @FXML
-	private ComboBox<String> chooseWorkerCmb;
-
-	@FXML
-    private ComboBox<ItemInMachineEntity.call_Status> callStatusCmb;
 
     @FXML
-    private Button saveItemChangesBtn;
-
-   
+    private Button saveChangesBtn;
 
     @FXML
     private Button refreshBtn;
@@ -86,19 +79,19 @@ public class SupplyManagmentController {
     private TableView<ItemInMachineEntity> supplyMangmentTbl;
     
     @FXML
-    private TableColumn<ItemInMachineEntity, Integer> itemIdCol;
-   
+    private TableColumn<ItemInMachineEntity, Integer> machineIdCol;
+
     @FXML
-    private TableColumn<ItemInMachineEntity, Integer> minAmountCol;
+    private TableColumn<ItemInMachineEntity, Integer> itemIdCol;
     
     @FXML
     private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;
 
     @FXML
-    private TableColumn<ItemInMachineEntity, ItemInMachineEntity.call_Status> callStatusCall;
+    private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol;
 
     @FXML
-    private TableColumn<ItemInMachineEntity, Void> previewEyeBtnCol;;
+    private TableColumn<ItemInMachineEntity, Boolean> refillcol;;
 
    
     
@@ -108,6 +101,7 @@ public class SupplyManagmentController {
     private String machineName;
     private int machineId;
     private MachineEntity machine;
+	ArrayList<TableCell<ItemInMachineEntity, Boolean>> checkboxCellsList = new ArrayList<>();
     /** Setup screen before launching view*/
     @FXML
 		public void initialize() throws Exception {
@@ -118,7 +112,7 @@ public class SupplyManagmentController {
 				public void handle(Event event) {
 					
 					machine=machineCmb.getValue();
-					//setupTable(machine.machineID);
+					setupTable(machine.machineID);
 				}
 			});
 	    	
@@ -139,38 +133,40 @@ public class SupplyManagmentController {
 
     }
     /**get from DB the data for setting the table, and puttin a preview ('eye') button on the preview col*/
-    private void setupTable(int machineId) {
+    @SuppressWarnings("unchecked")
+	private void setupTable(int machineId) {
     	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));//errorfix
+    	supplyMangmentTbl.setItems(itemsInMachineLst);
     	// factory
+    			machineIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("machineId"));
     			itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
     			currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
-    			minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("minAmount"));
-    			callStatusCall.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.call_Status>("callStatus"));
-    			previewEyeBtnCol.setCellFactory(column -> {
-    			    return new TableCell<ItemInMachineEntity, Void>() {
-    			        private final Button button = new Button();
+    			callStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>("callStatus"));
+    			refillcol.setCellFactory(column -> {
+    				TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+    				checkboxCellsList.add(cell); // save the checkbox
 
-    			        {
-    			            ImageView imageView = new ImageView(new Image("../EKrut_Client/src/styles/icons/eye.png"));
-    			            button.setGraphic(imageView);
-    			            button.setOnAction(event -> {
-    			                // Handle button click event
-    			            	//TODO load item on the side with his image
-    			            });
-    			        }
+    				cell.setOnMouseClicked(event -> {
+    					if (event.getClickCount() > 0) {
+    						CheckBox checkBox = (CheckBox) cell.getGraphic();
+    						ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
+    						if (checkBox != null) {
+    							if (checkBox.isSelected()) {
+    								checkBox.setSelected(false);
+  
 
-    			        @Override
-    			        public void updateItem(Void item, boolean empty) {
-    			            super.updateItem(item, empty);
-    			            if (empty) {
-    			                setGraphic(null);
-    			            } else {
-    			                setGraphic(button);
-    			            }
-    			        }
-    			    };
+    							} else {
+    								checkBox.setSelected(true);
+    								
+    							}
+    						}
+    					}
+    				});
+    				return cell;
     			});
-    			    
+    			
+    			
+    		
      }
    
     /**get machines and put them in a combo box
@@ -205,10 +201,10 @@ public class SupplyManagmentController {
      * 
      *  */
 	//errorfix
-	//public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
-	//	itemsInMachineLst.addAll(obj);
-//	}
+		itemsInMachineLst.addAll(obj);
+	}
     
     
    

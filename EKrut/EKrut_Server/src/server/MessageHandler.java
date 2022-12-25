@@ -80,6 +80,7 @@ public class MessageHandler {
 			break;
 		case RequestItemsInMachine:
 			SupplyManagmentDBController.getMachineItems((int)obj,client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;
