@@ -51,19 +51,20 @@ public class ReportSelectionController {
 	@FXML
 	private Label regionLabel;
 
-	private String region;
 	ClientController chat = HostClientController.chat; // define the chat for the controller
+	
+	private String year, month, region;
 
 	@FXML
 	void viewReport(ActionEvent event) {
 		String error = validateFields();
 		errorMsgLabel.setText(error);
 		if (error.equals("")) {
-			String month = monthItemsCmb.getSelectionModel().getSelectedItem();
-			String year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
+			month = monthItemsCmb.getSelectionModel().getSelectedItem();
+			year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
 			switch (getSelectedReport()) {
 			case "supplyReport":
-				chat.acceptObj(new Message(TaskType.RequestSupplyReport, new String[] { region, month, year }));
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
 				checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
 				break;
 			case "ordersReport":
@@ -95,10 +96,7 @@ public class ReportSelectionController {
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
 			break;
 		case SupplyReport:
-			if (SupplyReportController.reportDetails.getReportsList() == null) 
-				errorMsgLabel.setText("No Report Found");
-			 else
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+			SupplyReportController.setReport(year, month, region);
 			break;
 		case ClientsReport:
 			if (ClientsReportController.reportDetails.getDescription().equals("noreport")

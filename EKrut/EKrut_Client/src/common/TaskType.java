@@ -17,6 +17,7 @@ public enum TaskType {
 	ReceiveDeliveriesFromServer,
 	ReceiveItemsFromServer,
 	ReceiveClientsReport,
+	ReceiveSupplyReport,
 	ReceivePersonalMessages,
 	ReceiveOrderReport,
 	ReceiveUnapprovedUsers, 

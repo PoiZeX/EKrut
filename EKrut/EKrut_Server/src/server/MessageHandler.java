@@ -46,9 +46,6 @@ public class MessageHandler {
 		case RequestReport:
 			ReportsDBController.getReportEntity((String[]) obj, client);
 			break;
-		case RequestSupplyReport:
-			SupplyReportDBController.getSupplyReportEntity((String[]) obj, client);
-			break;
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;

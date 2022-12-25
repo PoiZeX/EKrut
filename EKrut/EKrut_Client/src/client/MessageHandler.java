@@ -53,7 +53,7 @@ public class MessageHandler {
 		case ReceiveClientsReport:
 			ClientsReportController.recieveDataFromServer((ClientsReportEntity) obj);
 			break;
-		case RequestSupplyReport:
+		case ReceiveSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
 		case ReceiveUnapprovedUsers:

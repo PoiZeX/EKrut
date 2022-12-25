@@ -55,6 +55,7 @@ public class SupplyReportDBController {
 	 * @return
 	 */
 	protected static SupplyReportEntity getSupplyReportFromDB() {
+		
 		SupplyReportEntity report = new SupplyReportEntity();
 		try {
 			if (MySqlClass.getConnection() == null)

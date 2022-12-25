@@ -3,11 +3,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Store.NavigationStoreController;
+import client.ClientController;
+import common.CommonData;
+import common.Message;
 import common.ScreensNames;
+import common.TaskType;
+import entity.MachineEntity;
 import entity.SupplyReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
@@ -41,15 +49,55 @@ public class SupplyReportController {
     @FXML
     private Label titleLabel;
     
+    @FXML
+    private ComboBox<String> machineIdComboBox;
+    
+    protected static ClientController chat = HostClientController.chat;
 	protected static SupplyReportEntity reportDetails;	
 	protected static boolean RecievedData = false;
 	private static ArrayList<SupplyReportEntity> supplyReports;
+	private static ArrayList<MachineEntity> allMachines;
+	private static String reportYear, reportMonth, reportRegion;
+	private String machineName;
+	private int machineID;
 	
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportDetails.getRegion());
-		initTable();
-		checkCurAmount();
+		allMachines = CommonData.getMachines();
+		ObservableList<String> machines = FXCollections.observableArrayList();
+		for (MachineEntity machine : allMachines) {
+			if (NavigationStoreController.connectedUser != null)
+				if (machine.getReigonName().equals(reportRegion)) {
+					machines.add(machine.getMachineName());
+				}
+		}
+		machineIdComboBox.setItems(machines);
+		machineIdComboBox.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				machineName = machineIdComboBox.getValue();
+				for (MachineEntity machine : allMachines) {
+					if (machine.getMachineName().equals(machineName))
+						machineID = machine.getId();
+				}
+				initTable(machineID);
+				checkCurAmount();
+			}
+			
+
+		});
 		return;
+	}
+	
+	
+	public static void setReport(String year, String month, String region) {
+		reportYear = year;
+		reportMonth = month;
+		reportRegion = region;
+		if (RecievedData) {
+			// Go to next screen (controller creates the screen)
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+		}
 	}
 	
 	public static void recieveDataFromServer(SupplyReportEntity report) {
@@ -78,12 +126,27 @@ public class SupplyReportController {
 		        }
 		    }
 		});
-		supplyMachineTbl.getColumns().get(0).setVisible(false);
-		supplyMachineTbl.getColumns().get(0).setVisible(true);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void initTable() {
+	private void initTable(int machineID) {
+		// sends the user information to server
+		chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID)}));
+
+		// wait for answer
+		while (RecievedData == false) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		//System.out.println(Arrays.asList(reportDetails.getReportsList())); 
+		if (reportDetails.getReportsList() == null) {
+			System.out.println("Bad supply report");
+			return;
+		}
+			
 		supplyReports = new ArrayList<>();
 		SupplyReportEntity newReport = null;
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
@@ -102,5 +165,6 @@ public class SupplyReportController {
 		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
 		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
 		
+
 	}
 }
