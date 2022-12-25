@@ -1,12 +1,22 @@
 package controllerGui;
 
-import common.SaleType;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Calendar;
+
+import javax.swing.JComboBox;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import utils.TooltipSetter;
 
 public class MarketingManagerController {
 
@@ -23,10 +33,13 @@ public class MarketingManagerController {
     private Label endDateLbl;
 
     @FXML
+    private ComboBox<LocalTime> endTimeCmb;
+
+    @FXML
     private Label errLbl;
 
     @FXML
-    private ComboBox<String> regionCmb;
+    private ComboBox<?> regionCmb;
 
     @FXML
     private Label regionLabel;
@@ -38,12 +51,26 @@ public class MarketingManagerController {
     private DatePicker startDatePicker;
 
     @FXML
-    private ComboBox<SaleType> typeCmb;
+    private ComboBox<LocalTime> startTimeCmb;
+
+    @FXML
+    private ComboBox<?> typeCmb;
 
     @FXML
     private Label typeLbl;
-
-
+    
+    @FXML
+	// Setup screen before launching view
+	public void initialize() throws Exception {
+    	
+    	ObservableList<LocalTime> times = FXCollections.observableArrayList();
+    	 for (int i = 0; i < 24; i++) {
+                 LocalTime time = LocalTime.of(i, 0);
+                 times.add(time);
+         	}
+		startTimeCmb.setItems(times);
+		endTimeCmb.setItems(times);
+	}
     @FXML
     void createSale(ActionEvent event) {
 
@@ -55,17 +82,7 @@ public class MarketingManagerController {
     }
 
     @FXML
-    void endTime(ActionEvent event) {
-
-    }
-
-    @FXML
     void startDate(ActionEvent event) {
-
-    }
-
-    @FXML
-    void startTime(ActionEvent event) {
 
     }
 

@@ -54,7 +54,7 @@ public class DeliveryManagementDBController {
 				return;
 			}
 			stmt = (MySqlClass.getConnection()).createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.deliveries;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.deliveries WHERE deilvery_status!='done';");
 			
 			while (rs.next()) {
 				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(7));

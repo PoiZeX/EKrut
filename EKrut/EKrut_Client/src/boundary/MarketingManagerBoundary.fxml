@@ -44,7 +44,6 @@
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label fx:id="endDateLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose end date:" GridPane.rowIndex="3">
@@ -83,7 +82,7 @@
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></ComboBox>
-                  <Label fx:id="EndTimeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose end time: (per day)" GridPane.rowIndex="5">
+                  <Label fx:id="EndTimeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose end time (per day):" GridPane.rowIndex="5">
                      <font>
                         <Font name="Verdana" size="12.0" />
                      </font>
@@ -104,10 +103,10 @@
                         <Insets />
                      </GridPane.margin>
                   </DatePicker>
-                  <DatePicker onAction="#startTime" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
                   <DatePicker onAction="#endDate" promptText="choose end date" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                  <DatePicker onAction="#endTime" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
                   <ComboBox fx:id="typeCmb" prefHeight="26.0" prefWidth="141.0" promptText="Sale type" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+                  <ComboBox fx:id="startTimeCmb" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="endTimeCmb" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" top="10.0" />
@@ -137,8 +136,8 @@
                </VBox.margin>
                <rowConstraints>
                   <RowConstraints />
-                  <RowConstraints maxHeight="79.0" minHeight="56.0" prefHeight="79.0" />
-                  <RowConstraints maxHeight="59.0" minHeight="33.0" prefHeight="33.0" />
+                  <RowConstraints maxHeight="79.0" minHeight="56.0" prefHeight="68.0" />
+                  <RowConstraints maxHeight="59.0" minHeight="21.0" prefHeight="21.0" />
                </rowConstraints>
             </GridPane>
          </children>

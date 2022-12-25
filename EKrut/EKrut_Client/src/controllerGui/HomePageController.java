@@ -96,7 +96,7 @@ public class HomePageController {
 			break;
 
 		case deliveryManager:
-			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", null);
+			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", ScreensNames.DeliveryManagement);
 			break;
 
 		case marketingWorker:
@@ -105,7 +105,7 @@ public class HomePageController {
 			break;
 
 		case marketingManager:
-			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", null);
+			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNames.MarketingManager);
 			break;
 
 		case supplyWorker:
