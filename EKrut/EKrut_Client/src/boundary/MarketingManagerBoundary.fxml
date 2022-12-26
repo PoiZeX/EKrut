@@ -51,7 +51,7 @@
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="startDateLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose start date:" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -59,7 +59,7 @@
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="StartTimeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose start time (per day):" GridPane.rowIndex="4" GridPane.valignment="CENTER">
@@ -67,7 +67,7 @@
                         <Font name="Verdana" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="regionLabel" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose region:" GridPane.rowIndex="1">
@@ -75,7 +75,7 @@
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <ComboBox fx:id="regionCmb" prefHeight="26.0" prefWidth="144.0" promptText="Region" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
@@ -87,7 +87,7 @@
                         <Font name="Verdana" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <Label fx:id="typeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose sale type:" GridPane.rowIndex="6">
@@ -95,7 +95,7 @@
                         <Font name="Verdana" size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <DatePicker fx:id="startDatePicker" prefHeight="32.0" prefWidth="144.0" promptText="choose start date" styleClass="date-picker" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
@@ -112,7 +112,7 @@
                   <Insets bottom="15.0" top="10.0" />
                </VBox.margin>
                <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </padding>
             </GridPane>
             <GridPane alignment="CENTER" prefHeight="75.0" prefWidth="475.0" styleClass="GridPane">

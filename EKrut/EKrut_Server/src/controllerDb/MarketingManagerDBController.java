@@ -32,7 +32,7 @@ public class MarketingManagerDBController {
 				return;
 			
 			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, sale_type, start_date, end_date, start_time, end_time) "
-					+ "VALUES ((?), (?), (?), (?), (?), (?));");
+					+ "VALUES (?, ?, ?, ?, ?, ?);");
 			ps.setString(1,saleEntity.getRegion());
 			ps.setString(2,saleEntity.getSaleType());
 			ps.setString(3, saleEntity.getStartDateToString());
@@ -47,7 +47,7 @@ public class MarketingManagerDBController {
 			e.printStackTrace();
 		}
 	}
-	public static void getTable(ConnectionToClient client) {
+	public static void getSales(ConnectionToClient client) {
 		Statement stmt;
 		SaleEntity saleEntity;
 		Date startD, endD;
@@ -74,7 +74,7 @@ public class MarketingManagerDBController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			} 
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

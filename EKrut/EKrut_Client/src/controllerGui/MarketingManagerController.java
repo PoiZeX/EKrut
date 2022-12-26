@@ -183,8 +183,11 @@ public class MarketingManagerController {
         	}
 		startTimeCmb.setItems(times);
 		endTimeCmb.setItems(times);
-		startTimeCmb.setValue( LocalTime.of(8, 0));
-		endTimeCmb.setValue( LocalTime.of(20, 0));
+		startTime=LocalTime.of(8, 0);
+		endTime=LocalTime.of(20, 0);
+		startTimeCmb.setValue(startTime);
+		endTimeCmb.setValue(endTime);
+		
     }
     
     /** Initialize the satartDate and endDate DatePickers:
@@ -195,8 +198,11 @@ public class MarketingManagerController {
      * **/
     private void initDatePickers() {
     	Locale.setDefault(Locale.ENGLISH);
-		startDatePicker.setValue(LocalDate.now());
-		endDatePicker.setValue(LocalDate.now().plusDays(1));
+    	startDate=LocalDate.now();
+    	endDate=LocalDate.now().plusDays(1); 
+		startDatePicker.setValue(startDate);
+		endDatePicker.setValue(endDate);
+		
 		startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
 		    @Override
 		    public DateCell call(final DatePicker datePicker) {
