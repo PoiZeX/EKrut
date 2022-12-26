@@ -199,7 +199,7 @@ public class ServerConfigurationController {
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			while ((line = br.readLine()) != null) {
-				if (line == null || CommonFunctions.isNullOrEmpty(line.strip()))
+				if (line == null || CommonFunctions.isNullOrEmpty(line.trim()))
 					continue; // skip empty lines
 				String[] fields = line.split(cvsSplitBy);
 
@@ -215,7 +215,7 @@ public class ServerConfigurationController {
 				for (int i = 0; i < fields.length; i++) {
 					if (fields[i] == null)
 						fields[i] = "";
-					fields[i] = fields[i].strip();
+					fields[i] = fields[i].trim();
 				}
 
 				// add tuple to list

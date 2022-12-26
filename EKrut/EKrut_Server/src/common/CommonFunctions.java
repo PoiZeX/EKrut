@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,6 +67,7 @@ public class CommonFunctions {
 	public static void generateReportsDB(String reportType, String month, String year) {
 		switch (reportType) {
 		case "clients":
+			generateClientsReport(month, year);
 			break;
 		case "orders":
 			generateOrdersReport(month, year);
@@ -73,6 +75,26 @@ public class CommonFunctions {
 		case "supply":
 			break;
 		}
+	}
+
+	private static void generateClientsReport(String month, String year) {
+		String query = "";
+		try {
+			if (MySqlClass.getConnection() == null)
+				return;
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement psGet = conn.prepareStatement(query);
+			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
+			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+			ResultSet res = psGet.executeQuery();
+			while (res.next()) 
+			{
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	private static void generateOrdersReport(String month, String year) {

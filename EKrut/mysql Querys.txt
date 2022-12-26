@@ -15,20 +15,46 @@ JOIN regions ON machines.region_id = regions.region_id
 WHERE orders.is_delivery = 0
 GROUP BY machines.location 
 
-## count orders amount : users amount
+## count orders amount : users amount (BARCHART)
 SELECT
-  orders_made,
-  COUNT(*) as user_amount
+  t.orders_made,
+  COUNT(*) as user_amount,
+  m.region_name
 FROM (
-  SELECT user_id, COUNT(*) as orders_made
+  SELECT user_id, machine_id, COUNT(user_id) as orders_made
   FROM orders
-  GROUP BY user_id
+  WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN "2022-12-01 00:00:00" AND "2022-12-31 23:59:59"
+  GROUP BY user_id, machine_id
 ) t
-GROUP BY orders_made;
+JOIN machines m ON t.machine_id = m.machine_id
+GROUP BY t.orders_made, m.region_name
 
-## count delivery method amount 
+## count delivery method amount (PIECHART)
 SELECT
-  supply_method,
-  COUNT(*) as num_orders
-FROM orders
-GROUP BY supply_method;
+  o.supply_method,
+  COUNT(*) as num_orders,
+  m.region_name
+FROM orders o
+JOIN machines m ON o.machine_id = m.machine_id
+WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN "2022-12-01 00:00:00" AND "2022-12-31 23:59:59"
+GROUP BY o.supply_method, m.region_name
+
+
+
+
+
+
+
+
+
+
+SELECT o.user_id, o.orders_made, o.supply_method, m.region_name
+FROM (
+  SELECT user_id, COUNT(*) as orders_made, supply_method, machine_id
+  FROM orders
+  WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN "2022-12-01 00:00:00" AND "2022-12-31 23:59:59"
+  GROUP BY user_id, supply_method, machine_id
+) o
+JOIN machines m ON o.machine_id = m.machine_id
+GROUP BY o.user_id, o.orders_made, o.supply_method, m.region_name
+ORDER BY o.user_id;
