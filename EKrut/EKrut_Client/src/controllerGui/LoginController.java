@@ -87,7 +87,7 @@ public class LoginController {
 		if (isValidDetails) {
 			
 			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.RegistrationForm);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 		}
 
 		else {
@@ -99,8 +99,7 @@ public class LoginController {
 	
 	public static void setUser(String[] user) {
 		username = user[0];
-		password = user[1];
-		
+		password = user[1];	
 		//validateUsernamePasswordSyntax();
 	}
  	/**

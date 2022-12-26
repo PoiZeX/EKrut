@@ -1,12 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import common.CommonFunctions;
 
 public class ClientsReportEntity extends ReportEntity {
@@ -81,12 +75,11 @@ public class ClientsReportEntity extends ReportEntity {
 		if (CommonFunctions.isNullOrEmpty(supplyMethods))
 			return;
 		String[] supplyMethodsSplit = supplyMethods.split(",");
-		if (supplyMethodsSplit.length != 3) {
+		if (supplyMethodsSplit.length != 2) {
 			description = "noreport";
 			return;
 		}
 		supplyMethodsArr.put("On-site", Integer.parseInt(supplyMethodsSplit[0]));
-		supplyMethodsArr.put("Delivery", Integer.parseInt(supplyMethodsSplit[1]));
-		supplyMethodsArr.put("Pickup", Integer.parseInt(supplyMethodsSplit[2]));
+		supplyMethodsArr.put("Pickup", Integer.parseInt(supplyMethodsSplit[1]));
 	}
 }
