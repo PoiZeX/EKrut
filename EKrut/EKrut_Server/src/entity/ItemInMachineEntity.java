@@ -16,9 +16,12 @@ public class ItemInMachineEntity extends MainEntity {
 		private final String name;
 		} ;
 		
-	private int machineID;
-	private int itemID;
+	private int machineId;
+	private int itemId;
 	private int  currentAmount;	
+	private int timeUnderMin;
+	
+
 	private boolean isCallOpen;
 
 
@@ -27,17 +30,24 @@ public class ItemInMachineEntity extends MainEntity {
 
 
 	//machine_id, item_id, current_amount, minimum_amount, call_status, times_under_min, calls_amount, name, item_img_name
-	public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus) {
+	public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus,int timeUnderMin) {
 		super(item_id);
-		this.itemID=item_id;
-		this.machineID = machineID;
+		this.itemId=item_id;
+		this.machineId = machineID;
 		this.currentAmount = currentAmount;
 		this.callStatus = callStatus;
 		if(this.callStatus.equals(callStatus.NotOpened))
 			this.isCallOpen=false;
 		else this.isCallOpen=true;
+		this.timeUnderMin=timeUnderMin;
+	}
+	public int getTimeUnderMin() {
+		return timeUnderMin;
 	}
 
+	public void setTimeUnderMin(int timeUnderMin) {
+		this.timeUnderMin = timeUnderMin;
+	}
 	public boolean isCallOpen() {
 		return isCallOpen;
 	}
@@ -46,8 +56,8 @@ public class ItemInMachineEntity extends MainEntity {
 		this.isCallOpen = isCallOpen;
 	}
 
-	public int getItemID() {
-		return itemID;
+	public int getItemId() {
+		return itemId;
 	}
 
 	public Call_Status getCallStatus() {
@@ -67,8 +77,8 @@ public class ItemInMachineEntity extends MainEntity {
 		this.currentAmount = currentAmount;
 	}
 
-	public int getMachineID() {
-		return machineID;
+	public int getMachineId() {
+		return machineId;
 	}
 
 }

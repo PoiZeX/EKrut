@@ -37,9 +37,11 @@ public enum TaskType {
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
 	RequestInsertNewSale,
+	RequestUpdateMachineMinAmount,
+	RequestItemsCallStatusUpdateFromServer,
 	
 	// Common Data Initialization //
 	InitRegions,
-	InitMachines,
+	InitMachines,  
 	
 }
