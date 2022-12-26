@@ -96,8 +96,14 @@ public class LoginController {
 		}
 		return true;
 	}
-
-	/**
+	
+	public static void setUser(String[] user) {
+		username = user[0];
+		password = user[1];
+		
+		//validateUsernamePasswordSyntax();
+	}
+ 	/**
 	 * return true if username and password are valid syntax and length
 	 * 
 	 * @return
@@ -119,7 +125,7 @@ public class LoginController {
 			if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, username)) // allow digits, alpha and underscore. and
 																				// must starts
 				// with a char
-				error.append("* username can contains just alphabet, digits and underscore\n");
+				error.append("* username can contain just alphabet, digits and underscore\n");
 		}
 
 		// password checks
@@ -127,7 +133,7 @@ public class LoginController {
 			error.append("* password cannot be empty\n");
 		} else {
 			if (password.contains(" ")) // spaces are not allowed
-				error.append("* password cannot contains any spaces\n");
+				error.append("* password cannot contain any spaces\n");
 			if (password.length() > AppConfig.PASSWORD_MAX_LENGTH || password.length() < AppConfig.PASSWORD_MIN_LENGTH)
 				error.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-"
 						+ AppConfig.PASSWORD_MAX_LENGTH + "\n");

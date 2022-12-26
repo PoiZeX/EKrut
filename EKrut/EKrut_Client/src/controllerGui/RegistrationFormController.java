@@ -20,13 +20,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
+import utils.AppConfig;
+import utils.TooltipSetter;
 
 public class RegistrationFormController{
 	private ToggleGroup radioToggleGroup;
 	private ArrayList<TextField> dataArray;
-    @FXML
-    private Button cancelBtn;
-    
+
     @FXML
     private Button clearBtn;
 
@@ -44,6 +44,18 @@ public class RegistrationFormController{
 
     @FXML
     private TextField lastnameTxtField;
+    
+    @FXML
+    private TextField usernameTxtField;
+    
+    @FXML
+    private Label usernameErrorLabel;
+
+    @FXML
+    private TextField passwordTxtField;
+    
+    @FXML
+    private Label passwordErrorLabel;
 
     @FXML
     private GridPane membershipGridpaneBox;
@@ -70,9 +82,6 @@ public class RegistrationFormController{
     private Label userSearchMsgLabel;
 
     @FXML
-    private ToggleGroup userSearchRadioToggleGroup;
-
-    @FXML
     private TextField userSearchTxtField;
 
     @FXML
@@ -92,6 +101,10 @@ public class RegistrationFormController{
     	dataArray.add(emailTxtField);
     	dataArray.add(phonenumberTxtField);
     	dataArray.add(creditcardTxtField);
+    	dataArray.add(usernameTxtField);
+    	dataArray.add(passwordTxtField);
+    	dataArray.add(userSearchTxtField);
+    	
     	
     	membershipRadioToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() 
         {
@@ -113,41 +126,41 @@ public class RegistrationFormController{
                 }
             }
         });
-    	userSearchRadioToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() 
-        {
-            public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n)
-            {
-                RadioButton radioBtn = (RadioButton) userSearchRadioToggleGroup.getSelectedToggle();
-                if (radioBtn != null) {
-                    String radioBtnValue = radioBtn.getText();
-                    switch (radioBtnValue) {
-	                	case "ID":
-	                		userSearchTxtField.setPromptText("Search By ID");
-	                		break;
-	                	case "Name":
-	                		userSearchTxtField.setPromptText("Search By Name");
-	                		break;
-	                	default:
-	                		break;
-                    }
-                }
-            }
-        });
+    	passwordTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+    	    // Handle password validation
+    		String currentPassword = passwordTxtField.getText();
+			if (currentPassword.contains(" ")) {
+				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				passwordErrorLabel.setText("Cannot include spaces");
+			}
+			else if (currentPassword.length() > AppConfig.PASSWORD_MAX_LENGTH) {
+				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				passwordErrorLabel.setText("Too long");
+			}
+			else if (currentPassword.length() < AppConfig.PASSWORD_MIN_LENGTH) {
+				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				passwordErrorLabel.setText("Too short");
+			}
+			else {
+				passwordTxtField.setStyle("-fx-border-color: none;");
+				passwordErrorLabel.setText("");
+			}
+    	});
+
     }
     
-    @FXML
-    void cancelBtnAction(ActionEvent event) {
-    	// Go back to the previous page
-    }
 
     @FXML
     void submitBtnAction(ActionEvent event) {
     	int missingTextFields = 0;
     	for (TextField field : dataArray) {
     		if (field.getText().equals("")) {
-    			missingTextFields++;
-        		field.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-    			errorMsgLabel.setText("There are missing fields!");
+    			if (field != userSearchTxtField) {
+        			missingTextFields++;
+            		field.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+        			errorMsgLabel.setText("There are missing fields!");
+    			}
+
     		}
     		else {
     			errorMsgLabel.setText("");
@@ -175,13 +188,16 @@ public class RegistrationFormController{
     @FXML
     void clearBtnAction(ActionEvent event) {
     	errorMsgLabel.setText("");
+    	userSearchMsgLabel.setText("");
        	for (TextField field : dataArray) {
+        	passwordErrorLabel.setText("");
+        	usernameErrorLabel.setText("");
+       		field.clear();
+       		field.setDisable(false);
     		if (field.getText().equals("")) 
         		field.setStyle("-fx-border-color: none;");
     	}
-    	for (TextField field : dataArray) {
-    		field.clear();
-    	}
+
     }
     
 	public static void recieveDataFromServer(UserEntity report) {
@@ -192,38 +208,52 @@ public class RegistrationFormController{
 	
     @FXML
     void searchUserAction(ActionEvent event) {
-    	RadioButton radioBtn = (RadioButton) userSearchRadioToggleGroup.getSelectedToggle();
     	if (userSearchTxtField.getText().equals("")) {
     		userSearchTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-    		userSearchMsgLabel.setText("Please enter " + radioBtn.getText());
+    		userSearchMsgLabel.setText("User ID is missing");
+    		userSearchMsgLabel.setStyle("-fx-text-fill: #ff1414");
     	}
     	else {
     		userSearchTxtField.setStyle("-fx-border-color: none;");
     		userSearchMsgLabel.setText("");
+        	String[] userSearchInput = {userSearchTxtField.getText()};
+        	// Send a message to server
+        	chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, userSearchInput));
+    		// wait for answer
+    		while (RecievedData == false) {
+    			try {
+    				Thread.sleep(100);
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		if (reportDetails.getId_num().equals("")) {
+    			//System.out.println("Empty Report");
+    			userSearchMsgLabel.setText("User not found!");
+    			userSearchMsgLabel.setStyle("-fx-text-fill: #ff1414");
+    			return;
+    		}
+    		userSearchMsgLabel.setText(reportDetails.getFirst_name() + " was found!");
+    		userSearchMsgLabel.setStyle("-fx-text-fill: #000000");
+    		
+    		firstnameTxtField.setText(reportDetails.getFirst_name());
+    		firstnameTxtField.setDisable(true);
+    		
+    		lastnameTxtField.setText(reportDetails.getLast_name());
+    		lastnameTxtField.setDisable(true);
+    		
+    		emailTxtField.setText(reportDetails.getEmail());
+    		
+    		idnumberTxtField.setText(reportDetails.getId_num());
+    		idnumberTxtField.setDisable(true);
+    		
+    		creditcardTxtField.setText(reportDetails.getCc_num());
+    		
+    		phonenumberTxtField.setText(reportDetails.getPhone_number());
+    		
+    		passwordTxtField.setText(reportDetails.getPassword());
+    		
+    		usernameTxtField.setText(reportDetails.getUsername());
     	}
-    	String[] userSearchInput = {radioBtn.getText(), userSearchTxtField.getText()};
-    	// Send a message to server
-    	chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, userSearchInput));
-		// wait for answer
-		while (RecievedData == false) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		//System.out.println(Arrays.asList(reportDetails.getReportsList())); 
-		if (reportDetails.getId_num().equals("")) {
-			System.out.println("Empty Report");
-			userSearchMsgLabel.setText("User not found!");
-			return;
-		}
-		userSearchMsgLabel.setText("User found!");
-		firstnameTxtField.setText(reportDetails.getFirst_name());
-		lastnameTxtField.setText(reportDetails.getLast_name());
-		emailTxtField.setText(reportDetails.getEmail());
-		idnumberTxtField.setText(reportDetails.getId_num());
-		creditcardTxtField.setText(reportDetails.getCc_num());
-		phonenumberTxtField.setText(reportDetails.getPhone_number());
     }
 }
