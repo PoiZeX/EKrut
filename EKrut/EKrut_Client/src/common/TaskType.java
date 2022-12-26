@@ -22,6 +22,7 @@ public enum TaskType {
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
 	ReceiveItemsInMachine,
+	ReceiveSalesFromServer,
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,
@@ -35,6 +36,7 @@ public enum TaskType {
 	RequestDeliveriesFromServer,
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
+	RequestInsertNewSale,
 	
 	// Common Data Initialization //
 	InitRegions,

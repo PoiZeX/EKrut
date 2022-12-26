@@ -50,7 +50,6 @@ public class DeliveryManagementDBController {
 		DeliveryEntity deliveryEntity;
 		try {
 			if (MySqlClass.getConnection() == null) {
-				System.out.println("conn null/n");
 				return;
 			}
 			stmt = (MySqlClass.getConnection()).createStatement();

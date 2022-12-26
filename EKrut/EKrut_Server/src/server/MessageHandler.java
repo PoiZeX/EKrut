@@ -8,6 +8,7 @@ import controllerDb.CommonDataDBController;
 import controllerDb.DeliveryManagementDBController;
 import controllerDb.ItemDBController;
 import controllerDb.LoginDBController;
+import controllerDb.MarketingManagerDBController;
 import controllerDb.PersonalMessagesDBController;
 import controllerDb.ReportsDBController;
 import controllerDb.SupplyManagmentDBController;
@@ -16,6 +17,7 @@ import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
 import entity.SubscriberEntity;
 import entity.UserEntity;
+import entity.SaleEntity;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
@@ -80,6 +82,9 @@ public class MessageHandler {
 			break;
 		case RequestItemsInMachine:
 			SupplyManagmentDBController.getMachineItems((int)obj,client);
+			break;
+		case RequestInsertNewSale:
+			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
