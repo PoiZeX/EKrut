@@ -85,6 +85,8 @@ public class HomePageController {
 			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
 			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
 			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagment);
+			if(currentUser.getRole_type() == RolesEnum.regionManager) 	
+				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
@@ -114,10 +116,6 @@ public class HomePageController {
 			setBtn(topBtn, "Update supply", "Update supplies for item(s)", null);
 			break;
 
-		// not existing i think
-//		case supplyManager:
-//			break;
-//			
 
 		default:
 			System.out.println("No role detected!"); // show the screen anyway because the login succeed

@@ -25,7 +25,7 @@ public class PersonalMessagesDBController {
 	public static void getClientReportEntity(UserEntity user, ConnectionToClient client) {
 		if (user != null) {
 			// SQL query //
-			ArrayList<PersonalMessageEntity> res = getClientsReportFromDB(user);
+			ArrayList<PersonalMessageEntity> res = getPersonalMessagesFromDB(user);
 			try {
 				client.sendToClient(new Message(TaskType.ReceivePersonalMessages, res));
 			} catch (IOException e) {
@@ -40,25 +40,22 @@ public class PersonalMessagesDBController {
 	 * 
 	 * @return
 	 */
-	protected static ArrayList<PersonalMessageEntity> getClientsReportFromDB(UserEntity user) {
+	protected static ArrayList<PersonalMessageEntity> getPersonalMessagesFromDB(UserEntity user) {
 		ArrayList<PersonalMessageEntity> messages = new ArrayList<PersonalMessageEntity>();
 		PersonalMessageEntity entity = null;
-		
+
 		try {
 			if (MySqlClass.getConnection() == null)
 				return messages;
-			
+
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.personal_messages WHERE user_id=? ;");
 			ps.setInt(1, user.getId());
+
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
-				String[] yearMonthDay = res.getString(3).split("-");
-
-				entity = new PersonalMessageEntity(res.getInt(1), 
-						Integer.parseInt(yearMonthDay[0]), Integer.parseInt(yearMonthDay[1]),
-						Integer.parseInt(yearMonthDay[2]),
-						res.getString(4), res.getString(5));
+				entity = new PersonalMessageEntity(res.getInt(2), res.getString(3), res.getString(4), res.getString(5));
+				entity.setId(res.getInt(1));
 				messages.add(entity);
 			}
 		} catch (SQLException e) {
@@ -67,4 +64,37 @@ public class PersonalMessagesDBController {
 		return messages;
 
 	}
+
+	/**
+	 * Handle inserting new personal message to table
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static boolean setPersonalMessagesInDB(PersonalMessageEntity entity) {
+
+		int res = 0;
+		if (entity == null)
+			return false;
+		
+		try {
+			if (MySqlClass.getConnection() == null)
+				return false;
+
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO ekrut.personal_messages (user_id, date, type, message) VALUES (?, ?, ?, ?);");
+			ps.setInt(1, entity.getUserId());
+			ps.setString(2, entity.getDate());
+			ps.setString(3, entity.getTitle());
+			ps.setString(4, entity.getMessage());
+			
+			res = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return res == 0 ? false : true;
+	}
+
 }

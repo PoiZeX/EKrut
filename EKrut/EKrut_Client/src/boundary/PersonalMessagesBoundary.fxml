@@ -2,13 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.PersonalMessagesController">
@@ -34,40 +33,33 @@
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="19.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="254.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="151.0" minHeight="8.0" prefHeight="37.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="284.0" minHeight="10.0" prefHeight="192.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="237.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="334.0" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="151.0" minHeight="8.0" prefHeight="47.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="284.0" minHeight="10.0" prefHeight="191.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="237.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <TableView fx:id="messageTable" prefHeight="233.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="dateCol" prefWidth="149.0" text="Date" />
-                <TableColumn fx:id="typeCol" prefWidth="129.0" text="Type" />
-                  <TableColumn fx:id="msgprevCol" prefWidth="580.0" text="Message preview" />
+                <TableColumn fx:id="titleCol" prefWidth="129.0" text="Type" />
+                  <TableColumn fx:id="messageCol" prefWidth="580.0" text="Message preview" />
               </columns>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </TableView>
-            <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="820.0" styleClass="LabelRoleTitle" text="Full message:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label contentDisplay="CENTER" prefHeight="45.0" prefWidth="815.0" styleClass="LabelRoleTitle" text="Full message:" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets left="-15.0" top="5.0" />
+                  <Insets left="-15.0" />
                </GridPane.margin>
             </Label>
-            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="messageLabel" layoutX="2.0" layoutY="10.0" lineSpacing="0.4" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="785.0" text="Click on a message and it will be shown here">                           
+            <Pane styleClass="GridPane" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <Label fx:id="messageLabel" alignment="TOP_LEFT" lineSpacing="0.4" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="785.0" text="Click on a message and it will be shown here" translateX="15.0" translateY="20.0">                           
                         </Label>
-                     </children>
-                  </AnchorPane>
-              </content>
-               <GridPane.margin>
-                  <Insets top="20.0" />
-               </GridPane.margin>
-            </ScrollPane>
+               </children>
+            </Pane>
          </children>
       </GridPane>
    </center>

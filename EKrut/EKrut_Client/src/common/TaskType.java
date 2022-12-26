@@ -7,11 +7,13 @@ public enum TaskType {
 	ServerDisconnect,
 	LoadSubscribers,
 	EditSubscribers,
+	
 	// Login E-NUMS //
 	ValidUserNamePassword,
 	InvalidUsernamePassword,
 	SetUserLoggedIn,
 	UserNotApproved, 
+	
 	// Receive Answers From Server //
 	ReceiveUsersApproval,
 	ReceiveDeliveriesFromServer,
@@ -23,6 +25,7 @@ public enum TaskType {
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
 	ReceiveUserInfoFromServerDB,
+	
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,
@@ -32,13 +35,17 @@ public enum TaskType {
 	RequestUnapprovedUsers,
 	RequestReport,
 	RequestPersonalMessages,
+	SendPersonalMessage,
 	RequestUpdateDeliveries,
 	RequestDeliveriesFromServer,
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
 	RequestUserInfoFromServerDB,
+	
 	// Common Data Initialization //
 	InitRegions,
 	InitMachines,
+	
+
 	
 }

@@ -3,60 +3,66 @@ package entity;
 import java.io.Serializable;
 
 /**
- * The entity saves a single personal message 
+ * The entity saves a single personal message
  *
  */
-public class PersonalMessageEntity implements Serializable{
-	
-	/**
-	 * 
-	 */
+public class PersonalMessageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public PersonalMessageEntity(int id, int year, int month, int day, String type, String msgprev) {
+	private String date, title, message;
+	private int userId, id;
+	/**
+	 * Constructor
+	 * 
+	 * @param date
+	 * @param type
+	 * @param message
+	 */
+	public PersonalMessageEntity(int userId, String date, String title, String message) {
 		super();
-		this.id = id;
-		this.year = year;
-		this.month = month;
-		this.day = day;
-		this.type = type;
-		this.msgprev = msgprev;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getMsgprev() {
-		return msgprev;
-	}
-	public void setMsgprev(String msgprev) {
-		this.msgprev = msgprev;
+		this.userId = userId;
+		this.date = date;
+		this.title = title;
+		this.message = message;
 	}
 	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getDate() {
-		return year + "-" + month + "-" + day;
-	}
-	
-	public void setDate(int[] date) {
-		if(date.length == 3) {
-			year = date[0];
-			month = date[1];
-			day = date[2];
-		}
-	}
-	
-	private String type, msgprev;
-	private int id, year, month, day;
-	
 
+	public int getUserId() {
+		return userId;
+	}
 	
+	public void setUserId(int userId) {
+		this.userId = userId;;
+	}
 
 }

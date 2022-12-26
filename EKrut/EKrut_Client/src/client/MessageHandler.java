@@ -74,6 +74,7 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+			break;
 		default:
 			break;
 		}

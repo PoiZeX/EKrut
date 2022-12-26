@@ -85,9 +85,8 @@ public class LoginController {
 		}
 
 		if (isValidDetails) {
-			
 			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.RegistrationForm);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 		}
 
 		else {
@@ -97,12 +96,17 @@ public class LoginController {
 		return true;
 	}
 	
+	/**
+	 * Control user to validate (usually will be called from registration form)
+	 * @param user
+	 */
 	public static void setUser(String[] user) {
 		username = user[0];
 		password = user[1];
 		
 		//validateUsernamePasswordSyntax();
 	}
+	
  	/**
 	 * return true if username and password are valid syntax and length
 	 * 

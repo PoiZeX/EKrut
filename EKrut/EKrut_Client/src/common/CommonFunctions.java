@@ -8,7 +8,7 @@ public class CommonFunctions {
 	private static Timer timerTimeLimit;
 	
 	public static boolean isNullOrEmpty(String txt) {
-		return (txt == null || txt.isEmpty());
+		return (txt == null || txt.trim().isEmpty());
 	}
 
 	public static void SleepFor(long num, Runnable callback) {

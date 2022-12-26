@@ -13,6 +13,7 @@ import controllerDb.ReportsDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
+import entity.PersonalMessageEntity;
 import entity.SubscriberEntity;
 import entity.UserEntity;
 import ocsf.server.ConnectionToClient;
@@ -76,6 +77,9 @@ public class MessageHandler {
 			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
+			break;
+		case SendPersonalMessage:
+			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity)obj);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
