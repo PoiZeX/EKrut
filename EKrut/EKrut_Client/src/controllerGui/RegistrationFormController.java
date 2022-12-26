@@ -1,6 +1,7 @@
 package controllerGui;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -131,24 +132,70 @@ public class RegistrationFormController{
     		String currentPassword = passwordTxtField.getText();
 			if (currentPassword.contains(" ")) {
 				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-				passwordErrorLabel.setText("Cannot include spaces");
+				passwordErrorLabel.setText("Can't include spaces");
 			}
 			else if (currentPassword.length() > AppConfig.PASSWORD_MAX_LENGTH) {
 				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
 				passwordErrorLabel.setText("Too long");
 			}
-			else if (currentPassword.length() < AppConfig.PASSWORD_MIN_LENGTH) {
+			else if (currentPassword.length() < AppConfig.PASSWORD_MIN_LENGTH && currentPassword.length() > 0) {
 				passwordTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
 				passwordErrorLabel.setText("Too short");
+			}
+			else if (currentPassword.length() == 0) {
+				passwordTxtField.setStyle("-fx-border-color: none;");
+				passwordErrorLabel.setText("");
 			}
 			else {
 				passwordTxtField.setStyle("-fx-border-color: none;");
 				passwordErrorLabel.setText("");
 			}
     	});
+    	
+    	usernameTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+    	    // Handle password validation
+    		
+    		String currentUsername = usernameTxtField.getText();
 
+    		
+			if (currentUsername.contains(" ")) {
+				usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				usernameErrorLabel.setText("Can't include spaces");
+			}
+			else if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, currentUsername) && !(currentUsername.length() == 0)) {
+				usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				usernameErrorLabel.setText("Invalid Username");
+			}
+			else if (currentUsername.length() > AppConfig.USERNAME_MAX_LENGTH) {
+				usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				usernameErrorLabel.setText("Too long");
+			}
+			else if (currentUsername.length() < AppConfig.USERNAME_MIN_LENGTH && currentUsername.length() > 0) {
+				usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+				usernameErrorLabel.setText("Too short");
+			}
+			else if (currentUsername.length() == 0) {
+				usernameTxtField.setStyle("-fx-border-color: none;");
+				usernameErrorLabel.setText("");
+			}
+			else {
+				usernameTxtField.setStyle("-fx-border-color: none;");
+				usernameErrorLabel.setText("");
+//				chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, currentUsername));
+//	    		// wait for answer
+//	    		while (RecievedData == false) {
+//	    			try {
+//	    				Thread.sleep(2);
+//	    			} catch (InterruptedException e) {
+//	    				e.printStackTrace();
+//	    			}
+//	    		}
+//	    		if (reportDetails != null) {
+//	    			usernameErrorLabel.setText("User already exists!");
+//	    		}
+			}
+    	});
     }
-    
 
     @FXML
     void submitBtnAction(ActionEvent event) {
@@ -160,7 +207,6 @@ public class RegistrationFormController{
             		field.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
         			errorMsgLabel.setText("There are missing fields!");
     			}
-
     		}
     		else {
     			errorMsgLabel.setText("");
@@ -181,7 +227,6 @@ public class RegistrationFormController{
     		);
     		if (radioBtn.getText().equals("Yes"))
     			registrationForm.setClubMemberID(formID + 1);
-    		
     	}
     }
     
@@ -201,6 +246,7 @@ public class RegistrationFormController{
     }
     
 	public static void recieveDataFromServer(UserEntity report) {
+		System.out.println(report);
 		reportDetails = report;
 		RecievedData = true;
 		return;
@@ -233,6 +279,18 @@ public class RegistrationFormController{
     			userSearchMsgLabel.setStyle("-fx-text-fill: #ff1414");
     			return;
     		}
+    		
+    		// Clear errors if found a user
+    		errorMsgLabel.setText("");
+           	for (TextField field : dataArray) {
+            	passwordErrorLabel.setText("");
+            	usernameErrorLabel.setText("");
+           		field.clear();
+           		field.setDisable(false);
+        		if (field.getText().equals("")) 
+            		field.setStyle("-fx-border-color: none;");
+        	}
+    		
     		userSearchMsgLabel.setText(reportDetails.getFirst_name() + " was found!");
     		userSearchMsgLabel.setStyle("-fx-text-fill: #000000");
     		
@@ -243,6 +301,7 @@ public class RegistrationFormController{
     		lastnameTxtField.setDisable(true);
     		
     		emailTxtField.setText(reportDetails.getEmail());
+    		emailTxtField.setDisable(true);
     		
     		idnumberTxtField.setText(reportDetails.getId_num());
     		idnumberTxtField.setDisable(true);
@@ -250,6 +309,7 @@ public class RegistrationFormController{
     		creditcardTxtField.setText(reportDetails.getCc_num());
     		
     		phonenumberTxtField.setText(reportDetails.getPhone_number());
+    		phonenumberTxtField.setDisable(true);
     		
     		passwordTxtField.setText(reportDetails.getPassword());
     		
