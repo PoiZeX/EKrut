@@ -22,7 +22,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
@@ -165,7 +164,7 @@ public class SupplyReportController {
 		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
 		supplyMachineTbl.setItems(ol);
 		supplyMachineTbl.setEditable(false);
-		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
+//		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
 		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
 		
 

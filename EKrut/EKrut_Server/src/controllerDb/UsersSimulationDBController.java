@@ -64,7 +64,7 @@ public class UsersSimulationDBController {
 			ps.setString(6, tuple[3]); // email
 			ps.setString(7, tuple[4]); // phone number
 			ps.setString(8, null); // cc number - can be NULL
-			if (CommonFunctions.isNullOrEmpty(tuple[5].strip()) && CommonFunctions.isNullOrEmpty(tuple[6].strip())) {
+			if (CommonFunctions.isNullOrEmpty(tuple[5].trim()) && CommonFunctions.isNullOrEmpty(tuple[6].trim())) {
 				// is not a worker
 				ps.setString(9, null);
 				ps.setString(10, "user"); // auto role type

@@ -102,8 +102,7 @@ public class LoginController {
 	 */
 	public static void setUser(String[] user) {
 		username = user[0];
-		password = user[1];
-		
+		password = user[1];	
 		//validateUsernamePasswordSyntax();
 	}
 	
