@@ -23,8 +23,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -51,10 +53,8 @@ public class SupplyManagmentController {
     private GridPane itemDisplayGridPane;
    
     @FXML
-    private Label itemNameLbl;
+    private Label machineNameLbl;
     
-    @FXML
-    private Label currentAmountLbl;
 
     @FXML
     private TextField minAmountTxtField;
@@ -64,7 +64,8 @@ public class SupplyManagmentController {
 
     @FXML
     private Button saveChangesBtn;
-
+    @FXML
+    private Label errorInputLbl;
     @FXML
     private Button refreshBtn;
 
@@ -78,9 +79,6 @@ public class SupplyManagmentController {
     @FXML
     private TableView<ItemInMachineEntity> supplyMangmentTbl;
     
-    @FXML
-    private TableColumn<ItemInMachineEntity, Integer> machineIdCol;
-
     @FXML
     private TableColumn<ItemInMachineEntity, Integer> itemIdCol;
     
@@ -98,9 +96,8 @@ public class SupplyManagmentController {
     private static ClientController chat = HostClientController.chat; // define the chat for th
     public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
     public static ObservableList<MachineEntity> machineLst=FXCollections.observableArrayList();
-    private String machineName;
-    private int machineId;
     private MachineEntity machine;
+    static ArrayList<ItemInMachineEntity> toUpdate =new ArrayList<ItemInMachineEntity>();;
 	ArrayList<TableCell<ItemInMachineEntity, Boolean>> checkboxCellsList = new ArrayList<>();
     /** Setup screen before launching view*/
     @FXML
@@ -112,7 +109,17 @@ public class SupplyManagmentController {
 				public void handle(Event event) {
 					
 					machine=machineCmb.getValue();
-					setupTable(machine.machineID);
+					
+					if (!machine.equals(null))
+					{
+						saveChangesBtn.setDisable(false);
+						machineNameLbl.setText(machine.machineName);
+						machineNameLbl.setVisible(true);
+						minAmountTxtField.setText(machine.getMinamount()+"");
+						
+					}
+					setupTable(machine.machineId);
+					
 				}
 			});
 	    	
@@ -120,52 +127,87 @@ public class SupplyManagmentController {
     /** press refresh button to refresh table and item displayed ask from data base to load updated table*/
     @FXML
     void refresh(ActionEvent event) {
-
+    	
     }
     /** save changes that was made in the item */
     @FXML
-    void saveItemChanges(ActionEvent event) {
+    void saveMachineMinAmount(ActionEvent event) {
+    	String errorMsg="" ;
+    	String strNum=minAmountTxtField.getText();
 
-    }
+    	if(strNum.isEmpty())
+    		errorMsg=" you can't leave me empty!";
+    
+    	int oldMinAmount =machine.getMinamount();
+    	int newMinAmount =machine.getMinamount();
+    	 try {
+        	 newMinAmount = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+        	errorMsg="you have to fill in numbers only";
+        }
+    	
+    	if (oldMinAmount!=newMinAmount) {
+    		machine.setMinamount(newMinAmount);
+    		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount,machine));//TODO
+    		System.out.println("Pop up - the new minimum amount has been updated \n" 
+    		+"if you want to see an updated list press the refresh button");}
+    	}
+    	
+ 
     /** send a task to the workers for update the requested items*/
     @FXML
     void send(ActionEvent event) {
-
+    	if(toUpdate.isEmpty()||toUpdate.equals(null)) //TODO why is empty
+    		System.out.println("Popup - no new items to open calls for");
+    	
+    
+    	for(ItemInMachineEntity i : toUpdate) 
+    			i.setCallStatus(ItemInMachineEntity.Call_Status.Processed);
+    		
+    	chat.acceptObj(new Message(TaskType.RequestItemsCallStatusUpdateFromServer,toUpdate));//TODO add to msg handler and on server
+    	
     }
     /**get from DB the data for setting the table, and puttin a preview ('eye') button on the preview col*/
     @SuppressWarnings("unchecked")
 	private void setupTable(int machineId) {
-    	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));//errorfix
+    	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
     	supplyMangmentTbl.setItems(itemsInMachineLst);
+    	
     	// factory
-    			machineIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("machineId"));
-    			itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
-    			currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
-    			callStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>("callStatus"));
-    			refillcol.setCellFactory(column -> {
-    				TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-    				checkboxCellsList.add(cell); // save the checkbox
-
-    				cell.setOnMouseClicked(event -> {
-    					if (event.getClickCount() > 0) {
-    						CheckBox checkBox = (CheckBox) cell.getGraphic();
-    						ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
-    						if (checkBox != null) {
-    							if (checkBox.isSelected()) {
-    								checkBox.setSelected(false);
-  
-
-    							} else {
-    								checkBox.setSelected(true);
-    								
-    							}
-    						}
-    					}
-    				});
-    				return cell;
-    			});
     			
-    			
+    	itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
+    	currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
+    	callStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>("callStatus"));
+    	refillcol.setCellFactory(column -> {
+    		TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+    		checkboxCellsList.add(cell); // save the checkbox
+    		
+    		
+    	
+    		cell.setOnMouseClicked(event -> {
+    			if (event.getClickCount() > 0) {
+    				CheckBox checkBox = (CheckBox) cell.getGraphic();
+    				ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
+    				
+    				if (checkBox != null) {
+    					if(item.isCallOpen())
+        	    			cell.setDisable(true);
+    		
+    					if (checkBox.isSelected()) {
+    						checkBox.setSelected(false);
+    						toUpdate.remove(item);} 
+    					else {
+    						checkBox.setSelected(true);
+    						toUpdate.add(item);		
+    				}
+    					
+    				}
+    			}
+    		});
+    		return cell;
+    	});
+    	colorTableRows();
+    	return;		
     		
      }
    
@@ -174,36 +216,39 @@ public class SupplyManagmentController {
     public void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
     	String region =NavigationStoreController.connectedUser.getRegion();
     	for(MachineEntity m : arrayList) {
-    		if(region.equals(m.reigonName))
+    		if(region.equals(m.regionName))
     			{
     			machineLst.add(m);
     			}
     	}
 
     }
-    /*TODO - 
-     * filter by region the machines
-     * get the workers from DB and put them in CMB 
-     * TABLE
-     * load items in the table
-     * add in the last col a button of an eye 
-     * eye button - 
-     * 	need to upllod the product preview on the side 
-     * add css to whats under the minimum amount 
-     * - colors
-     * 		- red- under min and the call is not opened yet
-     * 		-green- completed
-     * 		-yellow - under min and the call is on process
-     * 		-orange - under min and the call is opend
-     * 
-     * Machine CMB - 
-     * 	add listener to the selection and link it to the setup table
-     * 
-     *  */
-	//errorfix
+
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
+		if(!itemsInMachineLst.isEmpty())
+			itemsInMachineLst.clear();
 		itemsInMachineLst.addAll(obj);
+		
+	}
+	
+	private void colorTableRows() {
+		supplyMangmentTbl.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
+    	    @Override
+    	    protected void updateItem(ItemInMachineEntity item, boolean empty) {
+    	        super.updateItem(item, empty);
+    	        if (item == null )
+    	            setStyle("");
+    	        else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen()==false)
+    	            setStyle("-fx-background-color: #fa8989;");
+    	        else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen()==true)
+    	            setStyle("-fx-background-color: #faeb89;");
+    	        else if (item.getCallStatus().getName().equals("Completed"))
+    	            setStyle("-fx-background-color: #89fa9e;");//TODO to add completed on the quary
+    	        else
+    	            setStyle("");
+    	    }
+    	});	
 	}
     
     

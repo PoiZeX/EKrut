@@ -14,6 +14,7 @@ import common.TaskType;
 import entity.ItemInMachineEntity;
 import entity.OrderReportEntity;
 import entity.ItemInMachineEntity.Call_Status;
+import entity.MachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
@@ -43,11 +44,11 @@ public class SupplyManagmentDBController {
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
 			
-			//   1                  2              3                 4          5                6              7            8     9
-				//machine_id, item_id, current_amount, minimum_amount, call_status, times_under_min, calls_amount
-		//public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus) {
+			//   1                  2              3                 4          5                        
+				//machine_id, item_id, current_amount,  call_status, times_under_min
+		//public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus ,times_under_min) {
 				//TODO - add a check for string 
-				item= new ItemInMachineEntity(res.getInt(1),res.getInt(2), res.getInt(3),ItemInMachineEntity.Call_Status.NotOpened );
+				item= new ItemInMachineEntity(res.getInt(1),res.getInt(2), res.getInt(3),ItemInMachineEntity.Call_Status.valueOf( res.getString(4)),  res.getInt(5));
 				
 				itemsInMachine.add(item);
 			}
@@ -59,6 +60,12 @@ public class SupplyManagmentDBController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	public static void updateMachineMinAmount(MachineEntity obj, ConnectionToClient client) {
+		
+		// TODO Auto-generated method stub
 		
 	}
 

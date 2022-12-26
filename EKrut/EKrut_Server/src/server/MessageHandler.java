@@ -15,6 +15,7 @@ import controllerDb.SupplyManagmentDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
+import entity.MachineEntity;
 import entity.SubscriberEntity;
 import entity.UserEntity;
 import entity.SaleEntity;
@@ -85,6 +86,11 @@ public class MessageHandler {
 			break;
 		case RequestInsertNewSale:
 			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
+			break;
+		case RequestUpdateMachineMinAmount:
+		//	SupplyManagmentDBController.updateMachineMinAmount((MachineEntity)obj,client);
+			break;
+		case RequestItemsCallStatusUpdateFromServer:
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());

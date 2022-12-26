@@ -77,8 +77,8 @@ public class MessageHandler {
 			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
-			
 			break;
+		
 			
 		default:
 			break;

@@ -3,17 +3,17 @@ package entity;
 public class MachineEntity extends MainEntity {
 	
 
-	public int reigonID;
-	public String reigonName;
-	public int machineID;
+	public int regionId;
+	public String regionName;
+	public int machineId;
 	public String machineName;
 	private int minamount;
 	
-	public MachineEntity(int reigonID, String reigonName, int machineID, String machineName ,int minamount) {
-		super(machineID);
-		this.reigonID = reigonID;
-		this.reigonName = reigonName;
-		this.machineID = machineID;
+	public MachineEntity(int regionId, String regionName, int machineId, String machineName ,int minamount) {
+		super(machineId);
+		this.regionId = regionId;
+		this.regionName = regionName;
+		this.machineId = machineId;
 		this.machineName = machineName;
 		this.minamount=minamount;
 	}
@@ -26,16 +26,16 @@ public class MachineEntity extends MainEntity {
 		this.minamount = minamount;
 	}
 
-	public int getReigonID() {
-		return reigonID;
+	public int getRegionId() {
+		return regionId;
 	}
 
-	public String getReigonName() {
-		return reigonName;
+	public String getRegionName() {
+		return regionName;
 	}
 
-	public int getMachineID() {
-		return machineID;
+	public int getMachineId() {
+		return machineId;
 	}
 
 	public String getMachineName() {
