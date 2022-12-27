@@ -85,13 +85,19 @@ public class UsersManagementDBController {
 	
 	public static UserEntity getUserFromDB(String[] details, ConnectionToClient client) {
 		String searchWhat = details[0];
+		String query = "SELECT * FROM ekrut.users WHERE id_number=" + searchWhat + " AND username='';";
+		try {
+			Integer.parseInt(searchWhat);
+		} catch (Exception e) {
+			searchWhat = "'" + searchWhat + "'";
+			query = "SELECT * FROM ekrut.users WHERE username=" + searchWhat + ";";
+		}
 		UserEntity user = new UserEntity();
-		
 		try {
 			if (MySqlClass.getConnection() == null)
 				return new UserEntity();
 			Connection conn = MySqlClass.getConnection();
-			String query = "SELECT * FROM ekrut.users WHERE id_number=" + searchWhat + " AND username='';";
+			
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {

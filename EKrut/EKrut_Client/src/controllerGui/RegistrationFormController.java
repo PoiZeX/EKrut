@@ -156,8 +156,6 @@ public class RegistrationFormController{
     	    // Handle password validation
     		
     		String currentUsername = usernameTxtField.getText();
-
-    		
 			if (currentUsername.contains(" ")) {
 				usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
 				usernameErrorLabel.setText("Can't include spaces");
@@ -178,22 +176,31 @@ public class RegistrationFormController{
 				usernameTxtField.setStyle("-fx-border-color: none;");
 				usernameErrorLabel.setText("");
 			}
-			else {
-				usernameTxtField.setStyle("-fx-border-color: none;");
-				usernameErrorLabel.setText("");
-//				chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, currentUsername));
-//	    		// wait for answer
+//			else {
+//				String[] usernameText = {currentUsername};
+//				chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, usernameText));
 //	    		while (RecievedData == false) {
 //	    			try {
-//	    				Thread.sleep(2);
+//	    				Thread.sleep(100);
 //	    			} catch (InterruptedException e) {
 //	    				e.printStackTrace();
 //	    			}
 //	    		}
-//	    		if (reportDetails != null) {
+//	    		if (reportDetails.getFirst_name().length() > 0) {
+//	    			usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
 //	    			usernameErrorLabel.setText("User already exists!");
+//	    			reportDetails = null;
+//    			}
+//	    		else {
+//					usernameTxtField.setStyle("-fx-border-color: none;");
+//					usernameErrorLabel.setText("");
 //	    		}
+//			}
+			else {
+				usernameTxtField.setStyle("-fx-border-color: none;");
+				usernameErrorLabel.setText("");
 			}
+			
     	});
     }
 
@@ -246,7 +253,6 @@ public class RegistrationFormController{
     }
     
 	public static void recieveDataFromServer(UserEntity report) {
-		System.out.println(report);
 		reportDetails = report;
 		RecievedData = true;
 		return;
