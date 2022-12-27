@@ -2,7 +2,7 @@ package entity;
 
 import entity.ItemInMachineEntity.Call_Status;
 
-public class ItemInMachineEntity extends MainEntity {
+public class ItemInMachineEntity extends ItemEntity {
 	
 	public enum Call_Status{Processed("Processed"), Complete("Complete"), NotOpened("NotOpened");
 		 Call_Status(String string) {
@@ -30,8 +30,8 @@ public class ItemInMachineEntity extends MainEntity {
 
 
 	//machine_id, item_id, current_amount, minimum_amount, call_status, times_under_min, calls_amount, name, item_img_name
-	public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus,int timeUnderMin) {
-		super(item_id);
+	public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus,int timeUnderMin, String name) {
+		super(item_id,name);
 		this.itemId=item_id;
 		this.machineId = machineID;
 		this.currentAmount = currentAmount;
@@ -41,6 +41,27 @@ public class ItemInMachineEntity extends MainEntity {
 		else this.isCallOpen=true;
 		this.timeUnderMin=timeUnderMin;
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return super.getName();
+	}
+
+	//machine_id, item_id, current_amount, minimum_amount, call_status, times_under_min, calls_amount, name, item_img_name
+	public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus,int timeUnderMin, String name, double price,
+			String manufacturer, String description, String item_img_nam) {
+		super(item_id, name, price,manufacturer,  description,item_img_nam);
+		this.itemId=item_id;
+		this.machineId = machineID;
+		this.currentAmount = currentAmount;
+		this.callStatus = callStatus;
+		if(this.callStatus.equals(callStatus.NotOpened))
+			this.isCallOpen=false;
+		else this.isCallOpen=true;
+		this.timeUnderMin=timeUnderMin;
+	}
+	
 	public int getTimeUnderMin() {
 		return timeUnderMin;
 	}

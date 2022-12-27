@@ -112,7 +112,7 @@ public class HomePageController {
 			break;
 
 		case supplyWorker:
-			setBtn(topBtn, "Update supply", "Update supplies for item(s)", null);
+			setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
 			break;
 
 		// not existing i think
