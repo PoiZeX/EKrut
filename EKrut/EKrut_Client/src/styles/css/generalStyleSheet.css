@@ -266,7 +266,7 @@
 
 .table-row-cell:hover {
     -fx-background-color: transparent;
-    -fx-text-background-color: orange;
+    /*-fx-text-background-color: orange;*/
 }
 
 /*
