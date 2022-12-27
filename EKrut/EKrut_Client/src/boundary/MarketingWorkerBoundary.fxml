@@ -38,7 +38,7 @@
             <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitle" text="Sales Management" underline="true" />
+            <Label alignment="CENTER" lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitle" text="Active sales" underline="true" />
          </children>
       </GridPane>
    </top>
@@ -47,7 +47,7 @@
          <children>
             <Pane prefHeight="387.0" prefWidth="900.0" VBox.vgrow="NEVER">
                <children>
-                  <TableView fx:id="usersTable" layoutX="19.0" layoutY="43.0" prefHeight="327.0" prefWidth="870.0">
+                  <TableView fx:id="salesTable" layoutX="19.0" layoutY="43.0" prefHeight="327.0" prefWidth="870.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -76,19 +76,19 @@
                         <Font name="Calibri" size="12.0" />
                      </font>
                      <graphic>
-                        <ImageView fx:id="saveBtn" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
+                        <ImageView fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
                            <image>
                               <Image url="@../styles/icons/038-save.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="refreshBtn1" mnemonicParsing="false" onAction="#refresh" prefHeight="70.0" prefWidth="80.0" styleClass="Button-NoBG">
+                  <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#refresh" prefHeight="70.0" prefWidth="80.0" styleClass="Button-NoBG">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
                      <graphic>
-                        <ImageView fx:id="refreshBtn" fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
+                        <ImageView fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
                            <image>
                               <Image url="@../styles/icons/043-sync.png" />
                            </image>
