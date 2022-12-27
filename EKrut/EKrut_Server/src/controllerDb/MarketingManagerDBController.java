@@ -53,6 +53,7 @@ public class MarketingManagerDBController {
 		Date startD, endD;
 		Time startT, endT;
 		SaleStatus saleStatus;
+		
 		try {
 			if (MySqlClass.getConnection() == null) {
 				return;

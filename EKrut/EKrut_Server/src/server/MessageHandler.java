@@ -95,6 +95,12 @@ public class MessageHandler {
 		case RequestItemsInMachineUpdateFromServer:
 			SupplyManagmentDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
+		case RequestUpdateSales:
+			break;
+		case RequestSalesFromServer:
+			MarketingManagerDBController.getSales(client);
+			break;
+		
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

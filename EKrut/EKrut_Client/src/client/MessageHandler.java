@@ -7,6 +7,7 @@ import common.Message;
 import common.TaskType;
 import controller.ItemsController;
 import controllerGui.LoginController;
+import controllerGui.MarketingWorkerController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.SupplyManagmentController;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
+import entity.SaleEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
 import entity.ItemInMachineEntity;
@@ -77,6 +79,7 @@ public class MessageHandler {
 			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
+			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
 			break;
 		
 			
