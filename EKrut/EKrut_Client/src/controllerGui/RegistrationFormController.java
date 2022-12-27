@@ -176,25 +176,29 @@ public class RegistrationFormController{
 				usernameTxtField.setStyle("-fx-border-color: none;");
 				usernameErrorLabel.setText("");
 			}
+//			else {
+//				String[] usernameText = {currentUsername};
+//				chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, usernameText));
+//	    		while (RecievedData == false) {
+//	    			try {
+//	    				Thread.sleep(100);
+//	    			} catch (InterruptedException e) {
+//	    				e.printStackTrace();
+//	    			}
+//	    		}
+//	    		if (reportDetails.getFirst_name().length() > 0) {
+//	    			usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+//	    			usernameErrorLabel.setText("User already exists!");
+//	    			reportDetails = null;
+//    			}
+//	    		else {
+//					usernameTxtField.setStyle("-fx-border-color: none;");
+//					usernameErrorLabel.setText("");
+//	    		}
+//			}
 			else {
-				String[] usernameText = {currentUsername};
-				chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, usernameText));
-	    		while (RecievedData == false) {
-	    			try {
-	    				Thread.sleep(100);
-	    			} catch (InterruptedException e) {
-	    				e.printStackTrace();
-	    			}
-	    		}
-	    		if (reportDetails.getFirst_name().length() > 0) {
-	    			usernameTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    			usernameErrorLabel.setText("User already exists!");
-	    			reportDetails = null;
-    			}
-	    		else {
-					usernameTxtField.setStyle("-fx-border-color: none;");
-					usernameErrorLabel.setText("");
-	    		}
+				usernameTxtField.setStyle("-fx-border-color: none;");
+				usernameErrorLabel.setText("");
 			}
 			
     	});
