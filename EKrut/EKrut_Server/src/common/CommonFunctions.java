@@ -59,36 +59,4 @@ public class CommonFunctions {
 
 		}, num);
 	}
-
-	
-	public static void generateReportsDB(String reportType, String month, String year) {
-		switch (reportType) {
-		case "clients":
-			generateClientsReport(month, year);
-			break;
-		case "orders":
-			generateOrdersReport(month, year);
-			break;
-		case "supply":
-			break;
-		}
-	}
-
-	private static void generateClientsReport(String month, String year) {
-		String query = "";
-		try {
-			if (MySqlClass.getConnection() == null)
-				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement psGet = conn.prepareStatement(query);
-			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
-			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
-			ResultSet res = psGet.executeQuery();
-			while (res.next()) 
-			{
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-	}
 }
