@@ -97,9 +97,12 @@ public class SupplyManagmentController {
     public static ObservableList<ItemInMachineEntity> itemsInMachineLst=FXCollections.observableArrayList();
     public static ObservableList<MachineEntity> machineLst=FXCollections.observableArrayList();
     private MachineEntity machine;
-    static ArrayList<ItemInMachineEntity> toUpdate =new ArrayList<ItemInMachineEntity>();;
+    private  ArrayList<ItemInMachineEntity> toUpdate =new ArrayList<>();;
 	ArrayList<TableCell<ItemInMachineEntity, Boolean>> checkboxCellsList = new ArrayList<>();
-    /** Setup screen before launching view*/
+  
+	
+	
+	/** Setup screen before launching view*/
     @FXML
 		public void initialize() throws Exception {
     		getMachinesInRegion(CommonData.getMachines());
@@ -107,9 +110,7 @@ public class SupplyManagmentController {
 	    	machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
-					
 					machine=machineCmb.getValue();
-					
 					if (!machine.equals(null))
 					{
 						saveChangesBtn.setDisable(false);
@@ -119,7 +120,6 @@ public class SupplyManagmentController {
 						
 					}
 					setupTable(machine.machineId);
-					
 				}
 			});
 	    	
@@ -127,7 +127,7 @@ public class SupplyManagmentController {
     /** press refresh button to refresh table and item displayed ask from data base to load updated table*/
     @FXML
     void refresh(ActionEvent event) {
-    	
+    	setupTable(machine.machineId);
     }
     /** save changes that was made in the item */
     @FXML
@@ -148,88 +148,89 @@ public class SupplyManagmentController {
     	
     	if (oldMinAmount!=newMinAmount) {
     		machine.setMinamount(newMinAmount);
-    		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount,machine));//TODO
+    		for(MachineEntity m : machineLst) {
+    			if(m.machineId==machine.machineId) {
+    				m.setMinamount(newMinAmount);
+    			}
+    		}
+    		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount,machine));
     		System.out.println("Pop up - the new minimum amount has been updated \n" 
-    		+"if you want to see an updated list press the refresh button");}
+    		+"if you want to see an updated list press the refresh button");
     	}
+    }
     	
  
     /** send a task to the workers for update the requested items*/
     @FXML
     void send(ActionEvent event) {
-    	if(toUpdate.isEmpty()||toUpdate.equals(null)) //TODO why is empty
+    	if(toUpdate.isEmpty()) //TODO why is empty
     		System.out.println("Popup - no new items to open calls for");
-    	
-    
-    	for(ItemInMachineEntity i : toUpdate) 
+    	else {for(ItemInMachineEntity i : toUpdate) {
     			i.setCallStatus(ItemInMachineEntity.Call_Status.Processed);
-    		
-    	chat.acceptObj(new Message(TaskType.RequestItemsCallStatusUpdateFromServer,toUpdate));//TODO add to msg handler and on server
-    	
+    			System.out.println(i.toString());}
+    	chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer,toUpdate));}//TODO add to msg handler and on server
+    	toUpdate.clear();
     }
+    
     /**get from DB the data for setting the table, and puttin a preview ('eye') button on the preview col*/
     @SuppressWarnings("unchecked")
 	private void setupTable(int machineId) {
     	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
     	supplyMangmentTbl.setItems(itemsInMachineLst);
-    	
+    	supplyMangmentTbl.setEditable(true);
     	// factory
-    			
     	itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
     	currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
     	callStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>("callStatus"));
     	refillcol.setCellFactory(column -> {
     		TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-    		checkboxCellsList.add(cell); // save the checkbox
-    		
-    		
-    	
-    		cell.setOnMouseClicked(event -> {
-    			if (event.getClickCount() > 0) {
-    				CheckBox checkBox = (CheckBox) cell.getGraphic();
-    				ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
-    				
-    				if (checkBox != null) {
-    					if(item.isCallOpen())
-        	    			cell.setDisable(true);
-    		
-    					if (checkBox.isSelected()) {
-    						checkBox.setSelected(false);
-    						toUpdate.remove(item);} 
-    					else {
-    						checkBox.setSelected(true);
-    						toUpdate.add(item);		
-    				}
+    			checkboxCellsList.add(cell); // save the checkbox
+    			
+    			cell.setOnMouseClicked(event -> {
+    				if (event.getClickCount() > 0) {
+    					CheckBox checkBox = (CheckBox) cell.getGraphic();
+    					ItemInMachineEntity item = (ItemInMachineEntity)cell.getTableRow().getItem();
+    					if (checkBox != null) {
+    						/*	if(item.isCallOpen())
+        	    			//		cell.setDisable(true);*/
+    						if (checkBox.isSelected()) {
     					
+    							checkBox.setSelected(true);
+    							toUpdate.add(item);		
+    						} 
+    						else {
+    							checkBox.setSelected(false);
+    							toUpdate.remove(item);
+    					
+    						}
     				}
     			}
-    		});
+    		}
+    		);
     		return cell;
     	});
     	colorTableRows();
     	return;		
     		
      }
-   
-    /**get machines and put them in a combo box
+       /**get machines and put them in a combo box
      * @param arrayList */
     public void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
     	String region =NavigationStoreController.connectedUser.getRegion();
     	for(MachineEntity m : arrayList) {
     		if(region.equals(m.regionName))
-    			{
-    			machineLst.add(m);
-    			}
+    			machineLst.add(m);	
     	}
 
     }
 
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
-		if(!itemsInMachineLst.isEmpty())
+		if(!itemsInMachineLst.isEmpty()) {
 			itemsInMachineLst.clear();
-		itemsInMachineLst.addAll(obj);
 		
+			}
+		itemsInMachineLst.addAll(obj);
 	}
 	
 	private void colorTableRows() {

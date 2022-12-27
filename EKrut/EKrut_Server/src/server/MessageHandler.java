@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import common.Message;
 import common.TaskType;
 import controllerDb.CommonDataDBController;
@@ -15,10 +16,11 @@ import controllerDb.SupplyManagmentDBController;
 import controllerDb.SupplyReportDBController;
 import controllerDb.UsersManagementDBController;
 import entity.DeliveryEntity;
+import entity.ItemInMachineEntity;
 import entity.MachineEntity;
+import entity.SaleEntity;
 import entity.SubscriberEntity;
 import entity.UserEntity;
-import entity.SaleEntity;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
@@ -88,9 +90,10 @@ public class MessageHandler {
 			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
 		case RequestUpdateMachineMinAmount:
-		//	SupplyManagmentDBController.updateMachineMinAmount((MachineEntity)obj,client);
+			SupplyManagmentDBController.updateMachineMinAmount((MachineEntity)obj,client);
 			break;
-		case RequestItemsCallStatusUpdateFromServer:
+		case RequestItemsInMachineUpdateFromServer:
+			SupplyManagmentDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
 			break;

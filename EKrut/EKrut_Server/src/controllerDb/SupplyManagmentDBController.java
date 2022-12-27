@@ -5,12 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 
 import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
+import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
 import entity.OrderReportEntity;
 import entity.ItemInMachineEntity.Call_Status;
@@ -38,9 +40,10 @@ public class SupplyManagmentDBController {
 			PreparedStatement ps = conn
 					.prepareStatement("SELECT  *"
 							+" FROM  ekrut.item_in_machine"
-							+" WHERE item_in_machine.machine_id=(?) AND item_in_machine.current_amount <= (?);");
+							+" WHERE item_in_machine.machine_id=(?) AND (item_in_machine.current_amount <= (?) OR  item_in_machine.call_status!=(?));");
 			ps.setInt(1,machineId);
 			ps.setInt(2,minAmount);
+			ps.setString(3, ItemInMachineEntity.Call_Status.NotOpened.toString());
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
 			
@@ -64,8 +67,53 @@ public class SupplyManagmentDBController {
 	}
 
 	public static void updateMachineMinAmount(MachineEntity obj, ConnectionToClient client) {
+		Statement stmt;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+
+			stmt = MySqlClass.getConnection().createStatement();
+			MachineEntity machine =obj;
+			PreparedStatement ps=con.prepareStatement("UPDATE ekrut.machines SET min_amount=(?) WHERE machine_id=(?);");{
+			ps.setInt(1, machine.getMinamount());
+			ps.setInt(2,  machine.machineId);
+			ps.executeUpdate();
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		// TODO Auto-generated method stub
+		
+	}
+    /** updateItemsInMachineUpdate method : 
+     * input - array list  of ItemInMachineEntity can update the fields of : 
+     *  int currentAmount,Call_Status callStatus,int timeUnderMin */
+	public static void updateItemsInMachineUpdate(ArrayList<ItemInMachineEntity> itemsInMachine,ConnectionToClient client) {
+		Statement stmt;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+
+			stmt = MySqlClass.getConnection().createStatement();
+			for (ItemInMachineEntity item : itemsInMachine) {
+				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.item_in_machine SET current_amount=(?), call_status=(?), "
+						+ "times_under_min=(?) WHERE  machine_id=(?) AND item_id=(?) ;");
+				ps.setInt(1, item.getCurrentAmount());
+				ps.setString(2, item.getCallStatus().toString());
+				ps.setInt(3, item.getTimeUnderMin());
+				ps.setInt(4, item.getMachineId());
+				ps.setInt(5, item.getId());
+				ps.executeUpdate();
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
