@@ -78,19 +78,19 @@ public class UsersManagementDBController {
 		return;
 	}
 	/**
-	 * Handles the query of getting the from DB
+	 * Handles the query of getting the user from DB
 	 * 
-	 * @return
+	 * @return user
 	 */
 	
 	public static UserEntity getUserFromDB(String[] details, ConnectionToClient client) {
 		String searchWhat = details[0];
-		String query = "SELECT * FROM ekrut.users WHERE id_number=" + searchWhat + " AND username='';";
+		String query = "SELECT * FROM ekrut.users WHERE id_number=" + searchWhat + " AND role_type='user';";
 		try {
 			Integer.parseInt(searchWhat);
 		} catch (Exception e) {
 			searchWhat = "'" + searchWhat + "'";
-			query = "SELECT * FROM ekrut.users WHERE username=" + searchWhat + ";";
+			query = "SELECT * FROM ekrut.users WHERE username=" + searchWhat + " AND role_type='user';";
 		}
 		UserEntity user = new UserEntity();
 		try {
@@ -117,5 +117,35 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	/**
+	 * Handles the query of changing the user's role type in DB
+	 * 
+	 * @return user
+	 */
+	
+	public static boolean updateUserRoleType(String[] details, ConnectionToClient client) {
+		String searchWhat = details[1];
+		String searchWho = details[0];
+		String query = "UPDATE users SET role_type=? WHERE id_number=?;";
+
+		try {
+			if (MySqlClass.getConnection() == null)
+				return false;
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, searchWhat);
+			ps.setString(2, searchWho);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient(new Message(TaskType.ReceiveChangeUserRoleTypeInDB, "Changed Successfully"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 }

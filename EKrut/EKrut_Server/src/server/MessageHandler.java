@@ -49,9 +49,14 @@ public class MessageHandler {
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
+		// Registartion Form	//
 		case RequestUserInfoFromServerDB:
 			UsersManagementDBController.getUserFromDB((String[]) obj, client);
 			break;
+		case RequestChangeUserRoleTypeInDB:
+			UsersManagementDBController.updateUserRoleType((String[]) obj, client);
+			break;
+		//*********************//
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
 			break;

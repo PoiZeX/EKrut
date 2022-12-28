@@ -27,7 +27,7 @@ import entity.SupplyReportEntity;
 import entity.UserEntity;
 public class MessageHandler {
 
-	public static void Handle(ChatClient thisClient,Message msg) {
+	public static void Handle(ChatClient thisClient, Message msg) {
 		Message msgFromServer = (Message) msg;
 		TaskType task = msgFromServer.getTask();
 		Object obj = msgFromServer.getObject();
@@ -48,9 +48,14 @@ public class MessageHandler {
 		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
+		// Registration Form
 		case ReceiveUserInfoFromServerDB:
 			RegistrationFormController.recieveDataFromServer((UserEntity) obj);
 			break;
+		case ReceiveChangeUserRoleTypeInDB:
+			RegistrationFormController.recieveMessageFromServer((String) obj);
+			break;
+		//
 		case ReceiveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 			break;

@@ -169,30 +169,36 @@
 /*------------------------------------------------ combo box----------------------------------------------------------- */
 .ComboBox{
 	-fx-text-base-color: #FFFFFF;
-		-fx-font-size: 12pt;	
+	-fx-font-size: 12pt;
+    -fx-border-radius: 15;
 }
 /*litle arrow */
 .combo-box .arrow{
     -fx-background-color:#FFFFFF;
+    -fx-border-radius: 15;
 }
 /* arrow background */
 .combo-box .arrow-button{
     -fx-background-color:#43B0F1;
     -fx-border-style:none;
+    -fx-border-radius: 15;
 }
 
 .combo-box .list-cell{
     -fx-background-color:#43B0F1;
    -fx-text-alignment:center;
+   -fx-border-radius: 15;
 }
 
 .combo-box .arrow-button:hover{
     -fx-background-color:#057DCD;
     -fx-border-style:none;
+    -fx-border-radius: 15;
 }
 
 .combo-box:hover{
     -fx-background-color:#057DCD;
+    -fx-border-radius: 15;
 }
 /*------------------------------------------------ CHARTS ---------------------------------------------------------------- */
 

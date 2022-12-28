@@ -42,6 +42,10 @@ public enum TaskType {
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
 	
+	// Update Database
+	RequestChangeUserRoleTypeInDB,
+	ReceiveChangeUserRoleTypeInDB,
+	
 	// Common Data Initialization //
 	InitRegions,
 	InitMachines,
