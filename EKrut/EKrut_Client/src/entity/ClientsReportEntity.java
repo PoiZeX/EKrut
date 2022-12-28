@@ -5,21 +5,23 @@ import common.CommonFunctions;
 
 public class ClientsReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
-	private String description, supplyMethods, totalOrders;
-	private LinkedHashMap<String, Integer> totalSalesArr, supplyMethodsArr;
+	private String description, supplyMethods, totalOrders, userStatus;
+	private LinkedHashMap<String, Integer> totalSalesArr, supplyMethodsArr, userStatusArr;
 
 	public ClientsReportEntity() {
 		super();
 		this.description = "noreport";
 	}
 
-	public ClientsReportEntity(int id, String description, String supplyMethods, String totalOrders, String month,
+	public ClientsReportEntity(int id, String description, String supplyMethods, String totalOrders, String userStatus, String month,
 			String year, String region) {
 		super(id, month, year, region);
 		this.totalOrders = totalOrders;
 		setSupplyMethods(supplyMethods);
 		setDescription(description);
+		setUserStatus(userStatus);
 	}
+
 
 	public String getDescription() {
 		return description;
@@ -38,6 +40,10 @@ public class ClientsReportEntity extends ReportEntity {
 		this.supplyMethods = supplyMethods;
 		parserSupplyMethods(supplyMethods);
 	}
+	private void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+		parseUserStatus(userStatus);
+	}
 
 	public String getTotalOrders() {
 		return totalOrders;
@@ -49,6 +55,10 @@ public class ClientsReportEntity extends ReportEntity {
 
 	public LinkedHashMap<String, Integer> getTotalSalesArr() {
 		return totalSalesArr;
+	}
+
+	public LinkedHashMap<String, Integer> getUserStatusArr() {
+		return userStatusArr;
 	}
 
 	public LinkedHashMap<String, Integer> getSupplyMethodsArr() {
@@ -82,4 +92,20 @@ public class ClientsReportEntity extends ReportEntity {
 		supplyMethodsArr.put("On-site", Integer.parseInt(supplyMethodsSplit[0]));
 		supplyMethodsArr.put("Pickup", Integer.parseInt(supplyMethodsSplit[1]));
 	}
+
+
+	private void parseUserStatus(String userStatus2) {
+		userStatusArr = new LinkedHashMap<>();
+		if (CommonFunctions.isNullOrEmpty(userStatus))
+			return;
+		String[] userStatusDetails = userStatus.split(",");
+		if (userStatusDetails.length != 2) {
+			description = "noreport";
+			return;
+		}
+		userStatusArr.put("Subscribers", Integer.parseInt(userStatusDetails[0]));
+		userStatusArr.put("Registered", Integer.parseInt(userStatusDetails[1]));
+		
+	}
+
 }
