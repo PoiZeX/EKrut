@@ -68,8 +68,8 @@ public class MarketingManagerDBController {
 				endT=rs.getTime(7);
 				saleStatus=SaleStatus.valueOf(rs.getString(8));
 				saleEntity = new SaleEntity(rs.getString(2), rs.getString(3),LocalDate.of(startD.getYear(), startD.getMonth(),startD.getDate()) ,
-						LocalDate.of(endD.getYear(), endD.getMonth(),endD.getDate()), LocalTime.of(startT.getHours(), startT.getMinutes())
-						,LocalTime.of(endT.getHours(), endT.getMinutes()),saleStatus);
+						LocalDate.of(endD.getYear(), endD.getMonth(),endD.getDate()), LocalTime.parse( rs.getString(6))
+						,LocalTime.parse( rs.getString(7)),saleStatus);
 				try {
 					client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, saleEntity)); // finally send the entity
 				} catch (IOException e) {

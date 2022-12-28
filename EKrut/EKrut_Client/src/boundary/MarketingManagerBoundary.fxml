@@ -5,6 +5,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -38,15 +41,15 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints />
-                <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="123.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="123.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="123.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="endDateLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose end date:" GridPane.rowIndex="3">
+                  <Label fx:id="endDateLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose days:" GridPane.rowIndex="3">
                      <font>
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
@@ -103,10 +106,18 @@
                         <Insets />
                      </GridPane.margin>
                   </DatePicker>
-                  <DatePicker fx:id="endDatePicker" prefHeight="32.0" prefWidth="144.0" promptText="choose end date" styleClass="date-picker" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
                   <ComboBox fx:id="typeCmb" prefHeight="26.0" prefWidth="144.0" promptText="Sale type" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
                   <ComboBox fx:id="startTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
                   <ComboBox fx:id="endTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                  <MenuButton fx:id="daysMb" mnemonicParsing="false" prefWidth="144.0" text="MenuButton" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                    <items>
+                      <MenuItem fx:id="menuItem" mnemonicParsing="false">
+                           <graphic>
+                              <ListView fx:id="daysLst" prefHeight="150.0" prefWidth="144.0" />
+                           </graphic>
+                        </MenuItem>
+                    </items>
+                  </MenuButton>
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" top="10.0" />

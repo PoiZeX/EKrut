@@ -3,6 +3,8 @@ package controllerGui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import Store.NavigationStoreController;
 import client.ClientController;
 import common.CustomerStatus;
 import common.DeliveryStatus;
@@ -26,14 +28,10 @@ import javafx.scene.control.Label;
 
 public class DeliveryManagementController {
 
-	@FXML
-	private TableColumn<DeliveryEntity, String> actualTimeCol;
 
     @FXML
     private TableColumn<DeliveryEntity, String> addressCol;
     
-    @FXML
-    private TableColumn<DeliveryEntity, String> cityCol;
 
     @FXML
     private TableColumn<DeliveryEntity, Integer> customerIdCol;
@@ -110,9 +108,7 @@ public class DeliveryManagementController {
 		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
 		customerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("customerId"));
 		addressCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("address"));
-		cityCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("city"));
 		estimatedTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
-		actualTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("actualTime"));
 		deliveryStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatus>("deliveryStatus"));
 		customerStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, CustomerStatus>("customerStatus"));
 
@@ -122,7 +118,7 @@ public class DeliveryManagementController {
 		statusLst.addAll(DeliveryStatus.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
 		
-		/* Handle delivery status edit:
+		/** Handle delivery status edit:
 		 * can change from "pendingApproval" to "outForDelivery"
 		 * or from "outForDelivery" to "done".
 		 * in other cases, the changes aren't saved*/
@@ -168,7 +164,7 @@ public class DeliveryManagementController {
 
 	}
 
-	/*
+	/**
 	 * calculae the estimated delivery time Between 6:00 to 16:00 the estimated
 	 * arrival time is within 4 hours. Between 00:00 to 06:00 the estimated arrival
 	 * time is within 12 hours. Between 16:00 to 00:00 the estimated arrival time is
@@ -201,7 +197,9 @@ public class DeliveryManagementController {
 
 	/* adding the deliveryEntity to deliveries list */
 	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
-		deliveries.add(deliveryEntity);
+		String region =NavigationStoreController.connectedUser.getRegion();
+		if(deliveryEntity.getRegion().equals(region))
+			deliveries.add(deliveryEntity);
 	}
 
 }

@@ -6,80 +6,111 @@ import common.CustomerStatus;
 import common.DeliveryStatus;
 
 public class DeliveryEntity implements Serializable{
-	private String actualTime,estimatedTime;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String estimatedTime;
 	private int customerId,orderId;
-	//private AddressEntity address;
-	private String address, city; //change later to AddressEntity
+	private String address, region; //change later to AddressEntity
 	private DeliveryStatus deliveryStatus;
 	private CustomerStatus customerStatus;
 
 	
-	
 
-	public DeliveryEntity(int orderId,int costumerId, String address,String city, String estimatedTime, String actualTime,
-			DeliveryStatus deliveryStatus,CustomerStatus customerStatus) {
-		this.orderId = orderId;
-		this.customerId = costumerId;
-		this.address = address;
-		this.city = city;
+	public DeliveryEntity(int orderId, String region, int customerId,  String address, String estimatedTime,
+			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
+		super();
 		this.estimatedTime = estimatedTime;
-		this.actualTime = actualTime;
+		this.customerId = customerId;
+		this.orderId = orderId;
+		this.address = address;
+		this.region = region;
 		this.deliveryStatus = deliveryStatus;
-		this.customerStatus=customerStatus;
+		this.customerStatus = customerStatus;
 	}
 
 
-
-	public DeliveryEntity(int orderId, int customerId, String address,String city, String estimatedTime ) {
+	public DeliveryEntity(int orderId, String region, int customerId, String address, String estimatedTime ) {
 		this.orderId = orderId;
 		this.customerId = customerId;
 		this.address=address;
-		this.city = city;
+		this.region = region;
 		this.estimatedTime = estimatedTime;
 		this.deliveryStatus = DeliveryStatus.pendingApproval;
 		this.customerStatus= CustomerStatus.NOT_APPROVED;
 	}
-	
 
-	public String getCity() {
-		return city;
-	}
-	public String getActualTime() {
-		return actualTime;
-	}
-	public void setActualTime(String actualTime) {
-		this.actualTime = actualTime;
-	}
+
 	public String getEstimatedTime() {
 		return estimatedTime;
 	}
+
+
 	public void setEstimatedTime(String estimatedTime) {
 		this.estimatedTime = estimatedTime;
 	}
+
+
 	public int getCustomerId() {
 		return customerId;
 	}
+
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+
 	public int getOrderId() {
 		return orderId;
 	}
-	public DeliveryStatus getDeliveryStatus() {
-		return deliveryStatus;
+
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
-	public void setDeliveryStatus(DeliveryStatus status) {
-		this.deliveryStatus = status;
-	}
+
+
 	public String getAddress() {
 		return address;
 	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+
+	public DeliveryStatus getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+
+	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
+
 	public CustomerStatus getCustomerStatus() {
 		return customerStatus;
 	}
+
+
 	public void setCustomerStatus(CustomerStatus customerStatus) {
 		this.customerStatus = customerStatus;
 	}
-	/*
-	public AddressEntity getAddress() {
-		return address;
-	}*/
+	
+
 	
 }
