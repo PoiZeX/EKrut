@@ -11,35 +11,27 @@ public class SaleEntity implements Serializable {
 	} ;
 	
 	private static final long serialVersionUID = 1L;
-	//private int saleId;
-	private String saleType,region;
+	private String saleType, region, days ;
 	private SaleStatus saleStatus;
-	private LocalDate startDate, endDate;
 	private LocalTime startTime, endTime;
 	
 	
 
-	public SaleEntity(String region, String saleType, LocalDate startDate,
-			LocalDate endDate, LocalTime startTime, LocalTime endTime, SaleStatus saleStatus) {
+	public SaleEntity(String region, String saleType,String days, LocalTime startTime, LocalTime endTime, SaleStatus saleStatus) {
 		super();
-		//this.saleId = saleId;
 		this.saleType = saleType;
 		this.region = region;
 		this.saleStatus = saleStatus;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.days=days;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	public SaleEntity(String region, String saleType, LocalDate startDate,
-			LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+	public SaleEntity(String region, String saleType,String days, LocalTime startTime, LocalTime endTime) {
 		super();
-		//this.saleId = saleId;
 		this.saleType = saleType;
 		this.region = region;
-		this.startDate = startDate;
-		this.endDate = endDate;
 		this.startTime = startTime;
+		this.days=days;
 		this.endTime = endTime;
 		this.saleStatus = SaleStatus.NotActive;
 	}
@@ -62,18 +54,6 @@ public class SaleEntity implements Serializable {
 	public void setSaleStatus(SaleStatus saleStatus) {
 		this.saleStatus = saleStatus;
 	}
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
 	public LocalTime getStartTime() {
 		return startTime;
 	}
@@ -86,11 +66,11 @@ public class SaleEntity implements Serializable {
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
-	public String getStartDateToString() {
-		return startDate.toString();
+	public String getDays() {
+		return days;
+	}
+	public void setDays(String days) {
+		this.days = days;
 	}
 
-	public String getEndDateToString() {
-		return endDate.toString();
-	}
 }

@@ -47,17 +47,16 @@
          <children>
             <Pane prefHeight="387.0" prefWidth="900.0" VBox.vgrow="NEVER">
                <children>
-                  <TableView fx:id="salesTable" layoutX="19.0" layoutY="43.0" prefHeight="327.0" prefWidth="870.0">
+                  <TableView fx:id="salesTable" layoutX="46.0" layoutY="46.0" prefHeight="327.0" prefWidth="809.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <columns>
                         <TableColumn fx:id="saleTypeCol" prefWidth="151.0" text="Sale type" />
-                        <TableColumn fx:id="startDateCol" prefWidth="140.0" text="Start date" />
-                        <TableColumn fx:id="endDateCol" prefWidth="133.0" text="End date" />
-                        <TableColumn fx:id="startTimeCol" prefWidth="130.0" text="Start time" />
-                        <TableColumn fx:id="endTimeCol" prefWidth="141.0" text="End time" />
-                        <TableColumn fx:id="statusCol" prefWidth="173.0" text="Status" />
+                        <TableColumn fx:id="daysCol" prefWidth="224.0" text="Days" />
+                        <TableColumn fx:id="startTimeCol" prefWidth="138.0" text="Start time" />
+                        <TableColumn fx:id="endTimeCol" prefWidth="147.0" text="End time" />
+                        <TableColumn fx:id="statusCol" prefWidth="126.0" text="Status" />
                      </columns>
                   </TableView>
                </children>

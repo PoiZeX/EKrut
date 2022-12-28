@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -24,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -53,37 +55,25 @@ public class MarketingManagerController {
 
     @FXML
     private Button createBtn;
-
+    
     @FXML
     private Label endDateLbl;
-
+    
     @FXML
     private ComboBox<LocalTime> endTimeCmb;
-
+    
     @FXML
     private Label errLbl;
-
+    
     @FXML
     private ComboBox<String> regionCmb;
-
+    
     @FXML
     private Label regionLabel;
-
-    @FXML
-    private Label startDateLbl;
-    @FXML
-    private MenuItem menuItem;
-
-    @FXML
-    private DatePicker startDatePicker;
+    
     @FXML
     private MenuButton daysMb;
-    //@FXML
-    //private DatePicker endDatePicker;
-    @FXML
-    private ListView<CheckBox> daysLst;
-    @FXML
-    private ComboBox<String> daysCmb;
+    
     @FXML
     private ComboBox<LocalTime> startTimeCmb;
 
@@ -98,9 +88,9 @@ public class MarketingManagerController {
     private LocalDate startDate, endDate; 
     private String saleType;
     private String region;
-    
     private TooltipSetter tooltip;
     
+    ArrayList<String> daysArr=new ArrayList<>();
     ClientController chat = HostClientController.chat; // define the chat for the controller
     
     
@@ -110,8 +100,13 @@ public class MarketingManagerController {
     	String errMsg=validateFields();
     	errLbl.setText(errMsg);
     	if(errMsg.equals("")) {
-    		SaleEntity saleEntity=new SaleEntity(region,saleType,startDate, endDate, startTime, endTime);
+    		StringBuilder days=new StringBuilder(daysArr.toString());
+    		days.deleteCharAt(0);
+    		days.deleteCharAt(days.length()-1);
+    		System.out.println(days.toString());
+    		SaleEntity saleEntity=new SaleEntity(region,saleType,days.toString(), startTime, endTime);
     		chat.acceptObj(new Message(TaskType.RequestInsertNewSale, saleEntity));
+    		System.out.println("Popup: Yay! succeeding in creating a new sale\n");
     	}
     }
     
@@ -119,7 +114,7 @@ public class MarketingManagerController {
 	/** Setup screen before launching view */
 	public void initialize() throws Exception {
     	initTimeCmb();
-    	 initDaysListView();
+    	 initDays();
     	//initDatePickers();
     	ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
 		regionCmb.setItems(regions);
@@ -149,23 +144,21 @@ public class MarketingManagerController {
 				endTime=endTimeCmb.getValue();
 			}
 		});
-		startDatePicker.addEventHandler(DatePicker.ON_HIDING, new EventHandler<Event>() {
+	
+		daysMb.setOnAction(event -> {
+			event.consume();
+		});
+	
+		
+		
+		
+		/*
+		 * 	startDatePicker.addEventHandler(DatePicker.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				startDate=startDatePicker.getValue();
 			}
 		});
-		//VBox vbox = new VBox();
-		//vbox.getChildren().add(menuItem);
-		//CustomMenuItem cm = new CustomMenuItem();
-		
-		/*daysLst.setOnMouseClicked(event -> {
-			  // do something
-			  event.consume();
-			});*/
-		
-		
-		/*
 		 * endDatePicker.addEventHandler(DatePicker.ON_HIDING, new EventHandler<Event>()
 		 * {
 		 * 
@@ -187,12 +180,14 @@ public class MarketingManagerController {
      * **/
     String validateFields() {
     	String msg="";
-    	if(regionCmb.getSelectionModel().isEmpty() && typeCmb.getSelectionModel().isEmpty())
-    		msg="Please Select Region and Sale type";
+    	if(regionCmb.getSelectionModel().isEmpty() && typeCmb.getSelectionModel().isEmpty() && daysArr.isEmpty())
+    		msg="Please Select Region, Days and Sale type";
     	else if(regionCmb.getSelectionModel().isEmpty())
     		msg="Please Select Region";
     	else if(typeCmb.getSelectionModel().isEmpty())
     		msg="Please Select Sale type";
+    	else if(daysArr.isEmpty())
+    		msg="Please select at least one day";
     	else if(endTime.isBefore(startTime))
     		msg="The end time cannot be before the start time!";
 		return msg;
@@ -219,15 +214,29 @@ public class MarketingManagerController {
     /** Initialize listView of days
      * 
      */
-    private void initDaysListView() {
-		CheckBox monday = new CheckBox("Monday"); 
-		CheckBox tuesday = new CheckBox("Tuesday");
-		CheckBox wednesday = new CheckBox("Wednesday");
-		CheckBox thursday = new CheckBox("Thursday");
-		CheckBox friday = new CheckBox("Friday");
-		CheckBox saturday = new CheckBox("Saturday"); 
-		CheckBox sunday = new CheckBox("Sunday");
-		daysLst.getItems().addAll(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+    private void initDays() {
+		CustomMenuItem monday = new CustomMenuItem(new CheckBox("Monday")); 
+		CustomMenuItem tuesday = new CustomMenuItem(new CheckBox("Tuesday"));
+		CustomMenuItem wednesday = new CustomMenuItem(new CheckBox("Wednesday"));
+		CustomMenuItem thursday = new CustomMenuItem(new CheckBox("Thursday"));
+		CustomMenuItem friday = new CustomMenuItem(new CheckBox("Friday"));
+		CustomMenuItem saturday =new CustomMenuItem( new CheckBox("Saturday")); 
+		CustomMenuItem sunday = new CustomMenuItem(new CheckBox("Sunday"));
+		CustomMenuItem[] lst = new CustomMenuItem[] {sunday,monday,tuesday,wednesday,thursday,friday,saturday};
+		for (CustomMenuItem item : lst) {
+			item.setHideOnClick(false);
+			daysMb.getItems().add(item);
+			((CheckBox)item.getContent()).setOnMouseClicked(event -> {
+				String currDay = ((CheckBox)event.getSource()).getText();
+				if (((CheckBox)event.getSource()).isSelected()) {
+					daysArr.add(currDay);
+				}
+				else {
+					daysArr.remove(currDay);
+				}
+			});
+			
+		}
 		 
 		 
     	

@@ -31,14 +31,13 @@ public class MarketingManagerDBController {
 			if (con == null)
 				return;
 			
-			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, sale_type, start_date, end_date, start_time, end_time) "
-					+ "VALUES (?, ?, ?, ?, ?, ?);");
+			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, days, sale_type, start_time, end_time) "
+					+ "VALUES (?, ?, ?, ?, ?);");
 			ps.setString(1,saleEntity.getRegion());
 			ps.setString(2,saleEntity.getSaleType());
-			ps.setString(3, saleEntity.getStartDateToString());
-			ps.setString(4, saleEntity.getEndDateToString());
-			ps.setString(5, saleEntity.getStartTime().toString());
-			ps.setString(6, saleEntity.getEndTime().toString());
+			ps.setString(3,saleEntity.getDays());
+			ps.setString(4, saleEntity.getStartTime().toString());
+			ps.setString(5, saleEntity.getEndTime().toString());
 			
 			ps.executeUpdate();
 
@@ -62,14 +61,10 @@ public class MarketingManagerDBController {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.sales;");
 			
 			while (rs.next()) {
-				startD= rs.getDate(4);
-				endD=rs.getDate(5);
-				startT=rs.getTime(6);
-				endT=rs.getTime(7);
-				saleStatus=SaleStatus.valueOf(rs.getString(8));
-				saleEntity = new SaleEntity(rs.getString(2), rs.getString(3),LocalDate.of(startD.getYear(), startD.getMonth(),startD.getDate()) ,
-						LocalDate.of(endD.getYear(), endD.getMonth(),endD.getDate()), LocalTime.parse( rs.getString(6))
-						,LocalTime.parse( rs.getString(7)),saleStatus);
+				
+				saleStatus=SaleStatus.valueOf(rs.getString(7));
+				saleEntity = new SaleEntity(rs.getString(2), rs.getString(3), rs.getString(4)
+						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
 				try {
 					client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, saleEntity)); // finally send the entity
 				} catch (IOException e) {

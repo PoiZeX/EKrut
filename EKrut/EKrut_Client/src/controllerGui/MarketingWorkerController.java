@@ -31,15 +31,10 @@ import utils.TooltipSetter;
 
 public class MarketingWorkerController {
 
-    @FXML
-    private TableColumn<SaleEntity, LocalDate> endDateCol;
 
     @FXML
     private TableColumn<SaleEntity, LocalTime> endTimeCol;
-
-    @FXML
-    private TableColumn<SaleEntity, LocalDate> startDateCol;
-
+ 
     @FXML
     private TableColumn<SaleEntity, LocalTime> startTimeCol;
 
@@ -51,6 +46,9 @@ public class MarketingWorkerController {
 
     @FXML
     private TableColumn<SaleEntity, SaleType> saleTypeCol;
+
+    @FXML
+    private TableColumn<SaleEntity, String> daysCol;
     
     @FXML
     private Button refreshBtn;
@@ -100,8 +98,7 @@ public class MarketingWorkerController {
 
 		// factory
 		saleTypeCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, String>("saleType"));
-		startDateCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, LocalDate>("startDate"));
-		endDateCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, LocalDate>("endDate"));
+		daysCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, String>("days"));
 		startTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, LocalTime>("startTime"));
 		endTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, LocalTime>("endTime"));
 		statusCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, SaleStatus>("saleStatus"));
@@ -131,7 +128,6 @@ public class MarketingWorkerController {
 	/* adding the saleEntity to sales list */
 	public static void getSalesEntityFromServer(SaleEntity saleEntity) {
 		String region =NavigationStoreController.connectedUser.getRegion();
-		System.out.println(region);
 		if(saleEntity.getRegion().equals(region))
 			sales.add(saleEntity);
 	}
