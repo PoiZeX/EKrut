@@ -118,6 +118,7 @@ public class HomePageController {
 
 
 		default:
+			// TODO: add label to inform the user he needs to contact customer support 
 			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
 		}

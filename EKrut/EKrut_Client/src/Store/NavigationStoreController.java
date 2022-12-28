@@ -50,7 +50,6 @@ public class NavigationStoreController {
 		screenScenes = new HashMap<>();
 		history = new Stack<>();
 		primaryStage = new Stage();
-		// setAllScenes(); // fill the hashMap
 		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.show(); // show primary stage
 	}
@@ -165,7 +164,7 @@ public class NavigationStoreController {
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					if(connectedUser.isLogged_in())
+					if(connectedUser != null && connectedUser.isLogged_in())
 					{
 						connectedUser.setLogged_in(false);  // logout the user
 						HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser)); 

@@ -27,6 +27,18 @@
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
     -fx-background-radius:15;
 }
+
+.GridPaneShadow {
+    -fx-background-color: #E8EEF1;
+    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius: 0;
+}
+
+.GridPaneShadowTop {
+    -fx-background-color: #f6f5f5;
+    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius: 0;
+}
 /*---------------------------------------------------- LABELs-------------------------------------------------- */
 .Label {
 	-fx-text-fill: #8e8e8e;
@@ -104,6 +116,32 @@
 .Button:hover {
     -fx-background-color: #64c6ff;
 }
+
+.ButtonYesOK {
+    -fx-background-color: #2b9800;
+    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-background-radius: 10;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15pt;
+    cursor: pointer;
+}
+
+    .ButtonYesOK:hover {
+        -fx-background-color: #10d005;
+    }
+
+.ButtonNO {
+    -fx-background-color: #c60505;
+    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-background-radius: 10;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15pt;
+    cursor: grab;
+}
+    .ButtonNO:hover {
+        -fx-background-color: #ff4040;
+    }
+
 /*______________________ LOG OUT \ CANCEL BTNS */
 .ButtonLogOut{
 	-fx-background-color:  #FF9414;
