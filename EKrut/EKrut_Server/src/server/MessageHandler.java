@@ -49,14 +49,14 @@ public class MessageHandler {
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
-		// Registartion Form	//
+		// Registartion Form //
 		case RequestUserInfoFromServerDB:
 			UsersManagementDBController.getUserFromDB((String[]) obj, client);
 			break;
 		case RequestChangeUserRoleTypeInDB:
 			UsersManagementDBController.updateUserRoleType((String[]) obj, client);
 			break;
-		//*********************//
+		// *********************//
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
 			break;
@@ -79,12 +79,17 @@ public class MessageHandler {
 
 		case RequestPersonalMessages:
 			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
+			break;
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
 		case SendPersonalMessage:
-			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity)obj);
+			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);
 			break;
+		case RequesManagerInfoFromServerDB:
+			UsersManagementDBController.getRegionManagerFromDB((String[]) obj, client);
+			break;
+
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

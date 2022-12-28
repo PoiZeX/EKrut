@@ -19,37 +19,37 @@ public enum TaskType {
 	ReceiveDeliveriesFromServer,
 	ReceiveItemsFromServer,
 	ReceiveClientsReport,
-	ReceiveSupplyReport,
 	ReceivePersonalMessages,
 	ReceiveOrderReport,
+	ReceiveSupplyReport,
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
 	ReceiveUserInfoFromServerDB,
+	SendPersonalMessage,
+	ReceiveManagerInfoFromServerDB,
 	
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,
 	RequestUserFromServerDB, 
+	RequestUserInfoFromServerDB,
 	RequestSupplyReport,
 	RequestItemsFromServer, 
 	RequestUnapprovedUsers,
 	RequestReport,
 	RequestPersonalMessages,
-	SendPersonalMessage,
 	RequestUpdateDeliveries,
 	RequestDeliveriesFromServer,
 	RequestItemsInMachine,
 	RequestUpdateItemsInMachine,
-	RequestUserInfoFromServerDB,
+	RequesManagerInfoFromServerDB,
 	
 	// Update Database
-	ReceiveChangeUserRoleTypeInDB,
 	RequestChangeUserRoleTypeInDB,
+	ReceiveChangeUserRoleTypeInDB,
 	
 	// Common Data Initialization //
 	InitRegions,
 	InitMachines,
-	
-
 	
 }

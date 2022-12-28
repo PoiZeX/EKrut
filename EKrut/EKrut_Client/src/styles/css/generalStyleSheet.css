@@ -209,6 +209,7 @@
 	-fx-text-base-color: #FFFFFF;
 	-fx-font-size: 12pt;
     -fx-border-radius: 15;
+    -fx-background-radius: 15px;
 }
 /*litle arrow */
 .combo-box .arrow{

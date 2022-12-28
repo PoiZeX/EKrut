@@ -97,6 +97,7 @@
 .ComboBox{
 	-fx-text-base-color: #FFFFFF;
 		-fx-font-size: 14pt;	
+        -fx-background-radius: 15px;
 }
 .combo-box .arrow{
     -fx-background-color:#FFFFFF;

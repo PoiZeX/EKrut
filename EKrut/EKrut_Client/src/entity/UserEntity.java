@@ -12,21 +12,13 @@ public class UserEntity implements Serializable {
 	private boolean logged_in, isNotApproved;
 	private int id;
 
-	@Override
-	public String toString() {
-		return username;
-	}
 	public UserEntity() {
-		this("","","","","","","","","","", false, false);
-	}
-	public UserEntity(String id_num, String username, String password, String first_name, String last_name, String email,
-			String phone_number, String role_type, String region, String cc_num, boolean logged_in, boolean isNotApproved) {
-		this(id_num	,username, password, first_name, last_name, email, phone_number, role_type, cc_num, logged_in, isNotApproved);
-		this.region = region;
+		this("", "", "", "", "", "", "", "", "", "", false, false);
 	}
 
-	public UserEntity(String id_num , String username, String password, String first_name, String last_name, String email,
-		String phone_number, String role_type, String cc_num, boolean logged_in, boolean isNotApproved) {
+	public UserEntity(String id_num, String username, String password, String first_name, String last_name,
+			String email, String phone_number, String cc_num,  String region, String role_type,boolean logged_in,
+			boolean isNotApproved) {
 		this.id_num = id_num;
 		this.username = username;
 		this.password = password;
@@ -34,9 +26,10 @@ public class UserEntity implements Serializable {
 		this.last_name = last_name;
 		this.email = email;
 		this.phone_number = phone_number;
+		this.cc_num = cc_num;
+		this.region = region;
 		this.role_type = role_type;
 		this.isNotApproved = isNotApproved;
-		this.cc_num = cc_num;
 		this.logged_in = logged_in;
 		this.isNotApproved = isNotApproved;
 	}
@@ -44,15 +37,19 @@ public class UserEntity implements Serializable {
 	public String getCc_num() {
 		return cc_num;
 	}
+
 	public void setCc_num(String cc_num) {
 		this.cc_num = cc_num;
 	}
+
 	public String getId_num() {
 		return id_num;
 	}
+
 	public void setId_num(String id_num) {
 		this.id_num = id_num;
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(username);
@@ -158,7 +155,12 @@ public class UserEntity implements Serializable {
 	public void setNotApproved(boolean isApproved) {
 		this.isNotApproved = isApproved;
 	}
-	
+
+	@Override
+	public String toString() {
+		return username;
+	}
+
 	public String fullName() {
 		return first_name + " " + last_name;
 	}
