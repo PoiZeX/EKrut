@@ -38,16 +38,17 @@ public enum TaskType {
 	RequestUpdateItemsInMachine,
 	RequestInsertNewSale,
 	RequestUpdateMachineMinAmount,
-
+	RequestProssecedItemsInMachine,
 	RequestItemsCallStatusUpdateFromServer,
 	RequestUpdateSales,
 	RequestSalesFromServer,
-
+	RequestSupplyWorkers,
 	RequestItemsInMachineUpdateFromServer,
+	ReceiveSupplyWorkersFromServer,  
 
 	// Common Data Initialization //
 	InitRegions,
-	InitMachines, 
+	InitMachines,  
 	
 	
 }

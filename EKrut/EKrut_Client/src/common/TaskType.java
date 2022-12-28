@@ -35,6 +35,7 @@ public enum TaskType {
 	RequestUpdateDeliveries,
 	RequestDeliveriesFromServer,
 	RequestItemsInMachine,
+	RequestProssecedItemsInMachine,
 	RequestUpdateItemsInMachine,
 	RequestInsertNewSale,
 	RequestUpdateMachineMinAmount,
@@ -42,7 +43,8 @@ public enum TaskType {
 	RequestItemsCallStatusUpdateFromServer,
 	RequestUpdateSales,
 	RequestSalesFromServer,
-
+	ReceiveSupplyWorkersFromServer, 
+	RequestSupplyWorkers, 
 	RequestItemsInMachineUpdateFromServer,
 
 	

@@ -141,8 +141,9 @@ CREATE TABLE `item_in_machine` (
   `machine_id` int NOT NULL,
   `item_id` int NOT NULL,
   `current_amount` int NOT NULL,
-  `call_status` enum('NotOpened','Processed','Completed') NOT NULL DEFAULT 'NotOpened',
+  `call_status` enum('NotOpened','Processed','Complete') NOT NULL DEFAULT 'NotOpened',
   `times_under_min` int NOT NULL DEFAULT '0',
+  `worker_id` int DEFAULT NULL,
   PRIMARY KEY (`machine_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -153,7 +154,7 @@ CREATE TABLE `item_in_machine` (
 
 LOCK TABLES `item_in_machine` WRITE;
 /*!40000 ALTER TABLE `item_in_machine` DISABLE KEYS */;
-INSERT INTO `item_in_machine` VALUES (0,0,0,'NotOpened',0),(1,1,1,'NotOpened',0),(2,1,3,'NotOpened',0),(3,1,1,'NotOpened',0),(4,1,5,'NotOpened',0),(5,1,5,'NotOpened',0),(6,1,5,'NotOpened',0),(7,1,5,'NotOpened',0),(8,1,5,'NotOpened',0),(9,1,5,'NotOpened',0),(10,1,5,'NotOpened',0),(11,1,5,'NotOpened',0),(12,1,5,'NotOpened',0);
+INSERT INTO `item_in_machine` VALUES (0,0,0,'NotOpened',0,NULL),(0,2,0,'NotOpened',0,NULL),(1,1,6,'NotOpened',0,NULL),(1,2,6,'NotOpened',0,NULL),(1,3,6,'NotOpened',0,NULL),(2,1,6,'NotOpened',0,NULL),(2,2,6,'NotOpened',0,NULL),(2,3,6,'NotOpened',0,NULL),(3,1,5,'NotOpened',0,NULL),(3,2,5,'NotOpened',0,0),(3,3,5,'NotOpened',0,0),(4,1,10,'NotOpened',0,NULL),(4,2,10,'NotOpened',0,NULL),(4,3,10,'NotOpened',0,NULL),(5,1,6,'NotOpened',0,NULL),(5,2,6,'NotOpened',0,NULL),(5,3,6,'NotOpened',0,NULL),(6,1,5,'NotOpened',0,NULL),(6,2,5,'NotOpened',0,NULL),(6,3,5,'NotOpened',0,NULL),(7,1,8,'NotOpened',0,NULL),(7,2,8,'NotOpened',0,NULL),(7,3,8,'NotOpened',0,NULL),(8,1,5,'NotOpened',0,NULL),(8,2,5,'NotOpened',0,NULL),(8,3,5,'NotOpened',0,NULL),(9,1,5,'NotOpened',0,NULL),(9,2,5,'NotOpened',0,NULL),(9,3,5,'NotOpened',0,NULL),(10,1,5,'NotOpened',0,NULL),(10,2,5,'NotOpened',0,NULL),(10,3,5,'NotOpened',0,NULL),(11,1,5,'NotOpened',0,NULL),(11,2,5,'NotOpened',0,NULL),(11,3,5,'NotOpened',0,NULL),(12,1,5,'NotOpened',0,NULL),(12,2,5,'NotOpened',0,NULL),(12,3,5,'NotOpened',0,NULL);
 /*!40000 ALTER TABLE `item_in_machine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +210,7 @@ CREATE TABLE `machines` (
 
 LOCK TABLES `machines` WRITE;
 /*!40000 ALTER TABLE `machines` DISABLE KEYS */;
-INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage',5),(1,'North',2,'Karmiel Train Station',5),(1,'North',3,'Thecnion',5),(1,'North',4,'Rambam hospital',5),(1,'North',5,'Ofer Grand Kenyon',5),(1,'North',6,'Haifa University',5),(2,'Center',7,'Dizingoffe Center',5),(2,'Center',8,'TLV fashion mall',5),(2,'Center',9,'Savidor center Train sation',5),(2,'Center',10,'Hashalom Train station',5),(2,'Center',11,'Tel Aviv university',0),(2,'Center',12,'Tel Aviv Yafo acadimic Collage',0),(3,'South',13,'Beer Sheva rail station',0),(3,'South',14,'Dimona Atomic reactor',0);
+INSERT INTO `machines` VALUES (1,'North',1,'Ort Braude Academic Collage',7),(1,'North',2,'Karmiel Train Station',3),(1,'North',3,'Thecnion',5),(1,'North',4,'Rambam hospital',9),(1,'North',5,'Ofer Grand Kenyon',6),(1,'North',6,'Haifa University',6),(2,'Center',7,'Dizingoffe Center',5),(2,'Center',8,'TLV fashion mall',5),(2,'Center',9,'Savidor center Train sation',5),(2,'Center',10,'Hashalom Train station',5),(2,'Center',11,'Tel Aviv university',0),(2,'Center',12,'Tel Aviv Yafo acadimic Collage',0),(3,'South',13,'Beer Sheva rail station',0),(3,'South',14,'Dimona Atomic reactor',0);
 /*!40000 ALTER TABLE `machines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -451,7 +452,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userName_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -460,7 +461,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(8,'205905050','marketingm','123456','yossi','levi','a@a.com','123123123',NULL,NULL,'marketingManager',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0);
+INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(8,'205905050','marketingm','123456','yossi','levi','a@a.com','123123123',NULL,NULL,'marketingManager',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0),(32,'123456789','supplyw1','123456','neta','neta','neta6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(33,'123456789','supplyw2','123456','vital','vital','vital6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(34,'123456789','supplyw3','123456','lidor','lidor','lidor6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(35,'123456789','supplyw4','123456','dima','dima','dima6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -473,4 +474,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-26 22:58:28
+-- Dump completed on 2022-12-28 22:01:40
