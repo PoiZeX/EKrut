@@ -96,8 +96,6 @@ public class MarketingWorkerController {
 	private void setupTable() {
 		salesTable.setEditable(true); // make table editable
 		salesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-		if (salesTable == null)
-			return;
 		salesTable.setItems(sales);
 
 		// factory
@@ -130,7 +128,7 @@ public class MarketingWorkerController {
 			
 		});
 	}
-	/* adding the deliveryEntity to deliveries list */
+	/* adding the saleEntity to sales list */
 	public static void getSalesEntityFromServer(SaleEntity saleEntity) {
 		String region =NavigationStoreController.connectedUser.getRegion();
 		System.out.println(region);

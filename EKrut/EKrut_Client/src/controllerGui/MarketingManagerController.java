@@ -25,10 +25,20 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import utils.TooltipSetter;
@@ -61,14 +71,19 @@ public class MarketingManagerController {
 
     @FXML
     private Label startDateLbl;
+    @FXML
+    private MenuItem menuItem;
 
     @FXML
     private DatePicker startDatePicker;
-
     @FXML
-    private DatePicker endDatePicker;
-
-
+    private MenuButton daysMb;
+    //@FXML
+    //private DatePicker endDatePicker;
+    @FXML
+    private ListView<CheckBox> daysLst;
+    @FXML
+    private ComboBox<String> daysCmb;
     @FXML
     private ComboBox<LocalTime> startTimeCmb;
 
@@ -104,7 +119,8 @@ public class MarketingManagerController {
 	/** Setup screen before launching view */
 	public void initialize() throws Exception {
     	initTimeCmb();
-    	initDatePickers();
+    	 initDaysListView();
+    	//initDatePickers();
     	ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
 		regionCmb.setItems(regions);
 		ObservableList<String> types = FXCollections.observableArrayList();
@@ -139,12 +155,23 @@ public class MarketingManagerController {
 				startDate=startDatePicker.getValue();
 			}
 		});
-		endDatePicker.addEventHandler(DatePicker.ON_HIDING, new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				endDate=startDatePicker.getValue();
-			}
-		});
+		//VBox vbox = new VBox();
+		//vbox.getChildren().add(menuItem);
+		//CustomMenuItem cm = new CustomMenuItem();
+		
+		/*daysLst.setOnMouseClicked(event -> {
+			  // do something
+			  event.consume();
+			});*/
+		
+		
+		/*
+		 * endDatePicker.addEventHandler(DatePicker.ON_HIDING, new EventHandler<Event>()
+		 * {
+		 * 
+		 * @Override public void handle(Event event) {
+		 * endDate=startDatePicker.getValue(); } });
+		 */
 		typeCmb.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
@@ -189,6 +216,23 @@ public class MarketingManagerController {
 		endTimeCmb.setValue(endTime);
 		
     }
+    /** Initialize listView of days
+     * 
+     */
+    private void initDaysListView() {
+		CheckBox monday = new CheckBox("Monday"); 
+		CheckBox tuesday = new CheckBox("Tuesday");
+		CheckBox wednesday = new CheckBox("Wednesday");
+		CheckBox thursday = new CheckBox("Thursday");
+		CheckBox friday = new CheckBox("Friday");
+		CheckBox saturday = new CheckBox("Saturday"); 
+		CheckBox sunday = new CheckBox("Sunday");
+		daysLst.getItems().addAll(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+		 
+		 
+    	
+    	
+    }
     
     /** Initialize the satartDate and endDate DatePickers:
      * Unable to choose date that has already passed.
@@ -196,47 +240,31 @@ public class MarketingManagerController {
      * Set the start date to be today date and the end date to be startDate+1.
      * The endDate will cahnge after select startDate to be startDate+1.
      * **/
-    private void initDatePickers() {
-    	Locale.setDefault(Locale.ENGLISH);
-    	startDate=LocalDate.now();
-    	endDate=LocalDate.now().plusDays(1); 
-		startDatePicker.setValue(startDate);
-		endDatePicker.setValue(endDate);
-		
-		startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-		    @Override
-		    public DateCell call(final DatePicker datePicker) {
-		        return new DateCell() {
-		            @Override
-		            public void updateItem(LocalDate item, boolean empty) {
-		                super.updateItem(item, empty);
-		                if (item.isBefore(LocalDate.now())) {
-		                    setStyle("-fx-background-color: #ffc0cb;");
-		                    setDisable(true);
-		                }
-		            }
-		        };
-		    }
-		});
-		startDatePicker.setOnAction(event -> {
-			endDatePicker.setValue(startDatePicker.getValue().plusDays(1));
-		});
-
-		endDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-		    @Override
-		    public DateCell call(final DatePicker datePicker) {
-		        return new DateCell() {
-		            @Override
-		            public void updateItem(LocalDate item, boolean empty) {
-		                super.updateItem(item, empty);
-		                if (item.isBefore(startDatePicker.getValue())) {
-		                    setStyle("-fx-background-color: #ffc0cb;");
-		                    setDisable(true);
-		                }
-		            }
-		        };
-		    }
-		});
-    }
+	/*
+	 * private void initDatePickers() { Locale.setDefault(Locale.ENGLISH);
+	 * startDate=LocalDate.now(); endDate=LocalDate.now().plusDays(1);
+	 * startDatePicker.setValue(startDate); endDatePicker.setValue(endDate);
+	 * 
+	 * startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+	 * 
+	 * @Override public DateCell call(final DatePicker datePicker) { return new
+	 * DateCell() {
+	 * 
+	 * @Override public void updateItem(LocalDate item, boolean empty) {
+	 * super.updateItem(item, empty); if (item.isBefore(LocalDate.now())) {
+	 * setStyle("-fx-background-color: #ffc0cb;"); setDisable(true); } } }; } });
+	 * startDatePicker.setOnAction(event -> {
+	 * endDatePicker.setValue(startDatePicker.getValue().plusDays(1)); });
+	 * 
+	 * endDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+	 * 
+	 * @Override public DateCell call(final DatePicker datePicker) { return new
+	 * DateCell() {
+	 * 
+	 * @Override public void updateItem(LocalDate item, boolean empty) {
+	 * super.updateItem(item, empty); if (item.isBefore(startDatePicker.getValue()))
+	 * { setStyle("-fx-background-color: #ffc0cb;"); setDisable(true); } } }; } });
+	 * }
+	 */
 
 }
