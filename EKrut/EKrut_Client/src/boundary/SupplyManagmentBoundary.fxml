@@ -64,7 +64,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </ComboBox>
-            <GridPane prefHeight="382.0" prefWidth="402.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <GridPane prefHeight="382.0" prefWidth="443.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -79,12 +79,12 @@
                   <RowConstraints />
                </rowConstraints>
                <children>
-                  <TableView fx:id="supplyMangmentTbl" editable="true" styleClass="column-header" GridPane.halignment="CENTER">
+                  <TableView fx:id="supplyMangmentTbl" editable="true" prefHeight="310.0" prefWidth="434.0" styleClass="column-header" GridPane.halignment="CENTER">
                     <columns>
                       <TableColumn fx:id="itemIdCol" prefWidth="67.0" text="item id" />
-                        <TableColumn fx:id="itemNameCol" prefWidth="67.0" text="item name" />
+                        <TableColumn fx:id="itemNameCol" prefWidth="120.0" text="item name" />
                         <TableColumn fx:id="currentAmountCol" prefWidth="94.33334350585938" text="current amount" />
-                        <TableColumn fx:id="callStatusCol" prefWidth="90.0" text="call status" />
+                        <TableColumn fx:id="callStatusCol" prefWidth="100.0" text="call status" />
                         <TableColumn fx:id="refillcol" prefWidth="67.0" text="refill" />
                     </columns>
                   </TableView>
@@ -193,7 +193,7 @@
                   <Insets left="25.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="removeCompletedBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCompleted" styleClass="Button-NoBG" text="removeCompleted" GridPane.columnIndex="1">
+            <Button fx:id="removeCompletedBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCompleted" styleClass="Button-NoBG" text="removeCompleted" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -204,6 +204,9 @@
                <font>
                   <Font name="Segoe UI Semibold" size="12.0" />
                </font>
+               <GridPane.margin>
+                  <Insets left="100.0" />
+               </GridPane.margin>
             </Button>
          </children>
       </GridPane>
