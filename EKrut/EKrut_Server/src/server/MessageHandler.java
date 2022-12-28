@@ -86,6 +86,9 @@ public class MessageHandler {
 		case RequestItemsInMachine:
 			SupplyManagmentDBController.getMachineItems((int)obj,client);
 			break;
+		case RequestProssecedItemsInMachine:
+			SupplyManagmentDBController.getProcessedMachineItems((int [])obj, client);
+			break;
 		case RequestInsertNewSale:
 			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
@@ -100,7 +103,9 @@ public class MessageHandler {
 		case RequestSalesFromServer:
 			MarketingManagerDBController.getSales(client);
 			break;
-		
+		case RequestSupplyWorkers:
+			SupplyManagmentDBController.getSupplyWorkers(client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

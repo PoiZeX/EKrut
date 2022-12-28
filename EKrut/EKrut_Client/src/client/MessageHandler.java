@@ -83,8 +83,9 @@ public class MessageHandler {
 		case ReceiveSalesFromServer:
 			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
 			break;
-		
-			
+		case ReceiveSupplyWorkersFromServer:
+			SupplyManagmentController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
+			break;
 		default:
 			break;
 		}

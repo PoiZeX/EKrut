@@ -21,7 +21,7 @@ public class ItemInMachineEntity extends ItemEntity {
 	private int  currentAmount;	
 	private int timeUnderMin;
 	
-
+	private Integer workerId;
 	private boolean isCallOpen;
 
 
@@ -100,6 +100,14 @@ public class ItemInMachineEntity extends ItemEntity {
 
 	public int getMachineId() {
 		return machineId;
+	}
+
+	public Integer getWorkerId() {
+		return workerId;
+	}
+
+	public void setWorkerId(Integer workerId) {
+		this.workerId = workerId;
 	}
 
 }

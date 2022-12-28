@@ -193,6 +193,18 @@
                   <Insets left="25.0" />
                </GridPane.margin>
             </Button>
+            <Button fx:id="removeCompletedBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCompleted" styleClass="Button-NoBG" text="removeCompleted" GridPane.columnIndex="1">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/010-minus.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="Segoe UI Semibold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </GridPane>
    </center>
