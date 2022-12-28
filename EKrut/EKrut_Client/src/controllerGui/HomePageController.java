@@ -69,7 +69,7 @@ public class HomePageController {
 		// switch case by role
 		switch (currentUser.getRole_type()) {
 		case registered:
-		case subscribed:
+		case member:
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later

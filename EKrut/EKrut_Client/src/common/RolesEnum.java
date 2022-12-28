@@ -3,7 +3,7 @@ package common;
 public enum RolesEnum {
 	user,  // from simulation
 	registered, 
-	subscribed,
+	member,
 	customerServiceWorker,
 	deliveryWorker,
 	deliveryManager,

@@ -7,6 +7,7 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
 import common.Message;
+import common.RolesEnum;
 import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.RegistrationFormEntity;
@@ -98,9 +99,8 @@ public class RegistrationFormController{
 
 
     ClientController chat = HostClientController.chat;
-	protected static UserEntity UserDetails;	
-	protected static String messageDetails;
-	protected static boolean RecievedData = false;
+	protected static Object recivedData;
+	protected static boolean isDataRecived = false;
 	private String roleType;
     
     public void initialize() {
@@ -117,6 +117,7 @@ public class RegistrationFormController{
     	
     	regionComboBox.getItems().addAll("North", "Center", "South");
     	regionComboBox.setStyle("-fx-background-radius: 15px;");
+    	roleType = "registered";
     	membershipRadioToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() 
         {
             public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n)
@@ -126,11 +127,11 @@ public class RegistrationFormController{
                     String radioBtnValue = radioBtn.getText();
                     switch (radioBtnValue) {
 	                	case "Yes":
-	                		roleType = "member";
+	                		roleType = RolesEnum.member.toString();
 	                		membershipGridpaneBox.setVisible(true);
 	                		break;
 	                	case "No":
-	                		roleType = "registered";
+	                		roleType = RolesEnum.registered.toString();
 	                		membershipGridpaneBox.setVisible(false);
 	                		break;
 	                	default:
@@ -143,10 +144,9 @@ public class RegistrationFormController{
 
     @FXML
     void submitBtnAction(ActionEvent event) {
-    	
     	errorMsgLabel.setStyle("-fx-text-fill: #ff1414");
     	int missingTextFields = 0;
-    	String[] newRoleType = {idnumberTxtField.getText(), roleType};
+    	
     	// Check for empty text fields
     	for (TextField field : dataArray) {
     		if (field.getText().equals("")) {
@@ -161,40 +161,7 @@ public class RegistrationFormController{
     		}
     	}
     	if (missingTextFields == 0) {
-//        	RadioButton radioBtn = (RadioButton) membershipRadioToggleGroup.getSelectedToggle();
-//    		RegistrationFormEntity registrationForm = new RegistrationFormEntity(
-//    				formID,
-//    				firstnameTxtField.getText(),
-//    				lastnameTxtField.getText(),
-//    				idnumberTxtField.getText(),
-//    				emailTxtField.getText(),
-//    				creditcardTxtField.getText(),
-//    				radioBtn.getText()
-//    		);
-//    		if (radioBtn.getText().equals("Yes"))
-//    			registrationForm.setClubMemberID(formID + 1);
-    		// Update the user's role type in the DB
-    		
-        	chat.acceptObj(new Message(TaskType.RequestChangeUserRoleTypeInDB, newRoleType));
-    		// wait for answer
-    		while (RecievedData == false) {
-    			try {
-    				Thread.sleep(100);
-    			} catch (InterruptedException e) {
-    				e.printStackTrace();
-    			}
-    		}
-    		
-    		if (messageDetails.equals("Changed Successfully")) {
-    			errorMsgLabel.setStyle("-fx-text-fill: #000000");
-    			errorMsgLabel.setText("User Role updated successuflly!");
-    			
-    			
-    			// send user to manager approval
-    	    	SMSMailHandlerController.SendSMSOrMail("System", UserDetails, roleType, messageDetails);
-
-    			return;
-    		}
+    		updateUser();
     	}
     	else {
 			errorMsgLabel.setText("There are missing fields!");
@@ -202,22 +169,70 @@ public class RegistrationFormController{
     	}
     }
 
-    private UserEntity getRegionManager(String region) {
-    	chat.acceptObj(new Message(TaskType.RequestChangeUserRoleTypeInDB, region));
+    /**
+     * Update the user role type entity
+     */
+    private void updateUser() {
+    	String[] newRoleType = {idnumberTxtField.getText(), roleType};
+    	chat.acceptObj(new Message(TaskType.RequestChangeUserRoleTypeInDB, newRoleType));
     	
-    	// reset
-    	RecievedData = false;
-    	UserDetails = null;
-    	
-    	// wait for answer
-		while (RecievedData == false) {
+		// wait for answer
+		while (isDataRecived == false) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		if (recivedData instanceof UserEntity && ((UserEntity) recivedData).getId_num().equals(newRoleType[0])) {
+			errorMsgLabel.setStyle("-fx-text-fill: #000000");
+			errorMsgLabel.setText("User updated successuflly!");
+			sendMessageToRegionManager(((UserEntity)recivedData).getRegion());
+			return;
+		}
+		else {
+			errorMsgLabel.setText("A problem occured, please try again!");
+		}
     }
+    
+    /**
+     * Send a message to region manager
+     * @param region
+     */
+    private void sendMessageToRegionManager(String region) {
+		UserEntity manager = getRegionManager(region);
+		
+    	// send user to manager approval
+    	SMSMailHandlerController.SendSMSOrMail("System", manager, "Need your action", "New user has been signed up\nplease go to 'Users Approval' to review and approve the request");
+    }
+    
+    /**
+     * 
+     * @param get the manager of specific region
+     * @return
+     */
+    private UserEntity getRegionManager(String region) {
+    	// reset
+    	isDataRecived = false;
+    	recivedData = null;
+    	
+    	chat.acceptObj(new Message(TaskType.RequesManagerInfoFromServerDB, region));
+    	
+    	// wait for answer
+		while (isDataRecived == false) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if(recivedData instanceof UserEntity && (UserEntity)recivedData != null) {
+			return (UserEntity)recivedData;
+		}
+		return null;
+    }
+    
     @FXML
     void clearBtnAction(ActionEvent event) {
     	regionComboBox.setPromptText("Region");
@@ -234,18 +249,16 @@ public class RegistrationFormController{
     	}
     }
     
-	public static void recieveDataFromServer(UserEntity user) {
-		UserDetails = user;
-		RecievedData = true;
+    /** 
+     * receive data from server
+     * @param user
+     */
+	public static void receiveDataFromServer(Object obj) {
+		recivedData = obj;
+		isDataRecived = true;
 		return;
 	}
-	
-	public static void recieveMessageFromServer(String message) {
-		messageDetails = message;
-		RecievedData = true;
-		return;
-	}
-	
+
     @FXML
     void searchUserAction(ActionEvent event) {
     	if (userSearchTxtField.getText().equals("")) {
@@ -257,17 +270,21 @@ public class RegistrationFormController{
     		userSearchTxtField.setStyle("-fx-border-color: none;");
     		userSearchMsgLabel.setText("");
         	String[] userSearchInput = {userSearchTxtField.getText()};
+        	
         	// Send a message to server
         	chat.acceptObj(new Message(TaskType.RequestUserInfoFromServerDB, userSearchInput));
+        	
     		// wait for answer
-    		while (RecievedData == false) {
+			while (isDataRecived == false) {
     			try {
     				Thread.sleep(100);
     			} catch (InterruptedException e) {
     				e.printStackTrace();
     			}
     		}
-    		if (UserDetails.getId_num().equals("")) {
+    		
+    		UserEntity userDetails = ((UserEntity)recivedData);
+    		if (userDetails.getId_num().equals("")) {
     			//System.out.println("Empty Report");
     			userSearchMsgLabel.setText("User not found!");
     			userSearchMsgLabel.setStyle("-fx-text-fill: #ff1414");
@@ -280,39 +297,27 @@ public class RegistrationFormController{
             	passwordErrorLabel.setText("");
             	usernameErrorLabel.setText("");
            		field.clear();
-           		field.setDisable(false);
+           		field.setDisable(true);
         		if (field.getText().equals("")) 
             		field.setStyle("-fx-border-color: none;");
-        	}
-    		
-    		userSearchMsgLabel.setText(UserDetails.getFirst_name() + " was found!");
+        	}	
+           	
+           	// success message
+    		userSearchMsgLabel.setText(userDetails.getFirst_name() + " was found!");
     		userSearchMsgLabel.setStyle("-fx-text-fill: #000000");
     		
-    		firstnameTxtField.setText(UserDetails.getFirst_name());
-    		firstnameTxtField.setDisable(true);
+    		// fill fields
+    		firstnameTxtField.setText(userDetails.getFirst_name());
+    		lastnameTxtField.setText(userDetails.getLast_name());
+    		emailTxtField.setText(userDetails.getEmail());
+    		idnumberTxtField.setText(userDetails.getId_num());
+    		creditcardTxtField.setText(userDetails.getCc_num());
+    		phonenumberTxtField.setText(userDetails.getPhone_number());
+    		passwordTxtField.setText(userDetails.getPassword());
+    		usernameTxtField.setText(userDetails.getUsername());
+    		regionComboBox.setValue(userDetails.getRegion());
+       		creditcardTxtField.setDisable(false);  // the only one if need to change
     		
-    		lastnameTxtField.setText(UserDetails.getLast_name());
-    		lastnameTxtField.setDisable(true);
-    		
-    		emailTxtField.setText(UserDetails.getEmail());
-    		emailTxtField.setDisable(true);
-    		
-    		idnumberTxtField.setText(UserDetails.getId_num());
-    		idnumberTxtField.setDisable(true);
-    		
-    		creditcardTxtField.setText(UserDetails.getCc_num());
-    		
-    		phonenumberTxtField.setText(UserDetails.getPhone_number());
-    		phonenumberTxtField.setDisable(true);
-    		
-    		passwordTxtField.setText(UserDetails.getPassword());
-    		passwordTxtField.setDisable(true);
-    		
-    		usernameTxtField.setText(UserDetails.getUsername());
-    		usernameTxtField.setDisable(true);
-    		
-    		regionComboBox.setValue(UserDetails.getRegion());
-    		regionComboBox.setDisable(true);
     	}
     }
 }

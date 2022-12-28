@@ -1,7 +1,5 @@
 package client;
 
-import ocsf.client.*;
-import common.ChatIF;
 import common.CommonData;
 import common.Message;
 import common.TaskType;
@@ -25,6 +23,7 @@ import entity.MachineEntity;
 import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
+
 public class MessageHandler {
 
 	public static void Handle(ChatClient thisClient, Message msg) {
@@ -50,10 +49,9 @@ public class MessageHandler {
 			break;
 		// Registration Form
 		case ReceiveUserInfoFromServerDB:
-			RegistrationFormController.recieveDataFromServer((UserEntity) obj);
-			break;
 		case ReceiveChangeUserRoleTypeInDB:
-			RegistrationFormController.recieveMessageFromServer((String) obj);
+		case ReceiveManagerInfoFromServerDB:
+			RegistrationFormController.receiveDataFromServer(obj);
 			break;
 		//
 		case ReceiveOrderReport:

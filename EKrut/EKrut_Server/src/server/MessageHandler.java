@@ -51,10 +51,13 @@ public class MessageHandler {
 			break;
 		// Registartion Form //
 		case RequestUserInfoFromServerDB:
-			UsersManagementDBController.getUserFromDB((String[]) obj, client);
+			UsersManagementDBController.getUserByRoleFromDB((String[]) obj, client);
 			break;
 		case RequestChangeUserRoleTypeInDB:
 			UsersManagementDBController.updateUserRoleType((String[]) obj, client);
+			break;
+		case RequesManagerInfoFromServerDB:
+			UsersManagementDBController.getRegionManagerFromDB((String) obj, client);
 			break;
 		// *********************//
 		case RequestUnapprovedUsers:
@@ -78,16 +81,13 @@ public class MessageHandler {
 			break;
 
 		case RequestPersonalMessages:
-			PersonalMessagesDBController.getClientReportEntity((UserEntity) obj, client);
+			PersonalMessagesDBController.getAllPersonalMessages((UserEntity) obj, client);
 			break;
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
 		case SendPersonalMessage:
 			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);
-			break;
-		case RequesManagerInfoFromServerDB:
-			UsersManagementDBController.getRegionManagerFromDB((String[]) obj, client);
 			break;
 
 		default:

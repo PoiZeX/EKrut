@@ -34,15 +34,10 @@ public class PersonalMessagesController {
 	public static ObservableList<PersonalMessageEntity> msgsList = FXCollections.observableArrayList();
 
 	public void initialize() {
-		
-		SMSMailHandlerController.SendSMSOrMail("Mail", NavigationStoreController.connectedUser, "message title", "The whole message is here nigga");
-		
-		CommonFunctions.SleepFor(3000, () ->
-		{
-			requestPersonalMessages();
-			setupTable();
-		});
-		
+
+		requestPersonalMessages();
+		setupTable();
+
 	}
 
 	/**
@@ -56,7 +51,7 @@ public class PersonalMessagesController {
 		dateCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("date"));
 		titleCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("title"));
 		messageCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("message"));
-		
+
 		// add listner
 		messageTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
