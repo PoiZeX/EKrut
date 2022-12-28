@@ -38,9 +38,9 @@ public class SupplyManagmentDBController {
 				 minAmount=(res1.getInt(1));}
 			
 			PreparedStatement ps = conn
-					.prepareStatement("SELECT  *"
-							+" FROM  ekrut.item_in_machine"
-							+" WHERE item_in_machine.machine_id=(?) AND (item_in_machine.current_amount <= (?) OR  item_in_machine.call_status!=(?));");
+					.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
+							+" FROM  ekrut.item_in_machine, ekrut.items"
+							+" WHERE item_in_machine.machine_id=(?) AND (item_in_machine.current_amount <= (?) OR  item_in_machine.call_status!=(?)) AND item_in_machine.item_id=items.item_id ;");
 			ps.setInt(1,machineId);
 			ps.setInt(2,minAmount);
 			ps.setString(3, ItemInMachineEntity.Call_Status.NotOpened.toString());
@@ -51,7 +51,7 @@ public class SupplyManagmentDBController {
 				//machine_id, item_id, current_amount,  call_status, times_under_min
 		//public ItemInMachineEntity(int machineID, int item_id, int currentAmount,Call_Status callStatus ,times_under_min) {
 				//TODO - add a check for string 
-				item= new ItemInMachineEntity(res.getInt(1),res.getInt(2), res.getInt(3),ItemInMachineEntity.Call_Status.valueOf( res.getString(4)),  res.getInt(5));
+				item= new ItemInMachineEntity(res.getInt(1),res.getInt(2), res.getInt(3),ItemInMachineEntity.Call_Status.valueOf( res.getString(4)),res.getInt(5),res.getString(6));
 				
 				itemsInMachine.add(item);
 			}
