@@ -28,13 +28,12 @@ public class DeliveryManagementDBController {
 
 			stmt = MySqlClass.getConnection().createStatement();
 			for (DeliveryEntity delivery : deliveryLst) {
-				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.deliveries SET estimated_time=(?), actual_time=(?), "
+				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.deliveries SET estimated_time=(?), "
 						+ "deilvery_status=(?), customer_status=(?) WHERE order_id=(?);");
 				ps.setString(1, delivery.getEstimatedTime());
-				ps.setString(2, delivery.getActualTime());
-				ps.setString(3, delivery.getDeliveryStatus().toString());
-				ps.setString(4, delivery.getCustomerStatus().toString());
-				ps.setInt(5, delivery.getOrderId());
+				ps.setString(2, delivery.getDeliveryStatus().toString());
+				ps.setString(3, delivery.getCustomerStatus().toString());
+				ps.setInt(4, delivery.getOrderId());
 				ps.executeUpdate();
 
 			}
@@ -56,10 +55,10 @@ public class DeliveryManagementDBController {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.deliveries WHERE deilvery_status!='done';");
 			
 			while (rs.next()) {
-				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(7));
-				CustomerStatus customerStatus= CustomerStatus.valueOf(rs.getString(8));
-				deliveryEntity = new DeliveryEntity(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
-						rs.getString(5),rs.getString(6), deliveryStatus, customerStatus);
+				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(6));
+				CustomerStatus customerStatus= CustomerStatus.valueOf(rs.getString(7));
+				deliveryEntity = new DeliveryEntity(rs.getInt(1),rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
+						 deliveryStatus, customerStatus);
 				try {
 					client.sendToClient(new Message(TaskType.ReceiveDeliveriesFromServer, deliveryEntity)); // finally send the entity
 				} catch (IOException e) {
