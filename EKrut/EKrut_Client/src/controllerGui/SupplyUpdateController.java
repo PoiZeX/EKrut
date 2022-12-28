@@ -97,7 +97,8 @@ public class SupplyUpdateController {
 		});
     	
     }
-    private void setupTable(int machineId) {
+    @SuppressWarnings("unchecked")
+	private void setupTable(int machineId) {
     	chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
     	supplyMangmentTbl.setItems(itemsInMachineLst);
     	supplyMangmentTbl.setEditable(true);

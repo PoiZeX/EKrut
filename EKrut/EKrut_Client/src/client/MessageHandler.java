@@ -12,6 +12,7 @@ import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.SupplyManagmentController;
 import controllerGui.SupplyReportController;
+import controllerGui.SupplyUpdateController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
 import controllerGui.DeliveryManagementController;
@@ -77,6 +78,7 @@ public class MessageHandler {
 			break;
 		case ReceiveItemsInMachine:
 			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
 			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
