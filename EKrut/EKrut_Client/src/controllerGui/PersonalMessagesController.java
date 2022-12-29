@@ -34,10 +34,9 @@ public class PersonalMessagesController {
 	public static ObservableList<PersonalMessageEntity> msgsList = FXCollections.observableArrayList();
 
 	public void initialize() {
-
 		requestPersonalMessages();
 		setupTable();
-
+		messageLabel.setWrapText(true);
 	}
 
 	/**
@@ -46,26 +45,25 @@ public class PersonalMessagesController {
 	private void setupTable() {
 		messageTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		messageTable.setItems(msgsList);
-
+	
 		// factory
 		dateCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("date"));
 		titleCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("title"));
 		messageCol.setCellValueFactory(new PropertyValueFactory<PersonalMessageEntity, String>("message"));
-
 		// add listner
 		messageTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null) {
+			if (newSelection != null) {				
 				messageLabel.setText(newSelection.getMessage().toString()); // sets the new message
 				String originalMsg = newSelection.getMessage().toString();
 				String str[] = newSelection.getMessage().toString().split("\n");
-				if (str.length > 1)
-					newSelection.setMessage(str[0] + "...");
-				else {
-					if (originalMsg.length() > 256)
-						newSelection.setMessage(originalMsg.substring(0, 256));
-					else
-						newSelection.setMessage(str[0]);
-				}
+//				if (str.length > 1)
+//					newSelection.setMessage(str[0] + "...");
+//				else {
+//					if (originalMsg.length() > 256)
+//						newSelection.setMessage(originalMsg.substring(0, 256));
+//					else
+//						newSelection.setMessage(str[0]);
+//				}
 				// messageTable.getSelectionModel().clearSelection();
 			}
 		});
