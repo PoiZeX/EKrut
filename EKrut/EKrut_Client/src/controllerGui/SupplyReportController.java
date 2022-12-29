@@ -1,4 +1,5 @@
 package controllerGui;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,6 +16,12 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
@@ -27,39 +34,30 @@ import javafx.util.Callback;
 
 public class SupplyReportController {
 
-    @FXML
-    private TableColumn<SupplyReportEntity, String> currentAmountCol;
+	@FXML
+	private StackedBarChart<String, Integer> supplySBC;
 
-    @FXML
-    private TableColumn<SupplyReportEntity, String> itemIDCol;
+	@FXML
+	private CategoryAxis xAxisSBC;
 
-    @FXML
-    private TableColumn<SupplyReportEntity, Integer> minAmountCol;
+	@FXML
+	private NumberAxis yAxisSBC;
+	
+	@FXML
+	private Label titleLabel;
 
-    @FXML
-    private TableColumn<SupplyReportEntity, Integer> nameCol;
+	@FXML
+	private ComboBox<String> machineIdComboBox;
 
-    @FXML
-    private TableColumn<SupplyReportEntity, Integer> startAmountCol;
-
-    @FXML
-    private TableView<SupplyReportEntity> supplyMachineTbl;
-
-    @FXML
-    private Label titleLabel;
-    
-    @FXML
-    private ComboBox<String> machineIdComboBox;
-    
-    protected static ClientController chat = HostClientController.chat;
-	protected static SupplyReportEntity reportDetails;	
+	protected static ClientController chat = HostClientController.chat;
+	protected static SupplyReportEntity reportDetails;
 	protected static boolean RecievedData = false;
 	private static ArrayList<SupplyReportEntity> supplyReports;
 	private static ArrayList<MachineEntity> allMachines;
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
 	private int machineID;
-	
+
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportRegion);
 		allMachines = CommonData.getMachines();
@@ -79,52 +77,54 @@ public class SupplyReportController {
 					if (machine.getMachineName().equals(machineName))
 						machineID = machine.getId();
 				}
-				initTable(machineID);
-				checkCurAmount();
-			}			
+				initBarChart(machineID);
+//				checkCurAmount();
+			}
 		});
 	}
-	
-	
+
 	public static void setReport(String year, String month, String region) {
 		reportYear = year;
 		reportMonth = month;
 		reportRegion = region;
 		return;
 	}
-	
+
 	public static void recieveDataFromServer(SupplyReportEntity report) {
 		reportDetails = report;
 		RecievedData = true;
 		return;
 	}
-	
-		
-	public void checkCurAmount() {
-		supplyMachineTbl.setRowFactory(row -> new TableRow<SupplyReportEntity>(){
-		    @Override
-		    public void updateItem(SupplyReportEntity report, boolean empty){
-		        super.updateItem(report, empty);
 
-		        if (report == null || empty) {
-		            setStyle("");
-		        } else {
-		            if (report.getCur_stock() <= report.getMin_stock()) {
-		                //We apply now the changes in all the cells of the row
-		                for(int i=0; i<getChildren().size();i++){
-		                    ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
-		                    //((Labeled) getChildren().get(i)).setStyle("-fx-background-color: yellow");
-		                }                        
-		            }
-		        }
-		    }
-		});
-	}
-	
+//	public void checkCurAmount() {
+//		supplyMachineTbl.setRowFactory(row -> new TableRow<SupplyReportEntity>(){
+//		    @Override
+//		    public void updateItem(SupplyReportEntity report, boolean empty){
+//		        super.updateItem(report, empty);
+//
+//		        if (report == null || empty) {
+//		            setStyle("");
+//		        } else {
+//		            if (report.getCur_stock() <= report.getMin_stock()) {
+//		                //We apply now the changes in all the cells of the row
+//		                for(int i=0; i<getChildren().size();i++){
+//		                    ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
+//		                    //((Labeled) getChildren().get(i)).setStyle("-fx-background-color: yellow");
+//		                }                        
+//		            }
+//		        }
+//		    }
+//		});
+//	}
+
+	/**
+	 * @param machineID
+	 */
 	@SuppressWarnings("unchecked")
-	private void initTable(int machineID) {
+	private void initBarChart(int machineID) {
 		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID)}));
+		chat.acceptObj(new Message(TaskType.RequestReport,
+				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
 
 		// wait for answer
 		while (RecievedData == false) {
@@ -134,20 +134,36 @@ public class SupplyReportController {
 				e.printStackTrace();
 			}
 		}
-		//System.out.println(Arrays.asList(reportDetails.getReportsList())); 
-		if (reportDetails.getReportsList() == null) {
-			System.out.println("Empty Report");
-			for ( int i = 0; i < supplyMachineTbl.getItems().size(); i++) {
-				supplyMachineTbl.getItems().clear();
-			}
-			return;
-		}
-			
-		
+		// System.out.println(Arrays.asList(reportDetails.getReportsList()));
+//		if (reportDetails.getReportsList() == null) {
+//			System.out.println("Empty Report");
+//			for ( int i = 0; i < supplyMachineTbl.getItems().size(); i++) {
+//				supplyMachineTbl.getItems().clear();
+//			}
+//			return;
+//		}
+
 //		supplyReports = new ArrayList<>();
 //		SupplyReportEntity newReport = null;
+
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		
+		// [item_id,item_name,min_amnt,cur_amnt, start_amnt,missing_severity]
+        ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
+        ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
+		yAxisSBC.setLowerBound(5);
+		for (String[] item : itemsArray) {
+			series1Data.add(new XYChart.Data<String,Integer>(item[1],Integer.parseInt(item[3])));
+			series2Data.add(new Data<String, Integer>(item[1],Integer.parseInt(item[4])));
+		}
+        XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
+        XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
+        series1.setName("Start");
+        series2.setName("End");
+        supplySBC.setCategoryGap(500);
+        supplySBC.getData().add(series1);
+        supplySBC.getData().add(series2);
+        
+        
 //		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
 //		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
 //		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
