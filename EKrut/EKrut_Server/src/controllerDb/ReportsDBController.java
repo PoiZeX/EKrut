@@ -156,10 +156,9 @@ public class ReportsDBController {
 			ResultSet res = ps.executeQuery();
 			
 			if (res.next()) {
-				report = new SupplyReportEntity(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
-						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10));
+				report = new SupplyReportEntity(res.getInt(1),res.getInt(2), res.getString(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10), res.getString(11));
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

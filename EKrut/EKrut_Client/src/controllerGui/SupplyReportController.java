@@ -61,7 +61,7 @@ public class SupplyReportController {
 	private int machineID;
 	
 	public void initialize() {
-		titleLabel.setText("Supply Report : " + reportDetails.getRegion());
+		titleLabel.setText("Supply Report : " + reportRegion);
 		allMachines = CommonData.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -81,11 +81,8 @@ public class SupplyReportController {
 				}
 				initTable(machineID);
 				checkCurAmount();
-			}
-			
-
+			}			
 		});
-		return;
 	}
 	
 	
@@ -93,10 +90,7 @@ public class SupplyReportController {
 		reportYear = year;
 		reportMonth = month;
 		reportRegion = region;
-		if (RecievedData) {
-			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
-		}
+		return;
 	}
 	
 	public static void recieveDataFromServer(SupplyReportEntity report) {
@@ -149,24 +143,26 @@ public class SupplyReportController {
 			return;
 		}
 			
-		supplyReports = new ArrayList<>();
-		SupplyReportEntity newReport = null;
-		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
-		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
-		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
-		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("start_stock"));
-		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("cur_stock"));
-		for (String[] item : itemsArray) {
-			newReport = new SupplyReportEntity(reportDetails.getId(), item[0], item[1], item[2], item[3], item[4], reportDetails.getMonth(), reportDetails.getYear());
-			supplyReports.add(newReport);
-		}
-		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
-		supplyMachineTbl.setItems(ol);
-		supplyMachineTbl.setEditable(false);
-//		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
-		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
 		
+//		supplyReports = new ArrayList<>();
+//		SupplyReportEntity newReport = null;
+		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
+		
+//		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
+//		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
+//		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
+//		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("start_stock"));
+//		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("cur_stock"));
+//		for (String[] item : itemsArray) {
+//			newReport = new SupplyReportEntity(reportDetails.getId(), machineID, item[0], item[1], item[2], item[3], item[4], reportDetails.getMonth(), reportDetails.getYear(), machineName, machineName);
+//			supplyReports.add(newReport);
+//		}
+//		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
+//		supplyMachineTbl.setItems(ol);
+//		supplyMachineTbl.setEditable(false);
+////		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
+//		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
+//		RecievedData = false;
 
 	}
 }

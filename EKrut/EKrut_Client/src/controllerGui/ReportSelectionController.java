@@ -62,10 +62,12 @@ public class ReportSelectionController {
 		if (error.equals("")) {
 			month = monthItemsCmb.getSelectionModel().getSelectedItem();
 			year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
+			region = regionCmb.getSelectionModel().getSelectedItem();
 			switch (getSelectedReport()) {
 			case "supplyReport":
-				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
-				checkReportData(SupplyReportController.RecievedData, ScreensNames.SupplyReport);
+//				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
+				SupplyReportController.setReport(year, month, region);
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
 				break;
 			case "ordersReport":
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
@@ -93,10 +95,9 @@ public class ReportSelectionController {
 					|| OrdersReportController.reportDetails.getReportsList() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.OrdersReport);
+				NavigationStoreController.getInstance().setCurrentScreen(screen);
 			break;
 		case SupplyReport:
-			SupplyReportController.setReport(year, month, region);
 			break;
 		case ClientsReport:
 			if (ClientsReportController.reportDetails.getDescription().equals("noreport")
@@ -104,7 +105,7 @@ public class ReportSelectionController {
 					|| ClientsReportController.reportDetails.getSupplyMethodsArr() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ClientsReport);
+				NavigationStoreController.getInstance().setCurrentScreen(screen);
 		default:
 			break;
 
@@ -124,14 +125,6 @@ public class ReportSelectionController {
 		regionCmb.setItems(regions);
 		monthItemsCmb.setItems(months);
 		yearItemsCmb.setItems(years);
-
-		regionCmb.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				region = regionCmb.getValue();
-			}
-		});
-
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.CEO)) {
 			regionLabel.setDisable(false);
 			regionCmb.setDisable(false);
