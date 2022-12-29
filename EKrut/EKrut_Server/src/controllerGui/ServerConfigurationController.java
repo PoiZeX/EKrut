@@ -191,35 +191,31 @@ public class ServerConfigurationController {
 	 * @param file
 	 */
 	private void parseFile(File file) {
+		int cnt = 0;
 		String line = "";
 		String cvsSplitBy = ",";
-		final int num_of_fields = 7;
+		final int num_of_fields = 9;
 		ArrayList<String[]> res = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			while ((line = br.readLine()) != null) {
-				if (line == null || CommonFunctions.isNullOrEmpty(line.trim()))
+				if (line == null || CommonFunctions.isNullOrEmpty(line))
 					continue; // skip empty lines
-				String[] fields = line.split(cvsSplitBy);
-
+				ArrayList<String> fields = new ArrayList<>(Arrays.asList(line.split(cvsSplitBy)));
+				cnt++;
 				// normalization form
-				if (fields.length < num_of_fields) {
-					fields = Arrays.copyOf(fields, num_of_fields);
-					if (fields[5] == null)
-						fields[5] = "";
-					fields[6] = "";
+				if (fields.size() != num_of_fields || fields.contains("")) {
+					System.out.println(String.format("Error in line %d", cnt));
+					System.out.println("Tuples rules reminder:\n"
+					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <role_type>, <region>\n");
+					continue;
 				}
-
-				// remove white spaces
-				for (int i = 0; i < fields.length; i++) {
-					if (fields[i] == null)
-						fields[i] = "";
-					fields[i] = fields[i].trim();
-				}
-
-				// add tuple to list
-				res.add(fields);
+				fields.forEach(item -> {
+					fields.set(fields.indexOf(item), item.trim());
+				});
+				
+				res.add(fields.toArray(new String[fields.size()]));
 				// System.out.println(Arrays.toString(fields));
 			}
 			UsersSimulationDBController.insertTuples(res);
@@ -227,12 +223,45 @@ public class ServerConfigurationController {
 		} catch (IOException e) {
 			System.out.println("Import failed: Can't open file");
 		} catch (SQLException e) {
-
-			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1]
-					+ "Tuples rules reminder:\n"
-					+ "<id_number>, <first_name>, <last_name>, <email>, <phone_number>[, <role_type>, <region>]\n");
+			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1] + "Tuples rules reminder:\n"
+					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <role_type>, <region>\n");
 		}
 
 	}
+
+//	private String addErrorMsg(String errorMsg, int fieldIndicator) {
+//		switch (fieldIndicator) {
+//		case 0:
+//			errorMsg += "* user requires a valid id number \n";
+//			break;
+//		case 1:
+//			errorMsg += "* user requires a valid username \n";
+//			break;
+//		case 2:
+//			errorMsg += "* user requires a valid password \n";
+//			break;
+//		case 3:
+//			errorMsg += "* user requires a valid first name \n";
+//			break;
+//		case 4:
+//			errorMsg += "* user requires a valid last name \n";
+//			break;
+//		case 5:
+//			errorMsg += "* user requires a valid email \n";
+//			break;
+//		case 6:
+//			errorMsg += "* user requires a valid phone number \n";
+//			break;
+//		case 7:
+//			errorMsg += "* user requires a valid region \n";
+//			break;
+//		case 8:
+//			errorMsg += "* user requires a valid role \n";
+//			break;
+//		default:
+//			break;
+//		}
+//		return errorMsg;
+//	}
 
 }
