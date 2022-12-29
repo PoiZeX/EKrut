@@ -204,6 +204,11 @@ public class ServerConfigurationController {
 					continue; // skip empty lines
 				ArrayList<String> fields = new ArrayList<>(Arrays.asList(line.split(cvsSplitBy)));
 				cnt++;
+				
+				fields.forEach(item -> {
+					fields.set(fields.indexOf(item), item.trim());
+				});
+				
 				// normalization form
 				if (fields.size() != num_of_fields || fields.contains("")) {
 					System.out.println(String.format("Error in line %d", cnt));
@@ -211,10 +216,6 @@ public class ServerConfigurationController {
 					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <role_type>, <region>\n");
 					continue;
 				}
-				fields.forEach(item -> {
-					fields.set(fields.indexOf(item), item.trim());
-				});
-				
 				res.add(fields.toArray(new String[fields.size()]));
 				// System.out.println(Arrays.toString(fields));
 			}
@@ -228,40 +229,4 @@ public class ServerConfigurationController {
 		}
 
 	}
-
-//	private String addErrorMsg(String errorMsg, int fieldIndicator) {
-//		switch (fieldIndicator) {
-//		case 0:
-//			errorMsg += "* user requires a valid id number \n";
-//			break;
-//		case 1:
-//			errorMsg += "* user requires a valid username \n";
-//			break;
-//		case 2:
-//			errorMsg += "* user requires a valid password \n";
-//			break;
-//		case 3:
-//			errorMsg += "* user requires a valid first name \n";
-//			break;
-//		case 4:
-//			errorMsg += "* user requires a valid last name \n";
-//			break;
-//		case 5:
-//			errorMsg += "* user requires a valid email \n";
-//			break;
-//		case 6:
-//			errorMsg += "* user requires a valid phone number \n";
-//			break;
-//		case 7:
-//			errorMsg += "* user requires a valid region \n";
-//			break;
-//		case 8:
-//			errorMsg += "* user requires a valid role \n";
-//			break;
-//		default:
-//			break;
-//		}
-//		return errorMsg;
-//	}
-
 }
