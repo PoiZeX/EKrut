@@ -8,18 +8,21 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ClientsReportController">
    <center>
-      <HBox prefWidth="880.0" BorderPane.alignment="CENTER">
+      <HBox prefWidth="603.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="566.0" prefWidth="875.0">
+            <VBox prefHeight="552.0" prefWidth="699.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="633.0" style="-fx-font-size: 17;" styleClass="Label-list" text="Sales Activity" />
-                  <BarChart fx:id="activityBarChart" categoryGap="5.0" prefHeight="534.0" prefWidth="815.0" stylesheets="@../styles/css/generalStyleSheet.css">
+                  <BarChart fx:id="activityBarChart" categoryGap="5.0" prefHeight="580.0" prefWidth="777.0" stylesheets="@../styles/css/generalStyleSheet.css">
                     <xAxis>
                       <CategoryAxis label="Monthly Orders" prefHeight="28.0" prefWidth="362.0" styleClass="Label" tickMarkVisible="false">
                            <tickLabelFont>
@@ -41,21 +44,31 @@
                   </BarChart>
                </children>
             </VBox>
-            <VBox>
+            <VBox prefHeight="552.0" prefWidth="384.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="480.0" style="-fx-font-size: 17;" styleClass="Label-list" text="Supply Method" />
-                  <PieChart fx:id="pieChartMethod" prefHeight="224.0" prefWidth="243.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin></PieChart>
-                  <HBox>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="258.0" minHeight="10.0" prefHeight="258.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="280.0" minHeight="10.0" prefHeight="272.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <Label fx:id="totalSalesLabel" alignment="CENTER" prefHeight="30.0" prefWidth="256.0" style="-fx-font-size: 18;" styleClass="Label-list" stylesheets="@../styles/css/generalStyleSheet.css" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="313.0" style="-fx-font-size: 17;" styleClass="Label-list" text="Supply Method" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <PieChart fx:id="usersStatusPie" prefHeight="269.0" prefWidth="286.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" GridPane.rowIndex="1">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </PieChart>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="313.0" style="-fx-font-size: 17;" styleClass="Label-list" text="Users Status" GridPane.valignment="TOP" />
+                        <PieChart fx:id="pieChartMethod" prefHeight="303.0" prefWidth="283.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </PieChart>
                      </children>
-                  </HBox>
+                  </GridPane>
                </children>
             </VBox>
          </children>

@@ -12,6 +12,7 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import common.CommonFunctions;
+import common.RolesEnum;
 import mysql.MySqlClass;
 
 public class UsersSimulationDBController {
@@ -57,22 +58,15 @@ public class UsersSimulationDBController {
 					+ "VALUES" + "(?,?,?,?,?,?,?,?,?,?,?,?);");
 			// ps.setBoolean(1, Boolean.parseBoolean(tuple[0])); // id AutoInc
 			ps.setString(1, tuple[0]); // id_number
-			ps.setString(2, ""); // username
-			ps.setString(3, ""); // password
-			ps.setString(4, tuple[1]); // first name
-			ps.setString(5, tuple[2]); // last name
-			ps.setString(6, tuple[3]); // email
-			ps.setString(7, tuple[4]); // phone number
+			ps.setString(2, tuple[1]); // username
+			ps.setString(3, tuple[2]); // password
+			ps.setString(4, tuple[3]); // first name
+			ps.setString(5, tuple[4]); // last name
+			ps.setString(6, tuple[5]); // email
+			ps.setString(7, tuple[6]); // phone number
 			ps.setString(8, null); // cc number - can be NULL
-			if (CommonFunctions.isNullOrEmpty(tuple[5].trim()) && CommonFunctions.isNullOrEmpty(tuple[6].trim())) {
-				// is not a worker
-				ps.setString(9, null);
-				ps.setString(10, "user"); // auto role type
-			} else {
-				// is a worker
-				ps.setString(9, tuple[5]); // region (for workers) - can be NULL
-				ps.setString(10, tuple[6]); // role type
-			}
+			ps.setString(9, tuple[7]);
+			ps.setString(10, tuple[8]); // auto role type
 			ps.setBoolean(11, false); // is logged in (Flag)
 			ps.setBoolean(12, true); // is NOT approved (Flag)
 			ps.executeUpdate();
@@ -94,21 +88,26 @@ public class UsersSimulationDBController {
 		StringBuilder res = new StringBuilder("");
 
 		// validate ID number
-		if(!isValidID(tuple[0])) 
-			res.append("* ID number {"+tuple[0]+"} is not valid in Israel\n");
-		
+		if (!isValidID(tuple[0]))
+			res.append("* ID number {" + tuple[0] + "} is not valid in Israel\n");
+
 		// validate name
-		if(!Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[1]) || !Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[2]))
-				res.append("* first name {"+tuple[1]+"} / last name {"+tuple[2]+"} can contain letters and spaces only\n");
+		if (!Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[3])
+				|| !Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[4]))
+			res.append("* first name {" + tuple[3] + "} / last name {" + tuple[4]
+					+ "} can contain letters and spaces only\n");
 
 		// validate email
-		if(!Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,}$", tuple[3]))
-				res.append("* email {"+tuple[3]+"} is not in the right format\n");
+		if (!Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,}$", tuple[5]))
+			res.append("* email {" + tuple[5] + "} is not in the right format\n");
 
 		// validate phone number
-		if(!Pattern.matches("^05[0-9]{8}$", tuple[4]))
-			res.append("* phone number {"+tuple[4]+"} is not in the right format\n");
+		if (!Pattern.matches("^05[0-9]{8}$", tuple[6]))
+			res.append("* phone number {" + tuple[6] + "} is not in the right format\n");
 
+		// validate role
+		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
+			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
 		return res.toString();
 	}
 
@@ -124,7 +123,8 @@ public class UsersSimulationDBController {
 		int[] factors = new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 };
 
 		for (int i = 0; i < 9; i++) {
-			factors[i] *= id % 10; id /= 10;
+			factors[i] *= id % 10;
+			id /= 10;
 			if (factors[i] > 9) {
 				factors[i] = factors[i] / 10 + factors[i] % 10;
 			}
