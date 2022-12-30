@@ -8,6 +8,7 @@ import client.ClientController;
 import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.ScreensNames;
 import common.TaskType;
 import entity.MachineEntity;
@@ -63,6 +64,7 @@ public class SupplyReportController {
 
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportRegion);
+		supplySBC.setAnimated(false);
 		allMachines = CommonData.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -75,7 +77,6 @@ public class SupplyReportController {
 		machineIdComboBox.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				supplySBC.getData().clear(); // clear previous if exists
 				machineName = machineIdComboBox.getValue();
 				for (MachineEntity machine : allMachines) {
 					if (machine.getMachineName().equals(machineName))
@@ -127,11 +128,10 @@ public class SupplyReportController {
 	@SuppressWarnings("unchecked")
 	private void initBarChart(int machineID) {
 		RecievedData = false; // reset each operation
-		
+		supplySBC.getData().clear(); // clear previous if exists
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
 				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
-
 		// wait for answer
 		while (RecievedData == false) {
 			try {
@@ -140,50 +140,24 @@ public class SupplyReportController {
 				e.printStackTrace();
 			}
 		}
-		// System.out.println(Arrays.asList(reportDetails.getReportsList()));
-//		if (reportDetails.getReportsList() == null) {
-//			System.out.println("Empty Report");
-//			for ( int i = 0; i < supplyMachineTbl.getItems().size(); i++) {
-//				supplyMachineTbl.getItems().clear();
-//			}
-//			return;
-//		}
-
-//		supplyReports = new ArrayList<>();
-//		SupplyReportEntity newReport = null;
-
+		
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		// [item_id,item_name,min_amnt,cur_amnt, start_amnt,missing_severity]
-		ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
-		ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
-		XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
-		XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
-		yAxisSBC.setLowerBound(5);
-		for (String[] item : itemsArray) {
-			series1.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[3])));
-			series2.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[4])));
+		//[name,min,cur,start,severity]
+		if (itemsArray == null) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
+			return;
 		}
-
-		series1.setName("Start");
-		series2.setName("End");
-		//supplySBC.setCategoryGap(50);
+		
+		XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
+		XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
+		yAxisSBC.setLowerBound(15);
+		for (String[] item : itemsArray) {
+			series2.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[3])));
+			series1.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[2])));
+		}
+		series1.setName("Start Amount");
+		series2.setName("Current Amount");
 		supplySBC.getData().addAll(series1, series2);
-
-//		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
-//		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
-//		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
-//		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("start_stock"));
-//		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("cur_stock"));
-//		for (String[] item : itemsArray) {
-//			newReport = new SupplyReportEntity(reportDetails.getId(), machineID, item[0], item[1], item[2], item[3], item[4], reportDetails.getMonth(), reportDetails.getYear(), machineName, machineName);
-//			supplyReports.add(newReport);
-//		}
-//		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
-//		supplyMachineTbl.setItems(ol);
-//		supplyMachineTbl.setEditable(false);
-////		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
-//		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
-//		RecievedData = false;
 
 	}
 }
