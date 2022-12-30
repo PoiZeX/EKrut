@@ -1,11 +1,7 @@
 package controllerGui;
 
 import java.io.IOException;
-import java.util.Timer;
 import java.util.regex.Pattern;
-
-import javax.management.relation.Role;
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;

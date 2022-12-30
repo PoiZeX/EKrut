@@ -6,7 +6,9 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
@@ -143,8 +145,10 @@ public class HomePageController {
 			roleImg.setFitWidth(350.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
+		
+		// activate timeout 
+		NavigationStoreController.transition.play();
 
-		// updateButtonsSize();
 	}
 
 	/**
@@ -185,6 +189,5 @@ public class HomePageController {
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 
 	}
-	
 
 }

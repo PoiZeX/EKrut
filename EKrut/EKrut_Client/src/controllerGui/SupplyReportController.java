@@ -74,20 +74,18 @@ public class SupplyReportController {
 				}
 		}
 		machineIdComboBox.setItems(machines);
-		machineIdComboBox.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				machineName = machineIdComboBox.getValue();
-				for (MachineEntity machine : allMachines) {
-					if (machine.getMachineName().equals(machineName))
-						machineID = machine.getId();
-				}
-				initBarChart(machineID);
-//				checkCurAmount();
+		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) ->
+		{
+			machineName = machineIdComboBox.getValue();
+			for (MachineEntity machine : allMachines) {
+				if (machine.getMachineName().equals(machineName))
+					machineID = machine.getId();
 			}
+			initBarChart(machineID);
+
 		});
 	}
-
+  
 	public static void setReport(String year, String month, String region) {
 		reportYear = year;
 		reportMonth = month;
@@ -140,14 +138,14 @@ public class SupplyReportController {
 				e.printStackTrace();
 			}
 		}
-		
+
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		//[name,min,cur,start,severity]
+		// [name,min,cur,start,severity]
 		if (itemsArray == null) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
 		}
-		
+
 		XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
 		XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
 		yAxisSBC.setLowerBound(15);

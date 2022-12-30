@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class PopupController {
 
@@ -108,6 +109,7 @@ public class PopupController {
 	@FXML
 	void okAction(ActionEvent event) {
 		isOkPressed = true;
+		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
 
 }
