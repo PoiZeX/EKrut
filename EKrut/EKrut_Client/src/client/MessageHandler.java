@@ -9,7 +9,7 @@ import controllerGui.MarketingWorkerController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.RegistrationFormController;
-import controllerGui.SupplyManagmentController;
+import controllerGui.SupplyManagementController;
 import controllerGui.SupplyReportController;
 import controllerGui.SupplyUpdateController;
 import controllerGui.UsersManagementController;
@@ -84,14 +84,14 @@ public class MessageHandler {
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
 		case ReceiveItemsInMachine:
-			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
 			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
 			break;
 		case ReceiveSupplyWorkersFromServer:
-			SupplyManagmentController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
+			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
 			break;
 		default:
 			break;

@@ -5,25 +5,8 @@ import java.util.ArrayList;
 
 import common.Message;
 import common.TaskType;
-import controllerDb.CommonDataDBController;
-import controllerDb.DeliveryManagementDBController;
-import controllerDb.ItemDBController;
-import controllerDb.LoginDBController;
-import controllerDb.MarketingManagerDBController;
-import controllerDb.PersonalMessagesDBController;
-import controllerDb.ReportsDBController;
-import controllerDb.UsersManagementDBController;
-import entity.DeliveryEntity;
-import entity.PersonalMessageEntity;
-import controllerDb.SupplyManagmentDBController;
-import controllerDb.SupplyReportDBController;
-import controllerDb.UsersManagementDBController;
-import entity.DeliveryEntity;
-import entity.ItemInMachineEntity;
-import entity.MachineEntity;
-import entity.SaleEntity;
-import entity.SubscriberEntity;
-import entity.UserEntity;
+import controllerDb.*;
+import entity.*;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
@@ -100,19 +83,19 @@ public class MessageHandler {
 			break;
 
 		case RequestItemsInMachine:
-			SupplyManagmentDBController.getMachineItems((int)obj,client);
+			SupplyManagementDBController.getMachineItems((int)obj,client);
 			break;
 		case RequestProssecedItemsInMachine:
-			SupplyManagmentDBController.getProcessedMachineItems((int [])obj, client);
+			SupplyManagementDBController.getProcessedMachineItems((int [])obj, client);
 			break;
 		case RequestInsertNewSale:
 			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
 		case RequestUpdateMachineMinAmount:
-			SupplyManagmentDBController.updateMachineMinAmount((MachineEntity)obj,client);
+			SupplyManagementDBController.updateMachineMinAmount((MachineEntity)obj,client);
 			break;
 		case RequestItemsInMachineUpdateFromServer:
-			SupplyManagmentDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
+			SupplyManagementDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
 			break;
@@ -120,7 +103,7 @@ public class MessageHandler {
 			MarketingManagerDBController.getSales(client);
 			break;
 		case RequestSupplyWorkers:
-			SupplyManagmentDBController.getSupplyWorkers(client);
+			SupplyManagementDBController.getSupplyWorkers(client);
 			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());

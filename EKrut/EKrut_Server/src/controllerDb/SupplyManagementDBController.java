@@ -21,7 +21,7 @@ import entity.MachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
-public class SupplyManagmentDBController {
+public class SupplyManagementDBController {
 	static boolean pros = false;
 	/*----------------------------------GETDATA--------------------------------*/
 	/**get items in machine for supply mangment*/
@@ -32,7 +32,7 @@ public class SupplyManagmentDBController {
 			if (MySqlClass.getConnection() == null)
 				return;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps1=conn.prepareStatement("SELECT   ekrut.machines.min_amount"
+			PreparedStatement ps1=conn.prepareStatement("SELECT ekrut.machines.min_amount"
 					+ " FROM ekrut.machines"+ " WHERE machines.machine_id=(?);");
 			ps1.setInt(1,machineId);
 			ResultSet res1=ps1.executeQuery();
@@ -121,14 +121,14 @@ public class SupplyManagmentDBController {
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE role_type=?;");
 			ps.setString(1, "supplyWorker");
+					
 			ResultSet res = ps.executeQuery();
 			while(res.next()) {
 				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
-						res.getString(6), res.getString(7), res.getString(8), res.getString(11), res.getString(9),
-						res.getBoolean(12), res.getBoolean(13));
+						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
+						res.getString(11), res.getBoolean(12), res.getBoolean(13));
 				user.setId(res.getInt(1));
-				if (res.getString(10) != null) // region column
-					user.setRegion(res.getString(10));
+
 				supplyWorkers.add(user);
 			}
 			try {

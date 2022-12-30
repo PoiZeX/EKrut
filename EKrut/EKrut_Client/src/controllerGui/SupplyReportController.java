@@ -19,9 +19,11 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
@@ -35,14 +37,14 @@ import javafx.util.Callback;
 public class SupplyReportController {
 
 	@FXML
-	private StackedBarChart<String, Integer> supplySBC;
+	private BarChart<String, Integer> supplySBC;
 
 	@FXML
 	private CategoryAxis xAxisSBC;
 
 	@FXML
 	private NumberAxis yAxisSBC;
-	
+
 	@FXML
 	private Label titleLabel;
 
@@ -64,7 +66,7 @@ public class SupplyReportController {
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
 			if (NavigationStoreController.connectedUser != null)
-				if (machine.getReigonName().equals(reportRegion)) {
+				if (machine.getRegionName().equals(reportRegion)) {
 					machines.add(machine.getMachineName());
 				}
 		}
@@ -148,22 +150,20 @@ public class SupplyReportController {
 
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
 		// [item_id,item_name,min_amnt,cur_amnt, start_amnt,missing_severity]
-        ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
-        ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
+		ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
+		ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
 		yAxisSBC.setLowerBound(5);
 		for (String[] item : itemsArray) {
-			series1Data.add(new XYChart.Data<String,Integer>(item[1],Integer.parseInt(item[3])));
-			series2Data.add(new Data<String, Integer>(item[1],Integer.parseInt(item[4])));
+			series1Data.add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[3])));
+			series2Data.add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[4])));
 		}
-        XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
-        XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
-        series1.setName("Start");
-        series2.setName("End");
-        supplySBC.setCategoryGap(500);
-        supplySBC.getData().add(series1);
-        supplySBC.getData().add(series2);
-        
-        
+		XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
+		XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
+		series1.setName("Start");
+		series2.setName("End");
+//        supplySBC.setCategoryGap(500);
+		supplySBC.getData().addAll(series1, series2);
+
 //		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
 //		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
 //		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));

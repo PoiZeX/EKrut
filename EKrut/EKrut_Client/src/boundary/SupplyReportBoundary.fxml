@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,14 +32,14 @@
                   </ComboBox>
                </children>
             </GridPane>
-            <StackedBarChart fx:id="supplySBC">
+            <BarChart fx:id="supplySBC">
               <xAxis>
-                <CategoryAxis prefHeight="25.0" prefWidth="839.0" side="BOTTOM" fx:id="xAxisSBC" />
+                <CategoryAxis side="BOTTOM" fx:id="xAxisSBC" />
               </xAxis>
               <yAxis>
                 <NumberAxis fx:id="yAxisSBC" side="LEFT" />
               </yAxis>
-            </StackedBarChart>
+            </BarChart>
          </children>
       </VBox>
    </center>

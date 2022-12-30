@@ -84,7 +84,7 @@ public class HomePageController {
 			// CEO has 3 buttons.
 			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
 			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
-			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagment);
+			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagement);
 			if(currentUser.getRole_type() == RolesEnum.regionManager) 	
 				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyManagmentController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyManagementController">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -193,7 +193,7 @@
                   <Insets left="25.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="removeCompletedBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCompleted" styleClass="Button-NoBG" text="removeCompleted" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+            <Button fx:id="removeCompletedBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#removeCompleted" styleClass="Button-NoBG" text="remove completed" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>

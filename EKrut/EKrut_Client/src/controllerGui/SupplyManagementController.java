@@ -38,7 +38,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-public class SupplyManagmentController {
+public class SupplyManagementController {
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol;
