@@ -98,6 +98,7 @@ public class MessageHandler {
 			SupplyManagementDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
+			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj , client);
 			break;
 		case RequestSalesFromServer:
 			MarketingManagerDBController.getSales(client);

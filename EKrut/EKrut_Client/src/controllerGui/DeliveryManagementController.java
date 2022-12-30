@@ -11,6 +11,7 @@ import common.DeliveryStatus;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
+import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -136,6 +137,7 @@ public class DeliveryManagementController {
 							deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
 							deliveryEntity.setDeliveryStatus(newStatus);
 							msg+=calculateEstimatedTime();
+						//	SMSMailHandlerController.SendSMSOrMail(SMS, UserEntity to, "Delivery", msg);
 							//TODO add: send message to the costumer with the estimated Time
 						}
 						else {

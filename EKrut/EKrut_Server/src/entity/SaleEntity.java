@@ -11,14 +11,16 @@ public class SaleEntity implements Serializable {
 	} ;
 	
 	private static final long serialVersionUID = 1L;
+	private int SaleID;
 	private String saleType, region, days ;
 	private SaleStatus saleStatus;
 	private LocalTime startTime, endTime;
 	
 	
 
-	public SaleEntity(String region, String saleType,String days, LocalTime startTime, LocalTime endTime, SaleStatus saleStatus) {
+	public SaleEntity(int id, String region, String saleType,String days, LocalTime startTime, LocalTime endTime, SaleStatus saleStatus) {
 		super();
+		this.SaleID=id;
 		this.saleType = saleType;
 		this.region = region;
 		this.saleStatus = saleStatus;
@@ -36,6 +38,9 @@ public class SaleEntity implements Serializable {
 		this.saleStatus = SaleStatus.NotActive;
 	}
 	
+	public int getSaleID() {
+		return SaleID;
+	}
 	public String getSaleType() {
 		return saleType;
 	}

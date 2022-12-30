@@ -116,10 +116,9 @@ public class MarketingWorkerController {
 				SaleStatus oldStatus=saleEntity.getSaleStatus();
 				SaleStatus newStatus=event.getNewValue();
 				if(!oldStatus.equals(newStatus)) {
-					/***
-					 * case Active: start the sale
-					 * case NotActive: stop the sale
-					 */
+					saleEntity.setSaleStatus(newStatus);
+					if(!salesToUpdate.contains(saleEntity))
+						salesToUpdate.add(saleEntity);
 				}
 			}
 			

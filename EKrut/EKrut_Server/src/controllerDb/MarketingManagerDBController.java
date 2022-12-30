@@ -31,7 +31,7 @@ public class MarketingManagerDBController {
 			if (con == null)
 				return;
 			
-			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, days, sale_type, start_time, end_time) "
+			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, sale_type,days, start_time, end_time) "
 					+ "VALUES (?, ?, ?, ?, ?);");
 			ps.setString(1,saleEntity.getRegion());
 			ps.setString(2,saleEntity.getSaleType());
@@ -41,18 +41,37 @@ public class MarketingManagerDBController {
 			
 			ps.executeUpdate();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*update sale status*/
+	public static void updateSaleEntities(ArrayList<SaleEntity> saleLst, ConnectionToClient client) {
+		Statement stmt;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+
+			stmt = MySqlClass.getConnection().createStatement();
+			for (SaleEntity saleEntity : saleLst) {
+				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.sales SET sale_sataus=? WHERE id=?;");
+				ps.setString(1, saleEntity.getSaleStatus().toString());
+				ps.setInt(2, saleEntity.getSaleID());
+				ps.executeUpdate();
+
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	public static void getSales(ConnectionToClient client) {
 		Statement stmt;
 		SaleEntity saleEntity;
-		Date startD, endD;
-		Time startT, endT;
 		SaleStatus saleStatus;
-		
 		try {
 			if (MySqlClass.getConnection() == null) {
 				return;
@@ -63,7 +82,7 @@ public class MarketingManagerDBController {
 			while (rs.next()) {
 				
 				saleStatus=SaleStatus.valueOf(rs.getString(7));
-				saleEntity = new SaleEntity(rs.getString(2), rs.getString(3), rs.getString(4)
+				saleEntity = new SaleEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)
 						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
 				try {
 					client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, saleEntity)); // finally send the entity
