@@ -5,8 +5,7 @@ public enum RolesEnum {
 	registered, 
 	member,
 	customerServiceWorker,
-	deliveryWorker,
-	deliveryManager,
+	deliveryOperator,
 	marketingWorker,
 	marketingManager,
 	supplyWorker,
@@ -16,7 +15,7 @@ public enum RolesEnum {
 	
 	public static boolean isValidRole(String role) {
 		for (RolesEnum r : RolesEnum.values()) {
-			if (role.equals(r.toString().toLowerCase()))
+			if (role.toLowerCase().equals(r.toString().toLowerCase()))
 				return true;
 		}
 		return false;

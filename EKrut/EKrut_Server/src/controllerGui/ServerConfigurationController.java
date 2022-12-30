@@ -213,7 +213,7 @@ public class ServerConfigurationController {
 				if (fields.size() != num_of_fields || fields.contains("")) {
 					System.out.println(String.format("Error in line %d", cnt));
 					System.out.println("Tuples rules reminder:\n"
-					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <role_type>, <region>\n");
+					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
 					continue;
 				}
 				res.add(fields.toArray(new String[fields.size()]));
@@ -225,7 +225,7 @@ public class ServerConfigurationController {
 			System.out.println("Import failed: Can't open file");
 		} catch (SQLException e) {
 			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1] + "Tuples rules reminder:\n"
-					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <role_type>, <region>\n");
+					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
 		}
 
 	}

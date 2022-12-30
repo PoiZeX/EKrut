@@ -47,12 +47,14 @@ public class UsersSimulationDBController {
 			if (MySqlClass.getConnection() == null)
 				return false;
 			Connection conn = MySqlClass.getConnection();
-
+			boolean isNotWorker = true;
 			// validate data
 			String validateResult = isValidTuple(tuple);
 			if (!validateResult.equals(""))
 				throw new SQLException(validateResult);
-
+			
+			if(!tuple[8].toLowerCase().equals("user"))
+				isNotWorker = false;
 			PreparedStatement ps = conn.prepareStatement("insert INTO ekrut.users "
 					+ "(`id_number`, `username`, `password`, `first_name`, `last_name`, `email`, `phone_number`, `cc_number`, `region`, `role_type`, `logged_in`, `is_not_approved`) "
 					+ "VALUES" + "(?,?,?,?,?,?,?,?,?,?,?,?);");
@@ -68,7 +70,7 @@ public class UsersSimulationDBController {
 			ps.setString(9, tuple[7]);
 			ps.setString(10, tuple[8]); // auto role type
 			ps.setBoolean(11, false); // is logged in (Flag)
-			ps.setBoolean(12, true); // is NOT approved (Flag)
+			ps.setBoolean(12, isNotWorker); // is NOT approved (Flag)
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -92,7 +94,7 @@ public class UsersSimulationDBController {
 			res.append("* ID number {" + tuple[0] + "} is not valid in Israel\n");
 
 		// validate name
-		if (!Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[3])
+		if (!Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{0,}$", tuple[3])
 				|| !Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[4]))
 			res.append("* first name {" + tuple[3] + "} / last name {" + tuple[4]
 					+ "} can contain letters and spaces only\n");
@@ -108,6 +110,8 @@ public class UsersSimulationDBController {
 		// validate role
 		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
 			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
+		
+		
 		return res.toString();
 	}
 

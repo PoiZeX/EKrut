@@ -1,0 +1,19 @@
+100878859, rmNorth, 123456, Lidor, Ankava, lidor@EKrut.com, 0538503033, North, regionManager
+101868859, doNorth,123456, Eyal, Greenberg, eyal@EKrut.com, 0538503033, North, deliveryOperator
+106828759, mwNorth, 123456, Ofer, Gold, ofer@EKrut.com, 0538503033, North, marketingWorker
+
+102858859, rmSouth, 123456, Neta, The fork, neta@EKrut.com, 0538503033, South, regionManager
+103848859, doSouth, 123456, Yossef, Ben porat, yossef@EKrut.com, 0538503033, South, deliveryOperator
+106828858, mwSouth, 123456, Bigi, Amzalag, ofer@EKrut.com, 0538503033, South, marketingWorker
+
+104838859, rmUAE, 123456, Dima, Chdnsky, dima@EKrut.com, 0538503033, UAE, regionManager
+105828859, doUAE, 123456, Hamudi, Kabudi, hamudi@EKrut.com, 0538503033, UAE, deliveryOperator
+106828957, mwUAE, 123456, Guy, Amzalag, ofer@EKrut.com, 0538503033, UAE, marketingWorker
+
+106818859, csworker, 123456, Ravit, Gamliel, ravit@EKrut.com, 0538503033, null, customerServiceWorker
+106838659, mktmanager, 123456, Vital, Marciano, vital@EKrut.com, 0538503033, null, marketingManager
+106848559, spw1, 123456, David, Asulin, david@EKrut.com, 0538503033, null, supplyWorker
+106858459, spw2, 123456, Yair, Asulin, yair@EKrut.com, 0538503033, null, supplyWorker
+106868359, spw3, 123456, Saray, Asulin, saray@EKrut.com, 0538503033, null, supplyWorker
+106878259, spw4, 123456, Rivka, Asulin, rivka@EKrut.com, 0538503033, null, supplyWorker
+106888159, ceo, 123456, Adam, Mizrahi, adam@EKrut.com, 0538503033, null, CEO
