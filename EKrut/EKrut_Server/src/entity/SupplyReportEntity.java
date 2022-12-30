@@ -13,13 +13,15 @@ public class SupplyReportEntity extends ReportEntity {
 	private int min_stock, cur_stock, start_stock;
 	private ArrayList<String[]> reportsList;
 	private String[] details;
+	private int machine_id;
 	
 	public SupplyReportEntity() {
 		super();
 	}
 	
-	public SupplyReportEntity(int id, String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String month, String year, String region, String missing_sev) {
+	public SupplyReportEntity(int id,int machine_id, String item_id, String item_name, String min_stock, String start_stock, String cur_stock, String month, String year, String region, String missing_sev) {
 		super(id, month, year, region);
+		this.setMachine_id(machine_id);
 		details = new String[] {item_id, item_name, min_stock, start_stock, cur_stock, missing_sev};
 		parserDetails(item_id, item_name, min_stock, start_stock, cur_stock, missing_sev);
 	}
@@ -93,5 +95,13 @@ public class SupplyReportEntity extends ReportEntity {
 			String sev = missing_sev_list[i];
 			reportsList.add(new String[] {id, name, min, start, cur, sev});
 		}
+	}
+
+	public int getMachine_id() {
+		return machine_id;
+	}
+
+	public void setMachine_id(int machine_id) {
+		this.machine_id = machine_id;
 	}
 }
