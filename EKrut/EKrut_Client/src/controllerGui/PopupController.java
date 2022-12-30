@@ -73,7 +73,7 @@ public class PopupController {
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
 			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
 			break;
-			
+
 		case Decision:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/decision.png"));
 			titleLabel.setStyle("-fx-text-fill: " + DECISION_COLOR);
@@ -81,12 +81,13 @@ public class PopupController {
 			NoCancelBtn.setText("NO");
 			NoCancelBtn.setVisible(true); // uncomment this & set when 'decision'
 			break;
+
 		default:
 			titleLabel.setVisible(false);
 			messageLabel.setVisible(false);
 			return;
 		}
-		titleLabel.setText(type.toString() +"!");
+		titleLabel.setText(type.toString() + "!");
 		messageLabel.setText(message);
 		yesOkBtn.setVisible(true);
 		if (image != null) {
@@ -95,22 +96,18 @@ public class PopupController {
 		}
 
 	}
-	
+
 	// this static boolean used to return an answer status
 	public static Boolean isOkPressed = null;
 
-    @FXML
-    void cancelAction(ActionEvent event) {
-    	isOkPressed = false;
-    }
+	@FXML
+	void cancelAction(ActionEvent event) {
+		isOkPressed = false;
+	}
 
-    @FXML
-    void okAction(ActionEvent event) {
-    	isOkPressed = true;
-    }
-
-	
-	
-	
+	@FXML
+	void okAction(ActionEvent event) {
+		isOkPressed = true;
+	}
 
 }

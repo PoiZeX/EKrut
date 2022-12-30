@@ -6,6 +6,7 @@ import java.util.Arrays;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
@@ -74,6 +75,7 @@ public class SupplyReportController {
 		machineIdComboBox.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
+				supplySBC.getData().clear(); // clear previous if exists
 				machineName = machineIdComboBox.getValue();
 				for (MachineEntity machine : allMachines) {
 					if (machine.getMachineName().equals(machineName))
@@ -124,6 +126,8 @@ public class SupplyReportController {
 	 */
 	@SuppressWarnings("unchecked")
 	private void initBarChart(int machineID) {
+		RecievedData = false; // reset each operation
+		
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
 				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
@@ -152,16 +156,17 @@ public class SupplyReportController {
 		// [item_id,item_name,min_amnt,cur_amnt, start_amnt,missing_severity]
 		ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
 		ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
-		yAxisSBC.setLowerBound(5);
-		for (String[] item : itemsArray) {
-			series1Data.add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[3])));
-			series2Data.add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[4])));
-		}
 		XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
 		XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
+		yAxisSBC.setLowerBound(5);
+		for (String[] item : itemsArray) {
+			series1.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[3])));
+			series2.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[4])));
+		}
+
 		series1.setName("Start");
 		series2.setName("End");
-//        supplySBC.setCategoryGap(500);
+		//supplySBC.setCategoryGap(50);
 		supplySBC.getData().addAll(series1, series2);
 
 //		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));

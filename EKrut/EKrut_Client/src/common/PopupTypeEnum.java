@@ -6,5 +6,4 @@ public enum PopupTypeEnum {
 	Warning,
 	Information,
 	Decision
-
 }

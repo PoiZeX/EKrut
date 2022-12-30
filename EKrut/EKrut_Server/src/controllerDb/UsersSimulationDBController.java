@@ -95,7 +95,7 @@ public class UsersSimulationDBController {
 
 		// validate name
 		if (!Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{0,}$", tuple[3])
-				|| !Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{2,}$", tuple[4]))
+				|| !Pattern.matches("^[a-zA-Z]{2,}[a-zA-Z ]{0,}$", tuple[4]))
 			res.append("* first name {" + tuple[3] + "} / last name {" + tuple[4]
 					+ "} can contain letters and spaces only\n");
 
