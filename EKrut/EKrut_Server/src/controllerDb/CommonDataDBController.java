@@ -59,7 +59,7 @@ public class CommonDataDBController {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.machines;");
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
-				machines.add(new MachineEntity(res.getInt(1),res.getString(2),res.getInt(3),res.getString(4)));
+				machines.add(new MachineEntity(res.getInt(1),res.getString(2),res.getInt(3),res.getString(4),res.getInt(5)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

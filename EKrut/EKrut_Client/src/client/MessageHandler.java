@@ -5,10 +5,13 @@ import common.Message;
 import common.TaskType;
 import controller.ItemsController;
 import controllerGui.LoginController;
+import controllerGui.MarketingWorkerController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.RegistrationFormController;
+import controllerGui.SupplyManagmentController;
 import controllerGui.SupplyReportController;
+import controllerGui.SupplyUpdateController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
 import controllerGui.DeliveryManagementController;
@@ -17,8 +20,10 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
+import entity.SaleEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
+import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.ClientsReportEntity;
 import entity.SupplyReportEntity;
@@ -77,6 +82,16 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+			break;
+		case ReceiveItemsInMachine:
+			SupplyManagmentController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+			break;
+		case ReceiveSalesFromServer:
+			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
+			break;
+		case ReceiveSupplyWorkersFromServer:
+			SupplyManagmentController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
 			break;
 		default:
 			break;

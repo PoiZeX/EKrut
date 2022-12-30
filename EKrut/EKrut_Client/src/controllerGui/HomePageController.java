@@ -100,20 +100,21 @@ public class HomePageController {
 			break;
 
 		case deliveryManager:
-			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", null);
+			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", ScreensNames.DeliveryManagement);
 			break;
 
 		case marketingWorker:
-			setBtn(topBtn, "Activate New Sale", "Activate sale for region", null); // just if the manager activated it
+			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if the manager activated it
 																					// already
 			break;
 
 		case marketingManager:
-			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", null);
+			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNames.MarketingManager);
+			image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			break;
 
 		case supplyWorker:
-			setBtn(topBtn, "Update supply", "Update supplies for item(s)", null);
+			setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
 			break;
 
 

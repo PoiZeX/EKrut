@@ -1,32 +1,48 @@
 package entity;
 
 public class MachineEntity extends MainEntity {
-	public int reigonID;
-	public String reigonName;
-	public int machineID;
+	
+
+	public int regionId;
+	public String regionName;
+	public int machineId;
 	public String machineName;
+	private int minamount;
 	
-	public MachineEntity(int reigonID, String reigonName, int machineID, String machineName) {
-		super(machineID);
-		this.reigonID = reigonID;
-		this.reigonName = reigonName;
-		this.machineID = machineID;
+	public MachineEntity(int regionId, String regionName, int machineId, String machineName ,int minamount) {
+		super(machineId);
+		this.regionId = regionId;
+		this.regionName = regionName;
+		this.machineId = machineId;
 		this.machineName = machineName;
+		this.minamount=minamount;
 	}
 	
-	public int getReigonID() {
-		return reigonID;
+	public int getMinamount() {
+		return minamount;
 	}
 
-	public String getReigonName() {
-		return reigonName;
+	public void setMinamount(int minamount) {
+		this.minamount = minamount;
 	}
 
-	public int getMachineID() {
-		return machineID;
+	public int getRegionId() {
+		return regionId;
+	}
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public int getMachineId() {
+		return machineId;
 	}
 
 	public String getMachineName() {
+		return machineName;
+	}
+	@Override
+	public String toString() {
 		return machineName;
 	}
 }

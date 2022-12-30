@@ -37,7 +37,10 @@ public class ItemEntity extends MainEntity {
 		this.description = description;
 		this.itemImg=itemImg;
 	}
-	
+	public ItemEntity(int item_id,String name) {
+		super(item_id);
+		this.name = name;
+	}
 	public int getItem_id() {
 		return itemId;
 	}

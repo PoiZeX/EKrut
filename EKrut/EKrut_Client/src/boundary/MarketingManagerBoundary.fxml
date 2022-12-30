@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.MarketingManagerController">
+   <bottom>
+      <GridPane prefHeight="69.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" prefHeight="73.0" prefWidth="73.0" styleClass="Button-return" />
+         </children>
+      </GridPane>
+   </bottom>
+   <right>
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="12.0" prefHeight="39.0" prefWidth="277.0" styleClass="LabelTitle" text="create new sale" underline="true" />
+            <GridPane alignment="CENTER" prefHeight="353.0" prefWidth="535.0" styleClass="GridPane">
+              <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="244.66665649414062" minWidth="10.0" prefWidth="241.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="285.0" minWidth="10.0" prefWidth="264.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints />
+                  <RowConstraints maxHeight="109.00001525878906" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="123.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="96.66668701171875" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="endDateLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose days:" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="StartTimeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose start time (per day):" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Verdana" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="regionLabel" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose region:" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <ComboBox fx:id="regionCmb" prefHeight="26.0" prefWidth="144.0" promptText="Region" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin></ComboBox>
+                  <Label fx:id="EndTimeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose end time (per day):" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="Verdana" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="typeLbl" prefHeight="21.0" prefWidth="200.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose sale type:" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Verdana" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <ComboBox fx:id="typeCmb" prefHeight="26.0" prefWidth="144.0" promptText="Sale type" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                  <ComboBox fx:id="startTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="endTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                  <MenuButton fx:id="daysMb" mnemonicParsing="false" prefWidth="144.0" text="Choose days" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="15.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </GridPane>
+            <GridPane alignment="CENTER" prefHeight="75.0" prefWidth="475.0" styleClass="GridPane">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints />
+              </columnConstraints>
+               <children>
+                  <Button fx:id="createBtn" mnemonicParsing="false" onAction="#createSale" prefHeight="47.0" prefWidth="176.0" style="-fx-background-color: #2CB103;" styleClass="Button" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Label fx:id="errLbl" alignment="CENTER" prefHeight="15.0" prefWidth="470.0" stylesheets="@../styles/css/generalStyleSheet.css" textFill="RED" GridPane.rowIndex="2" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints maxHeight="79.0" minHeight="56.0" prefHeight="68.0" />
+                  <RowConstraints maxHeight="59.0" minHeight="21.0" prefHeight="21.0" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

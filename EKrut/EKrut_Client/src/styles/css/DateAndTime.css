@@ -1,0 +1,74 @@
+.ComboBox{
+	-fx-text-base-color: Black;
+		-fx-font-size: 10pt;	
+	-fx-background-color:#FFFFFF;
+	-fx-border-width : 0.5 ;
+    -fx-border-color : grey;
+    -fx-border-radius: 5;
+}
+/*litle arrow */
+.combo-box .arrow{
+       -fx-background-color:#FFFFFF;
+       -fx-opacity: 0; /* Set the node in the button to be visible */
+       
+    
+}
+
+/* arrow background */
+.combo-box .arrow-button{
+	 -fx-background-image: url("/styles/icons/clock.png"); /* Url of the icon */
+	-fx-background-size: 60% 60%; /* Can be `cover` or `100% 100%` ect. */
+    -fx-background-repeat: no-repeat;
+    -fx-background-color:#FFFFFF;
+    -fx-background-position: center center; /* Put the icon in the center */
+    -fx-border-style:none;
+    
+}
+
+.combo-box .list-cell{
+    -fx-background-color: #FFFFFF;
+   -fx-text-alignment:center;
+}
+
+.combo-box .arrow-button:hover{
+    -fx-background-color:#babfc2;
+    -fx-border-style:none;
+}
+
+.combo-box:hover{
+    -fx-background-color:gray;
+    -fx-text-base-color: Black;
+}
+.combo-box .list-cell:hover{
+    -fx-background-color: gray;
+   -fx-text-alignment:center;
+     -fx-text-base-color: Black;
+}
+
+.date-picker{
+	-fx-font-family: "Century Gothic";
+    -fx-font-weight: bold;
+   	-fx-text-alignment:center;
+}
+.date-picker:editable > .arrow-button > * {
+    -fx-opacity: 0; /* Set the node in the button to be visible */
+}
+
+.date-picker > .arrow-button {
+    -fx-background-image: url("/styles/icons/calendar.png"); /* Url of the icon */
+    -fx-background-size: 60% 60%; /* Can be `cover` or `100% 100%` ect. */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center; /* Put the icon in the center */
+     -fx-background-color: #FFFFFF;
+}
+.date-picker:hover{
+    -fx-background-color:gray;
+    -fx-text-base-color: Black;
+}
+.date-picker > .arrow-button:hover{
+    -fx-background-color:#babfc2;
+    -fx-border-style:none;
+}
+.date-picker:text {
+    -fx-font-size: 12pt;
+}

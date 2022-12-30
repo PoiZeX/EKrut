@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConfirmDeliveryController">
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="399.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@background.png" />
+               </image>
+            </ImageView>
+            <GridPane prefHeight="405.0" prefWidth="612.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="210.0" />
+                <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="446.0" minWidth="10.0" prefWidth="446.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="165.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="269.0" minHeight="10.0" prefHeight="128.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="255.0" minHeight="10.0" prefHeight="168.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane prefHeight="169.0" prefWidth="332.0" styleClass="GridPaneChild" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints fillHeight="false" maxHeight="109.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="60.0" minHeight="4.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="submitBtn" mnemonicParsing="false" prefHeight="37.0" prefWidth="144.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <TextField alignment="CENTER" prefHeight="33.0" prefWidth="170.0" promptText="enter your order number" styleClass="TextField" GridPane.halignment="CENTER">
+                           <effect>
+                              <DropShadow height="12.21" radius="4.1375" width="6.34">
+                                 <color>
+                                    <Color red="0.6184210777282715" green="0.595516562461853" blue="0.595516562461853" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </TextField>
+                     </children>
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
+                  </GridPane>
+                  <Label styleClass="Label" text="Please enter your order number :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                  <Label fx:id="titleLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="246.0" styleClass="LabelTitle" text="title" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER">
+                     <GridPane.margin>
+                        <Insets top="-10.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+   </center>
+   <stylesheets>
+      <URL value="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/generalStyleSheet.css" />
+      <URL value="@../styles/css/generalStyleSheet.css" />
+   </stylesheets>
+</BorderPane>
