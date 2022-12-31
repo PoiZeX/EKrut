@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
-
-import common.MessageType;
+import common.CommonFunctions;
+import common.Message;
+import common.PopupTypeEnum;
+import common.TaskType;
 import common.ScreensNames;
+import controllerGui.HomePageController;
 import controllerGui.HostClientController;
+import entity.UserEntity;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,10 +25,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import utils.AppConfig;
 
 /**
  * The class handles the navigation store for different pages
@@ -35,8 +42,9 @@ public class NavigationStoreController {
 	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
 	private Stack<Scene> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
-	private Stage primaryStage;  // the main stage (window)
-	private ScreensNames[] isSkipped = {ScreensNames.HostClient,ScreensNames.HomePage, ScreensNames.Login};
+	private Stage primaryStage; // the main stage (window)
+	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
+	public static UserEntity connectedUser; // hold the current connected user
 
 	/**
 	 * Constructor, creates the new instances
@@ -46,11 +54,11 @@ public class NavigationStoreController {
 		screenScenes = new HashMap<>();
 		history = new Stack<>();
 		primaryStage = new Stage();
-		//setAllScenes(); // fill the hashMap
+		setupTimeout();
 		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.show(); // show primary stage
-	}
 
+	}
 
 	/**
 	 * singleton design pattern, create / get the instance
@@ -74,16 +82,19 @@ public class NavigationStoreController {
 		// if null create new instance (should not happens)
 		if (scene == null)
 			scene = createSingleScene(scName);
-
+		handleTitle(scName);
 		// save to stack
+		primaryStage.setScene(history.push(scene));
+	}
+
+	private void handleTitle(ScreensNames scName) {
+		// Set title
 		String[] splitString = scName.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
 		if (splitString.length == 2) {
-			primaryStage.setTitle(splitString[0]+" "+splitString[1]);
-		}
-		else {
+			primaryStage.setTitle(splitString[0] + " " + splitString[1]);
+		} else {
 			primaryStage.setTitle(scName.toString());
 		}
-		primaryStage.setScene(history.push(scene));
 
 	}
 
@@ -116,11 +127,12 @@ public class NavigationStoreController {
 		if (scene == null)
 			return false;
 		screenScenes.replace(screenName, scene); // replace the last stage with new
-		
+
 		// REPLACE the stack head
-		primaryStage.setTitle(screenName.toString());
-		history.pop(); // remove the last instance of the current screen and sets a new one
-		primaryStage.setScene(history.push(scene));		
+		handleTitle(screenName);
+		if (history.size() > 0)
+			history.pop(); // remove the last instance of the current screen and sets a new one
+		primaryStage.setScene(history.push(scene));
 		return true;
 	}
 
@@ -146,17 +158,28 @@ public class NavigationStoreController {
 		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
-			Parent root = FXMLLoader.load(getClass().getResource(path));
-			if (!skippedScreens.contains(screenName))//for submit
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+			Parent root = loader.load();
+
+			if (!skippedScreens.contains(screenName))// for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
+			scene.setUserData(loader.getController());
+
+			// refresh activity
+			if ((connectedUser != null && connectedUser.isLogged_in()))
+				scene.addEventFilter(InputEvent.ANY, evt -> transition.playFromStart());
 
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
+					if (connectedUser != null && connectedUser.isLogged_in()) {
+						connectedUser.setLogged_in(false); // logout the user
+						HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+					}
 					if (HostClientController.chat != null)
-						HostClientController.chat.acceptObj(MessageType.ClientDisconnect);
+						HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
 					closeAllScreens();
 				}
 			});
@@ -201,11 +224,10 @@ public class NavigationStoreController {
 		if (((BorderPane) stage).bottomProperty().getValue() instanceof GridPane) {
 			GridPane t = (GridPane) ((BorderPane) stage).bottomProperty().getValue();
 			t.add(returnBtn, 0, 0);
-		}
-		else {
+		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
-		
+
 		return stage;
 
 	}
@@ -219,4 +241,46 @@ public class NavigationStoreController {
 		System.exit(0); // exit system
 
 	}
+
+	public Object getController() {
+		return primaryStage.getScene().getUserData();
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	/**
+	 * logout should call this method
+	 */
+	public void clearAll() {
+		screenScenes.clear();
+		history.clear();
+	}
+
+	public static PauseTransition transition;
+
+	/**
+	 * setup timeout
+	 */
+	public void setupTimeout() {
+		transition = new PauseTransition(new javafx.util.Duration(AppConfig.INACTIVITY_LOGOUT));
+		// create transition for logout
+		transition.setOnFinished(evt -> logoutFromTimeout());
+	}
+
+	/**
+	 * logout user after reaching inactivity time limit
+	 */
+	private void logoutFromTimeout() {
+		if (connectedUser != null && connectedUser.isLogged_in()) {
+			connectedUser.setLogged_in(false); // logout user
+			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+			connectedUser = null;
+			NavigationStoreController.getInstance().clearAll();
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+			CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+		}
+	}
+
 }

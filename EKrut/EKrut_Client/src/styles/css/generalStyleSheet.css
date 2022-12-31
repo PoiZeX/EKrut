@@ -1,7 +1,7 @@
 
 .root{
 	-fx-background-color: #E8EEF1;
-    -fx-font-family: "Calibri";
+    -fx-font-family: "Century Gothic";
     -fx-font-weight: bold;
    	-fx-text-alignment:center;
     -fx-background-repeat: no-repeat;  
@@ -27,26 +27,50 @@
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
     -fx-background-radius:15;
 }
+
+.GridPaneShadow {
+    -fx-background-color: #E8EEF1;
+    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius: 0;
+}
+
+.GridPaneShadowTop {
+    -fx-background-color: #f6f5f5;
+    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-background-radius: 0;
+}
 /*---------------------------------------------------- LABELs-------------------------------------------------- */
 .Label {
-	-fx-text-fill: #1E3D58;
-	-fx-font-size: 13pt;
+	-fx-text-fill: #8e8e8e;
+	-fx-font-size: 11pt;
 }
 .Label-list {
 	-fx-text-fill: #1E3D58;
 	-fx-font-size: 10pt;
 }
 
-.LabelTitel{
+.LabelTitle{
 
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
     -fx-text-alignment:center;
     -fx-text-fill:#057DCD;
     -fx-font-size: 20pt;
-    -fx-label-padding: 20 20 5 20;
+    -fx-label-padding: 5 20 0 20;
 
 }
+
+.LabelRoleTitle{
+
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 14pt;
+    -fx-label-padding: 0 20 5 20;
+
+}
+
 /* header */
 #headerBar {
     -fx-background-color:#ffffff;
@@ -92,6 +116,32 @@
 .Button:hover {
     -fx-background-color: #64c6ff;
 }
+
+.ButtonYesOK {
+    -fx-background-color: #2b9800;
+    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-background-radius: 10;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15pt;
+    cursor: pointer;
+}
+
+    .ButtonYesOK:hover {
+        -fx-background-color: #10d005;
+    }
+
+.ButtonNO {
+    -fx-background-color: #c60505;
+    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-background-radius: 10;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15pt;
+    cursor: grab;
+}
+    .ButtonNO:hover {
+        -fx-background-color: #ff4040;
+    }
+
 /*______________________ LOG OUT \ CANCEL BTNS */
 .ButtonLogOut{
 	-fx-background-color:  #FF9414;
@@ -152,35 +202,59 @@
 	-fx-text-fill: white;
 	
 }
+/*____________________ New Sale BTN */
+.Button-newSale{
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:  #4093c3;
+	-fx-background-radius: 10;
+	-fx-text-fill:#FFFFFF;
+ 
+}
+
+.Button-newSale:pressed:hover {
+    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.98;
+}
+
+.Button-newSale:hover {
+    -fx-background-color: #64c6ff;
+}
 
 
 /*------------------------------------------------ combo box----------------------------------------------------------- */
 .ComboBox{
 	-fx-text-base-color: #FFFFFF;
-		-fx-font-size: 14pt;	
+	-fx-font-size: 12pt;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15px;
 }
 /*litle arrow */
 .combo-box .arrow{
     -fx-background-color:#FFFFFF;
+    -fx-border-radius: 15;
 }
 /* arrow background */
 .combo-box .arrow-button{
     -fx-background-color:#43B0F1;
     -fx-border-style:none;
+    -fx-border-radius: 15;
 }
 
 .combo-box .list-cell{
     -fx-background-color:#43B0F1;
    -fx-text-alignment:center;
+   -fx-border-radius: 15;
 }
 
 .combo-box .arrow-button:hover{
     -fx-background-color:#057DCD;
     -fx-border-style:none;
+    -fx-border-radius: 15;
 }
 
 .combo-box:hover{
     -fx-background-color:#057DCD;
+    -fx-border-radius: 15;
 }
 /*------------------------------------------------ CHARTS ---------------------------------------------------------------- */
 
@@ -201,17 +275,8 @@
 .default-color5.chart-bar { -fx-bar-fill: #FFE45E; }
 
  /*------------------------------------------------ TABLE---------------------------------- */
-/*TBL View */
 .table-view {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 15;
-    /* -fx-border-color: white; */
-    /* -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 ); */
-}
-
-/*title */
-.table-view {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #ffffffc3;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
 }
@@ -237,25 +302,24 @@
 
 .table-row-cell:hover {
     -fx-background-color: transparent;
-    -fx-text-background-color: orange;
+  	-fx-text-background-color: #1E3D58;
 }
 
 /*
  * 
 .table-view .table-cell{
-    -fx-border-color: #50b7f3;
+    -fx-border-color: #ffffff;
 }
 
 
 .table-row-cell:odd {
-    -fx-background-color: #64c6ff;
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:even{
-    -fx-background-color: #50b7f3;
+    -fx-background-color: #f2f2f2;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
-}
- */
+} */

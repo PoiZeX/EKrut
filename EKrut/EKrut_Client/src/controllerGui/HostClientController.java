@@ -14,7 +14,8 @@ import javafx.stage.Stage;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.MessageType;
+import common.Message;
+import common.TaskType;
 import common.ScreensNames;
 
 public class HostClientController  {
@@ -58,16 +59,15 @@ public class HostClientController  {
     	chat = new ClientController(host, Integer.parseInt(port));
     	chat.accept("Connection success");
     	chat.accept("Switching view from Configuration to Editor");
-		chat.acceptObj(MessageType.ClientConnect); // send server that client connected
+		chat.acceptObj(new Message(TaskType.ClientConnect, null)); // send server that client connected
 
     	// Go to next screen (controller creates the screen)
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
 
     }
 	 
-    public void start(Stage primaryStage) throws Exception {	
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);
-		
+    public void start(Stage primaryStage) throws Exception {
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);	
 	}
     
    

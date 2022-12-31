@@ -9,8 +9,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
-
-import common.MessageType;
+import common.Message;
+import common.TaskType;
 
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
@@ -35,7 +35,6 @@ public class ServerUI extends Application {
 		});
 		primaryStage.show();
 	}
-
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
 		try {
@@ -55,7 +54,7 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
-		EchoServer.sendToAllClients(MessageType.ServerDisconnect);
+		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		try {
 			Thread.sleep(2000);  // enough time to update the clients table. More flexible way is to use semaphore...
 		} catch (InterruptedException e1) {
@@ -73,4 +72,5 @@ public class ServerUI extends Application {
 		}
 		System.out.println("Server Disconnected");
 	}
+	
 }

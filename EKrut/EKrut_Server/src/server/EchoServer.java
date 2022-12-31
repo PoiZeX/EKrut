@@ -2,23 +2,16 @@
 package server;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-
-
-import common.MessageType;
+import common.Message;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
-import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
 import ocsf.server.*;
 
 public class EchoServer extends AbstractServer {
-	DatabaseEntity DatabaseController;
+	DatabaseEntity databaseEntity;
 	private static ObservableList<ConnectedClientEntity> clientList;
 
 	static {
@@ -38,41 +31,24 @@ public class EchoServer extends AbstractServer {
 
 	public EchoServer(int port, String DBAddress, String username, String password) {
 		super(port);
-		this.DatabaseController = new DatabaseEntity(username, password, DBAddress);
+		this.databaseEntity = new DatabaseEntity(username, password, DBAddress);
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if (msg instanceof ArrayList) {
-			// i know its ArrayList of subscribers but TODO check this
-			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) msg;
-			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
-		} else if (msg instanceof MessageType) {
-			MessageType type = (MessageType) msg;
-			switch (type) {
-			case ClientConnect:
-				updateClientList(client, "Connect");
-				break;
-			case ClientDisconnect:
-				updateClientList(client, "Disconnect");
-				break;
-			case LoadSubscribers:
-				SubscribersDbController.getTable(client);
-				break;
-
-			default:
-				System.out.println("Message received: " + msg + " from " + client);
-				break;
+		if (msg instanceof String) {
+			System.out.println("Message received: " + msg + " from " + client);
+		} else if (msg instanceof Message) {
+			try {
+				MessageHandler.Handle((Message) msg, client);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
 		}
-		
-		System.out.println("Message received: " + msg + " from " + client);
 		try {
-			client.sendToClient("Server done");
+			client.sendToClient(true);
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
-
 	}
 
 	// Extract it from here later
@@ -91,8 +67,8 @@ public class EchoServer extends AbstractServer {
 	protected void serverStarted() {
 		System.out.println("Server listening for connections on port " + getPort());
 		try {
-			MySqlClass.connectToDb(this.DatabaseController.getDBAddress(), this.DatabaseController.getUsername(),
-					this.DatabaseController.getPassword());
+			MySqlClass.connectToDb(this.databaseEntity.getDBAddress(), this.databaseEntity.getUsername(),
+					this.databaseEntity.getPassword());
 		} catch (Exception ex) {
 			System.out.println("Error! DataBase Connection Failed");
 		}

@@ -24,6 +24,10 @@ public class TooltipSetter {
 	public String getTooltipText() {
 		return text;
 	}
+	
+	public void setTooltip(String text) {
+		this.text = text;
+	}
 		
 	
 }

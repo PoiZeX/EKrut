@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,15 +18,35 @@
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="37.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="29.0" minHeight="10.0" prefHeight="23.0" valignment="CENTER" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <Label fx:id="welcomeLabel" alignment="CENTER" prefHeight="81.0" prefWidth="493.0" styleClass="LabelTitel" text="." />
+            <Label fx:id="welcomeLabel" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="678.0" styleClass="LabelTitle" text="welcome title" textAlignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Label>
+            <Label fx:id="roleLabel" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="600.0" styleClass="LabelRoleTitle" text="role title" GridPane.rowIndex="1" />
+            <Button fx:id="mailBtn" mnemonicParsing="false" styleClass="Button-NoBG" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
+                     <image>
+                        <Image url="@../styles/icons/004-mail.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <GridPane.margin>
+                  <Insets left="5.0" top="22.0" />
+               </GridPane.margin>
+            </Button>
          </children>
       </GridPane>
    </top>
    <center>
-      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="288.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="375.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -42,9 +64,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" />
-                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" GridPane.rowIndex="1" />
-                  <Button fx:id="bottomBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="Button" GridPane.rowIndex="2" />
+                  <Button fx:id="topBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" />
+                  <Button fx:id="middleBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="bottomBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -5,11 +5,8 @@
 package client;
 import ocsf.client.*;
 import common.ChatIF;
-import common.MessageType;
-
+import common.Message;
 import java.io.*;
-
-import Store.NavigationStoreController;
 import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,22 +27,13 @@ public class ChatClient extends AbstractClient {
 
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
-		if(msg instanceof SubscriberEntity) {
-			subscribers.add((SubscriberEntity)msg);
-		}
-		else if(msg instanceof MessageType)
-		{
-			MessageType type = (MessageType) msg;
-			switch(type){
-			case ServerDisconnect:
-				try {
-					sendToServer((Object)MessageType.ClientDisconnect);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				NavigationStoreController.closeAllScreens();  // force closing since server is disconnected
-				break;
-			
+		if (msg instanceof String) {
+			System.out.println("Message received: " + msg);
+		} else if (msg instanceof Message) {
+			try {
+				MessageHandler.Handle(this, (Message) msg);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

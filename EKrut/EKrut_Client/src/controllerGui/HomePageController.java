@@ -5,7 +5,15 @@
 package controllerGui;
 
 import Store.NavigationStoreController;
+import common.CommonData;
+import common.CommonFunctions;
+import common.Message;
+import common.PopupTypeEnum;
+import common.RolesEnum;
 import common.ScreensNames;
+import common.TaskType;
+import controller.ItemsController;
+import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,22 +28,8 @@ public class HomePageController {
 
 ////--------------------------------
 
-	private String[] rolesStub;
 	private TooltipSetter tooltip;
-
-	protected class User {
-		private String role;
-		private String firstName = "Lidor", lastName = "Ankava";
-
-		public User(String role) {
-			this.role = role;
-		}
-
-		private String friendlyName() {
-			return role + " " + firstName + " " + lastName;
-
-		}
-	}
+	private UserEntity currentUser = NavigationStoreController.connectedUser;
 
 	//// --------------------------------
 	@FXML
@@ -54,170 +48,145 @@ public class HomePageController {
 	private Button topBtn;
 
 	@FXML
+	private Button mailBtn;
+	
+	@FXML
 	private Label welcomeLabel;
 
+	@FXML
+	private Label roleLabel;
 
-    @FXML
-    private VBox rigthVbox;
-    
+	@FXML
+	private VBox rigthVbox;
+
 	public void initialize() {
+		
 		// set hidden as default
 		topBtn.setVisible(false);
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
-
-		// define stubs
-		rolesStub = new String[] { "CEO", "RegionManager", "Register" };
-		User ceo = new User("CEO");
-		User regionManager = new User("RegionManager");
-		User register = new User("Register");
-	
-
-		User selectedUser = register;
-		//User selectedUser = regionManager;
-		Image image=null ;
-
+		mailBtn.setVisible(false);
+		Image image = null;
+		
 		// switch case by role
-		switch (selectedUser.role) {
-		case "CEO":
-		case "Register":
-			setTopButton(selectedUser.role);
-			setMiddleButton(selectedUser.role);
+		switch (currentUser.getRole_type()) {
+		case registered:
+		case member:
+			mailBtn.setVisible(true);
+			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", null); // need to change later
+			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
-			
+			ItemsController.requestItemsFromServer();
 			break;
 
-		case "RegionManager":
+		case CEO:
+		case regionManager:
 			// CEO has 3 buttons.
-			setTopButton(selectedUser.role);
-			setMiddleButton(selectedUser.role);
-			setBottomButton(selectedUser.role);
+			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
+			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
+			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagement);
+			if(currentUser.getRole_type() == RolesEnum.regionManager) 	
+				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
+		case customerServiceWorker:
+			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account", ScreensNames.RegistrationForm);
+			break;
+
+		case deliveryWorker:
+			setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
+					ScreensNames.DeliveryManagement);
+			break;
+
+		case deliveryManager:
+			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", ScreensNames.DeliveryManagement);
+			break;
+
+		case marketingWorker:
+			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if the manager activated it
+																					// already
+			break;
+
+		case marketingManager:
+			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNames.MarketingManager);
+			image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
+			break;
+
+		case supplyWorker:
+			setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
+			break;
+
+
 		default:
-			System.out.println("No role detected!");
+			// TODO: add label to inform the user he needs to contact customer support 
+			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
 		}
+		CommonData.initData();	// initialize all common data's from DB.
+		
+		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
+		String[] splitString = currentUser.getRole_type().toString()
+				.split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
+		String role = "";
+		if (splitString.length > 1)
+			for (String s : splitString)
+				role += s + " ";
+		else
+			role = splitString[0];
+		roleLabel.setText(role);
 
-		welcomeLabel.setText("Welcome " + selectedUser.friendlyName() + "!");
-		ImageView roleImg= new ImageView();
-		if (image!=null) {
+		ImageView roleImg = new ImageView();
+		if (image != null) {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
 		
-		//updateButtonsSize();
-	}
-
-//	// updates the buttons width by the max width
-//	// bug here
-//	private void updateButtonsSize() {
-//		double maxWidth = 0;
-//		maxWidth = topBtn.getPrefWidth() > middleBtn.getPrefWidth() ? topBtn.getPrefWidth() : middleBtn.getPrefWidth();
-//		maxWidth = maxWidth > bottomBtn.getPrefWidth() ? maxWidth : bottomBtn.getPrefWidth();
-//		topBtn.setMinWidth(200);
-//		middleBtn.setMinWidth(200);
-//		bottomBtn.setMinWidth(200);
-//	}
-
-	private void setTopButton(String userRole) {
-		if (userRole.equals("Register")) {
-			topBtn.setText("Create New Order");
-			tooltip = new TooltipSetter("View the catalog and create a new order");
-			topBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
-				}
-			});
-		} else {
-			topBtn.setText("Approve Users");
-			tooltip = new TooltipSetter("View, manage and approve users");
-			topBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.UsersManagement);
-				}
-			});
-		}
-		topBtn.setTooltip(tooltip.getTooltip());
-		topBtn.setVisible(true);
+		// activate timeout 
+		NavigationStoreController.transition.play();
 
 	}
 
-	private void setMiddleButton(String userRole) {
-		if (userRole.equals("Register")) {
-			middleBtn.setText("Collect An Order");
-			tooltip = new TooltipSetter("Collect any orders that are ready");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					//NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CollectOrder); // not working yet																					
-				}
-			});
-		}
-		else {
-			middleBtn.setText("View Reports");
-			tooltip = new TooltipSetter("View the current monthly reports");
-			middleBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					if(userRole.equals("RegionManager")) {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReportSelection); // not working yet	
-					}
-					else {
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.CEOReportSelection);
-					}
-				}
-			});
-		}
-		middleBtn.setTooltip(tooltip.getTooltip());
-		middleBtn.setVisible(true);
-		
-	}
-	
-
-	/// register and Manager share the same button.
-	private void setBottomButton(String userRole) {
-		// ceo / manager etc
-		bottomBtn.setText("Supply Management");
-		tooltip = new TooltipSetter("Manage the available supply");
-		
-		bottomBtn.setOnAction(new EventHandler<ActionEvent>() {
+	/**
+	 * Generic method to handle buttons setup according to button text, tooltip and
+	 * the screen to go to
+	 * 
+	 * @param <T>
+	 * @param btn
+	 * @param btnText
+	 * @param tooltiptext
+	 * @param scName
+	 */
+	private <T extends Button> void setBtn(T btn, String btnText, String tooltiptext, ScreensNames scName) {
+		btn.setText(btnText);
+		tooltip = new TooltipSetter(tooltiptext);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+				if (scName != null)
+					NavigationStoreController.getInstance().setCurrentScreen(scName);
 			}
-			});
-		bottomBtn.setTooltip(tooltip.getTooltip());
-		bottomBtn.setVisible(true);
+		});
+		btn.setTooltip(tooltip.getTooltip());
+		btn.setVisible(true);
 	}
 
-	@FXML
-	private void bottomBtnAction(ActionEvent event) {
-		System.out.println("Im bottom");
-	}
-
-	@FXML
-	private void middleBtnAction(ActionEvent event) {
-		System.out.println("Im middle");
-
-	}
-
-	@FXML
-	private void topBtnAction(ActionEvent event) {
-		System.out.println("Im top");
-
-	}
-
-
-
+	/**
+	 * Log out from the system. sets the current user to null and changes the view
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
-		System.out.println("Im logout");
+		currentUser.setLogged_in(false);  // logout user
+		HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, currentUser)); 
+		NavigationStoreController.getInstance().clearAll();
+		currentUser = null;
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 
 	}
 
