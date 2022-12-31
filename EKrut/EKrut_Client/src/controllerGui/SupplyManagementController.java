@@ -93,7 +93,9 @@ public class SupplyManagementController {
 
 	@FXML
 	private ComboBox<UserEntity> workerCmb;
+	
 
+    
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	public static ObservableList<ItemInMachineEntity> itemsInMachineLst = FXCollections.observableArrayList();
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();

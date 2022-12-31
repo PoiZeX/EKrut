@@ -53,10 +53,15 @@ public class SupplyReportController {
 	@FXML
 	private ComboBox<String> machineIdComboBox;
 
+	@FXML
+	private PieChart pieChart;
+
+	@FXML
+	private Label textConclusionsLbl;
+
 	protected static ClientController chat = HostClientController.chat;
 	protected static SupplyReportEntity reportDetails;
 	protected static boolean RecievedData = false;
-	private static ArrayList<SupplyReportEntity> supplyReports;
 	private static ArrayList<MachineEntity> allMachines;
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
@@ -65,6 +70,8 @@ public class SupplyReportController {
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportRegion);
 		supplySBC.setAnimated(false);
+		textConclusionsLbl.setVisible(false);
+
 		allMachines = CommonData.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -74,8 +81,7 @@ public class SupplyReportController {
 				}
 		}
 		machineIdComboBox.setItems(machines);
-		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) ->
-		{
+		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			machineName = machineIdComboBox.getValue();
 			for (MachineEntity machine : allMachines) {
 				if (machine.getMachineName().equals(machineName))
@@ -85,7 +91,7 @@ public class SupplyReportController {
 
 		});
 	}
-  
+
 	public static void setReport(String year, String month, String region) {
 		reportYear = year;
 		reportMonth = month;
@@ -125,11 +131,14 @@ public class SupplyReportController {
 	 */
 	@SuppressWarnings("unchecked")
 	private void initBarChart(int machineID) {
+
 		RecievedData = false; // reset each operation
 		supplySBC.getData().clear(); // clear previous if exists
+
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
 				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+
 		// wait for answer
 		while (RecievedData == false) {
 			try {
@@ -149,13 +158,23 @@ public class SupplyReportController {
 		XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
 		XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
 		yAxisSBC.setLowerBound(15);
-		for (String[] item : itemsArray) {
-			series2.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[3])));
-			series1.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[2])));
-		}
-		series1.setName("Start Amount");
-		series2.setName("Current Amount");
-		supplySBC.getData().addAll(series1, series2);
+		ObservableList<javafx.scene.chart.PieChart.Data> list = FXCollections.observableArrayList();
 
+		for (String[] item : itemsArray) {
+			series1.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[2])));
+			series2.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[3])));
+			list.add(new PieChart.Data(item[0], Integer.parseInt(item[4])));
+
+		}
+		series1.setName("Month Start Amount");
+		series2.setName("Month End Amount");
+		supplySBC.getData().addAll(series1, series2);
+		pieChart.setData(list);
+		String itemsAmount = "";
+		itemsAmount += list.sorted().get(0).getName() + " : " + list.sorted().get(0).getPieValue() + "\n";
+		itemsAmount += list.sorted().get(1).getName() + " : " + list.sorted().get(1).getPieValue() + "\n";
+		itemsAmount += list.sorted().get(2).getName() + " : " + list.sorted().get(2).getPieValue() + "\n";
+		textConclusionsLbl.setText("Top 3 items were filled this month\n" + itemsAmount);
+		textConclusionsLbl.setVisible(true);
 	}
 }
