@@ -6,6 +6,9 @@ package utils;
  */
 public final class AppConfig {
 	
+	// System definition
+	public static final String SYSTEM_CONFIGURATION = "OK"; 				// can be changed to OL
+	public static final int INACTIVITY_LOGOUT = 1000*60*15;					// time in sec
 	// Login restrictions
 	public static final int USERNAME_MIN_LENGTH = 4;
 	public static final int USERNAME_MAX_LENGTH = 16;
@@ -13,7 +16,7 @@ public final class AppConfig {
 	public static final int PASSWORD_MAX_LENGTH = 16;
 	public static final String USERNAME_ALPHA_ALLOWED = "^[a-zA-Z][\\w]*$";
 	
-	// EKT timers in millis
+	// EKT timers in mills
 	public static final int WAIT_BEFORE_SIMULATE_LOGIN = 4000; 				// define time to simulate success
 	public static final int WAIT_AFTER_VALIDATION_SUCCESS = 2000; 			// define time to simulate data validation
 	public static final int WAIT_BEFORE_MSG = 15000; 						// define time to simulate timeout of connection

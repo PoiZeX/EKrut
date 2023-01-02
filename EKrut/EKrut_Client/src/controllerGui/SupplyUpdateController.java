@@ -13,7 +13,6 @@ import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.converter.StringConverter;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -77,34 +76,47 @@ public class SupplyUpdateController {
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private ArrayList<ItemInMachineEntity> toUpdate = new ArrayList<>();;
-	private int [] arr = new int[2];
+	private int[] arr = new int[2];
+	private String[] arrStr = new String[2];
+
 	/** Setup screen before launching view */
 	@FXML
 	public void initialize() throws Exception {
-		getAllMachines(CommonData.getMachines());
-		machineCmb.setItems(machineLst);
-		machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				machine = machineCmb.getValue();
-				if (!machine.equals(null)) {
-					regionNameLbl.setText(machine.getRegionName());
+		arrStr[0] = "1";
+		arrStr[1] = NavigationStoreController.connectedUser.getId() + "";
+		chat.acceptObj(new Message(TaskType.InitMachinesSupplyUpdate, arrStr));
+		Thread.sleep(100);
+		if (machineLst.isEmpty()) {
+			setDisableItems();
 
-					machineNameLbl.setText(machine.machineName);
-					machineNameLbl.setVisible(true);
-					minamountLbl.setText(machine.getMinamount() + "");
+			System.out.println("pop up - no new calls for items");
+		} else {
+			machineCmb.setItems(machineLst);
+			machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
+				@Override
+				public void handle(Event event) {
+					if (machineCmb.getSelectionModel().isEmpty())
+						System.out.println("pop up - you have to pick a machine");
+					else {
+						machine = machineCmb.getValue();
+						if (!machine.equals(null)) {
+							regionNameLbl.setText(machine.getRegionName());
 
+							machineNameLbl.setText(machine.machineName);
+							machineNameLbl.setVisible(true);
+							minamountLbl.setText(machine.getMinamount() + "");
+							setupTable(machine.machineId);
+						}
+					}
 				}
-				setupTable(machine.machineId);
-			}
-		});
-
+			});
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void setupTable(int machineId) {
-		arr[0]=machineId;
-		arr[1]= NavigationStoreController.connectedUser.getId();
+		arr[0] = machineId;
+		arr[1] = NavigationStoreController.connectedUser.getId();
 		chat.acceptObj(new Message(TaskType.RequestProssecedItemsInMachine, arr));
 		supplyMangmentTbl.setItems(itemsInMachineLst);
 		supplyMangmentTbl.setEditable(true);
@@ -125,8 +137,8 @@ public class SupplyUpdateController {
 				if (event.getNewValue() != null) {
 					if (event.getNewValue() < event.getOldValue()) {
 						System.out.println("Pop up -you can dicrease the amount of current items ");
-					} 
-					
+					}
+
 					else {
 						item.setCurrentAmount(event.getNewValue());
 						if (event.getNewValue() >= machine.getMinamount()) {
@@ -148,7 +160,9 @@ public class SupplyUpdateController {
 	 * 
 	 * @param arrayList
 	 */
-	public void getAllMachines(ArrayList<MachineEntity> arrayList) {
+	public static void getAllMachines(ArrayList<MachineEntity> arrayList) {
+		if (!machineLst.isEmpty())
+			machineLst.clear();
 		machineLst.addAll(arrayList);
 	}
 
@@ -164,9 +178,12 @@ public class SupplyUpdateController {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 		}
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
+		System.out.println("updated has benn done sucssefully");
 		toUpdate.clear();
+		supplyMangmentTbl.refresh();
 	}
 
+	/** get machines from server */
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
 		if (!itemsInMachineLst.isEmpty()) {
@@ -175,4 +192,8 @@ public class SupplyUpdateController {
 		itemsInMachineLst.addAll(obj);
 	}
 
+	void setDisableItems() {
+		machineCmb.setDisable(true);
+		supplyMangmentTbl.setDisable(true);
+	}
 }

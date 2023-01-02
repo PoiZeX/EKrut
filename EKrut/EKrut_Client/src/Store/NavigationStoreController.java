@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
-
+import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.TaskType;
 import common.ScreensNames;
 import controllerGui.HomePageController;
 import controllerGui.HostClientController;
 import entity.UserEntity;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,10 +25,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import utils.AppConfig;
 
 /**
  * The class handles the navigation store for different pages
@@ -50,8 +54,10 @@ public class NavigationStoreController {
 		screenScenes = new HashMap<>();
 		history = new Stack<>();
 		primaryStage = new Stage();
+		setupTimeout();
 		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
 		primaryStage.show(); // show primary stage
+
 	}
 
 	/**
@@ -79,7 +85,6 @@ public class NavigationStoreController {
 		handleTitle(scName);
 		// save to stack
 		primaryStage.setScene(history.push(scene));
-
 	}
 
 	private void handleTitle(ScreensNames scName) {
@@ -125,7 +130,7 @@ public class NavigationStoreController {
 
 		// REPLACE the stack head
 		handleTitle(screenName);
-		if(history.size() > 0)
+		if (history.size() > 0)
 			history.pop(); // remove the last instance of the current screen and sets a new one
 		primaryStage.setScene(history.push(scene));
 		return true;
@@ -155,23 +160,21 @@ public class NavigationStoreController {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 			Parent root = loader.load();
-			
+
 			if (!skippedScreens.contains(screenName))// for submit
 				scene = new Scene(setBottomBar(root));
 			else
 				scene = new Scene(root);
 			scene.setUserData(loader.getController());
+
+			// refresh activity
+			if ((connectedUser != null && connectedUser.isLogged_in()))
+				scene.addEventFilter(InputEvent.ANY, evt -> transition.playFromStart());
+
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					if(connectedUser != null && connectedUser.isLogged_in())
-					{
-						connectedUser.setLogged_in(false);  // logout the user
-						HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser)); 
-					}
-					if (HostClientController.chat != null)
-						HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
-					closeAllScreens();
+					ExitHandler(true);
 				}
 			});
 		} catch (IOException e) {
@@ -224,23 +227,23 @@ public class NavigationStoreController {
 	}
 
 	/**
-	 * Close all screens, and exits from platform & system
+	 * return the current 'user data' which hold the controller
+	 * 
+	 * @return
 	 */
-	public static void closeAllScreens() {
-
-		Platform.exit(); // exit JavaFx
-		System.exit(0); // exit system
-
-	}
-
-	public Object getController () {
+	public Object getController() {
 		return primaryStage.getScene().getUserData();
 	}
-	
+
+	/**
+	 * return the primary stage
+	 * 
+	 * @return
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-	
+
 	/**
 	 * logout should call this method
 	 */
@@ -248,4 +251,63 @@ public class NavigationStoreController {
 		screenScenes.clear();
 		history.clear();
 	}
+
+	public static PauseTransition transition;
+
+	/**
+	 * setup timeout
+	 */
+	public void setupTimeout() {
+		transition = new PauseTransition(new javafx.util.Duration(AppConfig.INACTIVITY_LOGOUT));
+		// create transition for logout
+		transition.setOnFinished(evt -> logoutFromTimeout());
+	}
+
+	/**
+	 * logout user after reaching inactivity time limit
+	 */
+	private void logoutFromTimeout() {
+		if (connectedUser != null && connectedUser.isLogged_in()) {
+			connectedUser.setLogged_in(false); // logout user
+			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+			connectedUser = null;
+			NavigationStoreController.getInstance().clearAll();
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+			CommonFunctions.SleepFor(200, () ->{
+				CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+			});
+		}
+	}
+
+	/**
+	 * exit handler which can target from different places
+	 * 
+	 * @param closeAllScreens
+	 */
+	public static void ExitHandler(boolean closeAllScreens) {
+		if (connectedUser != null && connectedUser.isLogged_in()) {
+			connectedUser.setLogged_in(false); // logout the user
+			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+		}
+		if (HostClientController.chat != null)
+			HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+		if (!closeAllScreens) { // reset all and refresh
+			NavigationStoreController.getInstance().clearAll();
+			connectedUser = null;
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+		} else
+			closeAllScreens();
+
+	}
+
+	/**
+	 * Close all screens, and exits from platform & system
+	 */
+	public static void closeAllScreens() {
+		Platform.exit(); // exit JavaFx
+		// System.exit(0); // force the system to exit (rn will target the Client.UI exit
+		// function)
+
+	}
+
 }

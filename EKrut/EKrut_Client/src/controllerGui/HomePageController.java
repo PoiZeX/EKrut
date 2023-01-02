@@ -6,7 +6,9 @@ package controllerGui;
 
 import Store.NavigationStoreController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
@@ -143,8 +145,10 @@ public class HomePageController {
 			roleImg.setFitWidth(350.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
+		
+		// activate timeout 
+		NavigationStoreController.transition.play();
 
-		// updateButtonsSize();
 	}
 
 	/**
@@ -178,13 +182,7 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
-		currentUser.setLogged_in(false);  // logout user
-		HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, currentUser)); 
-		NavigationStoreController.getInstance().clearAll();
-		currentUser = null;
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-
+		NavigationStoreController.ExitHandler(false);	
 	}
-	
 
 }

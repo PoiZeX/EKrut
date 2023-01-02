@@ -81,7 +81,7 @@ public class SupplyManagementController {
 
 	@FXML
 	private Button sendCallBtn;
-	
+
 	@FXML
 	private Button removeCompletedBtn;
 
@@ -99,45 +99,59 @@ public class SupplyManagementController {
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	public static ObservableList<UserEntity> supplyWorkers = FXCollections.observableArrayList();
 	private MachineEntity machine;
+
 	private static ArrayList<ItemInMachineEntity> toUpdate = new ArrayList<>();
 	private static ArrayList<ItemInMachineEntity> completed = new ArrayList<>();
 	ArrayList<TableCell<ItemInMachineEntity, Boolean>> checkboxCellsList;
 	private UserEntity supplyworker;
-	/** Setup screen before launching view */
+	
+	private String[] arrStr = new String[2];
+
 	@FXML
 	public void initialize() throws Exception {
-		getMachinesInRegion(CommonData.getMachines());
+		String region = NavigationStoreController.connectedUser.getRegion();
+		arrStr[0] = "0";
+		arrStr[1] = region;
+		chat.acceptObj(new Message(TaskType.InitMachinesInRegions, arrStr));
+		Thread.sleep(100);
 		machineCmb.setItems(machineLst);
 		machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				machine = machineCmb.getValue();
-				if (!machine.equals(null)) {
-					saveChangesBtn.setDisable(false);
-					machineNameLbl.setText(machine.machineName);
-					machineNameLbl.setVisible(true);
-					minAmountTxtField.setText(machine.getMinamount() + "");
 
+				if (machineCmb.getSelectionModel().isEmpty())
+					System.out.println("pop up - you have to pick a machine");
+				else {
+					machine = machineCmb.getValue();
+
+					if (!machine.equals(null)) {
+						saveChangesBtn.setDisable(false);
+						machineNameLbl.setText(machine.machineName);
+						machineNameLbl.setVisible(true);
+						minAmountTxtField.setText(machine.getMinamount() + "");
+						toUpdate = new ArrayList<ItemInMachineEntity>();
+						setupTable(machine.machineId);
+					}
 				}
-				toUpdate = new ArrayList<ItemInMachineEntity>();
-				setupTable(machine.machineId);
-			
 			}
 		});
 		chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
-		if(!supplyWorkers.isEmpty())
+		if (!supplyWorkers.isEmpty())
 			workerCmb.setItems(supplyWorkers);
 		sendCallBtn.setVisible(false);
 		workerCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				 supplyworker = workerCmb.getValue();
-				if (!supplyworker.equals(null)) {
-					sendCallBtn.setVisible(true);
+				if (workerCmb.getSelectionModel().isEmpty())
+					System.out.println("pop up - you have to pick a worker so you can send a call");
+				else {
+					supplyworker = workerCmb.getValue();
+					if (!supplyworker.equals(null)) {
+						sendCallBtn.setVisible(true);
+					}
 				}
 			}
 		});
-
 	}
 
 	/**
@@ -146,7 +160,7 @@ public class SupplyManagementController {
 	 */
 	@FXML
 	void refresh(ActionEvent event) {
-		
+
 		setupTable(machine.machineId);
 	}
 
@@ -174,13 +188,13 @@ public class SupplyManagementController {
 					m.setMinamount(newMinAmount);
 				}
 			}
-			for(ItemInMachineEntity i:itemsInMachineLst) {
-				if(i.getCurrentAmount()<machine.getMinamount()) {
-					if(i.getCallStatus() ==ItemInMachineEntity.Call_Status.Complete)
+			for (ItemInMachineEntity i : itemsInMachineLst) {
+				if (i.getCurrentAmount() < machine.getMinamount()) {
+					if (i.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
 						completed.add(i);
 				}
-				if(i.getCurrentAmount()>=machine.getMinamount()) {
-					if(i.getCallStatus() ==ItemInMachineEntity.Call_Status.Processed) {
+				if (i.getCurrentAmount() >= machine.getMinamount()) {
+					if (i.getCallStatus() == ItemInMachineEntity.Call_Status.Processed) {
 						completed.add(i);
 					}
 				}
@@ -190,27 +204,25 @@ public class SupplyManagementController {
 			System.out.println("Pop up - the new minimum amount has been updated \n"
 					+ "if you want to see an updated list press the refresh button");
 		}
-		
 
 	}
-	/**set the status call to not open*/
-    @FXML
-    void removeCompleted(ActionEvent event) {
-    	for(ItemInMachineEntity i : completed){
-    		i.setCallStatus(ItemInMachineEntity.Call_Status.NotOpened);
-    		i.setWorkerId(0);
-    		
-    	}
-    	chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, completed));
-    	completed.clear();
-    	refresh(null);
-    }
 
+	/** set the status call to not open */
+	@FXML
+	void removeCompleted(ActionEvent event) {
+		for (ItemInMachineEntity i : completed) {
+			i.setCallStatus(ItemInMachineEntity.Call_Status.NotOpened);
+			i.setWorkerId(0);
+		}
+		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, completed));
+		completed.clear();
+		refresh(null);
+	}
 
 	/** send a task to the workers for update the requested items */
 	@FXML
 	void send(ActionEvent event) {
-		
+
 		System.out.println(toUpdate.toString());
 		if (toUpdate.isEmpty()) // TODO why is empty
 			System.out.println("Popup - no new items to open calls for");
@@ -221,10 +233,10 @@ public class SupplyManagementController {
 				System.out.println(i.toString());
 			}
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
-			
+			System.out.println("pop-up the calls had been sent for now");
+			supplyMangmentTbl.refresh();
 		}
 		toUpdate.clear();
-
 	}
 
 	/**
@@ -245,30 +257,37 @@ public class SupplyManagementController {
 		callStatusCol.setCellValueFactory(
 				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
 						"callStatus"));
+
 		refillcol.setCellFactory(column -> {
 			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
 			checkboxCellsList.add(cell); // save the checkbox
+	
+			
+			
 			cell.setOnMouseClicked(event -> {
 				if (event.getClickCount() > 0) {
 					CheckBox checkBox = (CheckBox) cell.getGraphic();
 					ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
 					if (checkBox != null) {
-						if(item.isCallOpen()) {
-							checkBox.setDisable(true);
+						if (item.isCallOpen()) {
+							
+							checkBox.disabledProperty();
 							checkBox.setVisible(false);
 						}
-							
-						if (checkBox.isSelected()) {
-							checkBox.setSelected(true);
-							toUpdate.add(item);
-						} else {
-							checkBox.setSelected(false);
-							toUpdate.remove(item);
-
+						else {
+							if (checkBox.isSelected()) {
+								checkBox.setSelected(true);
+								toUpdate.add(item);
+							} else {
+								checkBox.setSelected(false);
+								toUpdate.remove(item);
+							}
 						}
 					}
 				}
+				
 			});
+			
 			return cell;
 		});
 		colorTableRows();
@@ -282,14 +301,12 @@ public class SupplyManagementController {
 	 * 
 	 * @param arrayList
 	 */
-	public void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
-		String region = NavigationStoreController.connectedUser.getRegion();
-		if(!machineLst.isEmpty())
+	public static void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
+		// String region = NavigationStoreController.connectedUser.getRegion();
+		if (!machineLst.isEmpty())
 			machineLst.clear();
-		for (MachineEntity m : arrayList) {
-			if (region.equals(m.regionName))
-				machineLst.add(m);
-		}
+		machineLst.addAll(arrayList);
+
 	}
 
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
@@ -299,7 +316,7 @@ public class SupplyManagementController {
 		}
 		itemsInMachineLst.addAll(obj);
 		for (ItemInMachineEntity item : itemsInMachineLst) {
-			if (item.getCallStatus()==ItemInMachineEntity.Call_Status.Complete) {
+			if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete) {
 				completed.add(item);
 			}
 		}
@@ -315,7 +332,7 @@ public class SupplyManagementController {
 					setStyle("");
 				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == false)
 					setStyle("-fx-background-color: #fa8989;");
-				else if (item.getCallStatus()==ItemInMachineEntity.Call_Status.Complete)
+				else if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
 					setStyle("-fx-background-color: #7cf28f;");// TODO to add completed on the quary
 				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == true)
 					setStyle("-fx-background-color: #faeb89;");
@@ -325,14 +342,13 @@ public class SupplyManagementController {
 		});
 
 	}
-	/**get supply workers*/
+
+	/** get supply workers */
 	public static void recevieSupplyWorkers(ArrayList<UserEntity> obj) {
 		// TODO Auto-generated method stub
 
 		supplyWorkers.addAll(obj);
-	
+
 	}
 
 }
-
-

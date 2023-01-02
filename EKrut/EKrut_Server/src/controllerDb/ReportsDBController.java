@@ -26,20 +26,20 @@ public class ReportsDBController {
 	 * @return
 	 */
 	public static boolean setReport(String[] details) {
-		switch(details.length) {
-			case 4:
-				reportType = details[0];
-				region = details[1];
-				month = details[2];
-				year = details[3];
-				return true;
-			case 5:
-				reportType = details[0];
-				region = details[1];
-				month = details[2];
-				year = details[3];
-				machineID = Integer.parseInt(details[4]);
-				return true;
+		switch (details.length) {
+		case 4:
+			reportType = details[0];
+			region = details[1];
+			month = details[2];
+			year = details[3];
+			return true;
+		case 5:
+			reportType = details[0];
+			region = details[1];
+			month = details[2];
+			year = details[3];
+			machineID = Integer.parseInt(details[4]);
+			return true;
 
 		}
 		return false;
@@ -132,7 +132,7 @@ public class ReportsDBController {
 		return report;
 
 	}
-	
+
 	/**
 	 * Handles the query of getting the report from DB
 	 * 
@@ -145,19 +145,20 @@ public class ReportsDBController {
 				return report;
 			Connection conn = MySqlClass.getConnection();
 			String query = "SELECT * FROM ekrut.supply_report "
-		             + "JOIN machines ON supply_report.machine_id = machines.machine_id "
-		             + "WHERE year=? AND month=? AND region=? AND machines.machine_id=?";
+					+ "JOIN machines ON supply_report.machine_id = machines.machine_id "
+					+ "WHERE year=? AND month=? AND region=? AND machines.machine_id=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, year);
 			ps.setString(2, CommonFunctions.getNumericMonth(month));
 			ps.setString(3, region);
 			ps.setInt(4, machineID);
-			
+
 			ResultSet res = ps.executeQuery();
-			
+
 			if (res.next()) {
-				report = new SupplyReportEntity(res.getInt(1),res.getInt(2), res.getString(3), res.getString(4), res.getString(5),
-						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10), res.getString(11));
+				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9),
+						res.getString(10));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

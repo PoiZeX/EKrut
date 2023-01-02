@@ -2,12 +2,14 @@ package controllerGui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.ScreensNames;
 import common.TaskType;
 import entity.MachineEntity;
@@ -52,10 +54,15 @@ public class SupplyReportController {
 	@FXML
 	private ComboBox<String> machineIdComboBox;
 
+	@FXML
+	private PieChart pieChart;
+
+	@FXML
+	private Label textConclusionsLbl;
+
 	protected static ClientController chat = HostClientController.chat;
 	protected static SupplyReportEntity reportDetails;
 	protected static boolean RecievedData = false;
-	private static ArrayList<SupplyReportEntity> supplyReports;
 	private static ArrayList<MachineEntity> allMachines;
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
@@ -63,6 +70,9 @@ public class SupplyReportController {
 
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportRegion);
+		supplySBC.setAnimated(false);
+		textConclusionsLbl.setVisible(false);
+
 		allMachines = CommonData.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -72,18 +82,14 @@ public class SupplyReportController {
 				}
 		}
 		machineIdComboBox.setItems(machines);
-		machineIdComboBox.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				supplySBC.getData().clear(); // clear previous if exists
-				machineName = machineIdComboBox.getValue();
-				for (MachineEntity machine : allMachines) {
-					if (machine.getMachineName().equals(machineName))
-						machineID = machine.getId();
-				}
-				initBarChart(machineID);
-//				checkCurAmount();
+		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			machineName = machineIdComboBox.getValue();
+			for (MachineEntity machine : allMachines) {
+				if (machine.getMachineName().equals(machineName))
+					machineID = machine.getId();
 			}
+			initBarChart(machineID);
+
 		});
 	}
 
@@ -126,7 +132,11 @@ public class SupplyReportController {
 	 */
 	@SuppressWarnings("unchecked")
 	private void initBarChart(int machineID) {
+
 		RecievedData = false; // reset each operation
+		supplySBC.getData().clear(); // clear previous if exists
+		pieChart.getData().clear();
+		textConclusionsLbl.setText("");
 		
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
@@ -140,50 +150,49 @@ public class SupplyReportController {
 				e.printStackTrace();
 			}
 		}
-		// System.out.println(Arrays.asList(reportDetails.getReportsList()));
-//		if (reportDetails.getReportsList() == null) {
-//			System.out.println("Empty Report");
-//			for ( int i = 0; i < supplyMachineTbl.getItems().size(); i++) {
-//				supplyMachineTbl.getItems().clear();
-//			}
-//			return;
-//		}
-
-//		supplyReports = new ArrayList<>();
-//		SupplyReportEntity newReport = null;
 
 		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		// [item_id,item_name,min_amnt,cur_amnt, start_amnt,missing_severity]
-		ObservableList<XYChart.Data<String, Integer>> series1Data = FXCollections.observableArrayList();
-		ObservableList<XYChart.Data<String, Integer>> series2Data = FXCollections.observableArrayList();
-		XYChart.Series<String, Integer> series1 = new XYChart.Series<>(series1Data);
-		XYChart.Series<String, Integer> series2 = new XYChart.Series<>(series2Data);
-		yAxisSBC.setLowerBound(5);
-		for (String[] item : itemsArray) {
-			series1.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[3])));
-			series2.getData().add(new XYChart.Data<String, Integer>(item[1], Integer.parseInt(item[4])));
+		// [name,min,cur,start,severity]
+		if (itemsArray == null) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
+			return;
 		}
 
-		series1.setName("Start");
-		series2.setName("End");
-		//supplySBC.setCategoryGap(50);
+		XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
+		XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
+		yAxisSBC.setLowerBound(15);
+		ObservableList<javafx.scene.chart.PieChart.Data> list = FXCollections.observableArrayList();
+
+		for (String[] item : itemsArray) {
+			series1.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[2])));
+			series2.getData().add(new XYChart.Data<String, Integer>(item[0], Integer.parseInt(item[3])));
+			list.add(new PieChart.Data(item[0], Integer.parseInt(item[4])));
+
+		}
+		series1.setName("Month Start Amount");
+		series2.setName("Month End Amount");
 		supplySBC.getData().addAll(series1, series2);
-
-//		itemIDCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_id"));
-//		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, String>("item_name"));
-//		minAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("min_stock"));
-//		startAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("start_stock"));
-//		currentAmountCol.setCellValueFactory((Callback) new PropertyValueFactory<SupplyReportEntity, Integer>("cur_stock"));
-//		for (String[] item : itemsArray) {
-//			newReport = new SupplyReportEntity(reportDetails.getId(), machineID, item[0], item[1], item[2], item[3], item[4], reportDetails.getMonth(), reportDetails.getYear(), machineName, machineName);
-//			supplyReports.add(newReport);
-//		}
-//		ObservableList<SupplyReportEntity> ol = FXCollections.observableArrayList(supplyReports);
-//		supplyMachineTbl.setItems(ol);
-//		supplyMachineTbl.setEditable(false);
-////		supplyMachineTbl.getColumns().forEach(e -> e.setReorderable(false));
-//		supplyMachineTbl.getColumns().forEach(e -> e.setSortable(false));
-//		RecievedData = false;
-
+		
+		// set pieChart
+		
+		pieChart.setData(list);
+		
+		// set textual conclusions
+		String conclusions = "";
+		String itemsAmount = "";
+		list = list.sorted(new Comparator<PieChart.Data>() {
+			@Override
+			public int compare(javafx.scene.chart.PieChart.Data o1, javafx.scene.chart.PieChart.Data o2) {
+				return ((Double)o1.getPieValue()).compareTo(o2.getPieValue());
+			}
+		});
+		itemsAmount += list.size() >= 1 ? list.get(list.size()-1).getName() + " : " + list.get(list.size()-1).getPieValue() + "\n" : "";
+		itemsAmount += list.size() >= 2 ? list.get(list.size()-2).getName() + " : " + list.get(list.size()-2).getPieValue() + "\n" : "";
+		itemsAmount += list.size() >= 3 ? list.get(list.size()-3).getName() + " : " + list.get(list.size()-3).getPieValue() + "\n" : "";
+		conclusions = "Top 3 items that were filled \nthe most this month\n\n" + itemsAmount +"\n";
+		conclusions += "The product consumption was\n";
+		conclusions += list.get(list.size()-1).getPieValue() > 10 ? "high" : list.get(list.size()-1).getPieValue() >= 5 ? "medium" : "low";
+		textConclusionsLbl.setText(conclusions);
+		textConclusionsLbl.setVisible(true);
 	}
 }

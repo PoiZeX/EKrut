@@ -4,10 +4,6 @@ import javafx.fxml.FXML;
 import java.util.Timer;
 import java.util.TimerTask;
 import Store.NavigationStoreController;
-import common.Message;
-import common.ScreensNames;
-import common.TaskType;
-import entity.UserEntity;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -25,7 +21,11 @@ public class EKTPopupController extends LoginController {
 
 	protected static Timer timerSuccess;
 	protected static Timer timerTimeLimit;
+	
+	// define username and password to login with
+	private String[] usernamePasswordStub = new String[] { "customer4", "123456" }; // customer[1-3: registered, 4-6: member]
 
+	
 	/**
 	 * Initialize screen
 	 */
@@ -118,13 +118,4 @@ public class EKTPopupController extends LoginController {
 		s.setLoginBtnDisable(false);
 	}
 
-	private String[] usernamePasswordStub = new String[] { "subscribed", "123456" };
-
-//	/**
-//	 * Sends a waits for an answer if user valid or not
-//	 */
-//	protected void sendServerUsernamePassword(String[] usernamePassword) {
-//		chat.acceptObj(new Message(TaskType.RequestUserFromDB, usernamePassword));
-//	}
-//	
 }

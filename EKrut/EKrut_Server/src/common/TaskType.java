@@ -59,10 +59,12 @@ public enum TaskType {
 	RequestSupplyWorkers,
 	RequestItemsInMachineUpdateFromServer,
 	ReceiveSupplyWorkersFromServer,  
-
+	InitMachinesSupplyUpdate,
+	InitMachinesInRegions,
 	// Common Data Initialization //
 	InitRegions,
-	InitMachines,  
+	InitMachines
+	   
 	
 	
 }

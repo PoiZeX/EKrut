@@ -432,15 +432,14 @@ DROP TABLE IF EXISTS `supply_report`;
 CREATE TABLE `supply_report` (
   `id` int NOT NULL AUTO_INCREMENT,
   `machine_id` int NOT NULL,
-  `item_id` varchar(500) NOT NULL,
   `item_name` varchar(500) NOT NULL,
   `min_stock` varchar(500) NOT NULL,
   `start_stock` varchar(500) NOT NULL,
   `cur_stock` varchar(500) NOT NULL,
+  `missing_severity` varchar(45) NOT NULL,
   `year` varchar(45) NOT NULL,
   `month` varchar(45) NOT NULL,
   `region` varchar(45) NOT NULL,
-  `missing_severiity` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -451,7 +450,7 @@ CREATE TABLE `supply_report` (
 
 LOCK TABLES `supply_report` WRITE;
 /*!40000 ALTER TABLE `supply_report` DISABLE KEYS */;
-INSERT INTO `supply_report` VALUES (1,1,'1,2','Bamba,Bisli','5,5','10,10','20,30','2022','01','North','10,1');
+INSERT INTO `supply_report` VALUES (1,1,'Bamba,Bisli,Popsicle,Hatif1,Hatif2','5,5,3,10,4','25,25,15,30,19','10,10,5,5,10','1,2,3,4,5','2022','01','North');
 /*!40000 ALTER TABLE `supply_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,7 +478,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userName_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -488,7 +487,29 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'regionm','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'North','regionManager',0,0),(2,NULL,'ceom','123456','ceo','ceo','ceo@ceo.ceo','12319024',NULL,'','CEO',0,0),(3,NULL,'customer','123456','customer','customer','customer@customer','123123',NULL,'','registered',0,0),(4,'205905050','customer1','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(5,'205905050','customer2','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,1),(6,'205905050','customer3','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(7,'205905050','customer4','123456','customer1','customer1','customer1@customer1','123123123','205905050','','registered',0,0),(8,'205905050','marketingm','123456','yossi','levi','a@a.com','123123123',NULL,NULL,'marketingManager',0,0),(31,NULL,'regionm2','123456','david','asulin','dudyas6@gmmgm.com','500535030',NULL,'Center','regionManager',0,0),(32,'123456789','supplyw1','123456','neta','neta','neta6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(33,'123456789','supplyw2','123456','vital','vital','vital6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(34,'123456789','supplyw3','123456','lidor','lidor','lidor6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0),(35,'123456789','supplyw4','123456','dima','dima','dima6@gmmgm.com','123123123',NULL,NULL,'supplyWorker',0,0);
+INSERT INTO `users` (`id_number`, `username`, `password`, `first_name`, `last_name`, `email`, `phone_number`, `cc_number`, `region`, `role_type`, `logged_in`, `is_not_approved`)  VALUES 
+('100878859','rmNorth','123456','Lidor','Ankava','lidor@EKrut.com','0538503033',NULL,'North','regionManager',0,0),
+('101868859','doNorth','123456','Eyal','Greenberg','eyal@EKrut.com','0538503033',NULL,'North','deliveryOperator',0,0),
+('106828759','mwNorth','123456','Ofer','Gold','ofer@EKrut.com','0538503033',NULL,'North','marketingWorker',0,0),
+('102858859','rmSouth','123456','Neta','The fork','neta@EKrut.com','0538503033',NULL,'South','regionManager',0,0),
+('103848859','doSouth','123456','Yossef','Ben porat','yossef@EKrut.com','0538503033',NULL,'South','deliveryOperator',0,0),
+('106828858','mwSouth','123456','Bigi','Amzalag','ofer@EKrut.com','0538503033',NULL,'South','marketingWorker',0,0),
+('104838859','rmUAE','123456','Dima','Chdnsky','dima@EKrut.com','0538503033',NULL,'UAE','regionManager',0,0),
+('105828859','doUAE','123456','Hamudi','Kabudi','hamudi@EKrut.com','0538503033',NULL,'UAE','deliveryOperator',0,0),
+('106828957','mwUAE','123456','Guy','Amzalag','ofer@EKrut.com','0538503033',NULL,'UAE','marketingWorker',0,0),
+('106818859','csworker','123456','Ravit','Gamliel','ravit@EKrut.com','0538503033',NULL,'null','customerServiceWorker',0,0),
+('106838659','mktmanager','123456','Vital','Marciano','vital@EKrut.com','0538503033',NULL,'null','marketingManager',0,0),
+('106848559','spw1','123456','David','Asulin','david@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),
+('106858459','spw2','123456','Yair','Asulin','yair@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),
+('106868359','spw3','123456','Saray','Asulin','saray@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),
+('106878259','spw4','123456','Rivka','Asulin','rivka@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),
+('106888159','ceo','123456','Adam','Mizrahi','adam@EKrut.com','0538503033',NULL,'null','CEO',0,0),
+('007818859','customer1','123456','Anna','Zak','anna@gmail.com','0538503033',1234567812345678,'North','registered',0,0),
+('205818859','customer2','123456','Omer','Adam','omer@gmail.com','0538503033',1234567812345678,'South','registered',0,0),
+('304818859','customer3','123456','Eden','Ben Zaken','kapara@gmail.com','0538503033',1234567812345678,'UAE','registered',0,0),
+('403818859','customer4','123456','Ravid','Plotnik','nechi@gmail.com','0538503033',1234567812345678,'North','member',0,0),
+('502818859','customer5','123456','Keren','Peles','keren@gmail.com','0538503033',1234567812345678,'South','member',0,0),
+('601818859','customer6','123456','Berry','Sakharof','berry@gmail.com','0538503033',1234567812345678,'UAE','member',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -501,4 +522,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-29 21:05:43
+-- Dump completed on 2022-12-30 19:19:18
