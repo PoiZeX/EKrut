@@ -4,24 +4,24 @@
 package client;
 
 import java.io.*;
+
+import Store.NavigationStoreController;
 import client.*;
 import common.ChatIF;
-
 
 public class ClientController implements ChatIF {
 
 	public static int DEFAULT_PORT = 5555; // TODO: Extract this and other const do other class
 
-
 	ChatClient client;
 
-	
 	public ClientController(String host, int port) {
 		try {
 			client = new ChatClient(host, port, this);
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" + " Terminating client.");
-			System.exit(1);
+			NavigationStoreController.closeAllScreens();
+			client = null;
 		}
 	}
 
@@ -30,13 +30,16 @@ public class ClientController implements ChatIF {
 	 * it to the client's message handler.
 	 */
 	public void accept(String str) {
-		client.handleMessageFromClientUI(str);
+		if (client != null)
+			client.handleMessageFromClientUI(str);
 
 	}
 
 	public void acceptObj(Object obj) {
-		client.handleMessageFromClient(obj);
+		if (client != null)
+			client.handleMessageFromClient(obj);
 	}
+
 	/**
 	 * This method overrides the method in the ChatIF interface. It displays a
 	 * message onto the screen.

@@ -7,6 +7,8 @@ import ocsf.client.*;
 import common.ChatIF;
 import common.Message;
 import java.io.*;
+
+import Store.NavigationStoreController;
 import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +16,6 @@ import javafx.collections.ObservableList;
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
-	public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
 
 
@@ -88,20 +89,8 @@ public class ChatClient extends AbstractClient {
 			closeConnection();
 		} catch (IOException e) {
 		}
-		System.exit(0);
-	}
-	
-	
-	static {
-		ChatClient.subscribers = FXCollections.observableArrayList();
+		NavigationStoreController.closeAllScreens();
 	}
 
-	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
-		ChatClient.subscribers = subscribers;
-	}
-
-	public static ObservableList<SubscriberEntity> getClientList() {
-		return ChatClient.subscribers;
-	}
 	
 }

@@ -57,8 +57,6 @@ public class HostClientController  {
     	
     	// Establish connection
     	chat = new ClientController(host, Integer.parseInt(port));
-    	chat.accept("Connection success");
-    	chat.accept("Switching view from Configuration to Editor");
 		chat.acceptObj(new Message(TaskType.ClientConnect, null)); // send server that client connected
 
     	// Go to next screen (controller creates the screen)
@@ -69,8 +67,5 @@ public class HostClientController  {
     public void start(Stage primaryStage) throws Exception {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);	
 	}
-    
-   
-
 
 }
