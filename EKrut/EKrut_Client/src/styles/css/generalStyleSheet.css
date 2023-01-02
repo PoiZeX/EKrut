@@ -68,7 +68,16 @@
     -fx-text-fill:#057DCD;
     -fx-font-size: 14pt;
     -fx-label-padding: 0 20 5 20;
+}
 
+.LabelSmallArea{
+
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#057DCD;
+    -fx-font-size: 14pt;
+    -fx-label-padding: 0 10 5 10;
 }
 
 /* header */

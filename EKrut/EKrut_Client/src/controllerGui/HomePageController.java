@@ -182,12 +182,7 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
-		currentUser.setLogged_in(false);  // logout user
-		HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, currentUser)); 
-		NavigationStoreController.getInstance().clearAll();
-		currentUser = null;
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-
+		NavigationStoreController.ExitHandler(false);	
 	}
 
 }

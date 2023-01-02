@@ -45,10 +45,11 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 		try {
-			client.sendToClient(true);
+			client.sendToClient(true);  // in case no one sent a msg to client
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
+
 	}
 
 	// Extract it from here later

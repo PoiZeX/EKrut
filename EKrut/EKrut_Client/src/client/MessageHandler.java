@@ -31,6 +31,11 @@ import entity.UserEntity;
 
 public class MessageHandler {
 
+	/**
+	 * Handle the messages from server and navigates them to right methods
+	 * @param thisClient
+	 * @param msg
+	 */
 	public static void Handle(ChatClient thisClient, Message msg) {
 		Message msgFromServer = (Message) msg;
 		TaskType task = msgFromServer.getTask();

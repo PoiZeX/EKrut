@@ -3,25 +3,26 @@ package client;
 import javafx.application.Application;
 
 import javafx.stage.Stage;
+
+import com.oracle.tools.packager.Platform;
+
+import Store.NavigationStoreController;
 import controllerGui.HostClientController;
+import controllerGui.LoginController;
 
 public class ClientUI extends Application {
 
-
 	public static void main(String[] args) throws Exception {
-		Runtime.getRuntime().addShutdownHook(new Thread(()->{
-		    System.out.println("FIX ME...");
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			NavigationStoreController.ExitHandler(true);
 		}));
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//ChangeScreen screen = new ChangeScreen();
-		//screen.changeScreen(primaryStage, "/boundary/HostClientUI.fxml");
 		HostClientController aFrame = new HostClientController();
-		
 		aFrame.start(primaryStage);
-		
+
 	}
 }
