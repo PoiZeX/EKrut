@@ -13,7 +13,7 @@ public class CommonData {
 
 	public static void initData() {
 		chat.acceptObj(new Message(TaskType.InitRegions, null));
-		chat.acceptObj(new Message(TaskType.InitMachines, null));
+		//chat.acceptObj(new Message(TaskType.InitMachines, null));
 	}
 	
 	public static void recieveRegions(ArrayList<String> regions) {

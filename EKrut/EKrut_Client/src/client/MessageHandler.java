@@ -81,7 +81,7 @@ public class MessageHandler {
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
 		case InitMachines:
-			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+		//	CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
 		case ReceiveItemsInMachine:
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
@@ -93,6 +93,11 @@ public class MessageHandler {
 		case ReceiveSupplyWorkersFromServer:
 			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
 			break;
+		case InitMachinesSupplyUpdate:
+			SupplyUpdateController.getAllMachines((ArrayList<MachineEntity>) obj);
+			break;
+		case InitMachinesInRegions:
+			SupplyManagementController.getMachinesInRegion((ArrayList<MachineEntity>) obj);
 		default:
 			break;
 		}

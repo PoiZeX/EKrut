@@ -75,8 +75,10 @@ public class MessageHandler {
 		case RequestPersonalMessages:
 			PersonalMessagesDBController.getAllPersonalMessages((UserEntity) obj, client);
 			break;
-		case InitMachines:
-			CommonDataDBController.getAllMachinesFromDB(client);
+		case InitMachinesInRegions:
+		case InitMachinesSupplyUpdate:
+			//CommonDataDBController.getAllMachinesFromDB(client);
+			SupplyManagementDBController.getMachinesFromDB((String [])obj, client);
 			break;
 		case SendPersonalMessage:
 			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);

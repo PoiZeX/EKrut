@@ -193,6 +193,70 @@ public class SupplyManagementDBController {
 		}
 		
 	}
+	/**
+	 * */
+	public static void getMachinesFromDB(String [] arr,  ConnectionToClient client) {
+		ArrayList<MachineEntity> res = new ArrayList<>() ;;
+		if (arr[0].equals("0")) {
+			res=getMachineListForSupplyRegionMFromDB(arr[1]);
+		try {
+			client.sendToClient(new Message(TaskType.InitMachinesInRegions, res));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}}
+		else {
+			res=getMachineListForSupplyUpdateFromDB(Integer.parseInt(arr[1]));
+		try {
+			client.sendToClient(new Message(TaskType.InitMachinesSupplyUpdate, res));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}}
+	}
+	/**
+	 *get machines list for worker where therse a call open for him  */
+	private static ArrayList<MachineEntity> getMachineListForSupplyUpdateFromDB(int workerId) {
+		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return machines;
+			Connection conn = MySqlClass.getConnection();
+			
+			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.machines.* "
+					+ "FROM ekrut.machines, ekrut.item_in_machine "
+					+ "WHERE item_in_machine.call_status=(?) AND worker_id=(?) AND machines.machine_id=item_in_machine.machine_id ;");
+			ps.setString(1, ItemInMachineEntity.Call_Status.Processed.toString());
+			ps.setInt(2,workerId );
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				machines.add(new MachineEntity(res.getInt(1),res.getString(2),res.getInt(3),res.getString(4),res.getInt(5)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return machines;
+	}
+	/**
+	 *get machines list for worker where therse a call open for him  */
+	private static ArrayList<MachineEntity> getMachineListForSupplyRegionMFromDB(String regionName) {
+		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return machines;
+			Connection conn = MySqlClass.getConnection();
+			
+			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.machines.* "
+					+ "FROM ekrut.machines "
+					+ "WHERE machines.region_name=(?) ;");
+			ps.setString(1,regionName);
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				machines.add(new MachineEntity(res.getInt(1),res.getString(2),res.getInt(3),res.getString(4),res.getInt(5)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return machines;
+	}
 
 
 }
