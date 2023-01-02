@@ -2,6 +2,7 @@ package controllerGui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -134,7 +135,9 @@ public class SupplyReportController {
 
 		RecievedData = false; // reset each operation
 		supplySBC.getData().clear(); // clear previous if exists
-
+		pieChart.getData().clear();
+		textConclusionsLbl.setText("");
+		
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
 				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
@@ -169,12 +172,27 @@ public class SupplyReportController {
 		series1.setName("Month Start Amount");
 		series2.setName("Month End Amount");
 		supplySBC.getData().addAll(series1, series2);
+		
+		// set pieChart
+		
 		pieChart.setData(list);
+		
+		// set textual conclusions
+		String conclusions = "";
 		String itemsAmount = "";
-		itemsAmount += list.sorted().get(0).getName() + " : " + list.sorted().get(0).getPieValue() + "\n";
-		itemsAmount += list.sorted().get(1).getName() + " : " + list.sorted().get(1).getPieValue() + "\n";
-		itemsAmount += list.sorted().get(2).getName() + " : " + list.sorted().get(2).getPieValue() + "\n";
-		textConclusionsLbl.setText("Top 3 items were filled this month\n" + itemsAmount);
+		list = list.sorted(new Comparator<PieChart.Data>() {
+			@Override
+			public int compare(javafx.scene.chart.PieChart.Data o1, javafx.scene.chart.PieChart.Data o2) {
+				return ((Double)o1.getPieValue()).compareTo(o2.getPieValue());
+			}
+		});
+		itemsAmount += list.size() >= 1 ? list.get(list.size()-1).getName() + " : " + list.get(list.size()-1).getPieValue() + "\n" : "";
+		itemsAmount += list.size() >= 2 ? list.get(list.size()-2).getName() + " : " + list.get(list.size()-2).getPieValue() + "\n" : "";
+		itemsAmount += list.size() >= 3 ? list.get(list.size()-3).getName() + " : " + list.get(list.size()-3).getPieValue() + "\n" : "";
+		conclusions = "Top 3 items that were filled \nthe most this month\n\n" + itemsAmount +"\n";
+		conclusions += "The product consumption was\n";
+		conclusions += list.get(list.size()-1).getPieValue() > 10 ? "high" : list.get(list.size()-1).getPieValue() >= 5 ? "medium" : "low";
+		textConclusionsLbl.setText(conclusions);
 		textConclusionsLbl.setVisible(true);
 	}
 }

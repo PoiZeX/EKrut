@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class CommonFunctions {
@@ -15,6 +16,7 @@ public class CommonFunctions {
 
 	/**
 	 * check if the string is null or empty (spaces is empty)
+	 * 
 	 * @param txt
 	 * @return
 	 */
@@ -24,6 +26,7 @@ public class CommonFunctions {
 
 	/**
 	 * general function to execute lambda <callback> after <num> time
+	 * 
 	 * @param num
 	 * @param callback
 	 */
@@ -46,7 +49,7 @@ public class CommonFunctions {
 
 	public static void createPopup(PopupTypeEnum type, String message) {
 		FXMLLoader loader;
-		
+
 		try {
 			// load the boundary
 			loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/PopupBoundary.fxml"));
@@ -55,18 +58,23 @@ public class CommonFunctions {
 			// get controller and use it
 			PopupController popupController = loader.getController();
 			popupController.setupPopup(type, message);
-			
+
 			// create the stage & scene
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
-			
-			// set properties 
+
+			// set properties
 			stage.setTitle(type.toString());
 			stage.setResizable(false);
 			stage.setWidth(400);
 			stage.setHeight(350);
-			stage.show();
 			
+			// freeze current screen until got popup close
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+
+			//stage.show();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

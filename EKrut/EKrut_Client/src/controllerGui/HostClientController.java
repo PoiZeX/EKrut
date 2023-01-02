@@ -64,11 +64,10 @@ public class HostClientController {
 		if (chat.acceptObj(new Message(TaskType.ClientConnect, null))) // send server that client connected
 		{
 			// Go to next screen (controller creates the screen)
-						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
 		}
-			
-		else
-		{
+
+		else {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Could not connect to server.");
 		}
 
