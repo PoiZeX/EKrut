@@ -7,6 +7,7 @@ import client.ClientController;
 import common.CommonData;
 import common.DeliveryStatus;
 import common.Message;
+import common.ScreensNames;
 import common.TaskType;
 import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
@@ -168,7 +169,7 @@ public class SupplyUpdateController {
 
 	@FXML
 	void refresh(ActionEvent event) {
-		setupTable(machine.machineId);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyUpdate);
 	}
 
 	@FXML
@@ -180,7 +181,10 @@ public class SupplyUpdateController {
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
 		System.out.println("updated has benn done sucssefully");
 		toUpdate.clear();
-		supplyMangmentTbl.refresh();
+		
+		refresh(null);
+		
+		//supplyMangmentTbl.refresh();
 	}
 
 	/** get machines from server */
@@ -194,6 +198,7 @@ public class SupplyUpdateController {
 
 	void setDisableItems() {
 		machineCmb.setDisable(true);
-		supplyMangmentTbl.setDisable(true);
+		
+		updatedBtn.setDisable(true);
 	}
 }

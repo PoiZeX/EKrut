@@ -103,6 +103,7 @@ public class MessageHandler {
 			break;
 		case InitMachinesInRegions:
 			SupplyManagementController.getMachinesInRegion((ArrayList<MachineEntity>) obj);
+			break;
 		default:
 			break;
 		}
