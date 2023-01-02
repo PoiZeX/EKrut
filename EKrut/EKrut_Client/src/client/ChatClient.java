@@ -39,7 +39,7 @@ public class ChatClient extends AbstractClient {
 		}
 	}
 
-	public void handleMessageFromClientUI(String message) {
+	public boolean handleMessageFromClientUI(String message) {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
@@ -53,16 +53,18 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			clientUI.display("Could not send message to server: Terminating client." + e);
-			quit();
+//			e.printStackTrace();
+//			clientUI.display("Could not send message to server: Terminating client." + e);
+//			quit();
+			return false;
 		}
+		return true;
 	}
 
 
-	public void handleMessageFromClient(Object message) {
+	public boolean handleMessageFromClient(Object message) {
 		try {
-			openConnection();// in order to send more than one message
+			openConnection(); // in order to send more than one message
 			awaitResponse = true;
 			sendToServer(message);
 			// wait for response
@@ -74,10 +76,11 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			clientUI.display("Could not send message to server: Terminating client." + e);
-			quit();
+			//clientUI.display("Could not send message to server: Terminating client." + e);
+			//quit();
+			return false;
 		}
+		return true;
 	}
 
 

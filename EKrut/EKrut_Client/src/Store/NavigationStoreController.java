@@ -283,21 +283,19 @@ public class NavigationStoreController {
 	 * @param closeAllScreens
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		try {
-			if (connectedUser != null && connectedUser.isLogged_in()) {
-				connectedUser.setLogged_in(false); // logout the user
-				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
-			}
-			if (HostClientController.chat != null)
-				HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
-			if (!closeAllScreens) { // reset all and refresh
-				NavigationStoreController.getInstance().clearAll();
-				connectedUser = null;
-				NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-			} else
-				closeAllScreens();
-		} catch (Exception e) {
+		if (connectedUser != null && connectedUser.isLogged_in()) {
+			connectedUser.setLogged_in(false); // logout the user
+			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 		}
+		if (HostClientController.chat != null)
+			HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+		if (!closeAllScreens) { // reset all and refresh
+			NavigationStoreController.getInstance().clearAll();
+			connectedUser = null;
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+		} else
+			closeAllScreens();
+
 	}
 
 	/**
@@ -305,7 +303,7 @@ public class NavigationStoreController {
 	 */
 	public static void closeAllScreens() {
 		Platform.exit(); // exit JavaFx
-		// System.exit(0); // force exit the system (rn will target the Client.UI exit
+		// System.exit(0); // force the system to exit (rn will target the Client.UI exit
 		// function)
 
 	}

@@ -18,10 +18,9 @@ public class ClientController implements ChatIF {
 	public ClientController(String host, int port) {
 		try {
 			client = new ChatClient(host, port, this);
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			System.out.println("Error: Can't setup connection!" + " Terminating client.");
 			NavigationStoreController.closeAllScreens();
-			client = null;
 		}
 	}
 
@@ -29,15 +28,13 @@ public class ClientController implements ChatIF {
 	 * This method waits for input from the console. Once it is received, it sends
 	 * it to the client's message handler.
 	 */
-	public void accept(String str) {
-		if (client != null)
-			client.handleMessageFromClientUI(str);
+	public boolean accept(String str) {
+		return client.handleMessageFromClientUI(str);
 
 	}
 
-	public void acceptObj(Object obj) {
-		if (client != null)
-			client.handleMessageFromClient(obj);
+	public boolean acceptObj(Object obj) {
+		return client.handleMessageFromClient(obj);
 	}
 
 	/**

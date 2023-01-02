@@ -15,57 +15,67 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.TaskType;
 import common.ScreensNames;
 
-public class HostClientController  {
+public class HostClientController {
 
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private GridPane gridPane;
-
-    @FXML
-    private TextField hostTxt;
-    
-    @FXML
-    private TextField portTxt;
-
-    @FXML
-    private Button connectBtnclient;
-
-    @FXML
-    private Label gridLabel;
-
-    @FXML
-    private Label headLine;
-	public static ClientController chat; // only one instance
-	
 	@FXML
-    void SendPort(ActionEvent event) {
-    	String host = hostTxt.getText(), port = portTxt.getText();
-		
-    	// Validate
-    	if(CommonFunctions.isNullOrEmpty(port) || CommonFunctions.isNullOrEmpty(host)) { System.out.println("Please fill host & port"); return; }
-    	try {
-    		Integer.parseInt(port);
-    	}
-    	catch(Exception ex) {
-    		System.out.println("Please insert digits only"); return;
-    	}
-    	
-    	// Establish connection
-    	chat = new ClientController(host, Integer.parseInt(port));
-		chat.acceptObj(new Message(TaskType.ClientConnect, null)); // send server that client connected
+	private BorderPane borderPane;
 
-    	// Go to next screen (controller creates the screen)
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
+	@FXML
+	private GridPane gridPane;
 
-    }
-	 
-    public void start(Stage primaryStage) throws Exception {
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);	
+	@FXML
+	private TextField hostTxt;
+
+	@FXML
+	private TextField portTxt;
+
+	@FXML
+	private Button connectBtnclient;
+
+	@FXML
+	private Label gridLabel;
+
+	@FXML
+	private Label headLine;
+	public static ClientController chat; // only one instance
+
+	@FXML
+	void SendPort(ActionEvent event) {
+		String host = hostTxt.getText(), port = portTxt.getText();
+
+		// Validate
+		if (CommonFunctions.isNullOrEmpty(port) || CommonFunctions.isNullOrEmpty(host)) {
+			System.out.println("Please fill host & port");
+			return;
+		}
+		try {
+			Integer.parseInt(port);
+		} catch (Exception ex) {
+			System.out.println("Please insert digits only");
+			return;
+		}
+
+		// Establish connection
+		chat = new ClientController(host, Integer.parseInt(port));
+		if (chat.acceptObj(new Message(TaskType.ClientConnect, null))) // send server that client connected
+		{
+			// Go to next screen (controller creates the screen)
+						NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
+		}
+			
+		else
+		{
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "Could not connect to server.");
+		}
+
+	}
+
+	public void start(Stage primaryStage) throws Exception {
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);
 	}
 
 }
