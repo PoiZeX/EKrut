@@ -273,7 +273,9 @@ public class NavigationStoreController {
 			connectedUser = null;
 			NavigationStoreController.getInstance().clearAll();
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-			CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+			CommonFunctions.SleepFor(200, () ->{
+				CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+			});
 		}
 	}
 
