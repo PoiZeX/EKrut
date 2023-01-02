@@ -52,11 +52,11 @@
                         <Insets />
                      </opaqueInsets>
                      <columns>
-                        <TableColumn fx:id="saleTypeCol" prefWidth="151.0" text="Sale type" />
-                        <TableColumn fx:id="daysCol" prefWidth="224.0" text="Days" />
-                        <TableColumn fx:id="startTimeCol" prefWidth="138.0" text="Start time" />
-                        <TableColumn fx:id="endTimeCol" prefWidth="147.0" text="End time" />
-                        <TableColumn fx:id="statusCol" prefWidth="126.0" text="Status" />
+                        <TableColumn fx:id="saleTypeCol" prefWidth="107.0" text="Sale type" />
+                        <TableColumn fx:id="daysCol" prefWidth="300.0" text="Days" />
+                        <TableColumn fx:id="startTimeCol" prefWidth="122.0" text="Start time" />
+                        <TableColumn fx:id="endTimeCol" prefWidth="122.0" text="End time" />
+                        <TableColumn fx:id="statusCol" prefWidth="155.0" text="Status" />
                      </columns>
                   </TableView>
                </children>
