@@ -3,6 +3,7 @@ package controllerGui;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import Store.NavigationStoreController;
+import client.ChatClient;
 import client.ClientController;
 import common.CommonFunctions;
 import common.TaskType;
@@ -67,6 +68,7 @@ public class LoginController {
 	 * 
 	 * @return
 	 */
+	
 	protected boolean loginProccess(String[] usernamePassword) {
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
@@ -177,14 +179,14 @@ public class LoginController {
 			returnedMsg = "User is not approved yet";
 			return;
 		}
-
-		if(user.getRole_type().equals(RolesEnum.user))
-		{
-			isValidDetails = false;
-			returnedMsg = "User is not registered yet.\nPlease contact customer service for registreation";
-			return;
-		}
-		
+//
+//		if(user.getRole_type().equals(RolesEnum.user))
+//		{
+//			isValidDetails = false;
+//			returnedMsg = "User is not registered yet.\nPlease contact customer service for registreation";
+//			return;
+//		}
+//		
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
