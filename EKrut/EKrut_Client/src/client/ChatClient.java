@@ -9,7 +9,6 @@ import common.Message;
 import java.io.*;
 
 import Store.NavigationStoreController;
-import entity.SubscriberEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

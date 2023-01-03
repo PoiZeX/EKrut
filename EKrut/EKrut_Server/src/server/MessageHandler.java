@@ -17,10 +17,6 @@ public class MessageHandler {
 		Object obj = msg.getObject();
 		System.out.println("Message received: " + ((Message) msg).getTask().toString() + " from " + client);
 		switch (task) {
-		case EditSubscribers:
-			ArrayList<SubscriberEntity> subscribersLst = (ArrayList<SubscriberEntity>) obj;
-			SubscribersDbController.updateSubscribersEntities(client, subscribersLst);
-			break;
 		case ClientConnect:
 			EchoServer.updateClientList(client, "Connect");
 			break;
@@ -29,9 +25,6 @@ public class MessageHandler {
 			break;
 		case SetUserLoggedIn:
 			LoginDBController.setUserLoggedIn((UserEntity) obj);
-			break;
-		case LoadSubscribers:
-			SubscribersDbController.getTable(client);
 			break;
 		// There are similiar, should think about merging //
 		case RequestReport:
@@ -76,30 +69,32 @@ public class MessageHandler {
 			break;
 		case InitMachinesInRegions:
 		case InitMachinesSupplyUpdate:
-			//CommonDataDBController.getAllMachinesFromDB(client);
-			SupplyManagementDBController.getMachinesFromDB((String [])obj, client);
+			SupplyManagementDBController.getMachinesFromDB((String[]) obj, client);
+			break;
+		case InitMachines:
+			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
 		case SendPersonalMessage:
 			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);
 			break;
 
 		case RequestItemsInMachine:
-			SupplyManagementDBController.getMachineItems((int)obj,client);
+			SupplyManagementDBController.getMachineItems((int) obj, client);
 			break;
 		case RequestProssecedItemsInMachine:
-			SupplyManagementDBController.getProcessedMachineItems((int [])obj, client);
+			SupplyManagementDBController.getProcessedMachineItems((int[]) obj, client);
 			break;
 		case RequestInsertNewSale:
 			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
 		case RequestUpdateMachineMinAmount:
-			SupplyManagementDBController.updateMachineMinAmount((MachineEntity)obj,client);
+			SupplyManagementDBController.updateMachineMinAmount((MachineEntity) obj, client);
 			break;
 		case RequestItemsInMachineUpdateFromServer:
 			SupplyManagementDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
-			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj , client);
+			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
 			break;
 		case RequestSalesFromServer:
 			MarketingManagerDBController.getSales(client);

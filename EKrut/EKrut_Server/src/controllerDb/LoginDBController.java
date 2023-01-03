@@ -9,7 +9,6 @@ import java.sql.Statement;
 
 import common.Message;
 import common.TaskType;
-import entity.SubscriberEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
