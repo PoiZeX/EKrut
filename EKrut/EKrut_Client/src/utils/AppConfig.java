@@ -7,8 +7,9 @@ package utils;
 public final class AppConfig {
 	
 	// System definition
-	public static final String SYSTEM_CONFIGURATION = "OK"; 				// can be changed to OL
+	public static final String SYSTEM_CONFIGURATION = "EK"; 				// can be changed to OL
 	public static final int INACTIVITY_LOGOUT = 1000*60*15;					// time in sec
+	
 	// Login restrictions
 	public static final int USERNAME_MIN_LENGTH = 4;
 	public static final int USERNAME_MAX_LENGTH = 16;

@@ -86,7 +86,7 @@ public class MessageHandler {
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
 		case InitMachines:
-		//	CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
 		case ReceiveItemsInMachine:
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
