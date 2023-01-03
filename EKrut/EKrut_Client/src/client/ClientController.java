@@ -30,7 +30,6 @@ public class ClientController implements ChatIF {
 	 */
 	public boolean accept(String str) {
 		return client.handleMessageFromClientUI(str);
-
 	}
 
 	public boolean acceptObj(Object obj) {
