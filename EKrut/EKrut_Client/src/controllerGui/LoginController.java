@@ -26,11 +26,13 @@ import utils.AppConfig;
 
 public class LoginController {
 
-	protected static ClientController chat = HostClientController.chat; // one instance
+	protected static ClientController chat;
 	private static String username, password;
 	// those fields for server response
 	private static Boolean isValidDetails = null;
 	private static String returnedMsg = "";
+	private boolean isServiceEnable = false;
+	private static StringBuilder errorMsg;
 
 	@FXML
 	private Button loginBtn;
@@ -43,6 +45,20 @@ public class LoginController {
 
 	@FXML
 	private Button EKTLoginBtn;
+
+	public LoginController() {
+		chat = HostClientController.chat; // one instance
+	}
+
+	/**
+	 * dependency injection
+	 * 
+	 * @param chatService
+	 */
+	public LoginController(ClientController chatService) {
+		chat = chatService;
+		isServiceEnable = true;
+	}
 
 	/**
 	 * Handles login with username and password for EKrut clients
@@ -68,7 +84,6 @@ public class LoginController {
 	 * 
 	 * @return
 	 */
-	
 	protected boolean loginProccess(String[] usernamePassword) {
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
@@ -83,8 +98,9 @@ public class LoginController {
 		}
 
 		if (isValidDetails) {
-			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+			if (!isServiceEnable)
+				// Go to next screen (controller creates the screen)
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
 		}
 
 		else {
@@ -93,61 +109,59 @@ public class LoginController {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Control user to validate (usually will be called from registration form)
+	 * 
 	 * @param user
 	 */
 	public static void setUser(String[] user) {
 		username = user[0];
-		password = user[1];	
-		//validateUsernamePasswordSyntax();
+		password = user[1];
+		// validateUsernamePasswordSyntax();
 	}
-	
- 	/**
+
+	/**
 	 * return true if username and password are valid syntax and length
 	 * 
 	 * @return
 	 */
 	private boolean validateUsernamePasswordSyntax() {
 		// not null
-
-		StringBuilder error = new StringBuilder();
-		error.append("Error in:\n");
+		errorMsg = new StringBuilder();
+		errorMsg.append("Error in:\n");
 		// username check
 		if (CommonFunctions.isNullOrEmpty(username)) {
-			error.append("* username cannot be empty\n");
+			errorMsg.append("* username cannot be empty\n");
 		} else {
 			// validate username
 			if (username.length() > AppConfig.USERNAME_MAX_LENGTH || username.length() < AppConfig.USERNAME_MIN_LENGTH)
-				error.append("* username length must be between " + AppConfig.USERNAME_MIN_LENGTH + "-"
+				errorMsg.append("* username length must be between " + AppConfig.USERNAME_MIN_LENGTH + "-"
 						+ AppConfig.USERNAME_MAX_LENGTH + "\n");
 
 			if (!Pattern.matches(AppConfig.USERNAME_ALPHA_ALLOWED, username)) // allow digits, alpha and underscore. and
 																				// must starts
 				// with a char
-				error.append("* username can contain just alphabet, digits and underscore\n");
+				errorMsg.append("* username can contain just alphabet, digits and underscore\n");
 		}
 
 		// password checks
 		if (CommonFunctions.isNullOrEmpty(password)) {
-			error.append("* password cannot be empty\n");
+			errorMsg.append("* password cannot be empty\n");
 		} else {
 			if (password.contains(" ")) // spaces are not allowed
-				error.append("* password cannot contain any spaces\n");
+				errorMsg.append("* password cannot contain any spaces\n");
 			if (password.length() > AppConfig.PASSWORD_MAX_LENGTH || password.length() < AppConfig.PASSWORD_MIN_LENGTH)
-				error.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-"
+				errorMsg.append("* password length must be between " + AppConfig.PASSWORD_MIN_LENGTH + "-"
 						+ AppConfig.PASSWORD_MAX_LENGTH + "\n");
 		}
 
-		if (error.toString().equals("Error in:\n"))
+		if (errorMsg.toString().equals("Error in:\n"))
 			return true;
-		{
-			// show popup message for error
-			System.out.println(error.toString());
-			return false;
 
-		}
+		// show popup message for error
+		System.out.println(errorMsg.toString());
+		return false;
 
 	}
 
@@ -190,10 +204,9 @@ public class LoginController {
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
-		
+
 		user.setLogged_in(true); // change in entity and send the entity for update in DB
-		CommonFunctions.SleepFor(1000, () -> 
-		{
+		CommonFunctions.SleepFor(1000, () -> {
 			chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user));
 		});
 		NavigationStoreController.connectedUser = user; // set the current connected user to system
