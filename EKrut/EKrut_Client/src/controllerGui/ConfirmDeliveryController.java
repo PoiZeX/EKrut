@@ -20,7 +20,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class ConfirmDeliveryController {
@@ -29,14 +31,13 @@ public class ConfirmDeliveryController {
     private Button submitBtn;
 
     @FXML
-    private Label titleLbl;
-    
-    @FXML
     private TextField orderNumTxtField;
     
     @FXML
     private Label errMsgLbl;
     
+    @FXML
+    private ImageView img;
     private String config="OL";
     private TooltipSetter tooltip;
     private String orderNum;
@@ -45,16 +46,19 @@ public class ConfirmDeliveryController {
     private static Boolean isValidOrder = null;
     private String popUpTxt="";
     
-    public void initialize() {
-    	
-    	
-    	switch(config) {
+    /**
+     * initialize the screen according to the app configuration
+     * in case of "EK": order pickup
+     * in case of "OL": confirm delivery receipt
+     */
+    public void c() {
+    	switch(AppConfig.SYSTEM_CONFIGURATION) {
     	case "EK":
-    		setBtnAndTitle(submitBtn, "Collect", "Collect your order now","Order Pickup");
+    		setBtnAndPicture(submitBtn, "Collect", "Collect your order now","../styles/images/pickup.png");
     		popUpTxt="Thank you for collecting your order!\r\nhave fun!";
     		break;
     	case "OL":
-    		setBtnAndTitle(submitBtn, "Confirm", "Confirm delivery receipt","Confirm delivery");
+    		setBtnAndPicture(submitBtn, "Confirm", "Confirm delivery receipt","../styles/images/delivery1.png");
     		popUpTxt="The approval was successfully received,\nbon appetit!";
     		break;
     	default:
@@ -62,10 +66,14 @@ public class ConfirmDeliveryController {
     	}
     	
     }
-
+    /**
+     * confirm the delivery or collect the order
+     * @param event
+     */
     @FXML
     void confirm(ActionEvent event) {
     	orderNum=orderNumTxtField.getText();
+    	errorMsg="";
 		validateOrderNumber();
 		// wait for answer
 		while (isValidOrder == null) {
@@ -74,27 +82,29 @@ public class ConfirmDeliveryController {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
 		}
+		errMsgLbl.setText(errorMsg);
+		errMsgLbl.setDisable(false);
 		if(isValidOrder)
 			CommonFunctions.createPopup(PopupTypeEnum.Success, popUpTxt);
-		else {
-			errMsgLbl.setText(errorMsg);
-			errMsgLbl.setDisable(false);
-		}
-
-	
     }
-    private <T extends Button> void setBtnAndTitle(T btn, String btnText, String tooltiptext,String title) {
-		btn.setText(btnText);
-		titleLbl.setText(title);
+    /**
+     * Generic method to handle buttons setup according to button text, tooltip and image
+     */
+    private <T extends Button> void setBtnAndPicture(T btn, String btnText, String tooltiptext, String imgPath) {
+		Image image=new Image(getClass().getResourceAsStream(imgPath));
+    	btn.setText(btnText);
 		tooltip = new TooltipSetter(tooltiptext);
 		btn.setTooltip(tooltip.getTooltip());
+		img.setImage(image);
 	}
-    
+    /**
+     * validation:
+     * Check that the customer enter order number
+     *	Request from server to get the entity by customer number and order number
+     */
     private void validateOrderNumber() {
     	String details[]=new String[2];
-
     	if (CommonFunctions.isNullOrEmpty(orderNum)) {
 			errorMsg=("Please enter your order number\n");
 			isValidOrder=false;
@@ -102,18 +112,23 @@ public class ConfirmDeliveryController {
     	}
     	details[0]= NavigationStoreController.connectedUser.getId_num();
     	details[1]=orderNum;
-    	switch (titleLbl.getText()) {
-    	case "Order Pickup":
+    	switch (AppConfig.SYSTEM_CONFIGURATION) {
+    	case "EK":
     		break;
-    	case "Confirm delivery":
+    	case "OL":
     		 isValidOrder = null;
     		chat.acceptObj(new Message(TaskType.RequestDeliveryFromServer,details));
     		break;
-    
     	}
-    	
     }
-    
+	/**
+	 * Validated the details of given deliveryEntity from server:
+	 * the order exist for this customer
+	 * the delivery status is outForDelivery
+	 * the customerStatus!= APPROVED
+	 * Request from server to update the deliveryEntity.customerStatus
+	 * @param deliveryEntity 
+	 */
 	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
 		
 		if(deliveryEntity==null) {
@@ -122,6 +137,10 @@ public class ConfirmDeliveryController {
 		}
 		else if(deliveryEntity.getDeliveryStatus().equals(DeliveryStatus.pendingApproval)) {
 			errorMsg=("Your order is still in process. Cannot be confirmed.\n");
+			isValidOrder=false;
+		}
+		else if(deliveryEntity.getCustomerStatus().equals(CustomerStatus.APPROVED)) {
+			errorMsg=("You already confirm this order.\n");
 			isValidOrder=false;
 		}
 		else {
