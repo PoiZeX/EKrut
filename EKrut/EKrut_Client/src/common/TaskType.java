@@ -59,6 +59,7 @@ public enum TaskType {
 	ReceiveSupplyWorkersFromServer, 
 	RequestSupplyWorkers, 
 	RequestItemsInMachineUpdateFromServer,
+	RequestItemsWithMinAmount,
 	InitMachinesSupplyUpdate,
 	InitMachinesInRegions,
 

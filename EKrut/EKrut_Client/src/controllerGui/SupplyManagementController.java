@@ -6,6 +6,7 @@ import java.util.Arrays;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
@@ -120,18 +121,15 @@ public class SupplyManagementController {
 			Thread.sleep(100);
 		machineCmb.setItems(machineLst);
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-			if (machineCmb.getSelectionModel().isEmpty())
-				System.out.println("pop up - you have to pick a machine");
-			else {
-				machine = machineCmb.getValue();
-				if (oldValue != newValue) {
-					saveChangesBtn.setDisable(false);
-					machineNameLbl.setText(machine.machineName);
-					machineNameLbl.setVisible(true);
-					minAmountTxtField.setText(machine.getMinamount() + "");
-					toUpdate = new ArrayList<ItemInMachineEntity>();
-					setupTable(machine.machineId);
-				}
+
+			machine = machineCmb.getValue();
+			if (oldValue != newValue) {
+				saveChangesBtn.setDisable(false);
+				machineNameLbl.setText(machine.machineName);
+				machineNameLbl.setVisible(true);
+				minAmountTxtField.setText(machine.getMinamount() + "");
+				toUpdate = new ArrayList<ItemInMachineEntity>();
+				setupTable(machine.machineId);
 			}
 		});
 
@@ -193,11 +191,17 @@ public class SupplyManagementController {
 	 */
 	@FXML
 	void refresh(ActionEvent event) {
-		machineCmb.selectionModelProperty().setValue(null);
-		machineLst.clear();
+		MachineEntity tempMachineEntity = this.machineCmb.getValue();
+
 		Platform.runLater(() -> {
 			try {
 				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyManagement);
+				CommonFunctions.SleepFor(250, () -> {
+					SupplyManagementController sc = (SupplyManagementController) NavigationStoreController.getInstance()
+							.getController();
+					sc.machineCmb.getSelectionModel().select(tempMachineEntity);
+				});
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -287,7 +291,7 @@ public class SupplyManagementController {
 	@SuppressWarnings("unchecked")
 	void setupTable(int machineId) {
 		recievedData = false;
-		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+		chat.acceptObj(new Message(TaskType.RequestItemsWithMinAmount, machineId));
 		while (!recievedData) {
 			try {
 				Thread.sleep(100);
@@ -349,16 +353,17 @@ public class SupplyManagementController {
 	 */
 	public static void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
 		// String region = NavigationStoreController.connectedUser.getRegion();
-		if (!machineLst.isEmpty())
-			machineLst.clear();
+		Platform.runLater(() -> {
+			if (!machineLst.isEmpty())
+				machineLst.clear();
 
-		machineLst.addAll(arrayList);
+			machineLst.addAll(arrayList);
+		});
 		recievedData = true;
 
 	}
 
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
-		// TODO Auto-generated method stub
 		if (!itemsInMachineLst.isEmpty()) {
 			itemsInMachineLst.clear();
 		}
@@ -394,11 +399,12 @@ public class SupplyManagementController {
 
 	/** get supply workers */
 	public static void recevieSupplyWorkers(ArrayList<UserEntity> obj) {
-		// TODO Auto-generated method stub
-		if (!supplyWorkers.isEmpty()) {
-			supplyWorkers.clear();
-		}
-		supplyWorkers.addAll(obj);
+		Platform.runLater(() -> {
+			if (!supplyWorkers.isEmpty()) {
+				supplyWorkers.clear();
+			}
+			supplyWorkers.addAll(obj);
+		});
 		recievedData = true;
 
 	}

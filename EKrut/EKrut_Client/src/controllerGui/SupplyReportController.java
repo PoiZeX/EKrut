@@ -72,7 +72,6 @@ public class SupplyReportController {
 		titleLabel.setText("Supply Report : " + reportRegion);
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
-
 		allMachines = CommonData.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
