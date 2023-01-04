@@ -56,30 +56,28 @@
     -fx-text-alignment:center;
     -fx-text-fill:#057DCD;
     -fx-font-size: 20pt;
-    -fx-label-padding: 5 20 0 20;
+    -fx-label-padding: 5 0 0 0;
 
 }
 
 .LabelRoleTitle{
 
-    -fx-font-family: "Calibri";
     -fx-font-weight: bold;
     -fx-text-alignment:center;
     -fx-text-fill:#057DCD;
     -fx-font-size: 14pt;
-    -fx-label-padding: 0 20 5 20;
+    -fx-label-padding: 5 0 0 0;
 }
+
 .LabelLocations{
-	    -fx-font-family: "Calibri";
     -fx-font-weight: bold;
-    -fx-text-alignment:center;
+    -fx-alignment:top_left;
+    -fx-text-alignment:left;
     -fx-text-fill:#7f90ff;
-    -fx-font-size: 12pt;
-    -fx-label-padding: 0 20 5 20;
+    -fx-font-size: 9pt;
+    -fx-label-padding: 0 0 0 10;
 }
 .LabelSmallArea{
-
-    -fx-font-family: "Calibri";
     -fx-font-weight: bold;
     -fx-text-alignment:center;
     -fx-text-fill:#057DCD;

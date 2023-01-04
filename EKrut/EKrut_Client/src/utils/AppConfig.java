@@ -8,6 +8,7 @@ public final class AppConfig {
 	
 	// System definition
 	public static final String SYSTEM_CONFIGURATION = "EK"; 				// can be changed to OL
+	public static final String MACHINE_ID = "1"; 							// machine id
 	public static final int INACTIVITY_LOGOUT = 1000*60*15;					// time in sec
 	
 	// Login restrictions
@@ -26,4 +27,4 @@ public final class AppConfig {
 	// Path
 	public static final String PRODUCTS_PATH_CLIENT = "../EKrut_Client/src/styles/products/"; 
 
-}
+} 

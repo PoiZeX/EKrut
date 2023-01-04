@@ -30,17 +30,9 @@ public class ItemInMachineEntity extends ItemEntity {
 
 	// machine_id, item_id, current_amount, minimum_amount, call_status,
 	// times_under_min, calls_amount, name, item_img_name
-	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin,
-			String name) {
-		this(machineId, item_id, currentAmount, callStatus, timeUnderMin, -1, name, 0, "", "", "");
-
-	}
-
-	// machine_id, item_id, current_amount, minimum_amount, call_status,
-	// times_under_min, calls_amount, name, item_img_name
 	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin, int workerId,
-			String name, double price, String manufacturer, String description, String item_img_nam) {
-		super(item_id, name, price, manufacturer, description, item_img_nam);
+			String name, double price, String item_img_nam) {
+		super(item_id, name, price, item_img_nam);
 		this.itemId = item_id;
 		this.machineId = machineId;
 		this.currentAmount = currentAmount;

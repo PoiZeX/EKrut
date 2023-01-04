@@ -32,9 +32,9 @@ public class ItemDBController {
 			while (rs.next()) 
 			{
 				
-				/*        1          2             3                4                   5                 6
-				 * (int item_id, String name, double price, String manufacturer, String description, String item_img_name)*/
-				itemEntity = new ItemEntity(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getString(5),rs.getString(6));
+				/*        1          2             3                4                
+				 * (int item_id, String name, double price, String item_img_name)*/
+				itemEntity = new ItemEntity(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4));
 		
 				String LocalfilePath= "../EKrut_Server/src/styles/products/"+itemEntity.getItemImg().getImgName();
 				  try{

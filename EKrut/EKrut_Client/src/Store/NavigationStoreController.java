@@ -121,13 +121,14 @@ public class NavigationStoreController {
 
 		// for every screen exclude the 'hostclient' and 'login'
 		for (int i = 2; i < history.size(); i++) {
-			res += history.get(i).toString() + " -> ";
+			res += history.get(i).toString() + " ➜ ";
 		}
 
 		if (!res.equals(""))
 			res = res.substring(0, res.length() - 4); // delete the last arrow
 		se.getPath().setText(res);
 	}
+
 
 	/**
 	 * Set the title for the window
@@ -293,56 +294,31 @@ public class NavigationStoreController {
 		Label nameLbl = new Label(); //se.getHeadline();
 		Label roleLbl = new Label(); //se.getPath();
 
-		
-//		ImageView imgView = new ImageView();
-//		Image image = new Image(getClass().getResourceAsStream("../styles/icons/004-mail.png"));
 		// grid pane setup
 		gridPane.setId("headerBar");
 		gridPane.getColumnConstraints()
-				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.CENTER, true));
+				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
+		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
-		gridPane.getRowConstraints().add(new RowConstraints(10.0, 35.0, 35.0, Priority.NEVER, VPos.TOP, true));
-
+		
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
 
 		// main label setup
 		nameLbl.setId("welcomeLabel");
 		nameLbl.setAlignment(Pos.CENTER);
 		nameLbl.setTextAlignment(TextAlignment.CENTER);
-		nameLbl.setPrefSize(678, 41);
+		nameLbl.setPrefSize(900, 35);
 		nameLbl.getStyleClass().add("LabelTitle");
 
 		// sub-label setup
 		roleLbl.setId("roleLabel");
-		roleLbl.setAlignment(Pos.CENTER);
-		roleLbl.setTextAlignment(TextAlignment.CENTER);
 		roleLbl.setPrefSize(600, 40);
 		roleLbl.getStyleClass().add("LabelLocations");
-//
-//		// image + button for mailbox
-//		imgView.setImage(image);
-//		imgView.setFitHeight(36.0);
-//		imgView.setFitWidth(68.0);
-//		imgView.setPickOnBounds(true);
-//		imgView.setPreserveRatio(true);
-//		imgView.getStyleClass().add("Button-NoBG");
-//
-//		mailButton.setId("mailBtn");
-//		mailButton.setAlignment(Pos.TOP_LEFT);
-//		mailButton.setContentDisplay(ContentDisplay.LEFT);
-//		mailButton.setGraphic(imgView);
-//		mailButton.setPrefSize(24.0, 27.0);
-//		mailButton.getStyleClass().add("Button-NoBG");
-//
-//		mailButton.setOnAction(new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent ae) {
-//				// NavigationStoreController.getInstance().goBack(); // go to mailbox
-//			}
-//		});
-		gridPane.add(nameLbl, 0, 0);
-		gridPane.add(roleLbl, 0, 1);
-		// gridPane.add(mailButton, 0, 0);
-		// gridPane.setColumnSpan(mailButton, 2);
+
+		gridPane.add(nameLbl, 0, 1);
+		gridPane.add(roleLbl, 0, 0);
+
+
 		se.setHeadline(nameLbl);
 		se.setPath(roleLbl);
 

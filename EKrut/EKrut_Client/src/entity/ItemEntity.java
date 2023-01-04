@@ -5,30 +5,25 @@ public class ItemEntity extends MainEntity {
 	private int itemId;
 	private String name;
 	private double price;
-	private String manufacturer, description;
 	private ImgEntity itemImg;
 	private String img_relative_path;
 
-	public ItemEntity(int item_id, String name, double price, String manufacturer, String description) {
+	public ItemEntity(int item_id, String name, double price) {
 		super(item_id);
 		this.itemId = item_id;
 		this.name = name;
 		this.price = price;
-		this.manufacturer = manufacturer;
-		this.description = description;
 	}
 
 	/* constructor to get from DB */
-	public ItemEntity(int item_id, String name, double price, String manufacturer, String description,
-			String item_img_name) {
-		this(item_id, name, price, manufacturer, description);
+	public ItemEntity(int item_id, String name, double price, String item_img_name) {
+		this(item_id, name, price);
 		this.itemImg = new ImgEntity(item_img_name);
 	}
 
 	/* constructor to send to DB */
-	public ItemEntity(int item_id, String name, double price, String manufacturer, String description,
-			ImgEntity itemImg) {
-		this(item_id, name, price, manufacturer, description);
+	public ItemEntity(int item_id, String name, double price, ImgEntity itemImg) {
+		this(item_id, name, price);
 		this.itemImg = itemImg;
 	}
 
@@ -49,14 +44,7 @@ public class ItemEntity extends MainEntity {
 		return price;
 	}
 
-	public String getManufacturer() {
-		return manufacturer;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
+	
 	public ImgEntity getItemImg() {
 		return itemImg;
 	}
@@ -75,8 +63,7 @@ public class ItemEntity extends MainEntity {
 
 	@Override
 	public String toString() {
-		return "ItemEntity [item_id=" + itemId + ", name=" + name + ", price=" + price + ", manufacturer="
-				+ manufacturer + ", description=" + description + ", itemImg=" + itemImg + ", item_img_name="
+		return "ItemEntity [item_id=" + itemId + ", name=" + name + ", price=" + price + ", itemImg=" + itemImg + ", item_img_name="
 				+ ", img_relative_path=" + img_relative_path + "]";
 	}
 }
