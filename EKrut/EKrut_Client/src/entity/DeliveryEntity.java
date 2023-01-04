@@ -10,15 +10,15 @@ public class DeliveryEntity implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String estimatedTime;
-	private int customerId,orderId;
+	private String customerId, estimatedTime;
+	private int orderId;
 	private String address, region; //change later to AddressEntity
 	private DeliveryStatus deliveryStatus;
 	private CustomerStatus customerStatus;
 
 	
 
-	public DeliveryEntity(int orderId, String region, int customerId,  String address, String estimatedTime,
+	public DeliveryEntity(int orderId, String region, String customerId,  String address, String estimatedTime,
 			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
 		super();
 		this.estimatedTime = estimatedTime;
@@ -31,7 +31,7 @@ public class DeliveryEntity implements Serializable{
 	}
 
 
-	public DeliveryEntity(int orderId, String region, int customerId, String address, String estimatedTime ) {
+	public DeliveryEntity(int orderId, String region, String customerId, String address, String estimatedTime ) {
 		this.orderId = orderId;
 		this.customerId = customerId;
 		this.address=address;
@@ -52,12 +52,12 @@ public class DeliveryEntity implements Serializable{
 	}
 
 
-	public int getCustomerId() {
+	public String getCustomerId() {
 		return customerId;
 	}
 
 
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 

@@ -28,7 +28,7 @@ public enum TaskType {
 	SendPersonalMessage,
 	ReceiveManagerInfoFromServerDB,
 	ReceiveChangeUserRoleTypeInDB,
-	
+	ReceiveDeliveryFromServer,
 	ReceiveItemsInMachine,
 	ReceiveSalesFromServer,
 	// Requests From Server //
@@ -47,6 +47,7 @@ public enum TaskType {
 	RequestProssecedItemsInMachine,
 	RequestUpdateItemsInMachine,
 	RequesManagerInfoFromServerDB,
+	RequestDeliveryFromServer,  
 	
 	// Update Database
 	RequestChangeUserRoleTypeInDB,
@@ -66,6 +67,6 @@ public enum TaskType {
 	
 	// Common Data Initialization //
 	InitRegions,
-	InitMachines,  
+	InitMachines, 
 	
 }

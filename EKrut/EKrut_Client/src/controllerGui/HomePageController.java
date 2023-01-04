@@ -75,7 +75,7 @@ public class HomePageController {
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", null); // need to change later
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmDelivery); // need to change later
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();

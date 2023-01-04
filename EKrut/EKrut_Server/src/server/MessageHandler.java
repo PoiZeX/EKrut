@@ -53,6 +53,9 @@ public class MessageHandler {
 		case RequestDeliveriesFromServer:
 			DeliveryManagementDBController.getTable(client);
 			break;
+		case RequestDeliveryFromServer:
+			DeliveryManagementDBController.getDelivery((String[])obj, client);
+			break;
 		case RequestUpdateDeliveries:
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
