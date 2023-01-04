@@ -129,7 +129,7 @@ public class ConfirmDeliveryController {
 			de.add(deliveryEntity);
 			de.get(0).setCustomerStatus(CustomerStatus.APPROVED);
 			isValidOrder=true;
-			chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries,de));
+			CommonFunctions.SleepFor(200, ()->{chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries,de));});
 
 		}
 	}

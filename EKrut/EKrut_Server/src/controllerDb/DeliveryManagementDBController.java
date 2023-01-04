@@ -35,12 +35,11 @@ public class DeliveryManagementDBController {
 				ps.setString(3, delivery.getCustomerStatus().toString());
 				ps.setInt(4, delivery.getOrderId());
 				ps.executeUpdate();
-				
 			}
-		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return;
 	}
 
 	// 
