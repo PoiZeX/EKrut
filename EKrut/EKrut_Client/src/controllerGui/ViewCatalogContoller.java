@@ -1,199 +1,158 @@
 package controllerGui;
 
-import Store.NavigationStoreController;
-import common.ScreensNames;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+
+import common.Message;
+import common.TaskType;
+import entity.ItemInMachineEntity;
+import entity.UserEntity;
+import entity.ItemInMachineEntity.Call_Status;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import utils.TooltipSetter;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
+import utils.AppConfig;
 
 public class ViewCatalogContoller {
+    @FXML
+    private Button viewCartBtn;
+    @FXML
+    private ImageView itemImageView;
+    @FXML
+    private Button AddToCartBtn;
 
-	private TooltipSetter tooltip;
+    @FXML
+    private Button cancelOrderBtn;
+    @FXML
+    private GridPane itemViewGridpane;
 
-	@FXML
-	private Button cancelOrderBtn;
+    @FXML
+    private GridPane catalogViewGridpane;
 
-	@FXML
-	private Button placeOrderBtn;
+    @FXML
+    private Label discountPriceLabel;
 
-	@FXML
-	private Button MinusQuantityBtn22;
+    @FXML
+    private Label discountPriceLabel1;
 
-	@FXML
-	private TextField QuantityTxtField22;
+    @FXML
+    private Button minusBtn;
 
-	@FXML
-	private Button AddToCartBtn22;
+    @FXML
+    private Button placeOrderBtn;
 
-	@FXML
-	private Label productNameLbl;
+    @FXML
+    private Button plusBtn;
 
-	@FXML
-	private Label priceLbl;
+    @FXML
+    private Label priceLabel;
 
-	@FXML
-	private ImageView productItemImg22;
+    @FXML
+    private Label priceLabel1;
 
-	@FXML
-	private Button AddQuantityBtn222;
+    @FXML
+    private Label productLabel;
 
-	@FXML
-	private Button MinusQuantityBtn222;
+    @FXML
+    private Label productLabel1;
 
-	@FXML
-	private TextField QuantityTxtField222;
+    @FXML
+    private Label quntityLabel;
 
-	@FXML
-	private Button AddToCartBtn222;
+    @FXML
+    private Button searchBtn;
 
-	@FXML
-	private Label productNameLbl1;
+    @FXML
+    private Button sortBtn;
 
-	@FXML
-	private Label priceLbl1;
-
-	@FXML
-	private ImageView productItemImg222;
-
-	@FXML
-	private Button AddQuantityBtn2221;
-
-	@FXML
-	private Button MinusQuantityBtn2221;
-
-	@FXML
-	private TextField QuantityTxtField2221;
-
-	@FXML
-	private Button AddToCartBtn2221;
-
-	@FXML
-	private Label productNameLbl11;
-
-	@FXML
-	private Label priceLbl11;
-
-	@FXML
-	private ImageView productItemImg2221;
-
-	@FXML
-	private Button AddQuantityBtn221;
-
-	@FXML
-	private Button MinusQuantityBtn221;
-
-	@FXML
-	private TextField QuantityTxtField221;
-
-	@FXML
-	private Button AddToCartBtn221;
-
-	@FXML
-	private ImageView productItemImg221;
-
-	@FXML
-	private Label productNameLbl11priceLbl11;
-
-	@FXML
-	private ImageView itemPriceLbl;
-
-	@FXML
-	private Button AddQuantityBtn22211;
-
-	@FXML
-	private Button MinusQuantityBtn22211;
-
-	@FXML
-	private TextField QuantityTxtField22211;
-
-	@FXML
-	private Button AddToCartBtn22211;
-
-	@FXML
-	private Label productNameLbl111;
-
-	@FXML
-	private Label priceLbl111;
-
-	@FXML
-	private ImageView productItemImg22211;
-
-	@FXML
-	private Button AddQuantityBtn2211;
-
-	@FXML
-	private Button MinusQuantityBtn2211;
-
-	@FXML
-	private TextField QuantityTxtField2211;
-
-	@FXML
-	private Button AddToCartBtn2211;
-
-	@FXML
-	private ImageView productItemImg2211;
-
-	@FXML
-	private Button AddQuantityBtn222111;
-
-	@FXML
-	private Button MinusQuantityBtn222111;
-
-	@FXML
-	private TextField QuantityTxtField222111;
-
-	@FXML
-	private Button AddToCartBtn222111;
-
-	@FXML
-	private Label productNameLbl1111;
-
-	@FXML
-	private Label priceLbl1111;
-
-	@FXML
-	private ImageView productItemImg222111;
-
-	@FXML
-	private Button viewCartBtn;
-
-	@FXML
-	private AnchorPane cartList;
-
-	@FXML
-	private Label totalPriceLabel;
-
-	public void ViewCatalogController() {
-		initialize();
+    private static Map<String, ItemInMachineEntity> itemsList;
+    
+    public void initialize() {
+    	itemsList = new HashMap<>();
+		// demo
+		ItemInMachineEntity newItem = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0, "Bamba", 100.0, "", "", "Bamba.png");
+    	newItem.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
+		addProductToCatalog(newItem, 0);
 	}
+    
+    // THIS NEEDS TO BE MOVED // ***
+    // public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin, 
+    // int workerId, String name, double price, String manufacturer, String description, String item_img_nam)
+    public void addProductToCatalog(ItemInMachineEntity item, int discountPrice) {
+    	itemsList.put(item.getName(), item);
+    	ObservableList<Node> itemList = catalogViewGridpane.getChildren();
+    	GridPane itemView = (GridPane) itemList.get(0);
+    	
+    	ImageView image = (ImageView) itemView.getChildren().get(0);
+    	Button addToCartBtn = (Button) itemView.getChildren().get(1);
+    	Label priceLabel = (Label) itemView.getChildren().get(2);
+    	Label productNameLabel = (Label) itemView.getChildren().get(3);
+    	Label discountPriceLabel = (Label) itemView.getChildren().get(4);
+    	
+    	discountPriceLabel.setText(discountPrice + "");
+    	productNameLabel.setText(item.getName());
+    	priceLabel.setText(item.getPrice() + "₪");
+    	//image.setImage(new Image(getClass().getResourceAsStream(item.getImg_relative_path() + item.getItemImg().getImgName())));
+    	
+    	GridPane newItemView = new GridPane();
+    	newItemView.setMinSize(210, 250);
+    	newItemView.getStyleClass().add("GridPaneChild");
+    	newItemView.setPadding(new Insets(10));
+    	addToCartBtn.setAlignment(Pos.CENTER);
+    	
+//    	newItemView.getChildren().add(image);
+//    	newItemView.getChildren().add(addToCartBtn);
+//    	newItemView.getChildren().add(priceLabel);
+//    	newItemView.getChildren().add(productNameLabel);
+//    	newItemView.getChildren().add(discountPriceLabel);
+    	ColumnConstraints cc0 = new ColumnConstraints(50); 
+    	cc0.setMinWidth(Region.USE_PREF_SIZE); 
+    	cc0.setMaxWidth(Region.USE_PREF_SIZE); 
+    	newItemView.getColumnConstraints().addAll(cc0);
+    	
+    	RowConstraints rc0 = new RowConstraints(135);
+    	RowConstraints rc1 = new RowConstraints(25);
+    	RowConstraints rc2 = new RowConstraints(20);
+    	RowConstraints rc3 = new RowConstraints(50);
+    	newItemView.getRowConstraints().addAll(rc0, rc1, rc2, rc3);
+    	
+    	newItemView.add(image, 0, 0);
+    	newItemView.add(discountPriceLabel, 1, 2);
+    	newItemView.add(priceLabel, 0, 2);
+    	newItemView.add(productNameLabel, 0, 1);
+    	newItemView.add(addToCartBtn, 0, 3);
+    	
+    	catalogViewGridpane.add(newItemView, 2, 0);
+    }
+    
+    // ********************** // ***
+    @FXML
+    void cancelOrder(ActionEvent event) {
 
-	@FXML
-	void cancelOrder(ActionEvent event) {
+    }
 
-	}
+    @FXML
+    void placeOrder(ActionEvent event) {
 
-	@FXML
-	void placeOrder(ActionEvent event) {
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReviewOrder);
+    }
+    
 
-	}
+    @FXML
+    void viewCart(ActionEvent event) {
 
-	@FXML
-	void viewCart(ActionEvent event) {
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCart);
-	}
-
-	public void initialize() {
-
-		tooltip = new TooltipSetter("Cancel the order");
-		cancelOrderBtn.setTooltip(tooltip.getTooltip());
-		tooltip = new TooltipSetter("Place your order and continue checkout");
-		placeOrderBtn.setTooltip(tooltip.getTooltip());
-	}
+    }
 
 }
