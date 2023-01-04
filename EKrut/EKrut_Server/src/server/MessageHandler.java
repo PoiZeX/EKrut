@@ -81,6 +81,9 @@ public class MessageHandler {
 		case RequestItemsInMachine:
 			SupplyManagementDBController.getMachineItems((int) obj, client);
 			break;
+		case RequestItemsWithMinAmount:
+			SupplyManagementDBController.getMachineItemsWithMinAmount((int) obj, client);
+			break;
 		case RequestProssecedItemsInMachine:
 			SupplyManagementDBController.getProcessedMachineItems((int[]) obj, client);
 			break;
@@ -91,7 +94,7 @@ public class MessageHandler {
 			SupplyManagementDBController.updateMachineMinAmount((MachineEntity) obj, client);
 			break;
 		case RequestItemsInMachineUpdateFromServer:
-			SupplyManagementDBController.updateItemsInMachineUpdate((ArrayList<ItemInMachineEntity>) obj, client);
+			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
 			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
