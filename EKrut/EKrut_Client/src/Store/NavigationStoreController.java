@@ -14,6 +14,7 @@ import common.TaskType;
 import common.ScreensNames;
 import controllerGui.HomePageController;
 import controllerGui.HostClientController;
+import entity.ScreenEntity;
 import entity.UserEntity;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -49,8 +50,8 @@ import utils.AppConfig;
  *
  */
 public class NavigationStoreController {
-	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
-	private Stack<Scene> history; // saves the history of screens changes
+	private HashMap<ScreensNames, ScreenEntity> screenScenes; // saves the instance of the screen
+	private Stack<ScreenEntity> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage; // the main stage (window)
 	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
@@ -87,53 +88,45 @@ public class NavigationStoreController {
 	 * @param scName
 	 */
 	public void setCurrentScreen(ScreensNames scName) {
-		Scene scene = screenScenes.get(scName);
+		ScreenEntity se = screenScenes.get(scName);
+		Scene scene = null;
+		if (se == null)
+			se = new ScreenEntity(scName, null);
+
+		scene = se.getScene();
 
 		// if null create new instance (should not happens)
 		if (scene == null) {
-			scene = createSingleScene(scName);
-			screenScenes.put(scName, scene);
+			scene = createSingleScene(scName, se);
+
+			se.setScene(scene);
+			screenScenes.put(scName, se);
 		}
 		setWindowTitle(scName);
 		// save to stack
-		primaryStage.setScene(history.push(scene));
+		primaryStage.setScene(history.push(se).getScene());
 
-		setTopBarLabels();
-	}
-
-	/**
-	 * find the screen name for given scene
-	 * 
-	 * @param scene
-	 * @return
-	 */
-	private String getScreenNameByScene(Scene scene) {
-		for (Entry<ScreensNames, Scene> entry : screenScenes.entrySet())
-			if (entry.getValue().toString().equals(scene.toString())) {
-				return entry.getKey().toString();
-			}
-		return "";
+		setTopBarLabels(se);
 	}
 
 	/**
 	 * Set the screen title of top bar for each screen
 	 */
-	private void setTopBarLabels() {
-		if (nameLbl == null || roleLbl == null)
+	private void setTopBarLabels(ScreenEntity se) {
+		if (se.getHeadline() == null || se.getPath() == null)
 			return;
 		if (history.size() > 0)
-			nameLbl.setText(CommonFunctions.splitByUpperCase(getScreenNameByScene(history.peek())));
+			se.getHeadline().setText((history.peek().toString()));
 		String res = "";
 
 		// for every screen exclude the 'hostclient' and 'login'
 		for (int i = 2; i < history.size(); i++) {
-			String name = getScreenNameByScene(history.get(i));
-			res += CommonFunctions.splitByUpperCase(name) + " -> ";
+			res += history.get(i).toString() + " -> ";
 		}
 
 		if (!res.equals(""))
 			res = res.substring(0, res.length() - 4); // delete the last arrow
-		roleLbl.setText(res);
+		se.getPath().setText(res);
 	}
 
 	/**
@@ -144,7 +137,6 @@ public class NavigationStoreController {
 	private void setWindowTitle(ScreensNames scName) {
 		// Set title
 		primaryStage.setTitle(CommonFunctions.splitByUpperCase(scName.toString()));
-
 	}
 
 	/**
@@ -161,10 +153,10 @@ public class NavigationStoreController {
 					break;
 				}
 			}
-			primaryStage.setScene(history.peek());
+			primaryStage.setScene(history.peek().getScene());
 
-			setTopBarLabels();
-			
+			//setTopBarLabels(se);
+
 		}
 
 	}
@@ -176,31 +168,36 @@ public class NavigationStoreController {
 	 * @return
 	 */
 	public boolean refreshStage(ScreensNames screenName) {
-		Scene scene = createSingleScene(screenName); // create new instance
+		ScreenEntity se = new ScreenEntity(screenName, null);
+		Scene scene = createSingleScene(screenName, se); // create new instance
 		if (scene == null)
 			return false;
-		screenScenes.replace(screenName, scene); // replace the last stage with new
+		
+		se.setScene(scene);
+
+		screenScenes.replace(screenName, se); // replace the last stage with new
 
 		// REPLACE the stack head
 		setWindowTitle(screenName);
 		if (history.size() > 0)
 			history.pop(); // remove the last instance of the current screen and sets a new one
-		primaryStage.setScene(history.push(scene));
-		setTopBarLabels();
+
+		primaryStage.setScene(history.push(se).getScene());
+		setTopBarLabels(se);
 
 		return true;
 	}
 
-	/**
-	 * Set all stages into HashMap, using 'setSingleStage'
-	 */
-	private void setAllScenes() {
-		for (ScreensNames screenName : ScreensNames.values()) {
-			Scene scene = createSingleScene(screenName);
-			if (scene != null)
-				screenScenes.put(screenName, scene);
-		}
-	}
+//	/**
+//	 * Set all stages into HashMap, using 'setSingleStage'
+//	 */
+//	private void setAllScenes() {
+//		for (ScreensNames screenName : ScreensNames.values()) {
+//			Scene scene = createSingleScene(screenName);
+//			if (scene != null)
+//				screenScenes.put(screenName, scene);
+//		}
+//	}
 
 	/**
 	 * Creates one scene and attach to the primary stage (to save in dictionary)
@@ -208,8 +205,9 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	private Scene createSingleScene(ScreensNames screenName) {
+	private Scene createSingleScene(ScreensNames screenName, ScreenEntity se) {
 		Scene scene = null;
+
 		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
@@ -217,10 +215,11 @@ public class NavigationStoreController {
 			Parent root = loader.load();
 
 			if (!skippedScreens.contains(screenName))// for submit
-				scene = new Scene(setBottomBar(root));
+				scene = new Scene(setBottomBar(root, se));
 			else
 				scene = new Scene(root);
 			scene.setUserData(loader.getController());
+			se.setScene(scene); // set scene in entity
 
 			// refresh activity
 			if ((connectedUser != null && connectedUser.isLogged_in()))
@@ -245,7 +244,7 @@ public class NavigationStoreController {
 	 * @param stage
 	 * @return
 	 */
-	private Parent setBottomBar(Parent stage) {
+	private Parent setBottomBar(Parent stage, ScreenEntity se) {
 		Button returnBtn = new Button();
 		ImageView returnImage = new ImageView();
 
@@ -278,14 +277,10 @@ public class NavigationStoreController {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
 		// ((BorderPane) stage).setBottom(stage);
-		((BorderPane) stage).setTop(getTopBar());
+		((BorderPane) stage).setTop(getTopBar(se));
 
 		return stage;
 	}
-
-	private Label nameLbl;
-	private Label roleLbl;
-	private Button mailButton = new Button();
 
 	/**
 	 * Set the navigation Top bar for all pages after login
@@ -293,10 +288,12 @@ public class NavigationStoreController {
 	 * @param stage
 	 * @return
 	 */
-	private GridPane getTopBar() {
+	private GridPane getTopBar(ScreenEntity se) {
 		GridPane gridPane = new GridPane();
-		nameLbl = new Label();
-		roleLbl = new Label();
+		Label nameLbl = new Label(); //se.getHeadline();
+		Label roleLbl = new Label(); //se.getPath();
+
+		
 //		ImageView imgView = new ImageView();
 //		Image image = new Image(getClass().getResourceAsStream("../styles/icons/004-mail.png"));
 		// grid pane setup
@@ -346,21 +343,11 @@ public class NavigationStoreController {
 		gridPane.add(roleLbl, 0, 1);
 		// gridPane.add(mailButton, 0, 0);
 		// gridPane.setColumnSpan(mailButton, 2);
+		se.setHeadline(nameLbl);
+		se.setPath(roleLbl);
 
 		return gridPane;
 
-	}
-
-	public Button getMailBtn() {
-		return mailButton;
-	}
-
-	public Label getWelcomeLbl() {
-		return nameLbl;
-	}
-
-	public Label getRoleLbl() {
-		return roleLbl;
 	}
 
 	/**
