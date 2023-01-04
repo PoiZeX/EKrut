@@ -80,5 +80,17 @@ public class CommonFunctions {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String splitByUpperCase(String str) {
+		String goodName = "";
+
+		String[] splitString = str.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
+		if (splitString.length > 1) {
+			for (String s : splitString)
+				goodName += s + " ";
+		} else
+			goodName = splitString[0];
+		return goodName;
+	}
 
 }

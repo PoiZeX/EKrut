@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Stack;
+
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
@@ -18,16 +20,24 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -80,21 +90,60 @@ public class NavigationStoreController {
 		Scene scene = screenScenes.get(scName);
 
 		// if null create new instance (should not happens)
-		if (scene == null)
+		if (scene == null) {
 			scene = createSingleScene(scName);
-		handleTitle(scName);
+			screenScenes.put(scName, scene);
+		}
+		setWindowTitle(scName);
 		// save to stack
 		primaryStage.setScene(history.push(scene));
+
+		setTopBarLabels();
 	}
 
-	private void handleTitle(ScreensNames scName) {
-		// Set title
-		String[] splitString = scName.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
-		if (splitString.length == 2) {
-			primaryStage.setTitle(splitString[0] + " " + splitString[1]);
-		} else {
-			primaryStage.setTitle(scName.toString());
+	/**
+	 * find the screen name for given scene
+	 * 
+	 * @param scene
+	 * @return
+	 */
+	private String getScreenNameByScene(Scene scene) {
+		for (Entry<ScreensNames, Scene> entry : screenScenes.entrySet())
+			if (entry.getValue().toString().equals(scene.toString())) {
+				return entry.getKey().toString();
+			}
+		return "";
+	}
+
+	/**
+	 * Set the screen title of top bar for each screen
+	 */
+	private void setTopBarLabels() {
+		if (nameLbl == null || roleLbl == null)
+			return;
+		if (history.size() > 0)
+			nameLbl.setText(CommonFunctions.splitByUpperCase(getScreenNameByScene(history.peek())));
+		String res = "";
+
+		// for every screen exclude the 'hostclient' and 'login'
+		for (int i = 2; i < history.size(); i++) {
+			String name = getScreenNameByScene(history.get(i));
+			res += CommonFunctions.splitByUpperCase(name) + " -> ";
 		}
+
+		if (!res.equals(""))
+			res = res.substring(0, res.length() - 4); // delete the last arrow
+		roleLbl.setText(res);
+	}
+
+	/**
+	 * Set the title for the window
+	 * 
+	 * @param scName
+	 */
+	private void setWindowTitle(ScreensNames scName) {
+		// Set title
+		primaryStage.setTitle(CommonFunctions.splitByUpperCase(scName.toString()));
 
 	}
 
@@ -107,11 +156,15 @@ public class NavigationStoreController {
 		if (history.size() >= 1) {
 			history.pop(); // throw the current
 			for (ScreensNames key : screenScenes.keySet()) {
-				if (screenScenes.get(key).equals(history.peek()))
+				if (screenScenes.get(key).equals(history.peek())) {
 					primaryStage.setTitle(key.toString());
+					break;
+				}
 			}
 			primaryStage.setScene(history.peek());
 
+			setTopBarLabels();
+			
 		}
 
 	}
@@ -129,10 +182,12 @@ public class NavigationStoreController {
 		screenScenes.replace(screenName, scene); // replace the last stage with new
 
 		// REPLACE the stack head
-		handleTitle(screenName);
+		setWindowTitle(screenName);
 		if (history.size() > 0)
 			history.pop(); // remove the last instance of the current screen and sets a new one
 		primaryStage.setScene(history.push(scene));
+		setTopBarLabels();
+
 		return true;
 	}
 
@@ -218,12 +273,94 @@ public class NavigationStoreController {
 		if (((BorderPane) stage).bottomProperty().getValue() instanceof GridPane) {
 			GridPane t = (GridPane) ((BorderPane) stage).bottomProperty().getValue();
 			t.add(returnBtn, 0, 0);
+
 		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
+		// ((BorderPane) stage).setBottom(stage);
+		((BorderPane) stage).setTop(getTopBar());
 
 		return stage;
+	}
 
+	private Label nameLbl;
+	private Label roleLbl;
+	private Button mailButton = new Button();
+
+	/**
+	 * Set the navigation Top bar for all pages after login
+	 * 
+	 * @param stage
+	 * @return
+	 */
+	private GridPane getTopBar() {
+		GridPane gridPane = new GridPane();
+		nameLbl = new Label();
+		roleLbl = new Label();
+//		ImageView imgView = new ImageView();
+//		Image image = new Image(getClass().getResourceAsStream("../styles/icons/004-mail.png"));
+		// grid pane setup
+		gridPane.setId("headerBar");
+		gridPane.getColumnConstraints()
+				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.CENTER, true));
+		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
+		gridPane.getRowConstraints().add(new RowConstraints(10.0, 35.0, 35.0, Priority.NEVER, VPos.TOP, true));
+
+		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
+
+		// main label setup
+		nameLbl.setId("welcomeLabel");
+		nameLbl.setAlignment(Pos.CENTER);
+		nameLbl.setTextAlignment(TextAlignment.CENTER);
+		nameLbl.setPrefSize(678, 41);
+		nameLbl.getStyleClass().add("LabelTitle");
+
+		// sub-label setup
+		roleLbl.setId("roleLabel");
+		roleLbl.setAlignment(Pos.CENTER);
+		roleLbl.setTextAlignment(TextAlignment.CENTER);
+		roleLbl.setPrefSize(600, 40);
+		roleLbl.getStyleClass().add("LabelLocations");
+//
+//		// image + button for mailbox
+//		imgView.setImage(image);
+//		imgView.setFitHeight(36.0);
+//		imgView.setFitWidth(68.0);
+//		imgView.setPickOnBounds(true);
+//		imgView.setPreserveRatio(true);
+//		imgView.getStyleClass().add("Button-NoBG");
+//
+//		mailButton.setId("mailBtn");
+//		mailButton.setAlignment(Pos.TOP_LEFT);
+//		mailButton.setContentDisplay(ContentDisplay.LEFT);
+//		mailButton.setGraphic(imgView);
+//		mailButton.setPrefSize(24.0, 27.0);
+//		mailButton.getStyleClass().add("Button-NoBG");
+//
+//		mailButton.setOnAction(new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent ae) {
+//				// NavigationStoreController.getInstance().goBack(); // go to mailbox
+//			}
+//		});
+		gridPane.add(nameLbl, 0, 0);
+		gridPane.add(roleLbl, 0, 1);
+		// gridPane.add(mailButton, 0, 0);
+		// gridPane.setColumnSpan(mailButton, 2);
+
+		return gridPane;
+
+	}
+
+	public Button getMailBtn() {
+		return mailButton;
+	}
+
+	public Label getWelcomeLbl() {
+		return nameLbl;
+	}
+
+	public Label getRoleLbl() {
+		return roleLbl;
 	}
 
 	/**
@@ -273,7 +410,7 @@ public class NavigationStoreController {
 			connectedUser = null;
 			NavigationStoreController.getInstance().clearAll();
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-			CommonFunctions.SleepFor(200, () ->{
+			CommonFunctions.SleepFor(200, () -> {
 				CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
 			});
 		}
@@ -305,7 +442,8 @@ public class NavigationStoreController {
 	 */
 	public static void closeAllScreens() {
 		Platform.exit(); // exit JavaFx
-		// System.exit(0); // force the system to exit (rn will target the Client.UI exit
+		// System.exit(0); // force the system to exit (rn will target the Client.UI
+		// exit
 		// function)
 
 	}

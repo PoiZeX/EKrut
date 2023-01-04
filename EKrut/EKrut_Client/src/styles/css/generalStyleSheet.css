@@ -69,7 +69,14 @@
     -fx-font-size: 14pt;
     -fx-label-padding: 0 20 5 20;
 }
-
+.LabelLocations{
+	    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-alignment:center;
+    -fx-text-fill:#7f90ff;
+    -fx-font-size: 12pt;
+    -fx-label-padding: 0 20 5 20;
+}
 .LabelSmallArea{
 
     -fx-font-family: "Calibri";
