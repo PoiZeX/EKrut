@@ -14,6 +14,7 @@ import controllerGui.SupplyReportController;
 import controllerGui.SupplyUpdateController;
 import controllerGui.UsersManagementController;
 import controllerGui.ClientsReportController;
+import controllerGui.ConfirmDeliveryController;
 import controllerGui.DeliveryManagementController;
 import java.io.*;
 import java.util.ArrayList;
@@ -81,6 +82,9 @@ public class MessageHandler {
 			break;
 		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
+			break;
+		case ReceiveDeliveryFromServer:
+			ConfirmDeliveryController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
 		case ReceivePersonalMessages:
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);

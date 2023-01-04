@@ -24,6 +24,7 @@ public enum ScreensNames {
 	MarketingWorker,
 	SupplyManagement,
 	SupplyUpdate,
+	ConfirmDelivery,
 
 //CollectOrder // when user collects new order, insert order code
 	/* Not implemented yet */
