@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,12 +11,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmDeliveryController">
-   <stylesheets>
-      <URL value="@../Documents/GitHub/EKrut/EKrut/EKrut_Client/src/styles/css/generalStyleSheet.css" />
-      <URL value="@../styles/css/generalStyleSheet.css" />
-   </stylesheets>
-   <top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmDeliveryController">
+   <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="470.0" />
@@ -54,7 +49,7 @@
                            <effect>
                               <DropShadow height="12.21" radius="4.1375" width="6.34">
                                  <color>
-                                    <Color red="0.6184210777282715" green="0.595516562461853" blue="0.595516562461853" />
+                                    <Color blue="0.595516562461853" green="0.595516562461853" red="0.6184210777282715" />
                                  </color>
                               </DropShadow>
                            </effect>
@@ -68,12 +63,7 @@
                   <Label fx:id="errMsgLbl" alignment="CENTER" disable="true" prefHeight="15.0" prefWidth="443.0" style="-fx-text-fill: RED;" styleClass="Label" textFill="RED" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Label fx:id="titleLbl" alignment="CENTER" prefHeight="36.0" prefWidth="900.0" styleClass="LabelTitle" text="Title" GridPane.columnSpan="2">
-               <GridPane.margin>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </GridPane.margin>
-            </Label>
          </children>
       </GridPane>
-   </top>
+   </center>
 </BorderPane>

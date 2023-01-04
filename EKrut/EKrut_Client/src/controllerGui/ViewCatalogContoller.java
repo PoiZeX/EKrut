@@ -83,7 +83,7 @@ public class ViewCatalogContoller {
     public void initialize() {
     	itemsList = new HashMap<>();
 		// demo
-		ItemInMachineEntity newItem = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0, "Bamba", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0, "Bamba", 100.0,  "Bamba.png");
     	newItem.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
 		addProductToCatalog(newItem, 0);
 	}
