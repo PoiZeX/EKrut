@@ -25,7 +25,7 @@ public class OrderController {
 	 * 
 	 * 
 	 */
-	private HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
+	private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
 	
 	public OrderController(){
 		
@@ -37,7 +37,7 @@ public class OrderController {
 	 * return the cart as list of items
 	 * @return
 	 */
-	public Collection<ItemInMachineEntity> getCart() {
+	public static Collection<ItemInMachineEntity> getCart() {
 		return cart.values();
 	}
 
@@ -46,7 +46,7 @@ public class OrderController {
 	 * @param item
 	 * @return true if the item added successfully
 	 */
-	public boolean addItemToCart(ItemInMachineEntity item) {
+	public static boolean addItemToCart(ItemInMachineEntity item) {
 		if (cart.containsKey(item.getItemId()))
 				return false;
 		cart.put(item.getItemId(), item);
@@ -59,7 +59,7 @@ public class OrderController {
 	 * @param newQuantity 
 	 * @return true if success
 	 */
-	public boolean changeItemQuantity(int itemId, int newQuantity)
+	public static boolean changeItemQuantity(int itemId, int newQuantity)
 	{
 		// search for item
 		ItemInMachineEntity itemToChange = cart.get(itemId);
@@ -81,9 +81,12 @@ public class OrderController {
 	 * @param item
 	 * @return
 	 */
-	private boolean removeItem(ItemInMachineEntity item) {
+	private static boolean removeItem(ItemInMachineEntity item) {
 		if(cart.remove(item) == null) return false;
 		return true; 
 	}
+	
+	
+	
 	
 }
