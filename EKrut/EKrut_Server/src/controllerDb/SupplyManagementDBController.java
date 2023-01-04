@@ -74,7 +74,6 @@ public class SupplyManagementDBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -90,16 +89,14 @@ public class SupplyManagementDBController {
 			while (res.next()) {
 				// 1			2			3				4			5				6			7		8	9			10			11			12				
 				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id, item_id, name, price, manufacturer, description, item_img_name
-
-				if(res.getString(9) != null) {
+				
+				if(res.getFetchSize() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), res.getDouble(9), res.getString(10), res.getString(11), res.getString(12));
-					
 				}
 				else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), "", 0, "", "", "");
-					
 				}
 				itemsInMachine.add(item);
 			}

@@ -121,15 +121,16 @@ public class SupplyManagementController {
 			Thread.sleep(100);
 		machineCmb.setItems(machineLst);
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-
-			machine = machineCmb.getValue();
-			if (oldValue != newValue) {
-				saveChangesBtn.setDisable(false);
-				machineNameLbl.setText(machine.machineName);
-				machineNameLbl.setVisible(true);
-				minAmountTxtField.setText(machine.getMinamount() + "");
-				toUpdate = new ArrayList<ItemInMachineEntity>();
-				setupTable(machine.machineId);
+			if (newValue != null) {
+				machine = machineCmb.getValue();
+				if (oldValue != newValue) {
+					saveChangesBtn.setDisable(false);
+					machineNameLbl.setText(machine.machineName);
+					machineNameLbl.setVisible(true);
+					minAmountTxtField.setText(machine.getMinamount() + "");
+					toUpdate = new ArrayList<ItemInMachineEntity>();
+					setupTable(machine.machineId);
+				}
 			}
 		});
 
@@ -157,16 +158,15 @@ public class SupplyManagementController {
 		chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
 		while (!recievedData)
 			Thread.sleep(100);
-		if (!supplyWorkers.isEmpty())
-			workerCmb.setItems(supplyWorkers);
+		// if (!supplyWorkers.isEmpty())
+		workerCmb.setItems(supplyWorkers);
 		sendCallBtn.setVisible(false);
 		workerCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-			if (workerCmb.getSelectionModel().isEmpty())
-				System.out.println("pop up - you have to pick a worker so you can send a call");
-			else {
+			if (newValue != null) {
 				supplyworker = workerCmb.getValue();
 				if (!supplyworker.equals(null)) {
 					sendCallBtn.setVisible(true);
+
 				}
 			}
 		});
@@ -196,7 +196,7 @@ public class SupplyManagementController {
 		Platform.runLater(() -> {
 			try {
 				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyManagement);
-				CommonFunctions.SleepFor(250, () -> {
+				CommonFunctions.SleepFor(300, () -> {
 					SupplyManagementController sc = (SupplyManagementController) NavigationStoreController.getInstance()
 							.getController();
 					sc.machineCmb.getSelectionModel().select(tempMachineEntity);
@@ -291,7 +291,7 @@ public class SupplyManagementController {
 	@SuppressWarnings("unchecked")
 	void setupTable(int machineId) {
 		recievedData = false;
-		chat.acceptObj(new Message(TaskType.RequestItemsWithMinAmount, machineId));
+		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		while (!recievedData) {
 			try {
 				Thread.sleep(100);
