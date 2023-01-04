@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import client.ClientController;
 import common.Message;
 import common.TaskType;
 import entity.ItemInMachineEntity;
@@ -25,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,7 +39,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import utils.AppConfig;
 
-public class ViewCatalogContoller {
+public class ViewCatalogController {
 	@FXML
 	private Button viewCartBtn;
 
@@ -96,29 +98,20 @@ public class ViewCatalogContoller {
 	private Button sortBtn;
 
 	private int machineDiscount = 0;
+
+	private int machineId = 7;
 	private static Map<String, ItemInMachineEntity> itemsList;
+	private static ClientController chat = HostClientController.chat; // define the chat for th
+	private static boolean recievedData = false;;
 
-	public void initialize() {
+
+	public void initialize() throws InterruptedException {
 		itemsList = new LinkedHashMap<>();
-		// demo
-		ItemInMachineEntity newItem = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
-				"Bamba", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem1 = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba1", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem2 = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba2", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem3 = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba3", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem4 = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba4", 100.0, "Bamba.png");
-
-
-		itemsList.put(newItem.getName(), newItem);
-		itemsList.put(newItem1.getName(), newItem1);
-		itemsList.put(newItem2.getName(), newItem2);
-		itemsList.put(newItem3.getName(), newItem3);
-		itemsList.put(newItem4.getName(), newItem4);
+		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+		while (!recievedData)
+			Thread.sleep(100);
 		generateCatalog();
+//		recievedData = false;
 	}
 
 	private void generateCatalog() {
@@ -171,7 +164,12 @@ public class ViewCatalogContoller {
 				@Override
 				public void handle(MouseEvent e) {
 					int amount = Integer.parseInt(amountLabel.getText());
-					amountLabel.setText(String.valueOf(amount+1));
+					if (amount == item.getCurrentAmount()-1) {
+						amountLabel.setText(String.valueOf(amount+1));
+						plusBtn.setDisable(true);
+					}
+					else
+						amountLabel.setText(String.valueOf(amount+1));
 				}
 			});
 			
@@ -180,6 +178,9 @@ public class ViewCatalogContoller {
 				public void handle(MouseEvent e) {
 					int amount = Integer.parseInt(amountLabel.getText());
 					amountLabel.setText(String.valueOf(amount-1));
+					if (plusBtn.isDisabled()) {
+						plusBtn.setDisable(false);
+					}
 					if (amount == 1) {
 						addToCartBtn.setVisible(true);
 					}
@@ -190,42 +191,8 @@ public class ViewCatalogContoller {
 			e1.printStackTrace();
 		}
 
-		// image.setImage(new
-		// Image(getClass().getResourceAsStream(item.getImg_relative_path() +
-		// item.getItemImg().getImgName())));
-
-//    	GridPane newItemView = new GridPane();
-//    	newItemView.setMinSize(210, 250);
-//    	newItemView.getStyleClass().add("GridPaneChild");
-//    	newItemView.setPadding(new Insets(10));
-//    	addToCartBtn.setAlignment(Pos.CENTER);
-//    	
-////    	newItemView.getChildren().add(image);
-////    	newItemView.getChildren().add(addToCartBtn);
-////    	newItemView.getChildren().add(priceLabel);
-////    	newItemView.getChildren().add(productNameLabel);
-////    	newItemView.getChildren().add(discountPriceLabel);
-//    	ColumnConstraints cc0 = new ColumnConstraints(50); 
-//    	cc0.setMinWidth(Region.USE_PREF_SIZE); 
-//    	cc0.setMaxWidth(Region.USE_PREF_SIZE); 
-//    	newItemView.getColumnConstraints().addAll(cc0);
-//    	
-//    	RowConstraints rc0 = new RowConstraints(135);
-//    	RowConstraints rc1 = new RowConstraints(25);
-//    	RowConstraints rc2 = new RowConstraints(20);
-//    	RowConstraints rc3 = new RowConstraints(50);
-//    	newItemView.getRowConstraints().addAll(rc0, rc1, rc2, rc3);
-//    	
-//    	newItemView.add(image, 0, 0);
-//    	newItemView.add(discountPriceLabel, 1, 2);
-//    	newItemView.add(priceLabel, 0, 2);
-//    	newItemView.add(productNameLabel, 0, 1);
-//    	newItemView.add(addToCartBtn, 0, 3);
-//    	
-
 	}
 
-	// ********************** // ***
 	@FXML
 	void cancelOrder(ActionEvent event) {
 
@@ -245,5 +212,15 @@ public class ViewCatalogContoller {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/ItemGridBoundary.fxml"));
 		GridPane gridPane = (GridPane) loader.load();
 		return gridPane;
+	}
+	
+	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+		if (!itemsList.isEmpty()) {
+			itemsList.clear();
+		}
+		for (ItemInMachineEntity item : obj) {
+			itemsList.put(item.getName(), item);
+		}
+		recievedData  = true;
 	}
 }
