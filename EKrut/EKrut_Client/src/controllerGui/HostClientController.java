@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+import utils.AppConfig;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -75,6 +75,9 @@ public class HostClientController {
 
 	public void start(Stage primaryStage) throws Exception {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);
+		if(AppConfig.MACHINE_ID <= 0)
+			CommonFunctions.createPopup(PopupTypeEnum.Warning, "You must provide a machine id\nThe syntax should be:\n\n"
+					+"java -jar EKrut_Client.jar arg <machine_id>");
 	}
 
 }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import entity.ItemEntity;
 import entity.ItemInCartEntity;
+import entity.ItemInMachineEntity;
 
 /**
  * The class handles the WHOLE order process
@@ -23,20 +25,19 @@ public class OrderController {
 	 * 
 	 * 
 	 */
-	private HashMap<Integer, ItemInCartEntity> cart = new HashMap<>();  // itemId and itemEntity
+	private HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
 	
 	public OrderController(){
 		
 	}
 	
-	// 1+1
-	// 30% 
+
 	
 	/**
 	 * return the cart as list of items
 	 * @return
 	 */
-	public Collection<ItemInCartEntity> getCart() {
+	public Collection<ItemInMachineEntity> getCart() {
 		return cart.values();
 	}
 
@@ -45,7 +46,7 @@ public class OrderController {
 	 * @param item
 	 * @return true if the item added successfully
 	 */
-	public boolean addItemToCart(ItemInCartEntity item) {
+	public boolean addItemToCart(ItemInMachineEntity item) {
 		if (cart.containsKey(item.getItemId()))
 				return false;
 		cart.put(item.getItemId(), item);
@@ -61,7 +62,7 @@ public class OrderController {
 	public boolean changeItemQuantity(int itemId, int newQuantity)
 	{
 		// search for item
-		ItemInCartEntity itemToChange = cart.get(itemId);
+		ItemInMachineEntity itemToChange = cart.get(itemId);
 		if (itemToChange == null)
 			return false;
 		
@@ -70,7 +71,7 @@ public class OrderController {
 			return removeItem(itemToChange);
 		
 		// set new positive quantity
-		itemToChange.setQuantity(newQuantity);
+		itemToChange.setCurrentAmount(newQuantity);
 		cart.replace(itemToChange.getItemId(), itemToChange);
 		return true;
 	}
@@ -80,7 +81,7 @@ public class OrderController {
 	 * @param item
 	 * @return
 	 */
-	private boolean removeItem(ItemInCartEntity item) {
+	private boolean removeItem(ItemInMachineEntity item) {
 		if(cart.remove(item) == null) return false;
 		return true; 
 	}

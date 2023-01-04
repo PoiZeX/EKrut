@@ -6,7 +6,6 @@ public enum TaskType {
 	ClientDisconnect,
 	ServerDisconnect,
 	LoadSubscribers,
-	EditSubscribers,
 	
 	// Login E-NUMS //
 	ValidUserNamePassword,
