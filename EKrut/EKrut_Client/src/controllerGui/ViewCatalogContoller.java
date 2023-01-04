@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import client.ClientController;
 import common.Message;
 import common.TaskType;
+import controller.ItemsController;
+import entity.ItemEntity;
 import entity.ItemInMachineEntity;
 import entity.UserEntity;
 import entity.ItemInMachineEntity.Call_Status;
@@ -77,11 +80,25 @@ public class ViewCatalogContoller {
 
     @FXML
     private Button sortBtn;
-
+    private static ClientController chat = HostClientController.chat; // define the chat for th
     private static Map<String, ItemInMachineEntity> itemsList;
+    private static ArrayList<ItemInMachineEntity>items;
+    private static ArrayList<ItemEntity>itemsWithImgs;
+    private static boolean recievedData=false;
     
     public void initialize() {
     	itemsList = new HashMap<>();
+    	items= new ArrayList<ItemInMachineEntity>();
+    	recievedData = false;
+		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, 1));
+		while (!recievedData) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	
 		// demo
 		ItemInMachineEntity newItem = new ItemInMachineEntity(0, 0, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0, "Bamba", 100.0,  "Bamba.png");
     	newItem.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
@@ -154,5 +171,13 @@ public class ViewCatalogContoller {
     void viewCart(ActionEvent event) {
 
     }
-
+    public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+		if (!items.isEmpty()) {
+			items.clear();
+		}
+		items.addAll(obj);
+		itemsWithImgs=new ArrayList<>();
+		itemsWithImgs=ItemsController.items;
+		recievedData=true;
+    }
 }
