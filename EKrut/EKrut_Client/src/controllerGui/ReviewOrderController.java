@@ -27,176 +27,200 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class ReviewOrderController {
-	
+
 	private TooltipSetter tooltip;
 
+	@FXML
+	private Label ReviewOrderTitleLbl;
 
-    @FXML
-    private Label ReviewOrderTitleLbl;
+	@FXML
+	private Label addressDetailsLbl;
 
-    @FXML
-    private Label addressDetailsLbl;
+	@FXML
+	private GridPane addressDetalisGridPane;
 
-    @FXML
-    private GridPane addressDetalisGridPane;
+	@FXML
+	private TextField cityTxtField;
 
-    @FXML
-    private TextField cityTxtField;
+	@FXML
+	private Label contactDetailsLbl;
 
-    @FXML
-    private Label contactDetailsLbl;
+	@FXML
+	private GridPane contactDetalisGridPane;
 
-    @FXML
-    private GridPane contactDetalisGridPane;
+	@FXML
+	private Label deliveryPriceLbl;
 
-    @FXML
-    private Label deliveryPriceLbl;
+	@FXML
+	private TextField firstNameTxtField;
 
-    @FXML
-    private TextField firstNameTxtField;
+	@FXML
+	private TextField lastNameTxtField;
 
-    @FXML
-    private TextField lastNameTxtField;
+	@FXML
+	private Button paymentBtn;
 
-    @FXML
-    private Button paymentBtn;
+	@FXML
+	private TextField phoneNumTxtField;
 
-    @FXML
-    private TextField phoneNumTxtField;
+	@FXML
+	private ScrollPane reviewOrderScrollPane;
 
-    @FXML
-    private ScrollPane reviewOrderScrollPane;
+	@FXML
+	private GridPane rightGridPane;
 
-    @FXML
-    private GridPane rightGridPane;
+	@FXML
+	private TextField streetTxtField;
 
-    @FXML
-    private TextField streetTxtField;
+	@FXML
+	private Label totalSumLbl;
 
-    @FXML
-    private Label totalSumLbl;
+	@FXML
+	private Label totulDiscountSumLbl;
 
-    @FXML
-    private Label totulDiscountSumLbl;
+	@FXML
+	private Label totulProductsSumLbl;
 
-    @FXML
-    private Label totulProductsSumLbl;
-    
-    @FXML
-    private GridPane productsGrid;
-    
-    private boolean isSelfPickup;
-    
-    private HashMap<Integer, ItemInMachineEntity> cart;
-    
-    public void initialize() {
-    	//tooltip = new TooltipSetter("Cancel the order");
-    	//cancelOrderBtn.setTooltip(tooltip.getTooltip());
+	@FXML
+	private GridPane productsGrid;
 
-    	cart = (HashMap<Integer, ItemInMachineEntity>)OrderController.getCart();
-    	
-    	// build graphical side
-    	
-    	// calculate data
-    	
-    	// -- get sales / discounts (if subscriber)
-    	
-    	// check if OL/EK (for delivery)
-    	
-    	
-    	// add option for future payment
-    	// make popup external payment
-    	
-    }
-    
-    /**
-     * Build all graphical side for all items
-     */
-    private void buildReviewOrder() {
-    	ArrayList<GridPane> gridsToAdd = new ArrayList<>();
-    	for(ItemInMachineEntity item : cart.values())
-    	{
-    		gridsToAdd.add(buildSingleRow(item));
-    	}    	
-    	
-    	// add all to main gridpane
-    	int index = 2;
-    	for(GridPane grid : gridsToAdd) 
-    		productsGrid.add(grid, 0, index++);
-    }
+	private boolean isSelfPickup;
 
-    /**
-     * Build graphical side for single item
-     * @param item
-     */
-    private GridPane buildSingleRow(ItemInMachineEntity item) {
-    	GridPane gridpane = new GridPane();
-    	Label productName = new Label();
-    	Label price = new Label();
-    	Label quantity = new Label();
-    	Label sum = new Label();
-    	Line line = new Line();
-    	Image image = new Image(item.getImg_relative_path());
-    	ImageView imageView = new ImageView(image);
-    	double tempSum = 0;
-    	
-    	gridpane.setPrefSize(348, 69);
-    	gridpane.getColumnConstraints().add(new ColumnConstraints(10, 70, 107, Priority.SOMETIMES, HPos.CENTER, false));
-    	gridpane.getColumnConstraints().add(new ColumnConstraints(10, 192, 207, Priority.SOMETIMES, HPos.CENTER, false));
-    	gridpane.getColumnConstraints().add(new ColumnConstraints(10, 57, 161, Priority.SOMETIMES, HPos.CENTER, false));
-    	gridpane.getColumnConstraints().add(new ColumnConstraints(10, 64, 230, Priority.SOMETIMES, HPos.CENTER, false));
-    	gridpane.getRowConstraints().add(new RowConstraints(10.0, 31, 47));
-    	gridpane.getRowConstraints().add(new RowConstraints(10.0, 32, 60));
-    	gridpane.getRowConstraints().add(new RowConstraints(10.0, 32, 60));
-    	
-    	// product
-    	productName.setText(item.getName());
-    	productName.setPrefSize(229, 18);
-    	productName.getStylesheets().add("Label-list");
-    	gridpane.addColumn(1, productName);
-    	GridPane.setHalignment(productName, HPos.LEFT);
-    	
-        // price
-    	price.setText(String.valueOf(item.getPrice()));
-    	price.setPrefSize(262, 18);
-    	price.getStylesheets().add("Label-list");
-    	gridpane.addColumn(1, price);
-    	gridpane.addRow(1, price);
-    	GridPane.setHalignment(price, HPos.LEFT);
-    	
-    	// quantity
-    	tempSum = item.getPrice();
-    	quantity.setText(String.valueOf(item.getCurrentAmount()));
-    	quantity.setPrefSize(57, 18);
-    	quantity.getStylesheets().add("Label-list");
-    	gridpane.addColumn(2, quantity);
-    	GridPane.setHalignment(quantity, HPos.LEFT);
-    	
-    	// sum
-    	tempSum *= item.getCurrentAmount();
-    	sum.setText(String.valueOf(tempSum));
-    	sum.setPrefSize(62, 18);
-    	sum.getStylesheets().add("Label-list");
-    	gridpane.addColumn(3, sum);
-    	GridPane.setHalignment(sum, HPos.LEFT);
-    	
-    	// line
-    	line.setStartX(-72.1041259765625);
-    	line.setStartY(0.7216961979866028);
-    	line.setEndX(265.18878173828125);
-    	line.setEndY(0.7214934229850769);
-    	line.setFill(Paint.valueOf("#908e8e"));
-    	GridPane.setValignment(line, VPos.BOTTOM);
-    	gridpane.addRow(2, line);
-    	GridPane.setRowSpan(line, 5);
+	private Collection<ItemInMachineEntity> cart;
 
-    	return gridpane;
-    	
-    }
+	public void initialize() {
+		// tooltip = new TooltipSetter("Cancel the order");
+		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
+		ItemInMachineEntity newItem = new ItemInMachineEntity(1, 1, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
+				"Bamba", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem1 = new ItemInMachineEntity(1, 2, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba1", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem2 = new ItemInMachineEntity(1, 3, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba2", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem3 = new ItemInMachineEntity(1, 4, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba3", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba4", 100.0, "Bamba.png");
 
-    
+		
+		OrderController.addItemToCart(newItem);
+		OrderController.addItemToCart(newItem1);
+		OrderController.addItemToCart(newItem2);
+		OrderController.addItemToCart(newItem3);
+		OrderController.addItemToCart(newItem4);
+		
+		cart = OrderController.getCart();
+		buildReviewOrder();
+		
+		// build graphical side
+
+		// calculate data
+
+		// -- get sales / discounts (if subscriber)
+
+		// check if OL/EK (for delivery)
+
+		// add option for future payment
+		// make popup external payment
+
+	}
+
+	/**
+	 * Build all graphical side for all items
+	 */
+	private void buildReviewOrder() {
+		ArrayList<GridPane> gridsToAdd = new ArrayList<>();
+		for (ItemInMachineEntity item : cart) {
+			gridsToAdd.add(buildSingleRow(item));
+		}
+
+		// add all to main gridpane
+		int index = 1;
+		for (GridPane grid : gridsToAdd)
+			productsGrid.add(grid, 0, index++);
+		productsGrid.getRowConstraints().setAll(new RowConstraints(50, 50, 50));
+	}
+
+	/**
+	 * Build graphical side for single item
+	 * 
+	 * @param item
+	 */
+	private GridPane buildSingleRow(ItemInMachineEntity item) {
+		GridPane gridpane = new GridPane();
+		Label productName = new Label();
+		Label price = new Label();
+		Label quantity = new Label();
+		Label sum = new Label();
+		Line line = new Line();
+		Image image = new Image("/styles/products/"+item.getItemImg().getImgName());
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(45);
+		imageView.setFitWidth(45);
+		imageView.setPreserveRatio(true);
+		double tempSum = 0;
+
+		gridpane.setPrefSize(348, 69);
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 70, 107, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints()
+				.add(new ColumnConstraints(10, 192, 207, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 57, 161, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 64, 230, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 31, 47));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
+
+		// product
+		productName.setText(item.getName());
+		productName.setPrefSize(229, 18);
+		productName.getStyleClass().add("Label-list");
+		GridPane.setHalignment(productName, HPos.LEFT);
+
+		// price
+		price.setText(String.valueOf(item.getPrice()) + "₪");
+		price.setPrefSize(262, 18);
+		price.getStyleClass().add("Label-list");
+		GridPane.setHalignment(price, HPos.LEFT);
+
+		// quantity
+		tempSum = item.getPrice();
+		quantity.setText(String.valueOf(item.getCurrentAmount()));
+		quantity.setPrefSize(57, 18);
+		quantity.getStyleClass().add("Label-list");
+		GridPane.setHalignment(quantity, HPos.LEFT);
+
+		// sum
+		tempSum *= item.getCurrentAmount();
+		sum.setText(String.valueOf(tempSum) + "₪");
+		sum.setPrefSize(62, 18);
+		sum.getStyleClass().add("Label-list");
+		GridPane.setHalignment(sum, HPos.LEFT);
+
+		// line
+		line.setStartX(-72);
+		line.setStartY(0.7216961979866028);
+		line.setEndX(260);
+		line.setEndY(0.7214934229850769);
+		line.setFill(Paint.valueOf("#908e8e"));
+		GridPane.setValignment(line, VPos.BOTTOM);
+		//GridPane.setHalignment(line, HPos.LEFT);
+		GridPane.setColumnSpan(line, 5);
+
+		GridPane.setRowSpan(imageView, 3);
+		
+		gridpane.add(imageView, 0, 0);
+		gridpane.add(productName, 1, 0);
+		gridpane.add(price, 1, 1);
+		gridpane.add(quantity, 2, 1);
+		gridpane.add(sum, 3, 1);
+		gridpane.add(line, 0, 2);
+		return gridpane;
+
+	}
+
 }
