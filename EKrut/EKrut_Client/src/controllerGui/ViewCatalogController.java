@@ -75,9 +75,6 @@ public class ViewCatalogController {
 	@FXML
 	private GridPane cartViewGridpane;
 
-	@FXML
-	private ScrollPane cartView;
-
 	private int machineDiscount = 0;
 	private int machineId = 7;
 	private static Map<String, ItemInMachineEntity> itemsList;
@@ -93,8 +90,8 @@ public class ViewCatalogController {
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog();
-		cartView.setVisible(false);
-		cartView.setMouseTransparent(false);
+		viewCartPane.setVisible(false);
+		viewCartPane.setMouseTransparent(false);
 //		recievedData = false;
 	}
 
@@ -121,8 +118,8 @@ public class ViewCatalogController {
 	@FXML
 	void viewCart(ActionEvent event) {
 
-		cartView.setVisible(!cartView.isVisible());
-		cartView.setMouseTransparent(!cartView.isVisible());
+		viewCartPane.setVisible(!viewCartPane.isVisible());
+		viewCartPane.setMouseTransparent(!viewCartPane.isVisible());
 
 	}
 
@@ -180,8 +177,8 @@ public class ViewCatalogController {
 			discountPriceLabel.setText(discountPrice + "");
 			productNameLabel.setText(item.getName());
 			priceLabel.setText(item.getPrice() + "₪");
-			image.setImage(new Image(
-					getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+//			image.setImage(new Image(
+//					getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
 
 			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
@@ -205,13 +202,13 @@ public class ViewCatalogController {
 							plusBtn.setDisable(true);
 							itemInCartPlusBtn.setDisable(true);
 						}
-						newItemInCartImage.setImage(new Image(getClass().getResourceAsStream(
-								AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+//						newItemInCartImage.setImage(new Image(getClass().getResourceAsStream(
+//								AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
 						itemsInCartList.put(item, amount);
 					} else
 						addToCartBtn.setText("Not Available");
-					cartView.setVisible(false);
-					cartView.setMouseTransparent(false);
+					viewCartPane.setVisible(false);
+					viewCartPane.setMouseTransparent(false);
 				}
 			});
 
@@ -254,8 +251,8 @@ public class ViewCatalogController {
 					itemsInCartList.put(item, amount);
 				}
 				if (flag) {
-					cartView.setVisible(false);
-					cartView.setMouseTransparent(false);
+					viewCartPane.setVisible(false);
+					viewCartPane.setMouseTransparent(false);
 				}
 			}
 		};
@@ -278,8 +275,8 @@ public class ViewCatalogController {
 				itemsInCartList.put(item, amount);
 				itemInCartAmountLabel.setText(amountLabel.getText());
 				if (flag) {
-					cartView.setVisible(false);
-					cartView.setMouseTransparent(false);
+					viewCartPane.setVisible(false);
+					viewCartPane.setMouseTransparent(false);
 				}
 			}
 		};
