@@ -25,6 +25,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -129,7 +130,6 @@ public class NavigationStoreController {
 		se.getPath().setText(res);
 	}
 
-
 	/**
 	 * Set the title for the window
 	 * 
@@ -156,7 +156,7 @@ public class NavigationStoreController {
 			}
 			primaryStage.setScene(history.peek().getScene());
 
-			//setTopBarLabels(se);
+			// setTopBarLabels(se);
 
 		}
 
@@ -173,7 +173,7 @@ public class NavigationStoreController {
 		Scene scene = createSingleScene(screenName, se); // create new instance
 		if (scene == null)
 			return false;
-		
+
 		se.setScene(scene);
 
 		screenScenes.replace(screenName, se); // replace the last stage with new
@@ -277,9 +277,15 @@ public class NavigationStoreController {
 		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
-		// ((BorderPane) stage).setBottom(stage);
-		((BorderPane) stage).setTop(getTopBar(se));
-
+		
+		if ( ((BorderPane) stage).getTop() == null )
+			((BorderPane) stage).setTop(getTopBar(se));
+		
+		else if (((BorderPane) stage).getTop() instanceof GridPane) {
+			GridPane top = (GridPane) ((BorderPane) stage).getTop();
+			top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
+		}
+		
 		return stage;
 	}
 
@@ -291,8 +297,8 @@ public class NavigationStoreController {
 	 */
 	private GridPane getTopBar(ScreenEntity se) {
 		GridPane gridPane = new GridPane();
-		Label nameLbl = new Label(); //se.getHeadline();
-		Label roleLbl = new Label(); //se.getPath();
+		Label nameLbl = new Label(); // se.getHeadline();
+		Label roleLbl = new Label(); // se.getPath();
 
 		// grid pane setup
 		gridPane.setId("headerBar");
@@ -300,7 +306,7 @@ public class NavigationStoreController {
 				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
-		
+		gridPane.setMouseTransparent(true);
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
 
 		// main label setup
@@ -317,7 +323,6 @@ public class NavigationStoreController {
 
 		gridPane.add(nameLbl, 0, 1);
 		gridPane.add(roleLbl, 0, 0);
-
 
 		se.setHeadline(nameLbl);
 		se.setPath(roleLbl);
@@ -385,18 +390,22 @@ public class NavigationStoreController {
 	 * @param closeAllScreens
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		if (connectedUser != null && connectedUser.isLogged_in()) {
-			connectedUser.setLogged_in(false); // logout the user
-			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
-		}
-		if (HostClientController.chat != null)
-			HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
-		if (!closeAllScreens) { // reset all and refresh
-			NavigationStoreController.getInstance().clearAll();
+		if (connectedUser != null) {
+			// isFirstTimeClosing = false;
+			if (connectedUser.isLogged_in()) {
+				connectedUser.setLogged_in(false); // logout the user
+				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+			}
+			if (HostClientController.chat != null)
+				HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+
 			connectedUser = null;
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-		} else
-			closeAllScreens();
+			if (!closeAllScreens) { // reset all and refresh
+				NavigationStoreController.getInstance().clearAll();
+				NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+			} else
+				closeAllScreens();
+		}
 
 	}
 
@@ -405,7 +414,7 @@ public class NavigationStoreController {
 	 */
 	public static void closeAllScreens() {
 		Platform.exit(); // exit JavaFx
-		// System.exit(0); // force the system to exit (rn will target the Client.UI
+		System.exit(0); // force the system to exit
 		// exit
 		// function)
 

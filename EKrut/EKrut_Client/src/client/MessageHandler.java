@@ -97,7 +97,10 @@ public class MessageHandler {
 		case ReceiveItemsInMachine:
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
-		//	ViewCatalogController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+
+
+			ViewCatalogController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+
 			break;
 		case ReceiveSalesFromServer:
 			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);

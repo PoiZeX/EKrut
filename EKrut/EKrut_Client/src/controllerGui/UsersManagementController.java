@@ -9,8 +9,10 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
+import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
+import controller.SMSMailHandlerController;
 import entity.UserEntity;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -109,6 +111,15 @@ public class UsersManagementController {
 	@FXML
 	public void approveSelected(ActionEvent event) throws InterruptedException {
 		chat.acceptObj(new Message(TaskType.RequestUsersApproval, toApprove));
+		// send sms to user
+		for(UserEntity user : toApprove) {
+			SMSMailHandlerController.SendSMSOrMail("SMS", user, "Request Approved", "Congratulations your request has been approved!\nSee Mail for full details");
+			String emailMsg = "Congratulations your request has been approved!\nYour login info:\nUsername: " + user.getUsername() +"\nPassword: "+user.getPassword();
+			if(user.getRole_type().equals(RolesEnum.member))
+				emailMsg +="\nAs a member you get the following benefits:\n*From time to time there are special sales on some regions.\n*Discount of 20% on your first purchase\n*A quick login using EKT app. Here is a link for download: www.ekt.ekrut.com";
+			
+			SMSMailHandlerController.SendSMSOrMail("MAIL", user, "Request Approved", emailMsg);
+		}
 		CommonFunctions.SleepFor(1000, () -> 
 		{
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);

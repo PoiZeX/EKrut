@@ -107,10 +107,10 @@ public class UsersSimulationDBController {
 		if (!Pattern.matches("^05[0-9]{8}$", tuple[6]))
 			res.append("* phone number {" + tuple[6] + "} is not in the right format\n");
 
-		// validate role
-		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
-			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
-		
+//		// validate role
+//		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
+//			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
+//		
 		
 		return res.toString();
 	}
