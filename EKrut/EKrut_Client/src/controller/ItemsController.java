@@ -29,7 +29,6 @@ public class ItemsController {
 	/* add the item to array list */
 	public static void getItemsFromServer(ItemEntity item) {
 		item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
-		// System.out.println(item.toString());
 		items.add(item);
 		convertStreamToImg(item.getItemImg());
 	}
