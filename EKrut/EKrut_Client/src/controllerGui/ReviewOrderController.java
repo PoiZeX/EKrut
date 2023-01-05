@@ -3,9 +3,15 @@ package controllerGui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.concurrent.Semaphore;
 
 import Store.NavigationStoreController;
+import client.ClientController;
+import common.CommonFunctions;
+import common.Message;
+import common.PopupTypeEnum;
 import common.ScreensNames;
+import common.TaskType;
 import controller.OrderController;
 import entity.ItemInMachineEntity;
 import javafx.collections.FXCollections;
@@ -33,7 +39,7 @@ import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class ReviewOrderController {
-
+	private static ClientController chat = HostClientController.chat;
 	private TooltipSetter tooltip;
 
 	@FXML
@@ -109,16 +115,15 @@ public class ReviewOrderController {
 		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
 				0, "Bamba4", 100.0, "Bamba.png");
 
-		
 		OrderController.addItemToCart(newItem);
 		OrderController.addItemToCart(newItem1);
 		OrderController.addItemToCart(newItem2);
 		OrderController.addItemToCart(newItem3);
 		OrderController.addItemToCart(newItem4);
-		
+
 		cart = OrderController.getCart();
 		buildReviewOrder();
-		
+
 		// build graphical side
 
 		// calculate data
@@ -132,15 +137,107 @@ public class ReviewOrderController {
 
 	}
 
+	private static Object data;
+	private static boolean isDataRecived = false;
+	
+	public static void getDataFromServer(Object dataRecived) {
+		data = dataRecived;
+		semaphore.release();
+	}
+
+	private static Semaphore semaphore = new Semaphore(1);
+
+	/**
+	 * Manage the review process
+	 * 
+	 * @throws InterruptedException
+	 */
+	private void reviewProcessManager() throws InterruptedException {
+		/*
+		 * Flow: 1. User press 'payment' 1.1 Check if (OL && Delivery details good) 2.
+		 * Send to server all items to update 3. Get Answer on success (String, null or
+		 * info) 3.1. if yes - continue to 4 3.2. if no - stay in review order with
+		 * information popup 4. Make external Payment
+		 * 
+		 * ROLL BACK HERE?
+		 */
+
+		// setup params according to configurations
+		switch (AppConfig.SYSTEM_CONFIGURATION) {
+		case "OL":  // online order
+			if(!isValidDeliveryDetails())
+			{
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information");
+				return;
+			}
+			
+			break;
+
+		case "EK":  // real machine order
+
+			break;
+
+		default:
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "Can not detect System Configuration (OL / EK)\nAbort");
+			return;
+		}
+
+		isDataRecived = false;
+		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
+
+		if(data instanceof String && !CommonFunctions.isNullOrEmpty((String) data))
+		{
+			// error inserting items (Roll back of this should be taken on server side)
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "We sorry but the following items no longer available:\n"+
+					((String) data)+"\nAbort");
+			return;
+		}
+		else {
+			isDataRecived = false;
+			chat.acceptObj(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
+			if(data instanceof Boolean && !(boolean)data)
+			{
+				// error inserting the order
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "We sorry but the following items no longer available:\n"+
+						((String) data)+"\nAbort");
+				
+				// ROLL BACK
+				RollBack();
+				return;
+			}
+			else {
+				isDataRecived = false;
+				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
+				
+			}
+		}
+		
+		// send message to Server to enter delivery details (after order is inserted)
+	}
+
 	private void paymentProccess() {
 		// make a popup for simulation of payment process
-		
-		// refresh stages 
+
+		// refresh stages
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
+	}
+
+	/**
+	 * Checks all fields of delivery and return true if valid
+	 * @return
+	 */
+	private boolean isValidDeliveryDetails() {
+
+		return true;
+	}
+
+	/**
+	 * Roll back the process if problem has been detected when inserting order
+	 */
+	private void RollBack() {
 		
 	}
-	
 	
 	/**
 	 * Build all graphical side for all items
@@ -170,7 +267,7 @@ public class ReviewOrderController {
 		Label quantity = new Label();
 		Label sum = new Label();
 		Line line = new Line();
-		Image image = new Image("/styles/products/"+item.getItemImg().getImgName());
+		Image image = new Image("/styles/products/" + item.getItemImg().getImgName());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(45);
 		imageView.setFitWidth(45);
@@ -220,11 +317,11 @@ public class ReviewOrderController {
 		line.setEndY(0.7214934229850769);
 		line.setFill(Paint.valueOf("#908e8e"));
 		GridPane.setValignment(line, VPos.BOTTOM);
-		//GridPane.setHalignment(line, HPos.LEFT);
+		// GridPane.setHalignment(line, HPos.LEFT);
 		GridPane.setColumnSpan(line, 5);
 
 		GridPane.setRowSpan(imageView, 3);
-		
+
 		gridpane.add(imageView, 0, 0);
 		gridpane.add(productName, 1, 0);
 		gridpane.add(price, 1, 1);
