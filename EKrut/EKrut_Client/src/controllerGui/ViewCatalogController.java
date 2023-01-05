@@ -2,13 +2,16 @@ package controllerGui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import Store.NavigationStoreController;
 import client.ClientController;
 import common.Message;
+import common.ScreensNames;
 import common.TaskType;
 import entity.ItemInMachineEntity;
 import entity.UserEntity;
@@ -33,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
@@ -42,6 +46,9 @@ import utils.AppConfig;
 public class ViewCatalogController {
 	@FXML
 	private Button viewCartBtn;
+	
+    @FXML
+    private GridPane cartViewGridpane;
 
 	@FXML
 	private ImageView itemImageView;
@@ -96,17 +103,24 @@ public class ViewCatalogController {
 
 	@FXML
 	private Button sortBtn;
+	
+    @FXML
+    private Pane viewCartPane;
 
 	private int machineDiscount = 0;
 
 	private int machineId = 7;
 	private static Map<String, ItemInMachineEntity> itemsList;
+	private static Map<String, Integer> itemsInCartList;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
-	private static boolean recievedData = false;;
+	private static boolean recievedData = false;
 
+	private boolean visibleViewCart = true;
 
 	public void initialize() throws InterruptedException {
+		//viewCartGridpane.setVisible(false);
 		itemsList = new LinkedHashMap<>();
+		itemsInCartList = new LinkedHashMap<>();
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		while (!recievedData)
 			Thread.sleep(100);
@@ -126,7 +140,7 @@ public class ViewCatalogController {
 		}
 
 	}
-
+	
 	// THIS NEEDS TO BE MOVED // ***
 	// public ItemInMachineEntity(int machineId, int item_id, int currentAmount,
 	// Call_Status callStatus, int timeUnderMin,
@@ -134,7 +148,7 @@ public class ViewCatalogController {
 	// description, String item_img_nam)
 	public void generateItem(ItemInMachineEntity item, int discountPrice, int i, int j) {
 		try {
-			GridPane newItem = createGridPane();
+			GridPane newItem = createGridPane("ItemGridBoundary");
 			ImageView image = (ImageView) newItem.getChildren().get(0);
 			GridPane btnBar = (GridPane) ((ButtonBar) newItem.getChildren().get(1)).getButtons().get(0);
 			Button minusBtn = (Button) btnBar.getChildren().get(0);
@@ -145,18 +159,35 @@ public class ViewCatalogController {
 			Label productNameLabel = (Label) newItem.getChildren().get(4);
 			Label discountPriceLabel = (Label) newItem.getChildren().get(5);
 
-
 			discountPriceLabel.setText(discountPrice + "");
 			productNameLabel.setText(item.getName());
 			priceLabel.setText(item.getPrice() + "₪");
-			image.setImage(new Image(getClass().getResourceAsStream(
-					AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+//			image.setImage(new Image(getClass().getResourceAsStream(
+//					AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+			
+			
+			// FOR DAVID
+			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
+			ImageView newItemInCartimage = (ImageView) newItemInCart.getChildren().get(0);
+			Label itemInCartNameLabel = (Label) newItemInCart.getChildren().get(1);
+			Label itemInCartAmountLabel = (Label) newItemInCart.getChildren().get(2);
+			Button itemInCartminusBtn = (Button) newItemInCart.getChildren().get(3);
+			Button itemInCartplusBtn = (Button) newItemInCart.getChildren().get(4);
+			// FOR DAVID
+			itemInCartNameLabel.setText(item.getName());
 			
 			addToCartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					addToCartBtn.setVisible(false);
 					amountLabel.setText("1");
+					int amount = Integer.parseInt(amountLabel.getText());
+					
+					itemsInCartList.put(item.getName(), amount);
+					itemInCartAmountLabel.setText(amount + "");
+					cartViewGridpane.add(newItemInCart, 0, 0);
+					
+					System.out.println(itemsInCartList);
 				}
 			});
 			
@@ -164,12 +195,15 @@ public class ViewCatalogController {
 				@Override
 				public void handle(MouseEvent e) {
 					int amount = Integer.parseInt(amountLabel.getText());
-					if (amount == item.getCurrentAmount()-1) {
-						amountLabel.setText(String.valueOf(amount+1));
+					amountLabel.setText(String.valueOf(amount + 1));
+					amount = Integer.parseInt(amountLabel.getText());
+					if (amount == item.getCurrentAmount()) {
 						plusBtn.setDisable(true);
 					}
-					else
-						amountLabel.setText(String.valueOf(amount+1));
+					// Update amount in list
+					itemsInCartList.put(item.getName(), amount);
+					itemInCartAmountLabel.setText(amount + "");
+					System.out.println(itemsInCartList);
 				}
 			});
 			
@@ -177,19 +211,30 @@ public class ViewCatalogController {
 				@Override
 				public void handle(MouseEvent e) {
 					int amount = Integer.parseInt(amountLabel.getText());
-					amountLabel.setText(String.valueOf(amount-1));
+					amountLabel.setText(String.valueOf(amount - 1));
+					amount = Integer.parseInt(amountLabel.getText());
 					if (plusBtn.isDisabled()) {
 						plusBtn.setDisable(false);
 					}
-					if (amount == 1) {
+					if (amount == 0) {
 						addToCartBtn.setVisible(true);
+						cartViewGridpane.getChildren().remove(0);
+						itemsInCartList.remove(item.getName());
 					}
+					else {
+						itemInCartAmountLabel.setText(amount + "");
+						itemsInCartList.put(item.getName(), amount);
+					}
+					System.out.println(itemsInCartList);
 				}
 			});
+			
 			catalogViewGridpane.add(newItem, i, j);
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+
 
 	}
 
@@ -200,20 +245,28 @@ public class ViewCatalogController {
 
 	@FXML
 	void placeOrder(ActionEvent event) {
-
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReviewOrder);
 	}
 
 	@FXML
 	void viewCart(ActionEvent event) {
+		if (viewCartPane.isVisible()) {
+			viewCartPane.setVisible(false);
+		}
+		else
+			viewCartPane.setVisible(true);
 
 	}
 
-	private GridPane createGridPane() throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/ItemGridBoundary.fxml"));
+	private GridPane createGridPane(String boundaryName) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
 		GridPane gridPane = (GridPane) loader.load();
 		return gridPane;
 	}
-	
+	/**
+	 * Receives the items from a specific machine
+	 * @param obj
+	 */
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		if (!itemsList.isEmpty()) {
 			itemsList.clear();
