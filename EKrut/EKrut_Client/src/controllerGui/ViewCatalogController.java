@@ -179,8 +179,8 @@ public class ViewCatalogController {
 			discountPriceLabel.setText(discountPrice + "");
 			productNameLabel.setText(item.getName());
 			priceLabel.setText(item.getPrice() + "₪");
-//			image.setImage(new Image(
-//					getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+			image.setImage(new Image(
+					getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
 
 			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
@@ -189,11 +189,16 @@ public class ViewCatalogController {
 			Button itemInCartMinusBtn = (Button) newItemInCart.getChildren().get(2);
 			Button itemInCartPlusBtn = (Button) newItemInCart.getChildren().get(4);
 			itemInCartNameLabel.setText(item.getName());
+			newItemInCartImage.setImage(new Image(getClass().getResourceAsStream(
+					AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+			
 			addToCartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					if (item.getCurrentAmount() > 0) {
-						addToCartBtn.setVisible(false);
+						addToCartBtn.setOpacity(0);
+						addToCartBtn.setMouseTransparent(true);
+						
 						amountLabel.setText("1");
 						int amount = Integer.parseInt(amountLabel.getText());
 						itemInCartAmountLabel.setText(amountLabel.getText());
@@ -202,8 +207,7 @@ public class ViewCatalogController {
 							plusBtn.setDisable(true);
 							itemInCartPlusBtn.setDisable(true);
 						}
-//						newItemInCartImage.setImage(new Image(getClass().getResourceAsStream(
-//								AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+
 						itemsInCartList.put(item, amount);
 					} else
 						addToCartBtn.setText("Not Available");
@@ -243,7 +247,8 @@ public class ViewCatalogController {
 					itemInCartPlusBtn.setDisable(false);
 				}
 				if (amount == 0) {
-					addToCartBtn.setVisible(true);
+					addToCartBtn.setOpacity(1);
+					addToCartBtn.setMouseTransparent(false);
 					itemsInCartList.remove(item);
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
 					reorderCart(cartViewGridpane);
