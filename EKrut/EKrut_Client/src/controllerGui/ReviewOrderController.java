@@ -1,8 +1,16 @@
 package controllerGui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
+import controller.OrderController;
+import entity.ItemInMachineEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -10,177 +18,209 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
+import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class ReviewOrderController {
-	
+
 	private TooltipSetter tooltip;
 
-    @FXML
-    private ComboBox<String> MachinesCmb;
+	@FXML
+	private Label ReviewOrderTitleLbl;
 
-    @FXML
-    private Button MinusQuantityBtn22211;
+	@FXML
+	private Label addressDetailsLbl;
 
-    @FXML
-    private Label ReviewOrderTitleLbl;
+	@FXML
+	private GridPane addressDetalisGridPane;
 
-    @FXML
-    private Label TitleLbl;
+	@FXML
+	private TextField cityTxtField;
 
-    @FXML
-    private GridPane addressDetalisGridPane;
+	@FXML
+	private Label contactDetailsLbl;
 
-    @FXML
-    private TextField cityTxtField;
+	@FXML
+	private GridPane contactDetalisGridPane;
 
-    @FXML
-    private Label contactDetailsLbl;
+	@FXML
+	private Label deliveryPriceLbl;
 
-    @FXML
-    private GridPane contactDetalisGridPane;
+	@FXML
+	private TextField firstNameTxtField;
 
-    @FXML
-    private Label deliveryPriceLbl;
+	@FXML
+	private TextField lastNameTxtField;
 
-    @FXML
-    private RadioButton deliveryRb;
+	@FXML
+	private Button paymentBtn;
 
-    @FXML
-    private TextField firstNameTxtField;
+	@FXML
+	private TextField phoneNumTxtField;
 
-    @FXML
-    private TextField lastNameTxtField;
+	@FXML
+	private ScrollPane reviewOrderScrollPane;
 
-    @FXML
-    private AnchorPane paymentAnchorPane;
+	@FXML
+	private GridPane rightGridPane;
 
-    @FXML
-    private Button paymentBtn;
+	@FXML
+	private TextField streetTxtField;
 
-    @FXML
-    private TextField phoneNumTxtField;
+	@FXML
+	private Label totalSumLbl;
 
-    @FXML
-    private Label priceLbl11;
+	@FXML
+	private Label totulDiscountSumLbl;
 
-    @FXML
-    private Label priceLbl111;
+	@FXML
+	private Label totulProductsSumLbl;
 
-    @FXML
-    private Label priceLbl112;
+	@FXML
+	private GridPane productsGrid;
 
-    @FXML
-    private Label priceLbl113;
+	private boolean isSelfPickup;
 
-    @FXML
-    private Label priceLbl1131;
+	private Collection<ItemInMachineEntity> cart;
 
-    @FXML
-    private Label priceLbl114;
+	public void initialize() {
+		// tooltip = new TooltipSetter("Cancel the order");
+		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
-    @FXML
-    private Label priceLbl1141;
+		ItemInMachineEntity newItem = new ItemInMachineEntity(1, 1, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
+				"Bamba", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem1 = new ItemInMachineEntity(1, 2, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba1", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem2 = new ItemInMachineEntity(1, 3, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba2", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem3 = new ItemInMachineEntity(1, 4, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba3", 100.0, "Bamba.png");
+		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+				0, "Bamba4", 100.0, "Bamba.png");
 
-    @FXML
-    private Label priceLbl11411;
-
-    @FXML
-    private ImageView productItemImg2221;
-
-    @FXML
-    private ImageView productItemImg22211;
-
-    @FXML
-    private ImageView productItemImg22212;
-
-    @FXML
-    private Label productNameLbl11;
-
-    @FXML
-    private Label productNameLbl111;
-
-    @FXML
-    private Label productNameLbl112;
-
-    @FXML
-    private ScrollPane reviewOrderScrollPane;
-
-    @FXML
-    private RadioButton selfPickRb;
-
-    @FXML
-    private ToggleGroup shippmentSelcetion;
-
-    @FXML
-    private TextField streetTxtField;
-
-    @FXML
-    private Label totalSumLbl;
-
-    @FXML
-    private Label totulDiscountSumLbl;
-
-    @FXML
-    private Label totulProductsSumLbl;
-
-    @FXML
-    private Label addressDetailsLbl;
-    
-    private boolean isSelfPickup;
-    
-    public void initialize() {
-    	//tooltip = new TooltipSetter("Cancel the order");
-    	//cancelOrderBtn.setTooltip(tooltip.getTooltip());
-    	shippingToggleVisInit();
-    	
-        ObservableList<String> ol = FXCollections.observableArrayList();
-        ol.add("Big Karmiel");
-        ol.add("Ort Brauda");
-        ol.add("City hall");
-        ol.add("Psagot high-school");
-        ol.add("Lev Karmiel mall");
-    	MachinesCmb.setItems(ol);
-    }
-    
-    private void shippingToggleVisInit() {
-		contactDetailsLbl.setVisible(false);
-		contactDetalisGridPane.setVisible(false);
 		
-		addressDetailsLbl.setVisible(false);
-		addressDetalisGridPane.setVisible(false);
-		MachinesCmb.setVisible(false);
+		OrderController.addItemToCart(newItem);
+		OrderController.addItemToCart(newItem1);
+		OrderController.addItemToCart(newItem2);
+		OrderController.addItemToCart(newItem3);
+		OrderController.addItemToCart(newItem4);
 		
-    	deliveryRb.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-    		shippingChangeVisibility(false);
-    	}));
+		cart = OrderController.getCart();
+		buildReviewOrder();
+		
+		// build graphical side
 
-    	selfPickRb.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-    		shippingChangeVisibility(true);
+		// calculate data
 
-    	}));
-    }
-    private void shippingChangeVisibility(boolean isSelfPickup) {
-    	if(isSelfPickup) {
-    		contactDetailsLbl.setVisible(false);
-    		contactDetalisGridPane.setVisible(false);
-    		
-    		addressDetailsLbl.setVisible(false);
-    		addressDetalisGridPane.setVisible(false);
-    		MachinesCmb.setVisible(true);
+		// -- get sales / discounts (if subscriber)
 
-    	}
-    	else {
-    		contactDetailsLbl.setVisible(true);
-    		contactDetalisGridPane.setVisible(true);
-    		
-    		addressDetailsLbl.setVisible(true);
-    		addressDetalisGridPane.setVisible(true);
-    		MachinesCmb.setVisible(false);
-    	}
-		this.isSelfPickup = isSelfPickup;
-    }
+		// check if OL/EK (for delivery)
+
+		// add option for future payment
+		// make popup external payment
+
+	}
+
+	/**
+	 * Build all graphical side for all items
+	 */
+	private void buildReviewOrder() {
+		ArrayList<GridPane> gridsToAdd = new ArrayList<>();
+		for (ItemInMachineEntity item : cart) {
+			gridsToAdd.add(buildSingleRow(item));
+		}
+
+		// add all to main gridpane
+		int index = 1;
+		for (GridPane grid : gridsToAdd)
+			productsGrid.add(grid, 0, index++);
+		productsGrid.getRowConstraints().setAll(new RowConstraints(50, 50, 50));
+	}
+
+	/**
+	 * Build graphical side for single item
+	 * 
+	 * @param item
+	 */
+	private GridPane buildSingleRow(ItemInMachineEntity item) {
+		GridPane gridpane = new GridPane();
+		Label productName = new Label();
+		Label price = new Label();
+		Label quantity = new Label();
+		Label sum = new Label();
+		Line line = new Line();
+		Image image = new Image("/styles/products/"+item.getItemImg().getImgName());
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(45);
+		imageView.setFitWidth(45);
+		imageView.setPreserveRatio(true);
+		double tempSum = 0;
+
+		gridpane.setPrefSize(348, 69);
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 70, 107, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints()
+				.add(new ColumnConstraints(10, 192, 207, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 57, 161, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 64, 230, Priority.SOMETIMES, HPos.CENTER, false));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 31, 47));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
+		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
+
+		// product
+		productName.setText(item.getName());
+		productName.setPrefSize(229, 18);
+		productName.getStyleClass().add("Label-list");
+		GridPane.setHalignment(productName, HPos.LEFT);
+
+		// price
+		price.setText(String.valueOf(item.getPrice()) + "₪");
+		price.setPrefSize(262, 18);
+		price.getStyleClass().add("Label-list");
+		GridPane.setHalignment(price, HPos.LEFT);
+
+		// quantity
+		tempSum = item.getPrice();
+		quantity.setText(String.valueOf(item.getCurrentAmount()));
+		quantity.setPrefSize(57, 18);
+		quantity.getStyleClass().add("Label-list");
+		GridPane.setHalignment(quantity, HPos.LEFT);
+
+		// sum
+		tempSum *= item.getCurrentAmount();
+		sum.setText(String.valueOf(tempSum) + "₪");
+		sum.setPrefSize(62, 18);
+		sum.getStyleClass().add("Label-list");
+		GridPane.setHalignment(sum, HPos.LEFT);
+
+		// line
+		line.setStartX(-72);
+		line.setStartY(0.7216961979866028);
+		line.setEndX(260);
+		line.setEndY(0.7214934229850769);
+		line.setFill(Paint.valueOf("#908e8e"));
+		GridPane.setValignment(line, VPos.BOTTOM);
+		//GridPane.setHalignment(line, HPos.LEFT);
+		GridPane.setColumnSpan(line, 5);
+
+		GridPane.setRowSpan(imageView, 3);
+		
+		gridpane.add(imageView, 0, 0);
+		gridpane.add(productName, 1, 0);
+		gridpane.add(price, 1, 1);
+		gridpane.add(quantity, 2, 1);
+		gridpane.add(sum, 3, 1);
+		gridpane.add(line, 0, 2);
+		return gridpane;
+
+	}
+
 }

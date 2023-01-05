@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import Store.NavigationStoreController;
 import common.Message;
+import common.ScreensNames;
 import common.TaskType;
 import entity.ItemInMachineEntity;
 import entity.UserEntity;
@@ -146,7 +148,7 @@ public class ViewCatalogContoller {
 
     @FXML
     void placeOrder(ActionEvent event) {
-
+    	NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReviewOrder);
     }
     
 
