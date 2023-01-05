@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="47.0" prefWidth="270.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="47.0" prefWidth="270.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="72.0" minWidth="10.0" prefWidth="37.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="68.0" minWidth="10.0" prefWidth="45.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="52.0" minWidth="10.0" prefWidth="41.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <ImageView fx:id="itemInCartImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="itemInCartNameLabel" text="Label" GridPane.columnIndex="1" />
-      <Label fx:id="itemInCartAmountLabel" text="Label" GridPane.columnIndex="2" />
-      <Button fx:id="minusAmountInCartBtn" mnemonicParsing="false" text="-" GridPane.columnIndex="3" />
-      <Button fx:id="plusAmountInCartBtn" mnemonicParsing="false" text="+" GridPane.columnIndex="4" />
+      <Label fx:id="itemInCartNameLabel" alignment="CENTER" prefWidth="131.0" text="Label" GridPane.columnIndex="1" />
+      <Button fx:id="minusAmountInCartBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="22.0" prefWidth="18.0" style="-fx-background-color: red;" styleClass="Button-newSale" text="-" GridPane.columnIndex="2" />
+      <Label fx:id="itemInCartAmountLabel" alignment="CENTER" prefHeight="15.0" prefWidth="33.0" text="Label" GridPane.columnIndex="3" />
+      <Button fx:id="plusAmountInCartBtn" mnemonicParsing="false" styleClass="Button-newSale" text="+" GridPane.columnIndex="4" />
    </children>
 </GridPane>
