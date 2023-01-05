@@ -93,7 +93,7 @@ public class SupplyManagementDBController {
 				// 1			2			3				4			5				6			7		8	9			10					
 				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id, item_id, name, price,  item_img_name
 				
-				if(res.getFetchSize() >= 9) {
+				if(res.getMetaData().getColumnCount() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), res.getDouble(9), res.getString(10));
 				}
@@ -130,7 +130,7 @@ public class SupplyManagementDBController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	/**

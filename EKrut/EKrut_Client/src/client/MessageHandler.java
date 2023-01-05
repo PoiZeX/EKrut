@@ -96,6 +96,7 @@ public class MessageHandler {
 		case ReceiveItemsInMachine:
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
+
 			ViewCatalogContoller.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
@@ -110,6 +111,7 @@ public class MessageHandler {
 		case InitMachinesInRegions:
 			SupplyManagementController.getMachinesInRegion((ArrayList<MachineEntity>) obj);
 			break;
+		
 		default:
 			break;
 		}

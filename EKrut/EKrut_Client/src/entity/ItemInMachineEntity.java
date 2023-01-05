@@ -28,7 +28,7 @@ public class ItemInMachineEntity extends ItemEntity {
 
 	private Call_Status callStatus = Call_Status.NotOpened;
 
-	// machine_id, item_id, current_amount, minimum_amount, call_status,
+	// machine_id, item_id, current_amount, call_status,
 	// times_under_min, calls_amount, name, item_img_name
 	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin, int workerId,
 			String name, double price, String item_img_nam) {

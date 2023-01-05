@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonFunctions;
 import common.CustomerStatus;
 import common.DeliveryStatus;
 import common.Message;
+import common.PopupTypeEnum;
 import common.SaleType;
 import common.TaskType;
 import entity.DeliveryEntity;
@@ -89,6 +91,7 @@ public class MarketingWorkerController {
     	if (salesToUpdate.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateSales, salesToUpdate));
 			salesToUpdate.clear();
+			CommonFunctions.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
 		}
     }
 	private void setupTable() {

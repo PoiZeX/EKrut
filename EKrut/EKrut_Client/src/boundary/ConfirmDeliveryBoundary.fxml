@@ -5,13 +5,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmDeliveryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmDeliveryController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -20,8 +21,8 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="191.0" minHeight="0.0" prefHeight="68.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="490.0" minHeight="10.0" prefHeight="458.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="108.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="490.0" minHeight="10.0" prefHeight="454.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="108.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <GridPane prefHeight="405.0" prefWidth="612.0" GridPane.rowIndex="1">
@@ -40,16 +41,16 @@
                       <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints fillHeight="false" maxHeight="140.0" minHeight="10.0" prefHeight="89.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="119.0" minHeight="4.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="140.0" minHeight="10.0" prefHeight="107.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="119.0" minHeight="4.0" prefHeight="77.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#confirm" prefHeight="37.0" prefWidth="144.0" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#confirm" prefHeight="37.0" prefWidth="144.0" style="-fx-background-color: #2CB103;" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <TextField fx:id="orderNumTxtField" alignment="CENTER" prefHeight="33.0" prefWidth="170.0" promptText="enter your order number" styleClass="TextField" GridPane.halignment="CENTER">
                            <effect>
                               <DropShadow height="12.21" radius="4.1375" width="6.34">
                                  <color>
-                                    <Color blue="0.595516562461853" green="0.595516562461853" red="0.6184210777282715" />
+                                    <Color red="0.6184210777282715" green="0.595516562461853" blue="0.595516562461853" />
                                  </color>
                               </DropShadow>
                            </effect>
@@ -63,6 +64,7 @@
                   <Label fx:id="errMsgLbl" alignment="CENTER" disable="true" prefHeight="15.0" prefWidth="443.0" style="-fx-text-fill: RED;" styleClass="Label" textFill="RED" GridPane.rowIndex="3" />
                </children>
             </GridPane>
+            <ImageView fx:id="img" fitHeight="304.0" fitWidth="351.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </center>
