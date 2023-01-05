@@ -8,6 +8,7 @@ import client.ClientController;
 import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.ScreensNames;
 import common.TaskType;
 
@@ -15,8 +16,13 @@ import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.UserEntity;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -32,8 +38,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -42,6 +50,23 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 public class SupplyManagementController {
+	@FXML
+	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
+
+	@FXML
+	private TableColumn<ItemInMachineEntity, Integer> currentAmountCol1;
+
+	@FXML
+	private TableColumn<ItemInMachineEntity, Integer> itemIdCol1;
+
+	@FXML
+	private TableColumn<ItemInMachineEntity, String> itemNameCol1;
+
+	@FXML
+	private TableView<ItemInMachineEntity> opencallsTbl;
+
+	@FXML
+	private TableColumn<ItemInMachineEntity, Integer> workerCol1;
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol;
@@ -98,32 +123,50 @@ public class SupplyManagementController {
 	private ComboBox<UserEntity> workerCmb;
 
 	private static ClientController chat = HostClientController.chat; // define the chat for th
-	public static ObservableList<ItemInMachineEntity> itemsInMachineLst = FXCollections.observableArrayList();
+
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	public static ObservableList<UserEntity> supplyWorkers = FXCollections.observableArrayList();
-	private MachineEntity machine;
-	public static boolean recievedData = false;
+	public static ObservableList<ItemInMachineEntity> openedcalls = FXCollections.observableArrayList();
+	public static ObservableList<ItemInMachineEntity> notOpendCalls = FXCollections.observableArrayList();
 	private static ArrayList<ItemInMachineEntity> toUpdate = new ArrayList<>();
 	private static ArrayList<ItemInMachineEntity> completed = new ArrayList<>();
 	ArrayList<TableCell<ItemInMachineEntity, Boolean>> checkboxCellsList;
-	private UserEntity supplyworker;
-
 	private String[] arrStr = new String[2];
+
+	private MachineEntity machine;
+	private UserEntity supplyworker;
+	private static String region;
+	public static boolean recievedData = false;
 
 	@FXML
 	public void initialize() throws Exception {
-		String region = NavigationStoreController.connectedUser.getRegion();
+		region = NavigationStoreController.connectedUser.getRegion();
 		arrStr[0] = "0";
 		arrStr[1] = region;
 		recievedData = false;
 		chat.acceptObj(new Message(TaskType.InitMachinesInRegions, arrStr));
 		while (!recievedData)
 			Thread.sleep(100);
+		setUpMachineComboBox();
+		chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
+		while (!recievedData)
+			Thread.sleep(100);
+		setUpSupplyWorkersComboBox();
+
+	}
+
+//----------------------------------------------------------------------------   Combobox setup
+	/***
+	 * Insert machines list to Combo box handles the choos
+	 */
+	public void setUpMachineComboBox() {
 		machineCmb.setItems(machineLst);
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
 				machine = machineCmb.getValue();
-				if (oldValue != newValue) {
+				if (machine.equals(null))
+					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
+				else if (oldValue != newValue) {
 					saveChangesBtn.setDisable(false);
 					machineNameLbl.setText(machine.machineName);
 					machineNameLbl.setVisible(true);
@@ -132,84 +175,56 @@ public class SupplyManagementController {
 					setupTable(machine.machineId);
 				}
 			}
-		});
 
-//		machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
-//			@Override
-//			public void handle(Event event) {
-//
-//				if (machineCmb.getSelectionModel().isEmpty())
-//					System.out.println("pop up - you have to pick a machine");
-//				else {
-//					machine = machineCmb.getValue();
-//
-//					if (!machine.equals(null)) {
-//						saveChangesBtn.setDisable(false);
-//						machineNameLbl.setText(machine.machineName);
-//						machineNameLbl.setVisible(true);
-//						minAmountTxtField.setText(machine.getMinamount() + "");
-//						toUpdate = new ArrayList<ItemInMachineEntity>();
-//						setupTable(machine.machineId);
-//					}
-//				}
-//			}
-//		});
+		});
 		recievedData = false;
-		chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
-		while (!recievedData)
-			Thread.sleep(100);
-		// if (!supplyWorkers.isEmpty())
+	}
+
+	/***
+	 * Insert Supply workers list to Combo box
+	 */
+	public void setUpSupplyWorkersComboBox() {
 		workerCmb.setItems(supplyWorkers);
-		sendCallBtn.setVisible(false);
+		sendCallBtn.setDisable(true);
 		workerCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
 				supplyworker = workerCmb.getValue();
-				if (!supplyworker.equals(null)) {
-					sendCallBtn.setVisible(true);
-
-				}
+				if (!supplyworker.equals(null))
+					sendCallBtn.setDisable(false);
+				else
+					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a Worker");
 			}
 		});
-//		workerCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
-//			@Override
-//			public void handle(Event event) {
-//				if (workerCmb.getSelectionModel().isEmpty())
-//					System.out.println("pop up - you have to pick a worker so you can send a call");
-//				else {
-//					supplyworker = workerCmb.getValue();
-//					if (!supplyworker.equals(null)) {
-//						sendCallBtn.setVisible(true);
-//					}
-//				}
-//			}
-//		});
 	}
 
+//----------------------------------------------------------------------------   buttons
 	/**
 	 * press refresh button to refresh table and item displayed ask from data base
 	 * to load updated table
 	 */
 	@FXML
 	void refresh(ActionEvent event) {
-		MachineEntity tempMachineEntity = this.machineCmb.getValue();
-
+		MachineEntity tempMachine = machineCmb.getValue();
 		Platform.runLater(() -> {
 			try {
 				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyManagement);
 				CommonFunctions.SleepFor(300, () -> {
 					SupplyManagementController sc = (SupplyManagementController) NavigationStoreController.getInstance()
 							.getController();
-					sc.machineCmb.getSelectionModel().select(tempMachineEntity);
+					sc.machineCmb.getSelectionModel().select(tempMachine);
 				});
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-
 	}
 
-	/** save changes that was made in the item */
+	/***
+	 * save changes that was made in the item
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void saveMachineMinAmount(ActionEvent event) {
 		String errorMsg = "";
@@ -233,7 +248,7 @@ public class SupplyManagementController {
 					m.setMinamount(newMinAmount);
 				}
 			}
-			for (ItemInMachineEntity i : itemsInMachineLst) {
+			for (ItemInMachineEntity i : openedcalls) {
 				if (i.getCurrentAmount() < machine.getMinamount()) {
 					if (i.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
 						completed.add(i);
@@ -244,15 +259,18 @@ public class SupplyManagementController {
 					}
 				}
 			}
-			removeCompleted(null);
-			chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount, machine));
-			System.out.println("Pop up - the new minimum amount has been updated \n"
-					+ "if you want to see an updated list press the refresh button");
 		}
-
+		removeCompleted(null);
+		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount, machine));
+		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
+				+ "If you want to see an updated the items list press the refresh button");
 	}
 
-	/** set the status call to not open */
+	/***
+	 * remove the completed actions from the table and request update from server
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void removeCompleted(ActionEvent event) {
 		for (ItemInMachineEntity i : completed) {
@@ -264,13 +282,18 @@ public class SupplyManagementController {
 		refresh(null);
 	}
 
-	/** send a task to the workers for update the requested items */
+	/***
+	 * send a task to the workers for update the requested items
+	 * 
+	 * @param event
+	 * @throws InterruptedException
+	 */
 	@FXML
-	void send(ActionEvent event) {
+	void send(ActionEvent event) throws InterruptedException {
 
-		System.out.println(toUpdate.toString());
 		if (toUpdate.isEmpty()) // TODO why is empty
-			System.out.println("Popup - no new items to open calls for");
+			CommonFunctions.createPopup(PopupTypeEnum.Information, "No new items to open calls for");
+
 		else {
 			for (ItemInMachineEntity i : toUpdate) {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Processed);
@@ -278,20 +301,23 @@ public class SupplyManagementController {
 				System.out.println(i.toString());
 			}
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
-			System.out.println("pop-up the calls had been sent for now");
-			setupTable(machine.machineId);
+
+			CommonFunctions.createPopup(PopupTypeEnum.Success, "The calls had been sent for now");
+			toUpdate.clear();
+			refresh(null);
 		}
-		toUpdate.clear();
+
 	}
 
-	/**
-	 * get from DB the data for setting the table, and puttin a preview ('eye')
-	 * button on the preview col
+//---------------------------------------------------------------------------  Tables
+	/***
+	 * set up table by machine id
+	 * 
+	 * @param machineId
 	 */
-	@SuppressWarnings("unchecked")
 	void setupTable(int machineId) {
 		recievedData = false;
-		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+		chat.acceptObj(new Message(TaskType.RequestItemsWithMinAmount, machineId));
 		while (!recievedData) {
 			try {
 				Thread.sleep(100);
@@ -299,8 +325,41 @@ public class SupplyManagementController {
 				e.printStackTrace();
 			}
 		}
-		supplyMangmentTbl.setItems(itemsInMachineLst);
+
 		supplyMangmentTbl.setEditable(true);
+		setFactoryColsForNotOpened();
+		supplyMangmentTbl.setItems(notOpendCalls);
+
+		opencallsTbl.setEditable(true);
+		setFactoryColsForOpened();
+		opencallsTbl.setItems(openedcalls);
+		colorTableRows();
+		return;
+
+	}
+
+	/***
+	 * set columns for table
+	 */
+	@SuppressWarnings("unchecked")
+	private void setFactoryColsForOpened() {
+
+		// factory
+		itemIdCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
+		itemNameCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, String>("name"));
+		currentAmountCol1.setCellValueFactory(
+				(Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
+		callStatusCol1.setCellValueFactory(
+				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
+						"callStatus"));
+		workerCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("workerId"));
+	}
+
+	/***
+	 * set columns for table
+	 */
+	@SuppressWarnings("unchecked")
+	private void setFactoryColsForNotOpened() {
 		checkboxCellsList = new ArrayList<>();
 		// factory
 		itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
@@ -310,73 +369,115 @@ public class SupplyManagementController {
 		callStatusCol.setCellValueFactory(
 				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
 						"callStatus"));
-
 		refillcol.setCellFactory(column -> {
 			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
 			checkboxCellsList.add(cell); // save the checkbox
+		//	cell.getGraphic()
 
 			cell.setOnMouseClicked(event -> {
-				if (event.getClickCount() > 0) {
+			//	if (event.getClickCount() > 0) {
 					CheckBox checkBox = (CheckBox) cell.getGraphic();
+	
 					ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
 					if (checkBox != null) {
-						if (item.isCallOpen()) {
-
-							checkBox.disabledProperty();
-							checkBox.setVisible(false);
-						} else {
-							if (checkBox.isSelected()) {
-								checkBox.setSelected(true);
+						
+						if (checkBox.isSelected()) {
+							if(checkBox.selectedProperty().getValue()) {
+							checkBox.setSelected(true);
 								toUpdate.add(item);
-							} else {
+							}
+//							if (allSelected)
+//								allSelected = false;
+							else {
 								checkBox.setSelected(false);
 								toUpdate.remove(item);
-							}
+
+						} 
 						}
 					}
-				}
-
+			//	}
 			});
-
 			return cell;
 		});
-		colorTableRows();
-
-		return;
+//		refillcol.setCellFactory(column -> {
+//			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+//			
+//			return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
+//			
+//			
+//
+//			};
+//		});
+//		@Override
+//		public void updateItem(Boolean item, boolean empty) {
+//			super.updateItem(item, empty);
+//			TableRow<ItemInMachineEntity> currentRow = getTableRow();
+//			ItemInMachineEntity currentItem = currentRow.getItem();
+//			
+//			CheckBox checkBox = (CheckBox) this.getGraphic();
+//
+//			if (currentRow != null && !empty ) {
+//				
+//				if(this.selectedProperty().get())
+//					toUpdate.add(currentItem);
+//				if(!this.selectedProperty().get())
+//					toUpdate.add(currentItem);
+//			}
+//			
+//		}		
+//
+//		refillcol.setCellFactory(column -> {
+//			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+//			cell.setOnMouseClicked(event -> {
+//				if (event.getClickCount() > 0) {
+//					CheckBox checkBox = (CheckBox) cell.getGraphic();
+//					ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
+//					if (checkBox != null) {
+//						if (checkBox.isSelected()) {
+//							checkBox.setSelected(false);
+//							toUpdate.remove(item);
+//					
+//
+//						} else {
+//							checkBox.setSelected(true);
+//							toUpdate.add(item);
+//						}
+//					}
+//				}
+//			});
+//			return cell;
+//		});
+//		return;
+//	
+//		refillcol.setCellFactory(column -> {
+//		    return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
+//		        @Override
+//		        public void updateItem(Boolean item, boolean empty) {
+//		            super.updateItem(item, empty);
+//		            if (item == null || empty ) {
+//		                setVisible(false);
+//		            } else {
+//		            	ItemInMachineEntity obj = getTableView().getItems().get(getIndex());
+//		            	if(obj.isCallOpen())
+//		            		setVisible(false);
+//		            	else {
+//		            		setVisible(true);
+//		            	
+//		            	}
+//		            }
+//		        }
+//			
+//
+//		        
+//		    };
+//		    
+//		});
 
 	}
 
-	/**
-	 * get machines and put them in a combo box
-	 * 
-	 * @param arrayList
+	/***
+	 * color tables rows by the cuurent amount and the status
 	 */
-	public static void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
-		// String region = NavigationStoreController.connectedUser.getRegion();
-		Platform.runLater(() -> {
-			if (!machineLst.isEmpty())
-				machineLst.clear();
-
-			machineLst.addAll(arrayList);
-		});
-		recievedData = true;
-
-	}
-
-	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
-		if (!itemsInMachineLst.isEmpty()) {
-			itemsInMachineLst.clear();
-		}
-		itemsInMachineLst.addAll(obj);
-		for (ItemInMachineEntity item : itemsInMachineLst) {
-			if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete) {
-				completed.add(item);
-			}
-		}
-		recievedData = true;
-	}
-
-	/** color tables rows by the cuurent amount and the status */
 	private void colorTableRows() {
 		supplyMangmentTbl.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
 			@Override
@@ -394,10 +495,77 @@ public class SupplyManagementController {
 					setStyle("");
 			}
 		});
+		opencallsTbl.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
+			@Override
+			protected void updateItem(ItemInMachineEntity item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null)
+					setStyle("");
+				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == false)
+					setStyle("-fx-background-color: #fa8989;");
+				else if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
+					setStyle("-fx-background-color: #7cf28f;");// TODO to add completed on the quary
+				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == true)
+					setStyle("-fx-background-color: #faeb89;");
+				else
+					setStyle("");
+			}
+		});
+	}
+
+//-------------------------------------------------------------------------------- Receive Data
+	/**
+	 * get machines and put them in a combo box
+	 * 
+	 * @param arrayList
+	 */
+	public static void getMachinesInRegion(ArrayList<MachineEntity> arrayList) {
+		// String region = NavigationStoreController.connectedUser.getRegion();
+		Platform.runLater(() -> {
+			if (!machineLst.isEmpty())
+				machineLst.clear();
+
+			machineLst.addAll(arrayList);
+		});
+		recievedData = true;
 
 	}
 
-	/** get supply workers */
+	/***
+	 * recevie Items InMachine
+	 * 
+	 * @param obj
+	 */
+	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
+		if (!notOpendCalls.equals(null) && !openedcalls.equals(null)) {
+			if (!notOpendCalls.isEmpty()) {
+				notOpendCalls.clear();
+			}
+
+			if (!openedcalls.isEmpty()) {
+				openedcalls.clear();
+			}
+			for (ItemInMachineEntity item : obj) {
+				if (item.getCallStatus() == ItemInMachineEntity.Call_Status.NotOpened)
+					notOpendCalls.add(item);
+
+				if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete) {
+					openedcalls.add(item);
+					completed.add(item);
+				}
+				if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Processed)
+					openedcalls.add(item);
+
+			}
+			recievedData = true;
+		}
+	}
+
+	/***
+	 * Receive supply workers
+	 * 
+	 * @param obj
+	 */
 	public static void recevieSupplyWorkers(ArrayList<UserEntity> obj) {
 		Platform.runLater(() -> {
 			if (!supplyWorkers.isEmpty()) {

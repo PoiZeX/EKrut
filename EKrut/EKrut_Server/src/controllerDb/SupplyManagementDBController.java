@@ -97,9 +97,10 @@ public class SupplyManagementDBController {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), res.getDouble(9), res.getString(10));
 				}
+				//(machineId, item_id,  currentAmount,  callStatus, timeUnderMin,  workerId, name,  price,  item_img_nam)
 				else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
-							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), "", 0, "");
+							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), 0, "");
 				}
 				
 				itemsInMachine.add(item);
