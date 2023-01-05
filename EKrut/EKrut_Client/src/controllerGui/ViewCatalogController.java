@@ -10,6 +10,7 @@ import java.util.Timer;
 
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonFunctions;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
@@ -177,9 +178,11 @@ public class ViewCatalogController {
 			discountPriceLabel.setText(discountPrice + "");
 			productNameLabel.setText(item.getName());
 			priceLabel.setText(item.getPrice() + "₪");
-//			image.setImage(new Image(
-//					getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
+			//CommonFunctions.SleepFor(3000, () -> {
+				image.setImage(new Image(
+						getClass().getResourceAsStream(AppConfig.RELAITVE_PRODUCTS_PATH + item.getItemImg().getImgName())));
 
+			//});
 			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
 			Label itemInCartNameLabel = (Label) newItemInCart.getChildren().get(1);

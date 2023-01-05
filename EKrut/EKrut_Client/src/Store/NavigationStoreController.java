@@ -11,6 +11,7 @@ import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.TaskType;
+import controller.ItemsController;
 import common.ScreensNames;
 import controllerGui.HomePageController;
 import controllerGui.HostClientController;
@@ -391,7 +392,8 @@ public class NavigationStoreController {
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
 		if (connectedUser != null) {
-			// isFirstTimeClosing = false;
+			ItemsController.deleteAllItemsInDir();
+			
 			if (connectedUser.isLogged_in()) {
 				connectedUser.setLogged_in(false); // logout the user
 				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));

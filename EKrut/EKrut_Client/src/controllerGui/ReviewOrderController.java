@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import Store.NavigationStoreController;
+import common.ScreensNames;
 import controller.OrderController;
 import entity.ItemInMachineEntity;
 import javafx.collections.FXCollections;
@@ -130,6 +132,16 @@ public class ReviewOrderController {
 
 	}
 
+	private void paymentProccess() {
+		// make a popup for simulation of payment process
+		
+		// refresh stages 
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
+		
+	}
+	
+	
 	/**
 	 * Build all graphical side for all items
 	 */
