@@ -13,6 +13,7 @@ import client.ClientController;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
+import controller.OrderController;
 import entity.ItemInMachineEntity;
 import entity.UserEntity;
 import entity.ItemInMachineEntity.Call_Status;
@@ -86,9 +87,9 @@ public class ViewCatalogController {
 	private GridPane cartViewGridpane;
 
 	private int machineDiscount = 0;
-	private int machineId = 7;
+	private int machineId = AppConfig.MACHINE_ID;
 	private static Map<String, ItemInMachineEntity> itemsList;
-	private static Map<ItemInMachineEntity, Integer> itemsInCartList;
+	private static Map<ItemInMachineEntity, Integer> itemsInCartList; 
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
 
@@ -101,7 +102,6 @@ public class ViewCatalogController {
 		generateCatalog();
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
-//		recievedData = false;
 	}
 
 	@FXML
@@ -175,7 +175,7 @@ public class ViewCatalogController {
 			Label priceLabel = (Label) newItem.getChildren().get(3);
 			Label productNameLabel = (Label) newItem.getChildren().get(4);
 			Label discountPriceLabel = (Label) newItem.getChildren().get(5);
-
+			
 			discountPriceLabel.setText(discountPrice + "");
 			productNameLabel.setText(item.getName());
 			priceLabel.setText(item.getPrice() + "₪");
@@ -188,7 +188,27 @@ public class ViewCatalogController {
 			Label itemInCartAmountLabel = (Label) newItemInCart.getChildren().get(3);
 			Button itemInCartMinusBtn = (Button) newItemInCart.getChildren().get(2);
 			Button itemInCartPlusBtn = (Button) newItemInCart.getChildren().get(4);
+			Button deleteItemBtn = (Button) newItemInCart.getChildren().get(5);
 			itemInCartNameLabel.setText(item.getName());
+			itemInCartNameLabel.setWrapText(true); //Total: 50₪ //80 Items
+			
+			deleteItemBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					String currentCartSize = cartSizeLabel.getText().split(" ")[0];
+					String currentTotalPrice = totalPriceLabel.getText().split(" ")[1];
+					currentTotalPrice = currentTotalPrice.split("₪")[0];
+
+					cartSizeLabel.setText((Integer.parseInt(currentCartSize) - itemsInCartList.get(item)) + " Items");
+					totalPriceLabel.setText("Total: " + (Integer.parseInt(currentTotalPrice) - ((int)item.getPrice() * itemsInCartList.get(item))) + "₪");
+					
+					addToCartBtn.setVisible(true);
+					itemsInCartList.remove(item);
+					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
+					reorderCart(cartViewGridpane);
+				}
+			});
+			
 			addToCartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
@@ -226,7 +246,6 @@ public class ViewCatalogController {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
 	}
 
 	private EventHandler<MouseEvent> getMinusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
@@ -278,6 +297,8 @@ public class ViewCatalogController {
 					itemInCartPlusBtn.setDisable(true);
 				}
 				itemsInCartList.put(item, amount);
+				
+				OrderController.changeItemQuantity(item.getId(), amount);
 				itemInCartAmountLabel.setText(amountLabel.getText());
 				if (flag) {
 					viewCartPane.setVisible(false);
@@ -288,7 +309,7 @@ public class ViewCatalogController {
 		};
 		return plusEvent;
 	}
-
+	
 	private void updateCart() {
 		// Calculate cart size and total price
 		int amountOfItemsInCart = 0;

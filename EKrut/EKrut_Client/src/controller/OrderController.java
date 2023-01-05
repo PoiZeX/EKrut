@@ -31,6 +31,9 @@ public class OrderController {
 		
 	}
 	
+	private static int getAmount(ItemInMachineEntity item) {
+		return cart.get(item.getId()).getCurrentAmount();
+	}
 
 	
 	/**
