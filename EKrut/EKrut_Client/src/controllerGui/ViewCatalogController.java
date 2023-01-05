@@ -215,12 +215,15 @@ public class ViewCatalogController {
 	}
 	
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
-		if (!itemsList.isEmpty()) {
+		if (itemsList.size()>0) {
+			if (!itemsList.isEmpty()) 
 			itemsList.clear();
-		}
-		for (ItemInMachineEntity item : obj) {
+		
+		for (ItemInMachineEntity item : obj) 
 			itemsList.put(item.getName(), item);
-		}
+		
 		recievedData  = true;
 	}
+	}
+		
 }
