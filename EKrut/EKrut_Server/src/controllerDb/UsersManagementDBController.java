@@ -40,7 +40,7 @@ public class UsersManagementDBController {
 			if (MySqlClass.getConnection() == null)
 				return unapprovedUsersList;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=?;");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number!=null;");
 			ps.setInt(1, 1);
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {

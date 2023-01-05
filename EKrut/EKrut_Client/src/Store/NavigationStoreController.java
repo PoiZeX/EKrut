@@ -56,7 +56,6 @@ public class NavigationStoreController {
 	private Stage primaryStage; // the main stage (window)
 	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
 	public static UserEntity connectedUser; // hold the current connected user
-	private static boolean isFirstTimeClosing = true;
 
 	/**
 	 * Constructor, creates the new instances
@@ -384,17 +383,18 @@ public class NavigationStoreController {
 	 * @param closeAllScreens
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		if (isFirstTimeClosing) {
-			isFirstTimeClosing = false;
-			if (connectedUser != null && connectedUser.isLogged_in()) {
+		if (connectedUser != null) {
+			// isFirstTimeClosing = false;
+			if (connectedUser.isLogged_in()) {
 				connectedUser.setLogged_in(false); // logout the user
 				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			}
 			if (HostClientController.chat != null)
 				HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+
+			connectedUser = null;
 			if (!closeAllScreens) { // reset all and refresh
 				NavigationStoreController.getInstance().clearAll();
-				connectedUser = null;
 				NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
 			} else
 				closeAllScreens();
