@@ -1,3 +1,5 @@
+UPDATE users set logged_in=0 WHERE logged_in=1;
+
 # SELECT ALL ORDERS AND GET MACHINE LOCATION + REGION for orders report #
 SELECT machines.machine_id, machines.location, regions.region_name, orders.total_sum
 FROM orders

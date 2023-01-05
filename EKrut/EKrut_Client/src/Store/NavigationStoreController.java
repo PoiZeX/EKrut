@@ -25,6 +25,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -277,9 +278,15 @@ public class NavigationStoreController {
 		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
-		// ((BorderPane) stage).setBottom(stage);
-		((BorderPane) stage).setTop(getTopBar(se));
-
+		
+		if ( ((BorderPane) stage).getTop() == null )
+			((BorderPane) stage).setTop(getTopBar(se));
+		
+		else if (((BorderPane) stage).getTop() instanceof GridPane) {
+			GridPane top = (GridPane) ((BorderPane) stage).getTop();
+			top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
+		}
+		
 		return stage;
 	}
 
@@ -300,7 +307,7 @@ public class NavigationStoreController {
 				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
-
+		gridPane.setMouseTransparent(true);
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
 
 		// main label setup
