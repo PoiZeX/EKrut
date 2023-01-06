@@ -95,7 +95,7 @@ public class MessageHandler {
 			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
 		case ReceiveItemsInMachine:
-			navigateItems();
+			navigateItems((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
 			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
@@ -115,7 +115,7 @@ public class MessageHandler {
 		}
 	}
 
-	private static void navigateItems() {
+	private static void navigateItems(ArrayList<ItemInMachineEntity> obj) {
 		Object currentController = NavigationStoreController.getInstance().getController();
 		if (currentController instanceof SupplyManagementController) 
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
