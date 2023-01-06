@@ -15,23 +15,12 @@ import ocsf.server.ConnectionToClient;
 
 public class OrderDBController {
 
-	private static String username, password;
 
-	/**
-	 * Parse the string array into username and password
-	 * 
-	 * @param usernamePassword
-	 * @return
-	 */
-	public static boolean setUser(String[] usernamePassword) {
-		if (usernamePassword.length == 2) {
-			username = usernamePassword[0];
-			password = usernamePassword[1];
-			return true;
-		}
-		return false;
-	}
-
+	
+	/** Flow
+	*	1. Enter 
+	*/
+	
 	/**
 	 * Handles getting selected user and sending the entity back to client
 	 * 
@@ -80,21 +69,6 @@ public class OrderDBController {
 
 	}
 
-	public static void setUserLoggedIn(UserEntity user) {
-		try {
-			if (MySqlClass.getConnection() == null)
-				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE ekrut.users SET logged_in=? WHERE username=?;");
-			ps.setBoolean(1, user.isLogged_in());
-			ps.setString(2, user.getUsername());
-			ps.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return;
-	}
+	
 
 }

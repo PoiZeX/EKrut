@@ -131,11 +131,13 @@ public class HomePageController {
 		String[] splitString = currentUser.getRole_type().toString()
 				.split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
 		String role = "";
+		splitString[0] = splitString[0].substring(0, 1).toUpperCase() + splitString[0].substring(1);
 		if (splitString.length > 1)
 			for (String s : splitString)
 				role += s + " ";
 		else
 			role = splitString[0];
+		
 		roleLabel.setText(role);
 
 		ImageView roleImg = new ImageView();
