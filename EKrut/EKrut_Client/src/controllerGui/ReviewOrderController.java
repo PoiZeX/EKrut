@@ -114,6 +114,7 @@ public class ReviewOrderController {
 	private StringBuilder address = new StringBuilder();
 
 	public void initialize() {
+		try {
 		// tooltip = new TooltipSetter("Cancel the order");
 		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
@@ -135,7 +136,7 @@ public class ReviewOrderController {
 		phoneNumTxtField.setDisable(true);
 
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
-			waitOn(new Message(TaskType.IsFirstPurchase));
+			waitOn(new Message(TaskType.IsFirstPurchase, NavigationStoreController.connectedUser));
 			if ((boolean) data) {
 				// give discount
 				OrderController.addDiscount(20);
@@ -159,7 +160,10 @@ public class ReviewOrderController {
 
 		// start the manager process
 		reviewProcessManager();
-
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void getDataFromServer(Object dataRecived) {
@@ -351,7 +355,7 @@ public class ReviewOrderController {
 		Label quantity = new Label();
 		Label sum = new Label();
 		Line line = new Line();
-		Image image = new Image("/styles/products/" + item.getItemImg().getImgName());
+		Image image = OrderController.getImageOfItem(item.getName());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(45);
 		imageView.setFitWidth(45);

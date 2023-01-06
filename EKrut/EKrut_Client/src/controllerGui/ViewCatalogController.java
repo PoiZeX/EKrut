@@ -80,17 +80,15 @@ public class ViewCatalogController {
 	private int machineDiscount = 0;
 	private int machineId = AppConfig.MACHINE_ID;
 	private ObservableList<Node> allCatalogItems;
-	private static Map<String, ItemInMachineEntity> itemsList;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
 	private String lastMethod;
-
+	
 	public void initialize() throws InterruptedException {		
-		itemsList = new LinkedHashMap<>();
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
-		generateCatalog(itemsList);
+		generateCatalog(OrderController.getItemsList());
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
@@ -123,7 +121,7 @@ public class ViewCatalogController {
 	private void generateAllItems() {
 		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
 		for (ItemEntity item : tempItems) {
-			itemsList.put(item.getName(), new ItemInMachineEntity(item));
+			OrderController.putItemInList(item.getName(), new ItemInMachineEntity(item));
 		}
 		recievedData = true;
 	}
@@ -166,12 +164,10 @@ public class ViewCatalogController {
 	 * @param obj
 	 */
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
-		if (!itemsList.isEmpty()) {
-			itemsList.clear();
-		}
+		OrderController.clearItemsList();
 		for (ItemInMachineEntity item : obj) {
 			convertImage(item);
-			itemsList.put(item.getName(), item);
+			OrderController.putItemInList(item.getName(), item);
 		}
 		recievedData = true;
 	}

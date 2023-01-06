@@ -108,9 +108,17 @@ public class MessageHandler {
 		case RequestSupplyWorkers:
 			SupplyManagementDBController.getSupplyWorkers(client);
 			break;
+			
+		case isMemberFirstPurchase:
+			OrderDBController.isMemberFirstPurchase((UserEntity)obj, client);
+			break;
+		case UpdateItemsWithAnswer:
+			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
+			break;
 		case NewOrderCreation:
 			
 			break;
+			
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 		default:

@@ -10,6 +10,7 @@ import entity.ItemEntity;
 import entity.ItemInCartEntity;
 import entity.ItemInMachineEntity;
 import entity.OrderEntity;
+import javafx.scene.image.Image;
 
 /**
  * The class handles the WHOLE order process
@@ -29,16 +30,38 @@ public class OrderController {
 	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static int discounts = 0; // in NIS not %
 	public static OrderEntity currentOrder;
+	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>();; // for images i think(???)
+
 	public OrderController() {
-		
+
+	}
+
+	public static Map<String, ItemInMachineEntity> getItemsList() {
+		return itemsList;
+	}
+	
+	public static void putItemInList(String name, ItemInMachineEntity entity) {
+		itemsList.put(name, entity);
+	}
+
+	public static void clearItemsList() {
+		if (!itemsList.isEmpty()) {
+			itemsList.clear();
+		}
+	}
+	
+	public static Image getImageOfItem(String name) {
+		return OrderController.itemsList.get(name).getItemImage();
 	}
 	public static void getCurrentOrder() {
-		
+
 	}
-	public static void setCurrentOrder(int user_id,String supplyMethod  ) {
-		currentOrder =new OrderEntity(user_id,supplyMethod);
-		
+
+	public static void setCurrentOrder(int user_id, String supplyMethod) {
+		currentOrder = new OrderEntity(user_id, supplyMethod);
+
 	}
+
 	/**
 	 * return the amount of a specific item in the cart
 	 * 
@@ -136,29 +159,31 @@ public class OrderController {
 
 	/**
 	 * Get total discount in NIS
+	 * 
 	 * @return
 	 */
 	public static int getTotalDiscounts() {
-		return getTotalPrice() * discounts/100;
+		return getTotalPrice() * discounts / 100;
 	}
-	
+
 	/**
 	 * Get total discount in %
+	 * 
 	 * @return
 	 */
 	public static int getTotalDiscountsPercentage() {
 		return discounts;
 	}
-	
+
 	/**
 	 * Add discount in %
+	 * 
 	 * @param discount
 	 */
 	public static void addDiscount(int discount) {
 		discounts += discount;
 	}
-	
-	
+
 	public static int getPriceAfterDiscounts() {
 		return getTotalPrice() - getTotalDiscounts();
 	}

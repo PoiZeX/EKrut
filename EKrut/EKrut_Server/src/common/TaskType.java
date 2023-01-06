@@ -65,6 +65,7 @@ public enum TaskType {
 	
 	// Order
 	ReviewOrderServerAnswer,
+	isMemberFirstPurchase,
 	AddNewDelivery,
 	NewOrderCreation,
 	UpdateItemsWithAnswer,
