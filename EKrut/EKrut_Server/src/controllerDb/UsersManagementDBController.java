@@ -140,23 +140,29 @@ public class UsersManagementDBController {
 	 * @return user
 	 */
 	public static boolean updateUserRoleType(String[] details, ConnectionToClient client) {
+		if(details.length < 1 && CommonFunctions.isNullOrEmpty(details[1])) 
+			return false;
 		String idNumber = details[0];
 		String roleType = details[1];
-		String query = "UPDATE users SET role_type=? WHERE id_number=?;";
+		String region = details[2];
+		String creditCardNumber = details[3];
+		String query = "UPDATE users SET role_type=? ,region=? ,cc_number=? WHERE id_number=?;";
 		try {
 			if (MySqlClass.getConnection() == null)
 				return false;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, roleType);
-			ps.setString(2, idNumber);
+			ps.setString(2, region);
+			ps.setInt(3, Integer.parseInt(creditCardNumber));
+			ps.setString(4, idNumber);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			UserEntity userToReturn = getUserByRoleFromDB(details, null);  // will return a single user
-			client.sendToClient(new Message(TaskType.ReceiveChangeUserRoleTypeInDB, userToReturn));
+			client.sendToClient(new Message(TaskType.ReceiveUserUpdateInDB, userToReturn));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

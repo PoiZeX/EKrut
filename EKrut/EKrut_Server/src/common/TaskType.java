@@ -15,6 +15,7 @@ public enum TaskType {
 	UserNotApproved, 
 	
 	// Receive Answers From Server //
+	ReceiveUserUpdateInDB,
 	ReceiveUsersApproval,
 	ReceiveDeliveriesFromServer,
 	ReceiveItemsFromServer,
@@ -47,8 +48,7 @@ public enum TaskType {
 	RequesManagerInfoFromServerDB,
 	RequestDeliveryFromServer,
 	// Update Database
-	RequestChangeUserRoleTypeInDB,
-	ReceiveChangeUserRoleTypeInDB,
+	RequestUserUpdateInDB,
 	
 	RequestInsertNewSale,
 	RequestUpdateMachineMinAmount,

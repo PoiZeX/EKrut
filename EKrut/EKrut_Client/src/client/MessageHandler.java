@@ -63,7 +63,7 @@ public class MessageHandler {
 			break;
 		// Registration Form
 		case ReceiveUserInfoFromServerDB:
-		case ReceiveChangeUserRoleTypeInDB:
+		case ReceiveUserUpdateInDB:
 		case ReceiveManagerInfoFromServerDB:
 			RegistrationFormController.receiveDataFromServer(obj);
 			break;

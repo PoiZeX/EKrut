@@ -26,7 +26,7 @@ public enum TaskType {
 	ReceiveUserInfoFromServerDB,
 	SendPersonalMessage,
 	ReceiveManagerInfoFromServerDB,
-	ReceiveChangeUserRoleTypeInDB,
+	ReceiveUserUpdateInDB,
 	ReceiveDeliveryFromServer,
 	ReceiveItemsInMachine,
 	ReceiveSalesFromServer,
@@ -51,7 +51,7 @@ public enum TaskType {
 	RequestDeliveryFromServer,  
 	
 	// Update Database
-	RequestChangeUserRoleTypeInDB,
+	RequestUserUpdateInDB,
 	RequestInsertNewSale,
 	RequestUpdateMachineMinAmount,
 

@@ -102,6 +102,7 @@ public class RegistrationFormController{
 	protected static Object recivedData;
 	protected static boolean isDataRecived = false;
 	private String roleType;
+	private boolean creditCardChecker = true;
     
     public void initialize() {
     	dataArray = new ArrayList<>();
@@ -140,6 +141,19 @@ public class RegistrationFormController{
                 }
             }
         });
+    	creditcardTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+    	    if (newValue.length() != 16) {
+    	    	creditCardChecker = false;
+    	    	creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+    	    }
+    	    else if (newValue.length() == 0) {
+    	    	creditcardTxtField.setStyle("-fx-border-color: none;");
+    	    }
+    	    else {
+    	    	creditCardChecker = true;
+    			creditcardTxtField.setStyle("-fx-border-color: none;");
+    	    }
+    	});
     }
 
     @FXML
@@ -160,21 +174,28 @@ public class RegistrationFormController{
     			field.setStyle("-fx-border-color: none;");
     		}
     	}
-    	if (missingTextFields == 0) {
-    		updateUser();
+    	if (creditCardChecker == false) {
+    		errorMsgLabel.setText("Invalid Credit Card Number!");
+    		creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
     	}
     	else {
-			errorMsgLabel.setText("There are missing fields!");
-			regionComboBox.setStyle("-fx-border-color: #ff1414;");
+        	if (missingTextFields == 0) {
+        		updateUser();
+        	}
+        	else {
+    			errorMsgLabel.setText("There are missing fields!");
+    			regionComboBox.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 1;");
+        	}
     	}
+
     }
 
     /**
-     * Update the user role type entity
+     * Update the user entity
      */
     private void updateUser() {
-    	String[] newRoleType = {idnumberTxtField.getText(), roleType};
-    	chat.acceptObj(new Message(TaskType.RequestChangeUserRoleTypeInDB, newRoleType));
+    	String[] detailsToUpdate = {idnumberTxtField.getText(), roleType, regionComboBox.getValue(), creditcardTxtField.getText()};
+    	chat.acceptObj(new Message(TaskType.RequestUserUpdateInDB, detailsToUpdate));
     	
 		// wait for answer
 		while (isDataRecived == false) {
@@ -184,8 +205,7 @@ public class RegistrationFormController{
 				e.printStackTrace();
 			}
 		}
-		
-		if (recivedData instanceof UserEntity && ((UserEntity) recivedData).getId_num().equals(newRoleType[0])) {
+		if (recivedData instanceof UserEntity && ((UserEntity) recivedData).getId_num().equals(detailsToUpdate[0])) {
 			errorMsgLabel.setStyle("-fx-text-fill: #000000");
 			errorMsgLabel.setText("User updated successuflly!");
 			sendMessageToRegionManager(((UserEntity)recivedData).getRegion());
@@ -235,6 +255,7 @@ public class RegistrationFormController{
     
     @FXML
     void clearBtnAction(ActionEvent event) {
+    	regionComboBox.setStyle("-fx-border-color: none;");
     	regionComboBox.setPromptText("Region");
     	regionComboBox.getSelectionModel().clearSelection();
     	errorMsgLabel.setText("");
