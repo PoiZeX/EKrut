@@ -52,6 +52,12 @@ public class OrderController {
 			cartSize += (getAmount(item));
 		return cartSize;
 	}
+	
+	public static int getItemAmount(ItemInMachineEntity item) {
+		if (!itemsInCartList.containsKey(item))
+			return 0;
+		return itemsInCartList.get(item);
+	}
 	/**
 	 * returns the total price of the cart
 	 * @return totalPrice;

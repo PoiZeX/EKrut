@@ -3,14 +3,12 @@ package controllerDb;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import common.Message;
 import common.TaskType;
-import entity.ImgEntity;
 import entity.ItemEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
@@ -27,7 +25,6 @@ public class ItemDBController {
 				return;
 
 			stmt = MySqlClass.getConnection().createStatement();
-			//TODO get from DB the items -> next step will be to take it from the items in machine 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM items;");
 			while (rs.next()) 
 			{

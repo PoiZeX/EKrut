@@ -111,6 +111,8 @@ public class MessageHandler {
 		case NewOrderCreation:
 			
 			break;
+		case AddNewDelivery:
+			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

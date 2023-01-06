@@ -392,7 +392,7 @@ public class NavigationStoreController {
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
 		if (connectedUser != null) {
-			ItemsController.deleteAllItemsInDir();
+//			ItemsController.deleteAllItemsInDir();
 			
 			if (connectedUser.isLogged_in()) {
 				connectedUser.setLogged_in(false); // logout the user
