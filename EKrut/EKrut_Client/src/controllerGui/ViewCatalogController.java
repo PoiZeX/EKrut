@@ -97,8 +97,7 @@ public class ViewCatalogController {
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
-		
-		
+		recievedData = false;
 	}
 
 	@FXML
