@@ -13,12 +13,13 @@ import common.DeliveryStatus;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
+import entity.SaleEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class DeliveryManagementDBController {
 	
-	/*update delivery status*/
+	/**update estimates delivery time, delivery status and customer status*/
 	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		Statement stmt;
 		try {
@@ -41,8 +42,36 @@ public class DeliveryManagementDBController {
 		}
 		return;
 	}
+	/**
+	 * insert new delivery 
+	 * @param deliveryEntity
+	 * @param client
+	 */
+	public static void insertDeliveryEntity(DeliveryEntity deliveryEntity, ConnectionToClient client) {
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.deliveries (region,customer_id, address, estimated_time,deilvery_status,customer_status) "
+					+ "VALUES (?, ?, ?, ?, ?, ?);");
+			ps.setString(1,deliveryEntity.getRegion());
+			ps.setString(2,deliveryEntity.getCustomerId());
+			ps.setString(3, deliveryEntity.getAddress());
+			ps.setString(4, deliveryEntity.getEstimatedTime());
+			ps.setString(5, deliveryEntity.getDeliveryStatus().toString());
+			ps.setString(6, deliveryEntity.getCustomerStatus().toString());
+			
+			ps.executeUpdate();
 
-	// 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * get deliveries
+	 * @param client
+	 */
 	public static void getTable(ConnectionToClient client) {
 		Statement stmt;
 		DeliveryEntity deliveryEntity;
@@ -69,7 +98,11 @@ public class DeliveryManagementDBController {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * get specific delivery by customer id and order id
+	 * @param details
+	 * @param client
+	 */
 	public static void getDelivery(String[] details, ConnectionToClient client) {
 		Statement stmt;
 		DeliveryEntity deliveryEntity;

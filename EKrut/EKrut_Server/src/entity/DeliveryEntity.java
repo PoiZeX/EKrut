@@ -31,12 +31,11 @@ public class DeliveryEntity implements Serializable{
 	}
 
 
-	public DeliveryEntity(int orderId, String region, String customerId, String address, String estimatedTime ) {
+	public DeliveryEntity(int orderId, String region, String customerId, String address) {
 		this.orderId = orderId;
 		this.customerId = customerId;
 		this.address=address;
 		this.region = region;
-		this.estimatedTime = estimatedTime;
 		this.deliveryStatus = DeliveryStatus.pendingApproval;
 		this.customerStatus= CustomerStatus.NOT_APPROVED;
 	}

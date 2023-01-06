@@ -18,7 +18,9 @@ import common.PopupTypeEnum;
 import common.ScreensNames;
 import common.TaskType;
 import controller.OrderController;
+import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
+import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -50,14 +52,20 @@ public class ReviewOrderController {
 	@FXML
 	private Label ReviewOrderTitleLbl;
 
-	@FXML
-	private Label addressDetailsLbl;
+    @FXML
+    private TextField aptTxtField;
+
+    @FXML
+    private TextField cityTxtField;
+
+    @FXML
+    private TextField postCodeTxtField;
+
+    @FXML
+    private TextField streetTxtField;
 
 	@FXML
 	private GridPane addressDetalisGridPane;
-
-	@FXML
-	private TextField cityTxtField;
 
 	@FXML
 	private Label contactDetailsLbl;
@@ -87,9 +95,6 @@ public class ReviewOrderController {
 	private GridPane rightGridPane;
 
 	@FXML
-	private TextField streetTxtField;
-
-	@FXML
 	private Label totalSumLbl;
 
 	@FXML
@@ -104,6 +109,9 @@ public class ReviewOrderController {
 	private boolean isSelfPickup;
 
 	private static Map<ItemInMachineEntity, Integer> cart;
+	private UserEntity user=NavigationStoreController.connectedUser;
+	private StringBuilder address=new StringBuilder();
+	private String errMsg="";
 
 	public void initialize() {
 		// tooltip = new TooltipSetter("Cancel the order");
@@ -213,7 +221,8 @@ public class ReviewOrderController {
 			}
 			else {
 				isDataRecived = false;
-				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
+				DeliveryEntity deliveryEntity=new DeliveryEntity(user.getRegion(),user.getId_num(),address.toString());
+				chat.acceptObj(new Message(TaskType.AddNewDelivery, deliveryEntity));
 				
 			}
 		}
@@ -234,7 +243,33 @@ public class ReviewOrderController {
 	 * @return
 	 */
 	private boolean isValidDeliveryDetails() {
-
+		
+		if(CommonFunctions.isNullOrEmpty(streetTxtField.getText())){
+			errMsg="Please enter street";
+			return false;
+		}
+		if(CommonFunctions.isNullOrEmpty(aptTxtField.getText())){
+			errMsg="Please enter apt number or 0 if none";
+			return false;
+		}
+		if(CommonFunctions.isNullOrEmpty(cityTxtField.getText())){
+			errMsg="Please enter city";
+			return false;
+		}
+		if(CommonFunctions.isNullOrEmpty(postCodeTxtField.getText())){
+			errMsg="Please enter postcode"; //its must? 
+			return false;
+		}
+		address.append(streetTxtField.getText());
+		address.append(aptTxtField.getText());
+		address.append(cityTxtField.getText()+", ");
+		address.append(postCodeTxtField.getText());
+		
+		/*add: 
+		 * streetTxtField conatains only letters
+		 * aptTxtField-number
+		 * cityTxtField-letters
+		 * postcode- 7 digits*/
 		return true;
 	}
 
