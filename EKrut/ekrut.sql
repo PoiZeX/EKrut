@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: localhost    Database: ekrut
+-- Host: 127.0.0.1    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -291,6 +291,33 @@ INSERT INTO `orders_report` VALUES (40,'Ort Braude Academic Collage,5,389,Big Ka
 UNLOCK TABLES;
 
 --
+-- Table structure for table `personal_messages`
+--
+
+DROP TABLE IF EXISTS `personal_messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personal_messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `date` varchar(64) NOT NULL,
+  `type` varchar(64) NOT NULL,
+  `message` varchar(2048) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personal_messages`
+--
+
+LOCK TABLES `personal_messages` WRITE;
+/*!40000 ALTER TABLE `personal_messages` DISABLE KEYS */;
+INSERT INTO `personal_messages` VALUES (5,0,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(6,32,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(7,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(8,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(9,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(10,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(11,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(12,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(13,83,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(14,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(15,83,'28/12/2022','title','Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here ');
+/*!40000 ALTER TABLE `personal_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `regions`
 --
 
@@ -347,18 +374,15 @@ DROP TABLE IF EXISTS `sales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sales` (
-  `id` int NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `days` enum('Sundy','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday') DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `start_time` varchar(45) DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `end_time` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `hours` enum('06-12','12-18','18-00','00-06') DEFAULT NULL,
-  `region` varchar(45) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `region` varchar(128) NOT NULL,
+  `sale_type` varchar(45) NOT NULL,
+  `days` varchar(128) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `sale_sataus` enum('Active','NotActive') NOT NULL DEFAULT 'NotActive',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,7 +391,32 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+INSERT INTO `sales` VALUES (1,'North','1+1','Sunday','08:00:00','10:00:00','NotActive'),(2,'North','1+1','Sunday,Monday','14:00:00','16:00:00','NotActive'),(7,'Center','Monday, Tuesday','10%','06:00:00','08:00:00','NotActive');
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sales_type`
+--
+
+DROP TABLE IF EXISTS `sales_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales_type` (
+  `type_id` int NOT NULL,
+  `type_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales_type`
+--
+
+LOCK TABLES `sales_type` WRITE;
+/*!40000 ALTER TABLE `sales_type` DISABLE KEYS */;
+INSERT INTO `sales_type` VALUES (1,'\'1+1\''),(2,'\'10%\''),(3,'\'20%\''),(4,'\'30%\'');
+/*!40000 ALTER TABLE `sales_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -447,4 +496,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-06 14:32:24
+-- Dump completed on 2023-01-06 14:36:31
