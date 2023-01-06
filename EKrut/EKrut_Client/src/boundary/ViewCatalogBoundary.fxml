@@ -55,9 +55,8 @@
       <GridPane id="headerBar" hgap="10.0" prefHeight="84.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
-            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
-            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
-            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="476.0" />
+            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="238.0" minWidth="-Infinity" prefWidth="205.0" />
+            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="555.0" />
             <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
         </columnConstraints>
         <rowConstraints>
@@ -65,32 +64,17 @@
             <RowConstraints fillHeight="false" maxHeight="40.666664123535156" minHeight="10.0" prefHeight="40.666664123535156" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="searchTextLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Product Search" styleClass="TextField" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <TextField fx:id="searchTextLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Product Search" styleClass="TextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <Button fx:id="sortBtn" mnemonicParsing="false" onAction="#sortCatalog" prefHeight="30.0" prefWidth="30.0" styleClass="Button-NoBG" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../styles/icons/039-filter.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#searchItem" prefHeight="30.0" prefWidth="30.0" styleClass="Button-NoBG" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../styles/icons/012-search.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
-            <StackPane alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="35.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../styles/icons/012-search.png" />
+               </image>
+            </ImageView>
+            <StackPane alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="35.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="viewCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewCart" prefHeight="40.0" prefWidth="48.0" styleClass="Button-NoBG">
                      <graphic>
@@ -113,7 +97,6 @@
                   </Group>
                </children>
             </StackPane>
-            <Label fx:id="searchResultLabel" contentDisplay="CENTER" styleClass="Label-list" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" />

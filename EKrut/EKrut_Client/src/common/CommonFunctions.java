@@ -1,5 +1,6 @@
 package common;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,6 +82,28 @@ public class CommonFunctions {
 		}
 	}
 	
+	public static void createShipmentPopup()  {
+		FXMLLoader loader;
+		loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/ShipmentMethodPopupBoundary.fxml"));
+		Parent root;
+		try {
+			root = loader.load();
+			// get controller and use it
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+
+			// set properties
+			stage.setTitle("Shipment Method");
+			stage.setResizable(false);
+			
+			// freeze current screen until got popup close
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 	public static String splitByUpperCase(String str) {
 		String goodName = "";
 
