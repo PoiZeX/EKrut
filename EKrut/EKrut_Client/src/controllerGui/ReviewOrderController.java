@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import java.util.concurrent.Semaphore;
+import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -52,14 +53,14 @@ public class ReviewOrderController {
 	@FXML
 	private Label ReviewOrderTitleLbl;
 
-    @FXML
-    private TextField aptTxtField;
+	@FXML
+	private TextField aptTxtField;
 
-    @FXML
-    private TextField cityTxtField;
+	@FXML
+	private TextField cityTxtField;
 
-    @FXML
-    private TextField streetTxtField;
+	@FXML
+	private TextField streetTxtField;
 
 	@FXML
 	private GridPane addressDetalisGridPane;
@@ -104,14 +105,13 @@ public class ReviewOrderController {
 	private GridPane productsGrid;
 
 	private boolean isSelfPickup;
-	
+
 	private static Object data;
 	private static boolean isDataRecived = false;
-	
+
 	private static Map<ItemInMachineEntity, Integer> cart;
-	private UserEntity user=NavigationStoreController.connectedUser;
-	private StringBuilder address=new StringBuilder();
-	private String errMsg="";
+	private UserEntity user = NavigationStoreController.connectedUser;
+	private StringBuilder address = new StringBuilder();
 
 	public void initialize() {
 		// tooltip = new TooltipSetter("Cancel the order");
@@ -127,31 +127,34 @@ public class ReviewOrderController {
 		totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()));
 		totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()));
 		totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()));
-		firstNameTxtField.setText(user.getFirst_name()); firstNameTxtField.setDisable(true);
-		lastNameTxtField.setText(user.getLast_name()); lastNameTxtField.setDisable(true);
-		phoneNumTxtField.setText(user.getPhone_number()); phoneNumTxtField.setDisable(true);
-		
-		
-		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member))
-		{
+		firstNameTxtField.setText(user.getFirst_name());
+		firstNameTxtField.setDisable(true);
+		lastNameTxtField.setText(user.getLast_name());
+		lastNameTxtField.setDisable(true);
+		phoneNumTxtField.setText(user.getPhone_number());
+		phoneNumTxtField.setDisable(true);
+
+		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
 			waitOn(new Message(TaskType.IsFirstPurchase));
-			if((boolean)data)
-			{
-				// give discount 
+			if ((boolean) data) {
+				// give discount
+				OrderController.addDiscount(20);
+
 				// show special label or something
-				
+				totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()));
+				totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()));
 			}
 		}
-		
+
 		// check if OL/EK (for delivery)
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
 			// rightGridPane.setVisible(false);
-			rightGridPane.getChildren().clear();
-			Image image = new Image();
-			ImageView imageView = new ImageView(image);
-			rightGridPane.add(imageView, 0, 2);
-			GridPane.setColumnSpan(imageView, 2);
-			GridPane.setRowSpan(imageView, 2);
+//			rightGridPane.getChildren().clear();
+//			Image image = new Image();
+//			ImageView imageView = new ImageView(image);
+//			rightGridPane.add(imageView, 0, 2);
+//			GridPane.setColumnSpan(imageView, 2);
+//			GridPane.setRowSpan(imageView, 2);
 		}
 
 		// start the manager process
@@ -163,53 +166,90 @@ public class ReviewOrderController {
 		data = dataRecived;
 		isDataRecived = true;
 	}
+
 	/**
 	 * local function to handle sending and waiting for answer
+	 * 
 	 * @param msg
 	 * @throws Exception
 	 */
 	private void waitOn(Message msg) throws Exception {
 		isDataRecived = false;
 		chat.acceptObj(msg);
-		while(!isDataRecived)
-		Thread.sleep(100);
+		while (!isDataRecived)
+			Thread.sleep(100);
 	}
+
 	/**
 	 * Manage the review process
+	 * @throws Exception 
 	 * 
 	 * @throws InterruptedException
 	 */
-	private void reviewProcessManager() throws InterruptedException {
+	private void reviewProcessManager() throws Exception {
 		/*
-		 * Flow: 
-		 * 1. User press 'payment' 
-		 * 1.1 Check if (OL && Delivery details good) 
-		 * 2. Send to server all items to update 
-		 * 3. Get Answer on success (String, null or info) 
-		 * 3.1. if yes - continue to 4 
-		 * 3.2. if no - stay in review order with
+		 * Flow: 1. User press 'payment' 1.1 Check if (OL && Delivery details good) 2.
+		 * Send to server all items to update 3. Get Answer on success (String, null or
+		 * info) 3.1. if yes - continue to 4 3.2. if no - stay in review order with
 		 * information popup 4. Make external Payment / Future payment (דחוי)
 		 * 
 		 * ROLL BACK HERE?
 		 */
 		String successMsg = "Yayy!\n";
 		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
-		String supplyMethod = "On-site"; // get supplyMethod from selectionController later
-		
-		// setup params according to configurations
-		switch (AppConfig.SYSTEM_CONFIGURATION) {
-		case "OL": // online order
-			if (supplyMethod.equals("Delivery") && !isValidDeliveryDetails()) // add a check if delivery is chosed
-			{
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information"+"\n");
-				return;
-			} else {
-				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup +"\n";
-			}
-			break;
+		String supplyMethod = "CHANGE MEEEEEE"; // get supplyMethod from selectionController later
 
-		case "EK": // real machine order
-			successMsg += "Your order is placed successfuly\n";
+		// setup params according to configurations
+		switch (supplyMethod) {
+		case "Delivery": // online order
+			String resValid = isValidDeliveryDetails();
+				if(!CommonFunctions.isNullOrEmpty(resValid))
+				{
+					CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information\n" + resValid + "\n");
+					return;
+				}
+				successMsg += "Your order placed successfuly\nYou will receive an SMS once the order approved!";
+				
+				// insert new order
+				waitOn(new Message(TaskType.NewOrderCreation, "OrderController.getCart()"));
+				if (data instanceof Boolean && !(boolean) data) {
+					// error inserting the order
+					CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+					return;
+				}
+				
+				
+				DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(),
+						address.toString());
+				waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
+				break;
+				
+		case "Pickup":
+		case "On-site":
+			if(supplyMethod.equals("Pickup"))
+				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup + "\n";
+			else 
+				successMsg += "Your order is placed successfuly\n";
+			
+			waitOn(new Message(TaskType.UpdateItemsInMachine, OrderController.getCart()));
+			// check validation of items
+			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
+				// error inserting items (Roll back of this should be taken on server side)
+				CommonFunctions.createPopup(PopupTypeEnum.Error,
+						"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
+				return;
+			}
+			
+			// insert new order
+			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
+			if (data instanceof Boolean && !(boolean) data) {
+				// error inserting the order
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+
+				// ROLL BACK
+				RollBack();
+				return;
+			}
 			break;
 
 		default:
@@ -217,81 +257,20 @@ public class ReviewOrderController {
 			return;
 		}
 
-		// update items in stock first
-		isDataRecived = false;
-		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart())); // error for now in purpose
-
-		// check validation of items
-		if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
-			// error inserting items (Roll back of this should be taken on server side)
-			CommonFunctions.createPopup(PopupTypeEnum.Error,
-					"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
-			return;
-		}
-
-		// insert new order
-		isDataRecived = false;
-		chat.acceptObj(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
-		if (data instanceof Boolean && !(boolean) data) {
-			// error inserting the order
-			CommonFunctions.createPopup(PopupTypeEnum.Error,
-					"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
-
-			// ROLL BACK
-			RollBack();
-			return;
-		else {
-			isDataRecived = false;
-			chat.acceptObj(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
-			if(data instanceof Boolean && !(boolean)data)
-			{
-				// error inserting the order
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "We sorry but the following items no longer available:\n"+
-						((String) data)+"\nAbort");
-				
-				// ROLL BACK
-				RollBack();
-				return;
-			}
-			else {
-				isDataRecived = false;
-
-				DeliveryEntity deliveryEntity=new DeliveryEntity(user.getRegion(),user.getId_num(),address.toString());
-				chat.acceptObj(new Message(TaskType.AddNewDelivery, deliveryEntity));
-
-//				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
-
-				
-			}
-		}
-
-		switch (supplyMethod) {
-		case "Delivery":
-			// insert new delivery
-			isDataRecived = false;
-			chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
-			break;
-
-		case "Pickup":
-			break;
-
-		case "On-site":
-			// Simulate the EK robot command ?
-			break;
-		}
 
 		paymentProccess();
 
 		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
 
 		CommonFunctions.SleepFor(5000, () -> {
-			OrderController.clear();
+			//OrderController.clear();
+			
 			// refresh stages
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
+			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ReviewOrder);
+			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
 		});
-	
+
 	}
 
 	private void paymentProccess() {
@@ -304,35 +283,37 @@ public class ReviewOrderController {
 	 * 
 	 * @return
 	 */
-	private boolean isValidDeliveryDetails() {
-		
-		if(CommonFunctions.isNullOrEmpty(streetTxtField.getText())){
-			errMsg="Please enter street";
-			return false;
-		}
-		if(CommonFunctions.isNullOrEmpty(aptTxtField.getText())){
-			errMsg="Please enter apt number or 0 if none";
-			return false;
-		}
-		if(CommonFunctions.isNullOrEmpty(cityTxtField.getText())){
-			errMsg="Please enter city";
-			return false;
-		}
-		if(CommonFunctions.isNullOrEmpty(postCodeTxtField.getText())){
-			errMsg="Please enter postcode"; //its must? 
-			return false;
-		}
-		address.append(streetTxtField.getText());
-		address.append(aptTxtField.getText());
-		address.append(cityTxtField.getText()+", ");
-		address.append(postCodeTxtField.getText());
-		
-		/*add: 
-		 * streetTxtField conatains only letters
-		 * aptTxtField-number
-		 * cityTxtField-letters
-		 * postcode- 7 digits*/
-		return true;
+	private String isValidDeliveryDetails() {
+		StringBuilder errMsg = new StringBuilder();
+
+		if (CommonFunctions.isNullOrEmpty(streetTxtField.getText()))
+			errMsg.append("Please enter street\n");
+
+		if (CommonFunctions.isNullOrEmpty(aptTxtField.getText()))
+			errMsg.append("Please enter apt number or 0 if none\n");
+
+		if (CommonFunctions.isNullOrEmpty(cityTxtField.getText()))
+			errMsg.append("Please enter city\n");
+
+		// send error on null/empty information
+		if (!CommonFunctions.isNullOrEmpty(errMsg.toString()))
+			return errMsg.toString();
+
+		// validate the information strings
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z ]{1,12}$", cityTxtField.getText()))
+			errMsg.append("City can contain letters and space only in length of 2-12\n");
+
+		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", streetTxtField.getText()))
+			errMsg.append("Street can contain number and '/' only in length of 1-5\n");
+
+		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText()))
+			errMsg.append("Apartment number can contain number and '/' only in length of 1-5\n");
+
+		address.append("Street: " + streetTxtField.getText());
+		address.append("Apartment: " + aptTxtField.getText());
+		address.append("City: " + cityTxtField.getText());
+
+		return errMsg.toString();
 	}
 
 	/**

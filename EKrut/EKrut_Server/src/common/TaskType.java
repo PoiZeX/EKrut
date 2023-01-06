@@ -65,7 +65,10 @@ public enum TaskType {
 	
 	// Order
 	ReviewOrderServerAnswer,
-	 
+	AddNewDelivery,
+	NewOrderCreation,
+	UpdateItemsWithAnswer,
+	
 	// Common Data Initialization //
 	InitRegions,
 	InitMachines,
