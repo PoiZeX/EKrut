@@ -59,9 +59,6 @@ public class ReviewOrderController {
     private TextField cityTxtField;
 
     @FXML
-    private TextField postCodeTxtField;
-
-    @FXML
     private TextField streetTxtField;
 
 	@FXML
@@ -107,7 +104,10 @@ public class ReviewOrderController {
 	private GridPane productsGrid;
 
 	private boolean isSelfPickup;
-
+	
+	private static Object data;
+	private static boolean isDataRecived = false;
+	
 	private static Map<ItemInMachineEntity, Integer> cart;
 	private UserEntity user=NavigationStoreController.connectedUser;
 	private StringBuilder address=new StringBuilder();
@@ -117,38 +117,31 @@ public class ReviewOrderController {
 		// tooltip = new TooltipSetter("Cancel the order");
 		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
-//		ItemInMachineEntity newItem = new ItemInMachineEntity(1, 1, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
-//				"Bamba", 100.0, "Bamba.png");
-//		ItemInMachineEntity newItem1 = new ItemInMachineEntity(1, 2, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-//				0, "Bamba1", 100.0, "Bamba.png");
-//		ItemInMachineEntity newItem2 = new ItemInMachineEntity(1, 3, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-//				0, "Bamba2", 100.0, "Bamba.png");
-//		ItemInMachineEntity newItem3 = new ItemInMachineEntity(1, 4, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-//				0, "Bamba3", 100.0, "Bamba.png");
-//		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-//				0, "Bamba4", 100.0, "Bamba.png");
-//
-//		
-//		OrderController.addItemToCart(newItem, 0);
-//		OrderController.addItemToCart(newItem1, 0);
-//		OrderController.addItemToCart(newItem2, 0);
-//		OrderController.addItemToCart(newItem3, 0);
-//		OrderController.addItemToCart(newItem4, 0);
-
 		// get cart
 		cart = OrderController.getCart();
 
 		// build graphical side
 		buildReviewOrder();
 
+		// initialize fields
+		totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()));
+		totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()));
+		totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()));
+		firstNameTxtField.setText(user.getFirst_name()); firstNameTxtField.setDisable(true);
+		lastNameTxtField.setText(user.getLast_name()); lastNameTxtField.setDisable(true);
+		phoneNumTxtField.setText(user.getPhone_number()); phoneNumTxtField.setDisable(true);
+		
 		
 		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member))
-			if(its first purchase)
+		{
+			waitOn(new Message(TaskType.IsFirstPurchase));
+			if((boolean)data)
 			{
 				// give discount 
 				// show special label or something
+				
 			}
-		
+		}
 		
 		// check if OL/EK (for delivery)
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
@@ -166,14 +159,21 @@ public class ReviewOrderController {
 
 	}
 
-	private static Object data;
-	private static boolean isDataRecived = false;
-
 	public static void getDataFromServer(Object dataRecived) {
 		data = dataRecived;
 		isDataRecived = true;
 	}
-
+	/**
+	 * local function to handle sending and waiting for answer
+	 * @param msg
+	 * @throws Exception
+	 */
+	private void waitOn(Message msg) throws Exception {
+		isDataRecived = false;
+		chat.acceptObj(msg);
+		while(!isDataRecived)
+		Thread.sleep(100);
+	}
 	/**
 	 * Manage the review process
 	 * 

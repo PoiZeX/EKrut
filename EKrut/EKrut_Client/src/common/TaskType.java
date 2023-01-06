@@ -30,6 +30,8 @@ public enum TaskType {
 	ReceiveDeliveryFromServer,
 	ReceiveItemsInMachine,
 	ReceiveSalesFromServer,
+	ReceiveAllOrdersOfUser,
+	
 	// Requests From Server //
 	RequestUsersApproval,
 	RequestUserFromDB,
@@ -66,6 +68,7 @@ public enum TaskType {
 	// Order
 	NewOrderCreation, 
 	AddNewDelivery,
+	IsFirstPurchase,
 	
 	// Common Data Initialization //
 	InitRegions,

@@ -16,61 +16,65 @@ import entity.ItemInMachineEntity;
  */
 public class OrderController {
 	/*
-	 * Get all items in machine
-	 * Get items description
-	 * Get discounts for current time and region
-	 * Add items to cart [V]
-	 * Change quantity (remove specially) [V]
-	 * Make a review 
-	 * Validate item quantity (server side before insert)
-	 * Insert order
+	 * Get all items in machine Get items description Get discounts for current time
+	 * and region Add items to cart [V] Change quantity (remove specially) [V] Make
+	 * a review Validate item quantity (server side before insert) Insert order
 	 * 
 	 * 
 	 */
-	
-	//private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
-	private static Map <ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
+
+	// private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();
+	// // itemId and itemEntity
+	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
+	private static int discounts = 0; // in NIS not %
 	
 	public OrderController() {
 
 	}
+
 	/**
 	 * return the amount of a specific item in the cart
+	 * 
 	 * @param item
 	 * @return amount
 	 */
 	private static int getAmount(ItemInMachineEntity item) {
 		return itemsInCartList.get(item);
 	}
+
 	/**
 	 * returns the amount of items in the cart
+	 * 
 	 * @return cartSize
 	 */
 	public static int getCartSize() {
 		int cartSize = 0;
-		for (ItemInMachineEntity item : itemsInCartList.keySet()) 
+		for (ItemInMachineEntity item : itemsInCartList.keySet())
 			cartSize += (getAmount(item));
 		return cartSize;
 	}
-	
+
 	public static int getItemAmount(ItemInMachineEntity item) {
 		if (!itemsInCartList.containsKey(item))
 			return 0;
 		return itemsInCartList.get(item);
 	}
+
 	/**
 	 * returns the total price of the cart
+	 * 
 	 * @return totalPrice;
 	 */
 	public static int getTotalPrice() {
 		int totalPrice = 0;
-		for (ItemInMachineEntity item : itemsInCartList.keySet()) 
+		for (ItemInMachineEntity item : itemsInCartList.keySet())
 			totalPrice += (getAmount(item) * item.getPrice());
 		return totalPrice;
 	}
-	
+
 	/**
 	 * return the cart as list of items
+	 * 
 	 * @return
 	 */
 	public static Map<ItemInMachineEntity, Integer> getCart() {
@@ -78,44 +82,77 @@ public class OrderController {
 	}
 
 	/**
-	 * Add item to cart 
+	 * Add item to cart
+	 * 
 	 * @param item
 	 * @return true if the item added successfully
 	 */
 	public static boolean addItemToCart(ItemInMachineEntity item, int amount) {
 		if (itemsInCartList.containsKey(item))
-				return false;
+			return false;
 		itemsInCartList.put(item, amount);
 		return true;
 	}
-	
+
 	/**
-	 * Change the quantity of item in cart, if Quantity equal/less than zero the item will be removed
+	 * Change the quantity of item in cart, if Quantity equal/less than zero the
+	 * item will be removed
+	 * 
 	 * @param itemId
-	 * @param newQuantity 
+	 * @param newQuantity
 	 * @return true if success
 	 */
-	public static boolean changeItemQuantity(ItemInMachineEntity item, int newQuantity)
-	{
+	public static boolean changeItemQuantity(ItemInMachineEntity item, int newQuantity) {
 		if (item == null)
 			return false;
 		// need to remove?
-		if(newQuantity <= 0) 
+		if (newQuantity <= 0)
 			return removeItem(item);
-		
+
 		// set new positive quantity
 		itemsInCartList.put(item, newQuantity);
 		return true;
 	}
-	
+
 	/**
 	 * Local method to remove item from cart
+	 * 
 	 * @param item
 	 * @return
 	 */
 	private static boolean removeItem(ItemInMachineEntity item) {
-		if (!itemsInCartList.containsKey(item)) return false;
+		if (!itemsInCartList.containsKey(item))
+			return false;
 		itemsInCartList.remove(item);
-		return true; 
+		return true;
 	}
+
+	/**
+	 * Get total discount in NIS
+	 * @return
+	 */
+	public static int getTotalDiscounts() {
+		return getTotalPrice() * discounts/100;
+	}
+	/**
+	 * Get total discount in %
+	 * @return
+	 */
+	public static int getTotalDiscountsPercentage() {
+		return discounts;
+	}
+	
+	/**
+	 * Add discount in %
+	 * @param discount
+	 */
+	public static void addDiscount(int discount) {
+		discounts += discount;
+	}
+	
+	
+	public static int getPriceAfterDiscounts() {
+		return getTotalPrice() - getTotalDiscounts();
+	}
+
 }
