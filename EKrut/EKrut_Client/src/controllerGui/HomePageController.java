@@ -57,7 +57,7 @@ public class HomePageController {
 
 	@FXML
 	private Button mailBtn;
-	
+
 	@FXML
 	private Label welcomeLabel;
 
@@ -68,34 +68,25 @@ public class HomePageController {
 	private VBox rigthVbox;
 
 	public void initialize() {
-		
+
 		// set hidden as default
 		topBtn.setVisible(false);
 		middleBtn.setVisible(false);
 		bottomBtn.setVisible(false);
 		mailBtn.setVisible(false);
 		Image image = null;
-		
+
 		// switch case by role
 		switch (currentUser.getRole_type()) {
 		case registered:
 		case member:
 			mailBtn.setVisible(true);
-			
-			if(AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-			
-				try {
-					LoadPopup();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmDelivery); // need to change later
-			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmDelivery); // need to
+																												// change
+																												// later
+			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
 			break;
@@ -106,13 +97,14 @@ public class HomePageController {
 			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
 			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
 			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagement);
-			if(currentUser.getRole_type() == RolesEnum.regionManager) 	
-				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages); 
+			if (currentUser.getRole_type() == RolesEnum.regionManager)
+				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			break;
 
 		case customerServiceWorker:
-			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account", ScreensNames.RegistrationForm);
+			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
+					ScreensNames.RegistrationForm);
 			break;
 
 		case deliveryWorker:
@@ -125,8 +117,12 @@ public class HomePageController {
 			break;
 
 		case marketingWorker:
-			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if the manager activated it
-																					// already
+			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if
+																											// the
+																											// manager
+																											// activated
+																											// it
+			// already
 			break;
 
 		case marketingManager:
@@ -138,14 +134,13 @@ public class HomePageController {
 			setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
 			break;
 
-
 		default:
-			// TODO: add label to inform the user he needs to contact customer support 
+			// TODO: add label to inform the user he needs to contact customer support
 			System.out.println("No role detected!"); // show the screen anyway because the login succeed
 			break;
 		}
-		CommonData.initData();	// initialize all common data's from DB.
-		
+		CommonData.initData(); // initialize all common data's from DB.
+
 		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
 		String[] splitString = currentUser.getRole_type().toString()
 				.split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
@@ -156,7 +151,7 @@ public class HomePageController {
 				role += s + " ";
 		else
 			role = splitString[0];
-		
+
 		roleLabel.setText(role);
 
 		ImageView roleImg = new ImageView();
@@ -166,8 +161,8 @@ public class HomePageController {
 			roleImg.setFitWidth(350.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
-		
-		// activate timeout 
+
+		// activate timeout
 		NavigationStoreController.transition.play();
 
 	}
@@ -188,31 +183,21 @@ public class HomePageController {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (scName != null)
+				switch (scName) {
+				case ViewCatalog:
+					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+						CommonFunctions.createShipmentPopup();
+					break;
+				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);
+					break;
+				}
 			}
 		});
 		btn.setTooltip(tooltip.getTooltip());
 		btn.setVisible(true);
 	}
 
-	private void LoadPopup() throws IOException {
-		FXMLLoader loader;
-		loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/ShipmentMethodPopupBoundary.fxml"));
-		Parent root = loader.load();
-
-		// get controller and use it
-		PopupController popupController = loader.getController();
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-
-		// set properties
-		stage.setTitle("shipment method");
-		stage.setResizable(false);
-		// freeze current screen until got popup close
-		stage.initModality(Modality.APPLICATION_MODAL);
-		stage.showAndWait();
-	}
 	/**
 	 * Log out from the system. sets the current user to null and changes the view
 	 * 
@@ -220,7 +205,7 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
-		NavigationStoreController.ExitHandler(false);	
+		NavigationStoreController.ExitHandler(false);
 	}
 
 }
