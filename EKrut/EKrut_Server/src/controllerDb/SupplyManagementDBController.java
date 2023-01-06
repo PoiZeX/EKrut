@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import common.CommonFunctions;
 import common.Message;
@@ -30,6 +31,7 @@ public class SupplyManagementDBController {
 
 	/**
 	 * get machine minimum amount
+	 * 
 	 * @param machineId
 	 * @return
 	 */
@@ -58,6 +60,7 @@ public class SupplyManagementDBController {
 
 	/**
 	 * get machine items according to minimum amount
+	 * 
 	 * @param machineId
 	 * @param client
 	 */
@@ -87,32 +90,36 @@ public class SupplyManagementDBController {
 	 */
 	private static void handleGetItems(ResultSet res, ConnectionToClient client) {
 		ItemInMachineEntity item;
-		
+
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
 			while (res.next()) {
-				// 1			2			3				4			5				6			7		8	9			10					
-				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id, item_id, name, price,  item_img_name
-				
-				if(res.getMetaData().getColumnCount() >= 9) {
+				// 1 2 3 4 5 6 7 8 9 10
+				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id,
+				// item_id, name, price, item_img_name
+
+				if (res.getMetaData().getColumnCount() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
-							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), res.getDouble(9), res.getString(10));
-					
-					String LocalfilePath= "../EKrut_Server/src/styles/products/"+item.getItemImg().getImgName();
-					File newFile = new File (LocalfilePath);	
-					byte [] mybytearray  = new byte [(int)newFile.length()];
+							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
+							res.getString(8), res.getDouble(9), res.getString(10));
+
+					String LocalfilePath = "../EKrut_Server/src/styles/products/" + item.getItemImg().getImgName();
+					File newFile = new File(LocalfilePath);
+					byte[] mybytearray = new byte[(int) newFile.length()];
 					FileInputStream fis = new FileInputStream(newFile);
 					BufferedInputStream bis = new BufferedInputStream(fis);
-				    item.getItemImg().initArray(mybytearray.length);
-				    item.getItemImg().setSize(mybytearray.length);
-				    bis.read(item.getItemImg().getMybytearray(),0,mybytearray.length);
+					item.getItemImg().initArray(mybytearray.length);
+					item.getItemImg().setSize(mybytearray.length);
+					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);
 				}
-				//(machineId, item_id,  currentAmount,  callStatus, timeUnderMin,  workerId, name,  price,  item_img_nam)
+				// (machineId, item_id, currentAmount, callStatus, timeUnderMin, workerId, name,
+				// price, item_img_nam)
 				else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
-							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), 0, "");
+							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
+							res.getString(8), 0, "");
 				}
-				
+
 				itemsInMachine.add(item);
 			}
 
@@ -139,6 +146,7 @@ public class SupplyManagementDBController {
 
 	/**
 	 * get all machine items by machine id
+	 * 
 	 * @param machineId
 	 * @param client
 	 */
@@ -154,11 +162,12 @@ public class SupplyManagementDBController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
 	 * get items which call status = processed
+	 * 
 	 * @param arr
 	 * @param client
 	 */
@@ -170,7 +179,7 @@ public class SupplyManagementDBController {
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
 			minAmount = getMachineMinAmount(machineId);
-			
+
 			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
 					+ " WHERE item_in_machine.machine_id=(?) AND  item_in_machine.call_status=(?) AND item_in_machine.item_id=items.item_id AND item_in_machine.worker_id=(?)  ;");
@@ -259,33 +268,104 @@ public class SupplyManagementDBController {
 	 * @param itemsInMachine
 	 * @param client
 	 */
+	private static Connection con = MySqlClass.getConnection();
+
+	/**
+	 * Update items in machine with roll back option if update failed
+	 * @param itemsInMachine
+	 * @param client
+	 */
 	public static void updateItemsInMachine(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
+		try {
+			ItemInMachineEntity[] itemsArray = (ItemInMachineEntity[]) itemsInMachine.toArray();
+			int[] originalAmount = new int[itemsArray.length];  // amount of items
+			
+			Statement stmt;
+			if (con == null)
+				return;
+			stmt = con.createStatement();
+
+			ItemInMachineEntity item = null;
+			for (int i = 0; i < itemsArray.length; i++) {
+				originalAmount[i] = getItemInMachineQuantity(item);
+				item = updateSingleItemInMachine(itemsArray[i]);
+				if (item != null || originalAmount[i] == -1) {
+					RollBack(originalAmount, itemsArray, i);
+					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+					return;
+				}
+			}
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Roll back when update failed
+	 * @param originalAmount
+	 * @param itemsInMachine
+	 * @param failedIndex
+	 */
+	private static void RollBack(int[] originalAmount, ItemInMachineEntity[] itemsInMachine, int failedIndex) {
+		for (int i = failedIndex; i >= 0; i--) {
+			itemsInMachine[i].setCurrentAmount(originalAmount[i]);
+			updateSingleItemInMachine(itemsInMachine[i]);
+		}
+	}
+
+	/**
+	 * get quantity of item 
+	 * @param item
+	 * @return
+	 */
+	private static int getItemInMachineQuantity(ItemInMachineEntity item) {
 		Statement stmt;
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
-				return;
+				return -1;
 
 			stmt = MySqlClass.getConnection().createStatement();
-			for (ItemInMachineEntity item : itemsInMachine) {
-				PreparedStatement ps = con
-						.prepareStatement("UPDATE ekrut.item_in_machine SET current_amount=(?), call_status=(?), "
-								+ "worker_id=(?),times_under_min=(?) WHERE  machine_id=(?) AND item_id=(?) ;");
-				ps.setInt(1, item.getCurrentAmount());
-				ps.setString(2, item.getCallStatus().toString());
-				ps.setInt(3, item.getWorkerId());
-				ps.setInt(4, item.getTimeUnderMin());
-				ps.setInt(5, item.getMachineId());
-				ps.setInt(6, item.getId());
+			PreparedStatement ps = con
+					.prepareStatement("SELECT current_amount FROM machines WHERE machine_id=? and item_id=?;");
 
-				ps.executeUpdate();
+			ps.setInt(1, item.getMachineId());
+			ps.setInt(2, item.getItem_id());
 
-			}
+			ResultSet res = ps.executeQuery();
+			if (res.next())
+				return res.getInt(1);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return -1;
 
+
+	}
+
+	public static ItemInMachineEntity updateSingleItemInMachine(ItemInMachineEntity item) {
+
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("UPDATE ekrut.item_in_machine SET current_amount=?, call_status=?, "
+							+ "worker_id=?,times_under_min=? WHERE  machine_id=? AND item_id=?;");
+			ps.setInt(1, item.getCurrentAmount());
+			ps.setString(2, item.getCallStatus().toString());
+			ps.setInt(3, item.getWorkerId());
+			ps.setInt(4, item.getTimeUnderMin());
+			ps.setInt(5, item.getMachineId());
+			ps.setInt(6, item.getId());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			return item;
+		}
+		return null;
 	}
 
 	/**

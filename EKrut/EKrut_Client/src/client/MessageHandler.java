@@ -9,6 +9,7 @@ import controllerGui.MarketingWorkerController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.RegistrationFormController;
+import controllerGui.ReviewOrderController;
 import controllerGui.SupplyManagementController;
 import controllerGui.SupplyReportController;
 import controllerGui.SupplyUpdateController;
@@ -109,7 +110,9 @@ public class MessageHandler {
 		case InitMachinesInRegions:
 			SupplyManagementController.getMachinesInRegion((ArrayList<MachineEntity>) obj);
 			break;
-		
+		case ReviewOrderServerAnswer:
+			ReviewOrderController.getDataFromServer(obj);
+			break;
 		default:
 			break;
 		}

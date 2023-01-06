@@ -9,6 +9,7 @@ import java.util.Map;
 import entity.ItemEntity;
 import entity.ItemInCartEntity;
 import entity.ItemInMachineEntity;
+import entity.OrderEntity;
 
 /**
  * The class handles the WHOLE order process
@@ -27,11 +28,18 @@ public class OrderController {
 	// // itemId and itemEntity
 	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static int discounts = 0; // in NIS not %
-	
+	public static OrderEntity currentOrder;
 	public OrderController() {
-
+		
 	}
-
+	public static void getCurrentOrder() {
+		
+	}
+	public static void setCurrentOrder(int user_id,String supplyMethod  ) {
+		if (currentOrder==null)
+			currentOrder =new OrderEntity( user_id,supplyMethod);
+		
+	}
 	/**
 	 * return the amount of a specific item in the cart
 	 * 
@@ -134,6 +142,7 @@ public class OrderController {
 	public static int getTotalDiscounts() {
 		return getTotalPrice() * discounts/100;
 	}
+	
 	/**
 	 * Get total discount in %
 	 * @return

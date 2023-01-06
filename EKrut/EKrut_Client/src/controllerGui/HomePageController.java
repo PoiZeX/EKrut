@@ -4,6 +4,8 @@
 
 package controllerGui;
 
+import java.io.IOException;
+
 import Store.NavigationStoreController;
 import common.CommonData;
 import common.CommonFunctions;
@@ -17,11 +19,17 @@ import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class HomePageController {
@@ -73,6 +81,17 @@ public class HomePageController {
 		case registered:
 		case member:
 			mailBtn.setVisible(true);
+			
+			if(AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+			
+				try {
+					LoadPopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
 			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmDelivery); // need to change later
@@ -177,6 +196,23 @@ public class HomePageController {
 		btn.setVisible(true);
 	}
 
+	private void LoadPopup() throws IOException {
+		FXMLLoader loader;
+		loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/ShipmentMethodPopupBoundary.fxml"));
+		Parent root = loader.load();
+
+		// get controller and use it
+		PopupController popupController = loader.getController();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+
+		// set properties
+		stage.setTitle("shipment method");
+		stage.setResizable(false);
+		// freeze current screen until got popup close
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.showAndWait();
+	}
 	/**
 	 * Log out from the system. sets the current user to null and changes the view
 	 * 

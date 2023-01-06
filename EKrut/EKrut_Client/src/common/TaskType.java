@@ -66,9 +66,11 @@ public enum TaskType {
 	InitMachinesInRegions,
 
 	// Order
+	ReviewOrderServerAnswer,
 	NewOrderCreation, 
 	AddNewDelivery,
 	IsFirstPurchase,
+	UpdateItemsInMachine, 
 	
 	// Common Data Initialization //
 	InitRegions,
