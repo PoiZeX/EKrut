@@ -142,6 +142,7 @@ public class OrderController {
 	public static int getTotalDiscounts() {
 		return getTotalPrice() * discounts/100;
 	}
+	
 	/**
 	 * Get total discount in %
 	 * @return

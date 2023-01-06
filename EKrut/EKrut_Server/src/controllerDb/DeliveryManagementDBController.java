@@ -62,8 +62,9 @@ public class DeliveryManagementDBController {
 			ps.setString(6, deliveryEntity.getCustomerStatus().toString());
 			
 			ps.executeUpdate();
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));  // send success msg
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -41,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -170,10 +171,19 @@ public class NavigationStoreController {
 	 * @return
 	 */
 	public boolean refreshStage(ScreensNames screenName) {
+		ScreenEntity se = refreshWithoutScreenChange(screenName);
+		if(se == null) return false;
+		primaryStage.setScene(history.push(se).getScene());
+		setTopBarLabels(se);
+
+		return true;
+	}
+
+	public ScreenEntity refreshWithoutScreenChange(ScreensNames screenName) {
 		ScreenEntity se = new ScreenEntity(screenName, null);
 		Scene scene = createSingleScene(screenName, se); // create new instance
 		if (scene == null)
-			return false;
+			return null;
 
 		se.setScene(scene);
 
@@ -183,11 +193,7 @@ public class NavigationStoreController {
 		setWindowTitle(screenName);
 		if (history.size() > 0)
 			history.pop(); // remove the last instance of the current screen and sets a new one
-
-		primaryStage.setScene(history.push(se).getScene());
-		setTopBarLabels(se);
-
-		return true;
+		return se;
 	}
 
 //	/**
@@ -278,15 +284,15 @@ public class NavigationStoreController {
 		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
-		
-		if ( ((BorderPane) stage).getTop() == null )
+
+		if (((BorderPane) stage).getTop() == null)
 			((BorderPane) stage).setTop(getTopBar(se));
-		
+
 		else if (((BorderPane) stage).getTop() instanceof GridPane) {
 			GridPane top = (GridPane) ((BorderPane) stage).getTop();
 			top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
 		}
-		
+
 		return stage;
 	}
 
@@ -393,7 +399,7 @@ public class NavigationStoreController {
 	public static void ExitHandler(boolean closeAllScreens) {
 		if (connectedUser != null) {
 //			ItemsController.deleteAllItemsInDir();
-			
+
 			if (connectedUser.isLogged_in()) {
 				connectedUser.setLogged_in(false); // logout the user
 				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
