@@ -35,7 +35,7 @@
             </DropShadow>
          </effect>
       </ImageView>
-      <ButtonBar id="buttonBar_quantity" fx:id="changeQuantityBtn" buttonMinWidth="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <ButtonBar id="buttonBar_quantity" fx:id="changeQuantityBtn" buttonMinWidth="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="178.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <buttons>
             <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="190.0">
                <columnConstraints>
@@ -54,7 +54,7 @@
             </GridPane>
          </buttons>
       </ButtonBar>
-      <Button id="button_AddToCart" fx:id="AddToCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" stylesheets="@../styles/css/generalStyleSheet.css" text="Add To Cart" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <Button id="button_AddToCart" fx:id="AddToCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="178.0" stylesheets="@../styles/css/generalStyleSheet.css" text="Add To Cart" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <Label fx:id="priceLabel" prefHeight="15.0" prefWidth="58.0" styleClass="Label-list" text="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
       <Label fx:id="productLabel" styleClass="Label" text="Product Name" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
       <Label fx:id="discountPriceLabel" prefHeight="15.0" prefWidth="142.0" styleClass="Label-list" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
