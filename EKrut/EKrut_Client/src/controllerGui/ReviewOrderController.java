@@ -197,7 +197,7 @@ public class ReviewOrderController {
 		}
 
 		isDataRecived = false;
-		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
+//		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
 
 		if(data instanceof String && !CommonFunctions.isNullOrEmpty((String) data))
 		{
@@ -221,8 +221,12 @@ public class ReviewOrderController {
 			}
 			else {
 				isDataRecived = false;
+
 				DeliveryEntity deliveryEntity=new DeliveryEntity(user.getRegion(),user.getId_num(),address.toString());
 				chat.acceptObj(new Message(TaskType.AddNewDelivery, deliveryEntity));
+
+//				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
+
 				
 			}
 		}
