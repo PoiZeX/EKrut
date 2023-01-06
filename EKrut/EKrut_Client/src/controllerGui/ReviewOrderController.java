@@ -136,7 +136,7 @@ public class ReviewOrderController {
 		phoneNumTxtField.setDisable(true);
 
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
-			waitOn(new Message(TaskType.IsFirstPurchase, NavigationStoreController.connectedUser));
+			waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
 			if ((boolean) data) {
 				// give discount
 				OrderController.addDiscount(20);
@@ -159,7 +159,7 @@ public class ReviewOrderController {
 		}
 
 		// start the manager process
-		reviewProcessManager();
+		/////////////////////////////reviewProcessManager();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -235,7 +235,7 @@ public class ReviewOrderController {
 			else 
 				successMsg += "Your order is placed successfuly\n";
 			
-			waitOn(new Message(TaskType.UpdateItemsInMachine, OrderController.getCart()));
+			waitOn(new Message(TaskType.UpdateItemsWithAnswer, OrderController.getCart()));
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
 				// error inserting items (Roll back of this should be taken on server side)

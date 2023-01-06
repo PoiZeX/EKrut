@@ -67,10 +67,10 @@ public enum TaskType {
 
 	// Order
 	ReviewOrderServerAnswer,
-	NewOrderCreation, 
+	isMemberFirstPurchase,
 	AddNewDelivery,
-	IsFirstPurchase,
-	UpdateItemsInMachine, 
+	NewOrderCreation,
+	UpdateItemsWithAnswer,
 	
 	// Common Data Initialization //
 	InitRegions,

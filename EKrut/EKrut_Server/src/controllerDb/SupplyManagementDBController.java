@@ -333,7 +333,7 @@ public class SupplyManagementDBController {
 					.prepareStatement("SELECT current_amount FROM machines WHERE machine_id=? and item_id=?;");
 
 			ps.setInt(1, item.getMachineId());
-			ps.setInt(2, item.getItem_id());
+			ps.setInt(2, item.getItemId());
 
 			ResultSet res = ps.executeQuery();
 			if (res.next())
