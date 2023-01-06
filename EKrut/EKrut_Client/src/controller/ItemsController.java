@@ -1,5 +1,6 @@
 package controller;
 
+import java.applet.AppletContext;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,5 +56,14 @@ public class ItemsController {
 			e.printStackTrace();
 		}
 
+	}
+
+	/** 
+	 * Clean products directory
+	 */
+	public static void deleteAllItemsInDir() {		
+		for (File file : new File(AppConfig.PRODUCTS_PATH_CLIENT).listFiles())
+			if (!file.isDirectory())
+				file.delete();
 	}
 }

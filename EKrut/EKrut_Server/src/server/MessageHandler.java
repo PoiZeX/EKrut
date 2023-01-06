@@ -108,6 +108,9 @@ public class MessageHandler {
 		case RequestSupplyWorkers:
 			SupplyManagementDBController.getSupplyWorkers(client);
 			break;
+		case NewOrderCreation:
+			
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

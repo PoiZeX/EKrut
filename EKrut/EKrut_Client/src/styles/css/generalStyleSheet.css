@@ -118,7 +118,7 @@
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 13pt;
-    cursor: pointer;
+    -fx-cursor: pointer;
 }
 
 .Button:Text {
@@ -139,7 +139,7 @@
     -fx-background-radius: 10;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15pt;
-    cursor: pointer;
+    -fx-cursor: pointer;
 }
 
     .ButtonYesOK:hover {
@@ -152,7 +152,7 @@
     -fx-background-radius: 10;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15pt;
-    cursor: grab;
+    -fx-cursor: grab;
 }
     .ButtonNO:hover {
         -fx-background-color: #ff4040;
@@ -165,7 +165,7 @@
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 15pt;
-    cursor: pointer;
+    -fx-cursor: pointer;
 }
 
 .ButtonLogOut:pressed:hover {
@@ -208,11 +208,20 @@
 
 #button_AddToCart {
     -fx-background-radius: 15;
+	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-background-color:white;
+	-fx-text-fill: gray;
+    -fx-font-size: 12pt;
+    -fx-cursor: pointer;
+}
+
+#button_AddToCart {
+    -fx-background-radius: 15;
 	-fx-effect: dropshadow( gaussian , #dcdcdc , 10, 0, 0, 0 );
 	-fx-background-color:white;
 	-fx-text-fill: gray;
     -fx-font-size: 12pt;
-    cursor: pointer;
+    -fx-cursor: pointer;
 }
 
 #button_AddToCart:hover {
@@ -231,7 +240,7 @@
 	-fx-background-color:white;
 	-fx-text-fill: gray;
     -fx-font-size: 12pt;
-    cursor: pointer;
+    -fx-cursor: pointer;
 }
 
 

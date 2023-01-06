@@ -26,6 +26,6 @@ public final class AppConfig {
 
 	// Path
 	public static final String PRODUCTS_PATH_CLIENT = "../EKrut_Client/src/styles/products/"; 
-	public static final String RELAITVE_PRODUCTS_PATH = "/styles/products/";
+	public static final String RELAITVE_PRODUCTS_PATH = "../styles/products/";
 
 } 
