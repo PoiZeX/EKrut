@@ -189,7 +189,7 @@ public class ReviewOrderController {
 		}
 
 		isDataRecived = false;
-		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
+//		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
 
 		if(data instanceof String && !CommonFunctions.isNullOrEmpty((String) data))
 		{
@@ -213,7 +213,7 @@ public class ReviewOrderController {
 			}
 			else {
 				isDataRecived = false;
-				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
+//				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
 				
 			}
 		}

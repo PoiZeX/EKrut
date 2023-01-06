@@ -87,6 +87,7 @@ public class SupplyManagementDBController {
 	 */
 	private static void handleGetItems(ResultSet res, ConnectionToClient client) {
 		ItemInMachineEntity item;
+		
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
 			while (res.next()) {
@@ -96,6 +97,15 @@ public class SupplyManagementDBController {
 				if(res.getMetaData().getColumnCount() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6), res.getString(8), res.getDouble(9), res.getString(10));
+					
+					String LocalfilePath= "../EKrut_Server/src/styles/products/"+item.getItemImg().getImgName();
+					File newFile = new File (LocalfilePath);	
+					byte [] mybytearray  = new byte [(int)newFile.length()];
+					FileInputStream fis = new FileInputStream(newFile);
+					BufferedInputStream bis = new BufferedInputStream(fis);
+				    item.getItemImg().initArray(mybytearray.length);
+				    item.getItemImg().setSize(mybytearray.length);
+				    bis.read(item.getItemImg().getMybytearray(),0,mybytearray.length);
 				}
 				//(machineId, item_id,  currentAmount,  callStatus, timeUnderMin,  workerId, name,  price,  item_img_nam)
 				else {
@@ -111,7 +121,20 @@ public class SupplyManagementDBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+//		String LocalfilePath= "../EKrut_Server/src/styles/products/"+itemEntity.getItemImg().getImgName();
+//		  try{
+//			  	  
+//			      File newFile = new File (LocalfilePath);	
+//			      byte [] mybytearray  = new byte [(int)newFile.length()];
+//			      FileInputStream fis = new FileInputStream(newFile);
+//			      BufferedInputStream bis = new BufferedInputStream(fis);
+//			      itemEntity.getItemImg().initArray(mybytearray.length);
+//			      itemEntity.getItemImg().setSize(mybytearray.length);
+//			      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
+//			      client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntity)); // finally send the entity
+//			    } 
+//			catch (Exception e) {System.out.println("Error send item to Client");}
+//	 }
 	}
 
 	/**

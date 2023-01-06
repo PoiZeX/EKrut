@@ -1,5 +1,7 @@
 package entity;
 
+import javafx.scene.image.Image;
+
 public class ItemEntity extends MainEntity {
 
 	private int itemId;
@@ -7,6 +9,7 @@ public class ItemEntity extends MainEntity {
 	private double price;
 	private ImgEntity itemImg;
 	private String img_relative_path;
+	private Image itemImage;
 
 	public ItemEntity(int item_id, String name, double price) {
 		super(item_id);
@@ -65,5 +68,13 @@ public class ItemEntity extends MainEntity {
 	public String toString() {
 		return "ItemEntity [item_id=" + itemId + ", name=" + name + ", price=" + price + ", itemImg=" + itemImg + ", item_img_name="
 				+ ", img_relative_path=" + img_relative_path + "]";
+	}
+
+	public Image getItemImage() {
+		return itemImage;
+	}
+
+	public void setItemImage(Image itemImage) {
+		this.itemImage = itemImage;
 	}
 }
