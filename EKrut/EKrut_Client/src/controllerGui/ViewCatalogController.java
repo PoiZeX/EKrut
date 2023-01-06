@@ -102,7 +102,7 @@ public class ViewCatalogController {
 
 	@FXML
 	void placeOrder(ActionEvent event) {
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ReviewOrder);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
 	}
 
 	@FXML

@@ -9,12 +9,12 @@ import java.util.Map;
 
 import java.util.concurrent.Semaphore;
 
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
+import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
 import controller.OrderController;
@@ -127,31 +127,44 @@ public class ReviewOrderController {
 //		OrderController.addItemToCart(newItem3, 0);
 //		OrderController.addItemToCart(newItem4, 0);
 
+		// get cart
 		cart = OrderController.getCart();
-		buildReviewOrder();
 
 		// build graphical side
+		buildReviewOrder();
 
-		// calculate data
-
-		// -- get sales / discounts (if subscriber)
-
+		
+		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member))
+			if(its first purchase)
+			{
+				// give discount 
+				// show special label or something
+			}
+		
+		
 		// check if OL/EK (for delivery)
+		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
+			// rightGridPane.setVisible(false);
+			rightGridPane.getChildren().clear();
+			Image image = new Image();
+			ImageView imageView = new ImageView(image);
+			rightGridPane.add(imageView, 0, 2);
+			GridPane.setColumnSpan(imageView, 2);
+			GridPane.setRowSpan(imageView, 2);
+		}
 
-		// add option for future payment
-		// make popup external payment
+		// start the manager process
+		reviewProcessManager();
 
 	}
 
 	private static Object data;
 	private static boolean isDataRecived = false;
-	
+
 	public static void getDataFromServer(Object dataRecived) {
 		data = dataRecived;
-		semaphore.release();
+		isDataRecived = true;
 	}
-
-	private static Semaphore semaphore = new Semaphore(1);
 
 	/**
 	 * Manage the review process
@@ -160,27 +173,35 @@ public class ReviewOrderController {
 	 */
 	private void reviewProcessManager() throws InterruptedException {
 		/*
-		 * Flow: 1. User press 'payment' 1.1 Check if (OL && Delivery details good) 2.
-		 * Send to server all items to update 3. Get Answer on success (String, null or
-		 * info) 3.1. if yes - continue to 4 3.2. if no - stay in review order with
-		 * information popup 4. Make external Payment
+		 * Flow: 
+		 * 1. User press 'payment' 
+		 * 1.1 Check if (OL && Delivery details good) 
+		 * 2. Send to server all items to update 
+		 * 3. Get Answer on success (String, null or info) 
+		 * 3.1. if yes - continue to 4 
+		 * 3.2. if no - stay in review order with
+		 * information popup 4. Make external Payment / Future payment (דחוי)
 		 * 
 		 * ROLL BACK HERE?
 		 */
-
+		String successMsg = "Yayy!\n";
+		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
+		String supplyMethod = "On-site"; // get supplyMethod from selectionController later
+		
 		// setup params according to configurations
 		switch (AppConfig.SYSTEM_CONFIGURATION) {
-		case "OL":  // online order
-			if(!isValidDeliveryDetails())
+		case "OL": // online order
+			if (supplyMethod.equals("Delivery") && !isValidDeliveryDetails()) // add a check if delivery is chosed
 			{
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information");
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information"+"\n");
 				return;
+			} else {
+				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup +"\n";
 			}
-			
 			break;
 
-		case "EK":  // real machine order
-
+		case "EK": // real machine order
+			successMsg += "Your order is placed successfuly\n";
 			break;
 
 		default:
@@ -188,49 +209,68 @@ public class ReviewOrderController {
 			return;
 		}
 
+		// update items in stock first
 		isDataRecived = false;
-		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart()));  // error for now in purpose
+		chat.acceptObj(new Message(TaskType.UpdateItems, OrderController.getCart())); // error for now in purpose
 
-		if(data instanceof String && !CommonFunctions.isNullOrEmpty((String) data))
-		{
+		// check validation of items
+		if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
 			// error inserting items (Roll back of this should be taken on server side)
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "We sorry but the following items no longer available:\n"+
-					((String) data)+"\nAbort");
+			CommonFunctions.createPopup(PopupTypeEnum.Error,
+					"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
 			return;
 		}
-		else {
-			isDataRecived = false;
-			chat.acceptObj(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
-			if(data instanceof Boolean && !(boolean)data)
-			{
-				// error inserting the order
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "We sorry but the following items no longer available:\n"+
-						((String) data)+"\nAbort");
-				
-				// ROLL BACK
-				RollBack();
-				return;
-			}
-			else {
-				isDataRecived = false;
-				chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
-				
-			}
+
+		// insert new order
+		isDataRecived = false;
+		chat.acceptObj(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
+		if (data instanceof Boolean && !(boolean) data) {
+			// error inserting the order
+			CommonFunctions.createPopup(PopupTypeEnum.Error,
+					"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
+
+			// ROLL BACK
+			RollBack();
+			return;
 		}
-		
-		// send message to Server to enter delivery details (after order is inserted)
+
+		switch (supplyMethod) {
+		case "Delivery":
+			// insert new delivery
+			isDataRecived = false;
+			chat.acceptObj(new Message(TaskType.AddNewDelivery, OrderController.getCart()));
+			break;
+
+		case "Pickup":
+			break;
+
+		case "On-site":
+			// Simulate the EK robot command ?
+			break;
+		}
+
+		paymentProccess();
+
+		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
+
+		CommonFunctions.SleepFor(5000, () -> {
+			OrderController.clear();
+			// refresh stages
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
+			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
+		});
+	
 	}
 
 	private void paymentProccess() {
 		// make a popup for simulation of payment process
 
-		// refresh stages
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
 	}
 
 	/**
 	 * Checks all fields of delivery and return true if valid
+	 * 
 	 * @return
 	 */
 	private boolean isValidDeliveryDetails() {
@@ -242,9 +282,9 @@ public class ReviewOrderController {
 	 * Roll back the process if problem has been detected when inserting order
 	 */
 	private void RollBack() {
-		
+
 	}
-	
+
 	/**
 	 * Build all graphical side for all items
 	 */
