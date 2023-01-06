@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="474.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="474.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ShipmentMethodPopupController">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="436.20001220703125" minWidth="10.0" prefWidth="322.40001220703124" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.60003662109375" minWidth="10.0" prefWidth="151.19998779296878" />
@@ -27,7 +27,7 @@
             <ComboBox fx:id="machineCmb" prefHeight="42.0" prefWidth="214.0" promptText="Choose machine" styleClass="ComboBox" visible="false" />
          </children>
       </StackPane>
-      <Button fx:id="cancelBtn" mnemonicParsing="false" styleClass="ButtonNO" text="Cancle" GridPane.rowIndex="3" />
-      <Button fx:id="confirmBtn" mnemonicParsing="false" prefHeight="38.0" prefWidth="137.0" styleClass="ButtonYesOK" text="Confirm" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelOrder" styleClass="ButtonNO" text="Cancel" GridPane.rowIndex="3" />
+      <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#confirmMethod" prefHeight="38.0" prefWidth="137.0" styleClass="ButtonYesOK" text="Confirm" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>
 </GridPane>
