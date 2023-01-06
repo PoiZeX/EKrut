@@ -8,11 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonFunctions;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
+import controller.ItemsController;
 import controller.OrderController;
+import entity.ItemEntity;
 import entity.ItemInMachineEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,8 +23,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
@@ -34,8 +33,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import utils.AppConfig;
 
 public class ViewCatalogController {
@@ -82,15 +79,15 @@ public class ViewCatalogController {
 
 	private int machineDiscount = 0;
 	private int machineId = AppConfig.MACHINE_ID;
-
 	private ObservableList<Node> allCatalogItems;
 	private static Map<String, ItemInMachineEntity> itemsList;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
+	private String lastMethod;
 
 	public void initialize() throws InterruptedException {		
 		itemsList = new LinkedHashMap<>();
-		chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog(itemsList);
@@ -103,7 +100,34 @@ public class ViewCatalogController {
 		recievedData = false;
 	}
 
-	
+	private void checkRequestType() {
+		if (OrderController.currentOrder == null) { // EK
+			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
+			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+		}
+		else {
+			switch (OrderController.currentOrder.getSupplyMethod()) {
+			case "Pickup":
+				this.machineId = OrderController.currentOrder.getMachine_id();
+				chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+				break;
+			case "Delivery":
+				generateAllItems();
+				break;
+			}
+		}
+
+	}
+
+
+	private void generateAllItems() {
+		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
+		for (ItemEntity item : tempItems) {
+			itemsList.put(item.getName(), new ItemInMachineEntity(item));
+		}
+		recievedData = true;
+	}
+
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		System.out.println("CANCEL");
@@ -395,4 +419,5 @@ public class ViewCatalogController {
 			i++;
 		}
 	}
+	
 }

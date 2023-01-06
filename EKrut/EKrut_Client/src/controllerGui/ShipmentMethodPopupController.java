@@ -35,7 +35,9 @@ public class ShipmentMethodPopupController {
 	private static ArrayList<MachineEntity> allMachines;
 	public static ObservableList<String> shipmentMethod;
 	public static MachineEntity selectedMachine;
-	private static boolean isConfirmPressed = false;
+	String prev;
+
+	private int prevMachine;
 
 	public void initialize() {
 		shipmentMethod = FXCollections.observableArrayList(new String[] { "Delivery", "Pickup" });
@@ -81,16 +83,16 @@ public class ShipmentMethodPopupController {
 
 	@FXML
 	void confirmMethod(ActionEvent event) {
+		if (!selectedShipmentMethod.equals(null)) {
+			if (((String) selectedShipmentMethod).equals("Pickup")) {
+				OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Pickup");
+				OrderController.currentOrder.setMachine_id(selectedMachine.machineId);
+			} else {
+				OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Delivery");
+			}
+		}
+		((Stage) confirmBtn.getScene().getWindow()).close(); // close the popup window	
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
-//		if (!selectedShipmentMethod.equals(null)) {
-//			if (((String) selectedShipmentMethod).equals("Pickup")) {
-//				OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Pickup");
-//				OrderController.currentOrder.setMachine_id(selectedMachine.machineId);
-//			} else
-//				OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Delivery");
-//
-//		}
-//		((Stage) confirmBtn.getScene().getWindow()).close(); // close the popup window
 	}
 
 }

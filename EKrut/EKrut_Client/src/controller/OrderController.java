@@ -36,8 +36,7 @@ public class OrderController {
 		
 	}
 	public static void setCurrentOrder(int user_id,String supplyMethod  ) {
-		if (currentOrder==null)
-			currentOrder =new OrderEntity( user_id,supplyMethod);
+		currentOrder =new OrderEntity(user_id,supplyMethod);
 		
 	}
 	/**

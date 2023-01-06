@@ -25,9 +25,9 @@ public class ItemEntity extends MainEntity {
 	}
 
 	/* constructor to send to DB */
-	public ItemEntity(int item_id, String name, double price, ImgEntity itemImg) {
+	public ItemEntity(int item_id, String name, double price, Image itemImage) {
 		this(item_id, name, price);
-		this.itemImg = itemImg;
+		this.itemImage = itemImage;
 	}
 
 	public ItemEntity(int item_id, String name) {
@@ -35,7 +35,7 @@ public class ItemEntity extends MainEntity {
 		this.name = name;
 	}
 
-	public int getItem_id() {
+	public int getItemId() {
 		return itemId;
 	}
 

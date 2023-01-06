@@ -1,7 +1,5 @@
 package entity;
 
-import entity.ItemInMachineEntity.Call_Status;
-
 public class ItemInMachineEntity extends ItemEntity {
 
 	public enum Call_Status {
@@ -19,21 +17,23 @@ public class ItemInMachineEntity extends ItemEntity {
 	};
 
 	private int machineId;
-	private int itemId;
 	private int currentAmount;
 	private int timeUnderMin;
-
 	private Integer workerId;
 	private boolean isCallOpen;
-
 	private Call_Status callStatus = Call_Status.NotOpened;
+
+	public ItemInMachineEntity(ItemEntity other) {
+		super(other.getId(), other.getName(), other.getPrice(), other.getItemImage());
+		this.machineId = -1;
+		this.currentAmount = Integer.MAX_VALUE;
+	}
 
 	// machine_id, item_id, current_amount, call_status,
 	// times_under_min, calls_amount, name, item_img_name
-	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin, int workerId,
-			String name, double price, String item_img_nam) {
+	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin,
+			int workerId, String name, double price, String item_img_nam) {
 		super(item_id, name, price, item_img_nam);
-		this.itemId = item_id;
 		this.machineId = machineId;
 		this.currentAmount = currentAmount;
 		this.callStatus = callStatus;
@@ -63,10 +63,6 @@ public class ItemInMachineEntity extends ItemEntity {
 
 	public void setCallOpen(boolean isCallOpen) {
 		this.isCallOpen = isCallOpen;
-	}
-
-	public int getItemId() {
-		return itemId;
 	}
 
 	public Call_Status getCallStatus() {
