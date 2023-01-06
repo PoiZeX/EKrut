@@ -3,6 +3,8 @@ package controllerGui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import controller.OrderController;
 import entity.ItemInMachineEntity;
@@ -90,30 +92,28 @@ public class ReviewOrderController {
 
 	private boolean isSelfPickup;
 
-	private Collection<ItemInMachineEntity> cart;
+	private static Map<ItemInMachineEntity, Integer> cart;
 
 	public void initialize() {
 		// tooltip = new TooltipSetter("Cancel the order");
 		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
-
-		ItemInMachineEntity newItem = new ItemInMachineEntity(1, 1, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
-				"Bamba", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem1 = new ItemInMachineEntity(1, 2, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba1", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem2 = new ItemInMachineEntity(1, 3, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba2", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem3 = new ItemInMachineEntity(1, 4, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba3", 100.0, "Bamba.png");
-		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
-				0, "Bamba4", 100.0, "Bamba.png");
-
-		
-		OrderController.addItemToCart(newItem);
-		OrderController.addItemToCart(newItem1);
-		OrderController.addItemToCart(newItem2);
-		OrderController.addItemToCart(newItem3);
-		OrderController.addItemToCart(newItem4);
-		
+//		ItemInMachineEntity newItem = new ItemInMachineEntity(1, 1, 50, ItemInMachineEntity.Call_Status.NotOpened, 0, 0,
+//				"Bamba", 100.0, "Bamba.png");
+//		ItemInMachineEntity newItem1 = new ItemInMachineEntity(1, 2, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+//				0, "Bamba1", 100.0, "Bamba.png");
+//		ItemInMachineEntity newItem2 = new ItemInMachineEntity(1, 3, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+//				0, "Bamba2", 100.0, "Bamba.png");
+//		ItemInMachineEntity newItem3 = new ItemInMachineEntity(1, 4, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+//				0, "Bamba3", 100.0, "Bamba.png");
+//		ItemInMachineEntity newItem4 = new ItemInMachineEntity(2, 5, 50, ItemInMachineEntity.Call_Status.NotOpened, 0,
+//				0, "Bamba4", 100.0, "Bamba.png");
+//
+//		
+//		OrderController.addItemToCart(newItem, 0);
+//		OrderController.addItemToCart(newItem1, 0);
+//		OrderController.addItemToCart(newItem2, 0);
+//		OrderController.addItemToCart(newItem3, 0);
+//		OrderController.addItemToCart(newItem4, 0);
 		cart = OrderController.getCart();
 		buildReviewOrder();
 		
@@ -135,7 +135,7 @@ public class ReviewOrderController {
 	 */
 	private void buildReviewOrder() {
 		ArrayList<GridPane> gridsToAdd = new ArrayList<>();
-		for (ItemInMachineEntity item : cart) {
+		for (ItemInMachineEntity item : cart.keySet()) {
 			gridsToAdd.add(buildSingleRow(item));
 		}
 

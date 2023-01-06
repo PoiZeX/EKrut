@@ -3,6 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import entity.ItemEntity;
 import entity.ItemInCartEntity;
@@ -25,23 +27,48 @@ public class OrderController {
 	 * 
 	 * 
 	 */
-	private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
 	
-	public OrderController(){
-		
-	}
+	//private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();  // itemId and itemEntity
+	private static Map <ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	
-	private static int getAmount(ItemInMachineEntity item) {
-		return cart.get(item.getId()).getCurrentAmount();
-	}
+	public OrderController() {
 
+	}
+	/**
+	 * return the amount of a specific item in the cart
+	 * @param item
+	 * @return amount
+	 */
+	private static int getAmount(ItemInMachineEntity item) {
+		return itemsInCartList.get(item);
+	}
+	/**
+	 * returns the amount of items in the cart
+	 * @return cartSize
+	 */
+	public static int getCartSize() {
+		int cartSize = 0;
+		for (ItemInMachineEntity item : itemsInCartList.keySet()) 
+			cartSize += (getAmount(item));
+		return cartSize;
+	}
+	/**
+	 * returns the total price of the cart
+	 * @return totalPrice;
+	 */
+	public static int getTotalPrice() {
+		int totalPrice = 0;
+		for (ItemInMachineEntity item : itemsInCartList.keySet()) 
+			totalPrice += (getAmount(item) * item.getPrice());
+		return totalPrice;
+	}
 	
 	/**
 	 * return the cart as list of items
 	 * @return
 	 */
-	public static Collection<ItemInMachineEntity> getCart() {
-		return cart.values();
+	public static Map<ItemInMachineEntity, Integer> getCart() {
+		return itemsInCartList;
 	}
 
 	/**
@@ -49,10 +76,10 @@ public class OrderController {
 	 * @param item
 	 * @return true if the item added successfully
 	 */
-	public static boolean addItemToCart(ItemInMachineEntity item) {
-		if (cart.containsKey(item.getItemId()))
+	public static boolean addItemToCart(ItemInMachineEntity item, int amount) {
+		if (itemsInCartList.containsKey(item))
 				return false;
-		cart.put(item.getItemId(), item);
+		itemsInCartList.put(item, amount);
 		return true;
 	}
 	
@@ -62,20 +89,16 @@ public class OrderController {
 	 * @param newQuantity 
 	 * @return true if success
 	 */
-	public static boolean changeItemQuantity(int itemId, int newQuantity)
+	public static boolean changeItemQuantity(ItemInMachineEntity item, int newQuantity)
 	{
-		// search for item
-		ItemInMachineEntity itemToChange = cart.get(itemId);
-		if (itemToChange == null)
+		if (item == null)
 			return false;
-		
 		// need to remove?
 		if(newQuantity <= 0) 
-			return removeItem(itemToChange);
+			return removeItem(item);
 		
 		// set new positive quantity
-		itemToChange.setCurrentAmount(newQuantity);
-		cart.replace(itemToChange.getItemId(), itemToChange);
+		itemsInCartList.put(item, newQuantity);
 		return true;
 	}
 	
@@ -85,11 +108,8 @@ public class OrderController {
 	 * @return
 	 */
 	private static boolean removeItem(ItemInMachineEntity item) {
-		if(cart.remove(item) == null) return false;
+		if (!itemsInCartList.containsKey(item)) return false;
+		itemsInCartList.remove(item);
 		return true; 
 	}
-	
-	
-	
-	
 }

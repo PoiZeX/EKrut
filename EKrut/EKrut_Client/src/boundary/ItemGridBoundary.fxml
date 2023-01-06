@@ -55,9 +55,9 @@
          </buttons>
       </ButtonBar>
       <Button id="button_AddToCart" fx:id="AddToCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="185.0" stylesheets="@../styles/css/generalStyleSheet.css" text="Add To Cart" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <Label fx:id="priceLabel" prefHeight="15.0" prefWidth="58.0" text="Price" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+      <Label fx:id="priceLabel" prefHeight="15.0" prefWidth="58.0" styleClass="Label-list" text="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
       <Label fx:id="productLabel" styleClass="Label" text="Product Name" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-      <Label fx:id="discountPriceLabel" prefHeight="15.0" prefWidth="142.0" text="Discount Price" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="discountPriceLabel" prefHeight="15.0" prefWidth="142.0" styleClass="Label-list" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
