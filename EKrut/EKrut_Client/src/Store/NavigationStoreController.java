@@ -172,7 +172,8 @@ public class NavigationStoreController {
 	 */
 	public boolean refreshStage(ScreensNames screenName) {
 		ScreenEntity se = refreshWithoutScreenChange(screenName);
-		if(se == null) return false;
+		if (se == null)
+			return false;
 		primaryStage.setScene(history.push(se).getScene());
 		setTopBarLabels(se);
 
@@ -184,15 +185,10 @@ public class NavigationStoreController {
 		Scene scene = createSingleScene(screenName, se); // create new instance
 		if (scene == null)
 			return null;
-
 		se.setScene(scene);
-
 		screenScenes.replace(screenName, se); // replace the last stage with new
-
 		// REPLACE the stack head
 		setWindowTitle(screenName);
-		if (history.size() > 0)
-			history.pop(); // remove the last instance of the current screen and sets a new one
 		return se;
 	}
 

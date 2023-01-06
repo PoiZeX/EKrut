@@ -37,7 +37,6 @@ public class PopupController {
 	 * initialize the screen
 	 */
 	public void initialize() {
-
 		// set hidden as default
 		yesOkBtn.setVisible(false);
 		NoCancelBtn.setVisible(false);

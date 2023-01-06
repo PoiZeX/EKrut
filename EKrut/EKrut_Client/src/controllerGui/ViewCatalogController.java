@@ -37,45 +37,44 @@ import utils.AppConfig;
 
 public class ViewCatalogController {
 
+	@FXML
+	private BorderPane viewCatalogBorderpane;
 
-    @FXML
-    private BorderPane viewCatalogBorderpane;
+	@FXML
+	private Button placeOrderBtn;
 
-    @FXML
-    private Button placeOrderBtn;
+	@FXML
+	private Button cancelOrderBtn;
 
-    @FXML
-    private Button cancelOrderBtn;
+	@FXML
+	private Button viewCartBtn;
 
-    @FXML
-    private Button viewCartBtn;
+	@FXML
+	private TextField searchTextLabel;
 
-    @FXML
-    private TextField searchTextLabel;
+	@FXML
+	private Group cartGroup;
 
-    @FXML
-    private Group cartGroup;
+	@FXML
+	private Label cartPopupAmountLabel;
 
-    @FXML
-    private Label cartPopupAmountLabel;
+	@FXML
+	private GridPane catalogViewGridpane;
 
-    @FXML
-    private GridPane catalogViewGridpane;
+	@FXML
+	private Pane viewCartPane;
 
-    @FXML
-    private Pane viewCartPane;
+	@FXML
+	private Label cartSizeLabel;
 
-    @FXML
-    private Label cartSizeLabel;
+	@FXML
+	private Label totalPriceLabel;
 
-    @FXML
-    private Label totalPriceLabel;
+	@FXML
+	private ImageView totalMoneyImage;
 
-    @FXML
-    private ImageView totalMoneyImage;
-
-    @FXML
-    private GridPane cartViewGridpane;
+	@FXML
+	private GridPane cartViewGridpane;
 
 	private int machineDiscount = 0;
 	private int machineId = AppConfig.MACHINE_ID;
@@ -83,8 +82,8 @@ public class ViewCatalogController {
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
 	private String lastMethod;
-	
-	public void initialize() throws InterruptedException {		
+
+	public void initialize() throws InterruptedException {
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
@@ -102,8 +101,7 @@ public class ViewCatalogController {
 		if (OrderController.currentOrder == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
-		}
-		else {
+		} else {
 			switch (OrderController.currentOrder.getSupplyMethod()) {
 			case "Pickup":
 				this.machineId = OrderController.currentOrder.getMachine_id();
@@ -116,7 +114,6 @@ public class ViewCatalogController {
 		}
 
 	}
-
 
 	private void generateAllItems() {
 		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
@@ -134,16 +131,6 @@ public class ViewCatalogController {
 	@FXML
 	void placeOrder(ActionEvent event) {
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
-	}
-
-	@FXML
-	void searchItem(ActionEvent event) {
-
-	}
-
-	@FXML
-	void sortCatalog(ActionEvent event) {
-		System.out.println("SORT");
 	}
 
 	@FXML
@@ -415,5 +402,5 @@ public class ViewCatalogController {
 			i++;
 		}
 	}
-	
+
 }

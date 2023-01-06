@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 public class CommonFunctions {
 	private static Timer timerTimeLimit;
+	private static Scene latestScene;
 
 	/**
 	 * check if the string is null or empty (spaces is empty)
@@ -59,11 +60,13 @@ public class CommonFunctions {
 			// get controller and use it
 			PopupController popupController = loader.getController();
 			popupController.setupPopup(type, message);
-
+			
 			// create the stage & scene
 			Stage stage = new Stage();
-			stage.setScene(new Scene(root));
-
+			Scene sc = new Scene(root);
+			sc.setUserData(popupController);
+			stage.setScene(sc);
+			setLatestPopup(sc);
 			// set properties
 			stage.setTitle(type.toString());
 			stage.setResizable(false);
@@ -80,6 +83,13 @@ public class CommonFunctions {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void setLatestPopup(Scene sc) {
+		latestScene = sc;	
+	}
+	public static Scene getLatestPopup() {
+		return latestScene;
 	}
 	
 	public static void createShipmentPopup()  {
