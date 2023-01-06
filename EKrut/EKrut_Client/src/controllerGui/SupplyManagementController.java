@@ -329,29 +329,33 @@ public class SupplyManagementController {
 		supplyMangmentTbl.setEditable(true);
 		setFactoryColsForNotOpened();
 		supplyMangmentTbl.setItems(notOpendCalls);
-
+		colorTableRows(supplyMangmentTbl);
+		
 		opencallsTbl.setEditable(true);
 		setFactoryColsForOpened();
 		opencallsTbl.setItems(openedcalls);
-		colorTableRows();
+		colorTableRows(opencallsTbl);
 		return;
 
 	}
-
+	@SuppressWarnings("unchecked")
+	private void setFactoryCols(TableColumn<ItemInMachineEntity,Integer> idCol,TableColumn<ItemInMachineEntity,String> nameCol,
+			TableColumn<ItemInMachineEntity,Integer> currentAmountCol,TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> stsCol ) {
+	
+		idCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
+		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, String>("name"));
+		currentAmountCol.setCellValueFactory(
+				(Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
+		stsCol.setCellValueFactory(
+				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
+						"callStatus"));
+	}
 	/***
 	 * set columns for table
 	 */
 	@SuppressWarnings("unchecked")
 	private void setFactoryColsForOpened() {
-
-		// factory
-		itemIdCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
-		itemNameCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, String>("name"));
-		currentAmountCol1.setCellValueFactory(
-				(Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
-		callStatusCol1.setCellValueFactory(
-				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
-						"callStatus"));
+		setFactoryCols(itemIdCol1,itemNameCol1,currentAmountCol1,callStatusCol1);
 		workerCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("workerId"));
 	}
 
@@ -362,13 +366,7 @@ public class SupplyManagementController {
 	private void setFactoryColsForNotOpened() {
 		checkboxCellsList = new ArrayList<>();
 		// factory
-		itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
-		itemNameCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, String>("name"));
-		currentAmountCol.setCellValueFactory(
-				(Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("currentAmount"));
-		callStatusCol.setCellValueFactory(
-				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
-						"callStatus"));
+		setFactoryCols(itemIdCol,itemNameCol,currentAmountCol,callStatusCol);
 		refillcol.setCellFactory(column -> {
 			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
 			checkboxCellsList.add(cell); // save the checkbox
@@ -478,24 +476,8 @@ public class SupplyManagementController {
 	/***
 	 * color tables rows by the cuurent amount and the status
 	 */
-	private void colorTableRows() {
-		supplyMangmentTbl.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
-			@Override
-			protected void updateItem(ItemInMachineEntity item, boolean empty) {
-				super.updateItem(item, empty);
-				if (item == null)
-					setStyle("");
-				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == false)
-					setStyle("-fx-background-color: #fa8989;");
-				else if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
-					setStyle("-fx-background-color: #7cf28f;");// TODO to add completed on the quary
-				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == true)
-					setStyle("-fx-background-color: #faeb89;");
-				else
-					setStyle("");
-			}
-		});
-		opencallsTbl.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
+	private void colorTableRows(TableView<ItemInMachineEntity>  table) {
+		table.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
 			@Override
 			protected void updateItem(ItemInMachineEntity item, boolean empty) {
 				super.updateItem(item, empty);
