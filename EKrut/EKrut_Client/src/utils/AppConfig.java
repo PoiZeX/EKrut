@@ -8,7 +8,7 @@ public final class AppConfig {
 	
 	// System definition
 	public static final String SYSTEM_CONFIGURATION = "EK"; 				// can be changed to OL
-	public static int MACHINE_ID = 21; 										// machine id will be dynamically change from arguments
+	public static int MACHINE_ID = 7; 										// machine id will be dynamically change from arguments
 	public static final int INACTIVITY_LOGOUT = 1000*60*15;					// time in sec
 	
 	// Login restrictions
