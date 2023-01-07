@@ -98,13 +98,13 @@ public class ViewCatalogController {
 	}
 
 	private void checkRequestType() {
-		if (OrderController.currentOrder == null) { // EK
+		if (OrderController.getCurrentOrder() == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		} else {
-			switch (OrderController.currentOrder.getSupplyMethod()) {
+			switch (OrderController.getCurrentOrder().getSupplyMethod()) {
 			case "Pickup":
-				this.machineId = OrderController.currentOrder.getMachine_id();
+				this.machineId = OrderController.getCurrentOrder().getMachine_id();
 				chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 				break;
 			case "Delivery":
@@ -118,7 +118,7 @@ public class ViewCatalogController {
 	private void generateAllItems() {
 		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
 		for (ItemEntity item : tempItems) {
-			OrderController.putItemInList(item.getName(), new ItemInMachineEntity(item));
+			OrderController.putItemInList(new ItemInMachineEntity(item));
 		}
 		recievedData = true;
 	}
@@ -154,7 +154,7 @@ public class ViewCatalogController {
 		OrderController.clearItemsList();
 		for (ItemInMachineEntity item : obj) {
 			convertImage(item);
-			OrderController.putItemInList(item.getName(), item);
+			OrderController.putItemInList(item);
 		}
 		recievedData = true;
 	}
@@ -168,12 +168,7 @@ public class ViewCatalogController {
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList) {
 		int i = 0, j = 0;
 		for (ItemInMachineEntity item : itemsList.values()) {
-			if (i == 4) {
-				j++;
-				i = 0;
-			}
-			generateItem(item, machineDiscount, i, j);
-			i++;
+			generateItem(item, machineDiscount, (i++)%4, i%4 == 0 ? j++ : j);
 		}
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
@@ -381,12 +376,7 @@ public class ViewCatalogController {
 			GridPane itemAsGrid = (GridPane) item;
 			Label productNameLabel = (Label) itemAsGrid.getChildren().get(4);
 			if (productNameLabel.getText().toLowerCase().contains(newValue.toLowerCase())) {
-				if (i == 4) {
-					j++;
-					i = 0;
-				}
-				catalogViewGridpane.add(item, i, j);
-				i++;
+				catalogViewGridpane.add(item, (i++)%4, i%4 == 0 ? j++ : j);
 			}
 		}
 	}
@@ -394,12 +384,8 @@ public class ViewCatalogController {
 	private void renewCatalog() {
 		int i = 0, j = 0;
 		for (Node item : allCatalogItems) {
-			if (i == 4) {
-				j++;
-				i = 0;
-			}
-			catalogViewGridpane.add(item, i, j);
-			i++;
+			catalogViewGridpane.add(item, (i++)%4, i%4 == 0 ? j++ : j);
+			
 		}
 	}
 
