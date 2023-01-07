@@ -116,11 +116,12 @@ public class MessageHandler {
 			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case NewOrderCreation:
-			
+			OrderDBController.insertOrderEntity((OrderEntity)obj, client);
 			break;
 			
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

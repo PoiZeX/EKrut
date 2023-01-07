@@ -52,9 +52,10 @@ public class DeliveryManagementDBController {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.deliveries (region,customer_id, address, estimated_time,deilvery_status,customer_status) "
-					+ "VALUES (?, ?, ?, ?, ?, ?);");
-			ps.setString(1,deliveryEntity.getRegion());
+			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.deliveries (order_id, region,customer_id, address, estimated_time,deilvery_status,customer_status) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?);");
+			ps.setInt(1, deliveryEntity.getOrderId());
+			ps.setString(1, deliveryEntity.getRegion());
 			ps.setString(2,deliveryEntity.getCustomerId());
 			ps.setString(3, deliveryEntity.getAddress());
 			ps.setString(4, deliveryEntity.getEstimatedTime());
@@ -63,9 +64,15 @@ public class DeliveryManagementDBController {
 			
 			ps.executeUpdate();
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));  // send success msg
-
+			return;
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}  
+			
 		}
 	}
 	
