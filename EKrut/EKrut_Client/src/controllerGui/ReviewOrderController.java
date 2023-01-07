@@ -19,8 +19,10 @@ import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
 import controller.OrderController;
+import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
+import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
@@ -105,13 +107,12 @@ public class ReviewOrderController {
 
 	@FXML
 	private GridPane productsGrid;
-	
-
 
 	private static Object data;
 	private static boolean isDataRecived = false;
 
 	private static Map<ItemInMachineEntity, Integer> cart;
+	private static OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
 	private StringBuilder address = new StringBuilder();
 
@@ -127,9 +128,9 @@ public class ReviewOrderController {
 			buildReviewOrder();
 
 			// initialize fields
-			totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice() + "₪"));
-			totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts() + "₪"));
-			totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts() + "₪"));
+			totulProductsSumLbl.setText(String.valueOf(orderEntity.getProductsAmount()) + "₪");
+			totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()) + "₪");
+			totalSumLbl.setText(String.valueOf(orderEntity.getTotal_sum()) + "₪");
 			firstNameTxtField.setText(user.getFirst_name());
 			firstNameTxtField.setDisable(true);
 			lastNameTxtField.setText(user.getLast_name());
@@ -160,12 +161,11 @@ public class ReviewOrderController {
 //			GridPane.setRowSpan(imageView, 2);
 			}
 
-			/* TODO:
-			 * 1. Future payment for member
-			 * 2. check if item is under minimum 
-			 * 3. Cancel order button
+			/*
+			 * TODO: 1. Future payment for member 2. check if item is under minimum 3.
+			 * Cancel order button
 			 */
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -188,36 +188,28 @@ public class ReviewOrderController {
 		while (!isDataRecived)
 			Thread.sleep(100);
 	}
-    
+
 	@FXML
-    void startProcess(ActionEvent event) {
+	void startProcess(ActionEvent event) {
 		try {
 			reviewProcessManager();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
 	/**
-	 * Manage the review process
+	 * Manage the review-payment process
 	 * 
 	 * @throws Exception
 	 * 
 	 * @throws InterruptedException
 	 */
 	private void reviewProcessManager() throws Exception {
-		/*
-		 * Flow: 1. User press 'payment' 1.1 Check if (OL && Delivery details good) 2.
-		 * Send to server all items to update 3. Get Answer on success (String, null or
-		 * info) 3.1. if yes - continue to 4 3.2. if no - stay in review order with
-		 * information popup 4. Make external Payment / Future payment (דחוי)
-		 * 
-		 * ROLL BACK HERE?
-		 */
 		int orderId = -1;
-		String successMsg = "Yayy!\nOrder #" +orderId+ " was placed successfuly\n";
-		String supplyMethod = OrderController.getCurrentOrder().getSupplyMethod(); // get supplyMethod from selectionController later
-		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
+		String successMsg = "Yayy!\nOrder #" + orderId + " was placed successfuly\n";
+		int machineIdToPickup = orderEntity.getMachine_id(); // by default the same machine
+		String supplyMethod = orderEntity.getSupplyMethod();
 
 		// setup params according to configurations
 		switch (supplyMethod) {
@@ -231,7 +223,7 @@ public class ReviewOrderController {
 			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(), address.toString());
 
 			// insert new order
-			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCurrentOrder()));
+			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
 				// error inserting the order
 				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
@@ -240,24 +232,22 @@ public class ReviewOrderController {
 			orderId = (int) data;
 			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
-			
-			successMsg += "Order #" +orderId+ " placed successfuly\n\nYou will receive an SMS once \nthe delivery approved!";
+
+			successMsg += "Order #" + orderId
+					+ " placed successfuly\n\nYou will receive an SMS once \nthe delivery approved!";
 			break;
 
-			
 		// ---- Pickup / On-site ----
 		case "Pickup":
 		case "On-site":
-			if (supplyMethod.equals("Pickup"))
-			{
-				machineIdToPickup = OrderController.getCurrentOrder().getMachine_id();  // set the machine to pickup from
+			if (supplyMethod.equals("Pickup")) {
+				machineIdToPickup = orderEntity.getMachine_id(); // set the machine to pickup from
 				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup + "\n";
-			}
-			else
+			} else
 				successMsg += "order is placed successfuly\n";
 
 			waitOn(new Message(TaskType.UpdateItemsWithAnswer, OrderController.getCart()));
-			
+
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
 				// error inserting items (Roll back of this should be taken on server side)
@@ -265,10 +255,9 @@ public class ReviewOrderController {
 						"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
 				return;
 			}
-			orderId = (int) data;
 
 			// insert new order
-			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
+			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Boolean && !(boolean) data) {
 				// error inserting the order
 				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
@@ -277,6 +266,9 @@ public class ReviewOrderController {
 				RollBack();
 				return;
 			}
+
+			// check and act if some items under min amount
+			handleItemsUnderMinAmount();
 			break;
 
 		default:
@@ -303,9 +295,48 @@ public class ReviewOrderController {
 	 * External payment process. Will Always success
 	 */
 	private void paymentProccess() {
-		
+
 		System.out.println("Payment");
 		// make a popup for simulation of payment process
+
+	}
+
+	/**
+	 * Checks if there are items under min amount
+	 * 
+	 * @throws Exception
+	 */
+	private void handleItemsUnderMinAmount() throws Exception {
+		StringBuilder sb = new StringBuilder(); // string for formal message
+		sb.append("Machine #" + OrderController.getCurrentMachine().getMachineId());
+		Map<ItemInMachineEntity, Integer> cart = OrderController.getCart();
+
+		MachineEntity machine = OrderController.getCurrentMachine();
+		int minAmount = OrderController.getCurrentMachine().getMinamount();
+		ArrayList<int[]> machineItemsId = new ArrayList<>(); // list to send to server
+
+		for (ItemInMachineEntity item : cart.keySet()) {
+			int totalAmount = item.getCurrentAmount();
+			int requestedAmount = cart.get(item);
+			if (minAmount > totalAmount - requestedAmount) {
+				sb.append(item.getName() + ", ");
+				machineItemsId.add(new int[] { machine.getMachineId(), item.getId() });
+			}
+		}
+		// delete the last ', '
+		sb.deleteCharAt(sb.length());
+		sb.deleteCharAt(sb.length());
+		waitOn(new Message(TaskType.UpdateItemsUnderMin, machineItemsId));
+
+		if (machineItemsId.size() > 0) {
+			// get region manager of machine
+			waitOn(new Message(TaskType.RequesManagerInfoFromServerDB, machine.getRegionName()));
+			UserEntity regionManager = (UserEntity) data;
+			if (regionManager != null) {
+				SMSMailHandlerController.SendSMSOrMail("SMS", regionManager, "Minimum amount Alert", sb.toString());
+				SMSMailHandlerController.SendSMSOrMail("Mail", regionManager, "Minimum amount Alert", sb.toString());
+			}
+		}
 
 	}
 

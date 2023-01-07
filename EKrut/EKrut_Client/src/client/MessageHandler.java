@@ -64,7 +64,10 @@ public class MessageHandler {
 		// Registration Form
 		case ReceiveUserInfoFromServerDB:
 		case ReceiveUserUpdateInDB:
+			RegistrationFormController.receiveDataFromServer(obj);
+			break;
 		case ReceiveManagerInfoFromServerDB:
+			ReviewOrderController.getDataFromServer(obj);
 			RegistrationFormController.receiveDataFromServer(obj);
 			break;
 		//

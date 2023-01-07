@@ -71,6 +71,7 @@ public enum TaskType {
 	RequestUpdateItemsInMachine,
 	RequestItemsInMachineUpdateFromServer,
 	RequestItemsInMachineRestockFromServer,
+	UpdateItemsUnderMin,
 	
 	//-------------------------------------Deliveries
 	// Requests From Server //
