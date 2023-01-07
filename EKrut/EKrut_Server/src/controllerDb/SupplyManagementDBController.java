@@ -300,7 +300,7 @@ public class SupplyManagementDBController {
 				}
 			}
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
-
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -448,6 +448,25 @@ public class SupplyManagementDBController {
 			e.printStackTrace();
 		}
 		return machines;
+	}
+	
+	
+	public static void increaseItemsUnderMin(ArrayList<int[]> machineAnditemsId) {
+		try {
+			if (MySqlClass.getConnection() == null)
+				return;
+			PreparedStatement ps = conn.prepareStatement(
+					"UPDATE item_in_machine SET times_under_min=times_under_min+1 WHERE machine_id=? AND item_id=?");
+			for(int[] machineItemId : machineAnditemsId)
+			{
+				ps.setInt(1, machineItemId[0]); // machine
+				ps.setInt(1, machineItemId[1]); // item
+				ps.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

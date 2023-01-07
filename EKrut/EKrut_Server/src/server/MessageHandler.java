@@ -122,8 +122,13 @@ public class MessageHandler {
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 			break;
+
 		case updatePickupStatus:
 			OrderDBController.updatePickupStatus((String[])obj, client);
+			
+		case UpdateItemsUnderMin:
+			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj);
+
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

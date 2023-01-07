@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import client.ClientController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
+import entity.UserEntity;
 import utils.AppConfig;
 
 public class CommonData {
@@ -12,7 +13,7 @@ public class CommonData {
 	private static ArrayList<String> allRegions;
 	private static ArrayList<MachineEntity> allMachines;
 	private static MachineEntity currentMachine;
-
+	
 	public static void initData() {
 		chat.acceptObj(new Message(TaskType.InitRegions, null));
 		chat.acceptObj(new Message(TaskType.InitMachines, null));
@@ -52,4 +53,5 @@ public class CommonData {
 	public static void setCurrentMachine(MachineEntity currentMachine) {
 		CommonData.currentMachine = currentMachine;
 	}
+	
 }
