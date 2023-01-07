@@ -18,4 +18,17 @@ public enum SaleType {
 	public String getName() {
 		return name;
 	}
+	public static SaleType getSaleType(String str) {
+		switch (str){
+		case "1+1":
+			return SaleType.onePlusOne;
+		case "10%":
+			return SaleType.tenPercent;
+		case "20%":
+			return SaleType.twentyPercent;
+		case "30%":
+			return SaleType.thirtyPercent;
+		}
+		return null;
+	}
 }
