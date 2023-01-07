@@ -81,6 +81,8 @@ public class ShipmentMethodPopupController {
 					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
 			}
 		});
+		selectedMachine = null;
+		selectedShipmentMethod = null;
 	}
 
 	@FXML

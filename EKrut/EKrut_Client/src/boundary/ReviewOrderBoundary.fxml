@@ -225,13 +225,16 @@
                         <Font size="53.0" />
                      </font>
                   </Label>
-                  <Label fx:id="totulDiscountSumLbl" prefHeight="21.0" prefWidth="27.0" style="-fx-text-fill: red;" styleClass="Label" text="0₪" textFill="RED" GridPane.rowIndex="3">
+                  <Label fx:id="totulDiscountSumLbl" prefHeight="19.0" prefWidth="89.0" style="-fx-text-fill: red;" styleClass="Label" text="0₪" textFill="RED" GridPane.rowIndex="3">
                      <font>
                         <Font size="53.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="230.0" />
+                        <Insets left="220.0" />
                      </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </Label>
                   <Label prefHeight="48.0" prefWidth="161.0" style="-fx-text-fill: red;" styleClass="Label" text="DISCOUNT" textFill="RED" GridPane.rowIndex="3">
                      <font>

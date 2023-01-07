@@ -115,53 +115,52 @@ public class ReviewOrderController {
 
 	public void initialize() {
 		try {
-		// tooltip = new TooltipSetter("Cancel the order");
-		// cancelOrderBtn.setTooltip(tooltip.getTooltip());
+			// tooltip = new TooltipSetter("Cancel the order");
+			// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
-		// get cart
-		cart = OrderController.getCart();
+			// get cart
+			cart = OrderController.getCart();
 
-		// build graphical side
-		buildReviewOrder();
+			// build graphical side
+			buildReviewOrder();
 
-		// initialize fields
-		totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()));
-		totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()));
-		totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()));
-		firstNameTxtField.setText(user.getFirst_name());
-		firstNameTxtField.setDisable(true);
-		lastNameTxtField.setText(user.getLast_name());
-		lastNameTxtField.setDisable(true);
-		phoneNumTxtField.setText(user.getPhone_number());
-		phoneNumTxtField.setDisable(true);
+			// initialize fields
+			totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice() + "₪"));
+			totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts() + "₪"));
+			totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts() + "₪"));
+			firstNameTxtField.setText(user.getFirst_name());
+			firstNameTxtField.setDisable(true);
+			lastNameTxtField.setText(user.getLast_name());
+			lastNameTxtField.setDisable(true);
+			phoneNumTxtField.setText(user.getPhone_number());
+			phoneNumTxtField.setDisable(true);
 
-		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
-			waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
-			if ((boolean) data) {
-				// give discount
-				OrderController.addDiscount(20);
+			if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
+				waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
+				if ((boolean) data) {
+					// give discount
+					OrderController.addDiscount(20);
 
-				// show special label or something
-				totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()));
-				totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()));
+					// show special label or something
+					totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts() + "₪"));
+					totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts() + "₪"));
+				}
 			}
-		}
 
-		// check if OL/EK (for delivery)
-		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
-			// rightGridPane.setVisible(false);
+			// check if OL/EK (for delivery)
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
+				// rightGridPane.setVisible(false);
 //			rightGridPane.getChildren().clear();
 //			Image image = new Image();
 //			ImageView imageView = new ImageView(image);
 //			rightGridPane.add(imageView, 0, 2);
 //			GridPane.setColumnSpan(imageView, 2);
 //			GridPane.setRowSpan(imageView, 2);
-		}
+			}
 
-		// start the manager process
-		/////////////////////////////reviewProcessManager();
-		}
-		catch(Exception e) {
+			// start the manager process
+			///////////////////////////// reviewProcessManager();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -186,7 +185,8 @@ public class ReviewOrderController {
 
 	/**
 	 * Manage the review process
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -207,34 +207,32 @@ public class ReviewOrderController {
 		switch (supplyMethod) {
 		case "Delivery": // online order
 			String resValid = isValidDeliveryDetails();
-				if(!CommonFunctions.isNullOrEmpty(resValid))
-				{
-					CommonFunctions.createPopup(PopupTypeEnum.Error, "You must provide valid delivery information\n" + resValid + "\n");
-					return;
-				}
-				successMsg += "Your order placed successfuly\nYou will receive an SMS once the order approved!";
-				
-				// insert new order
-				waitOn(new Message(TaskType.NewOrderCreation, "OrderController.getCart()"));
-				if (data instanceof Boolean && !(boolean) data) {
-					// error inserting the order
-					CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
-					return;
-				}
-				
-				
-				DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(),
-						address.toString());
-				waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
-				break;
-				
+			if (!CommonFunctions.isNullOrEmpty(resValid)) {
+				CommonFunctions.createPopup(PopupTypeEnum.Error,
+						"You must provide valid delivery information\n" + resValid + "\n");
+				return;
+			}
+			successMsg += "Your order placed successfuly\nYou will receive an SMS once the order approved!";
+
+			// insert new order
+			waitOn(new Message(TaskType.NewOrderCreation, "OrderController.getCart()"));
+			if (data instanceof Boolean && !(boolean) data) {
+				// error inserting the order
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+				return;
+			}
+
+			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(), address.toString());
+			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
+			break;
+
 		case "Pickup":
 		case "On-site":
-			if(supplyMethod.equals("Pickup"))
+			if (supplyMethod.equals("Pickup"))
 				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup + "\n";
-			else 
+			else
 				successMsg += "Your order is placed successfuly\n";
-			
+
 			waitOn(new Message(TaskType.UpdateItemsWithAnswer, OrderController.getCart()));
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
@@ -243,7 +241,7 @@ public class ReviewOrderController {
 						"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
 				return;
 			}
-			
+
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
 			if (data instanceof Boolean && !(boolean) data) {
@@ -261,14 +259,13 @@ public class ReviewOrderController {
 			return;
 		}
 
-
 		paymentProccess();
 
 		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
 
 		CommonFunctions.SleepFor(5000, () -> {
-			//OrderController.clear();
-			
+			// OrderController.clear();
+
 			// refresh stages
 			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ReviewOrder);
 			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
@@ -386,13 +383,13 @@ public class ReviewOrderController {
 
 		// quantity
 		tempSum = item.getPrice();
-		quantity.setText(String.valueOf(item.getCurrentAmount()));
+		quantity.setText(String.valueOf(cart.get(item)));
 		quantity.setPrefSize(57, 18);
 		quantity.getStyleClass().add("Label-list");
 		GridPane.setHalignment(quantity, HPos.LEFT);
 
 		// sum
-		tempSum *= item.getCurrentAmount();
+		tempSum *= cart.get(item);
 		sum.setText(String.valueOf(tempSum) + "₪");
 		sum.setPrefSize(62, 18);
 		sum.getStyleClass().add("Label-list");
