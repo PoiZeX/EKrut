@@ -89,10 +89,10 @@ public class ServerConfigurationController {
 		}
 		ServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
 				this.txtDBPassword.getText());
+		
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
 		setDisableTextFieldValues(true);
-
 		while (MySqlClass.isConnectionSuccess == null)
 			try {
 				Thread.sleep(200);
@@ -101,7 +101,7 @@ public class ServerConfigurationController {
 			}
 		if (MySqlClass.isConnectionSuccess == true)
 			importUsersBtn.setDisable(false);
-
+		fileChooser.setInitialDirectory(new File("./src/mysql/"));
 	}
 
 	@FXML

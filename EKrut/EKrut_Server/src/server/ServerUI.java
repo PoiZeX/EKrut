@@ -8,7 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import mysql.MySqlClass;
+
 import java.io.IOException;
+import java.net.BindException;
+
 import common.Message;
 import common.TaskType;
 
@@ -16,6 +20,7 @@ public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
 
 	static EchoServer EchoServer;
+
 	public static void main(String[] args) throws Exception {
 		launch(args);
 	}
@@ -35,6 +40,7 @@ public class ServerUI extends Application {
 		});
 		primaryStage.show();
 	}
+
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
 		try {
@@ -47,6 +53,10 @@ public class ServerUI extends Application {
 		EchoServer = new EchoServer(serverPort, DBAddress, username, password);
 		try {
 			EchoServer.listen();
+		} catch (BindException b) {
+			System.out.println("ERROR - Could not listen for clients!");
+			System.out.println("Port is already in use, please try another port!");
+			MySqlClass.isConnectionSuccess = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR - Could not listen for clients!");
@@ -56,7 +66,8 @@ public class ServerUI extends Application {
 	public static void disconnect() {
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		try {
-			Thread.sleep(2000);  // enough time to update the clients table. More flexible way is to use semaphore...
+			Thread.sleep(2000); // enough time to update the clients table. More flexible way is to use
+								// semaphore...
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -72,5 +83,5 @@ public class ServerUI extends Application {
 		}
 		System.out.println("Server Disconnected");
 	}
-	
+
 }
