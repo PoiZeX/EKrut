@@ -31,7 +31,7 @@ CREATE TABLE `clients_report` (
   `month` varchar(45) DEFAULT NULL,
   `region` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
-INSERT INTO `deliveries` VALUES (1,'North','007818859','abcd 3/5 ','25/12/2022 16:50','pendingApproval','NOT_APPROVED'),(2,'North','007818859','aaa 2/3 ','28/12/2022 19:57','outForDelivery','APPROVED'),(3,'North','2','cc 2',NULL,'pendingApproval','NOT_APPROVED'),(4,'Center','6','aaaa 44/5 karmiel',NULL,'pendingApproval','NOT_APPROVED');
+INSERT INTO `deliveries` VALUES (1,'North','007818859','abcd 3/5 ','25/12/2022 16:50','pendingApproval','NOT_APPROVED'),(2,'North','007818859','aaa 2/3 ','28/12/2022 19:57','outForDelivery','APPROVED'),(3,'North','2','cc 2',NULL,'pendingApproval','NOT_APPROVED'),(4,'UAE','6','aaaa 44/5 karmiel',NULL,'pendingApproval','NOT_APPROVED');
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +171,7 @@ CREATE TABLE `items` (
   `item_img_name` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `itemName_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +228,7 @@ CREATE TABLE `orders` (
   `products_description` varchar(45) DEFAULT NULL,
   `supply_method` enum('Delivery','Pickup','On-site') NOT NULL DEFAULT 'On-site',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +277,7 @@ CREATE TABLE `orders_report` (
   `year` varchar(45) DEFAULT NULL,
   `region` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,7 +304,7 @@ CREATE TABLE `personal_messages` (
   `type` varchar(64) NOT NULL,
   `message` varchar(2048) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +315,30 @@ LOCK TABLES `personal_messages` WRITE;
 /*!40000 ALTER TABLE `personal_messages` DISABLE KEYS */;
 INSERT INTO `personal_messages` VALUES (5,0,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(6,32,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(7,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(8,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(9,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(10,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(11,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(12,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(13,83,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(14,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(15,83,'28/12/2022','title','Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here ');
 /*!40000 ALTER TABLE `personal_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pickups`
+--
+
+DROP TABLE IF EXISTS `pickups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pickups` (
+  `order_id` int NOT NULL,
+  `customer_id` varchar(45) NOT NULL,
+  `pickup_status` enum('done','inProgress') NOT NULL DEFAULT 'inProgress',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pickups`
+--
+
+LOCK TABLES `pickups` WRITE;
+/*!40000 ALTER TABLE `pickups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pickups` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -380,9 +404,9 @@ CREATE TABLE `sales` (
   `days` varchar(128) NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
-  `sale_sataus` enum('Active','NotActive') NOT NULL DEFAULT 'NotActive',
+  `sale_status` enum('Active','NotActive') NOT NULL DEFAULT 'NotActive',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +415,7 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (1,'North','1+1','Sunday','08:00:00','10:00:00','NotActive'),(2,'North','1+1','Sunday,Monday','14:00:00','16:00:00','NotActive'),(7,'Center','Monday, Tuesday','10%','06:00:00','08:00:00','NotActive');
+INSERT INTO `sales` VALUES (1,'North','1+1','Sunday','08:00:00','10:00:00','NotActive'),(2,'North','1+1','Sunday,Monday','14:00:00','16:00:00','NotActive'),(7,'UAE','Monday, Tuesday','10%','06:00:00','08:00:00','NotActive');
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -474,7 +498,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userName_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,4 +520,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-06 14:36:31
+-- Dump completed on 2023-01-07 15:54:10
