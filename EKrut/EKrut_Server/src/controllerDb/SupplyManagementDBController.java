@@ -1,5 +1,6 @@
 package controllerDb;
 
+import java.awt.ItemSelectable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.sql.Statement;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import common.CommonFunctions;
 import common.Message;
@@ -300,7 +302,7 @@ public class SupplyManagementDBController {
 				}
 			}
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -352,6 +354,11 @@ public class SupplyManagementDBController {
 
 	}
 
+	/**
+	 * update single item entity
+	 * @param item
+	 * @return
+	 */
 	public static ItemInMachineEntity updateSingleItemInMachine(ItemInMachineEntity item) {
 
 		try {
@@ -371,6 +378,94 @@ public class SupplyManagementDBController {
 			return item;
 		}
 		return null;
+	}
+
+	/**
+	 * Update items in machine with roll back option if update failed
+	 * 
+	 * @param itemsInMachine
+	 * @param client
+	 * @throws IOException 
+	 */
+	public static void decreaseItemsAmountInMachine(Map<ItemInMachineEntity, Integer> itemsInMachine,
+			ConnectionToClient client) throws IOException {
+		try {
+			ArrayList<ItemInMachineEntity> rollBackItems = new ArrayList<ItemInMachineEntity>();
+
+			for (ItemInMachineEntity item : itemsInMachine.keySet()) {
+				ItemInMachineEntity updatedItem = null;
+				updatedItem = decreaseSingleItemAmount(item, itemsInMachine.get(item));
+				if (updatedItem != null) { // has error
+					increaseRollBack(itemsInMachine, rollBackItems);
+					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+					return;
+				}
+				rollBackItems.add(item);
+
+			}
+
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
+
+		} catch (Exception e) {
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * decrease amount of single item
+	 * @param item
+	 * @param amountToDecrease
+	 * @return
+	 */
+	public static ItemInMachineEntity decreaseSingleItemAmount(ItemInMachineEntity item, int amountToDecrease) {
+
+		try {
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE item_in_machine SET current_amount=current_amount-? WHERE machine_id=? AND item_id=?;");
+			ps.setInt(1, amountToDecrease);
+			ps.setInt(2, item.getMachineId());
+			ps.setInt(3, item.getId());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			return item;
+		}
+		return null;
+	}
+
+	/**
+	 * increase the amount which decreased earlier. Update is NOT good.
+	 * @param original
+	 * @param successItems
+	 */
+	private static void increaseRollBack(Map<ItemInMachineEntity, Integer> original,
+			ArrayList<ItemInMachineEntity> successItems) {
+		for (ItemInMachineEntity item : successItems) {
+			increaseSingleItemAmount(item, original.get(item));
+		}
+	}
+
+	/**
+	 * increase amount for single items
+	 * @param item
+	 * @param amountToIncrease
+	 */
+	private static void increaseSingleItemAmount(ItemInMachineEntity item, int amountToIncrease) {
+		try {
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE item_in_machine SET current_amount=current_amount+? WHERE machine_id=? AND item_id=?;");
+			ps.setInt(1, amountToIncrease);
+			ps.setInt(2, item.getMachineId());
+			ps.setInt(3, item.getId());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -449,22 +544,21 @@ public class SupplyManagementDBController {
 		}
 		return machines;
 	}
-	
-	
-	public static void increaseItemsUnderMin(ArrayList<int[]> machineAnditemsId) {
+
+	public static void increaseItemsUnderMin(ArrayList<int[]> machineAnditemsId, ConnectionToClient client) {
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
 			PreparedStatement ps = conn.prepareStatement(
 					"UPDATE item_in_machine SET times_under_min=times_under_min+1 WHERE machine_id=? AND item_id=?");
-			for(int[] machineItemId : machineAnditemsId)
-			{
+			for (int[] machineItemId : machineAnditemsId) {
 				ps.setInt(1, machineItemId[0]); // machine
-				ps.setInt(1, machineItemId[1]); // item
+				ps.setInt(2, machineItemId[1]); // item
 				ps.executeUpdate();
 			}
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonData;
 import common.Message;
 import common.RolesEnum;
 import common.SaleType;
@@ -20,6 +21,7 @@ import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.SaleEntity;
 import javafx.scene.image.Image;
+import utils.AppConfig;
 
 /**
  * The class handles the WHOLE order process
@@ -36,11 +38,11 @@ public class OrderController {
 
 	// private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();
 	// // itemId and itemEntity
-	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
+	private static LinkedHashMap<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
-	private static MachineEntity currentMachine;
-	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
+	private static MachineEntity currentMachine = CommonData.getCurrentMachine();
+	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
 	private static ArrayList<SaleEntity> activeSales = null;
 	private static boolean isSaleActive =false;
 	private static boolean onePlusOneSaleExist =false;
@@ -84,7 +86,7 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	public static Map<String, ItemInMachineEntity> getItemsList() {
+	public static LinkedHashMap<String, ItemInMachineEntity> getItemsList() {
 		return itemsList;
 	}
 
@@ -164,7 +166,7 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	public static Map<ItemInMachineEntity, Integer> getCart() {
+	public static LinkedHashMap<ItemInMachineEntity, Integer> getCart() {
 		return itemsInCartList;
 	}
 
