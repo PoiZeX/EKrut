@@ -137,7 +137,8 @@ public class MessageHandler {
 		case UpdateItemsUnderMin:
 			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj);
 			break;
-
+		case RequestUserByOrderIdFromServer:
+			CommonDataDBController.getUserByOrderId((int)obj, client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

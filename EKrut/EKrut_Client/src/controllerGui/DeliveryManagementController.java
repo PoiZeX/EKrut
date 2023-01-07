@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonFunctions;
 import common.CustomerStatus;
 import common.DeliveryStatus;
 import common.Message;
@@ -56,14 +57,14 @@ public class DeliveryManagementController {
     
     @FXML
     private Label errorLbl;
-   
-    /* need to handle: 
-     *   send message to the costumer with the estimated Time
-     *   get customer approval and update the actual arrivel time*/
+    
+
    private static ClientController chat = HostClientController.chat; // define the chat for the controller
 	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
 	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
 	private TooltipSetter tooltip;
+	private static UserEntity userToSend=null;
+	private String msg="Hi!\nyour delivery is on the way,\nthe estimated arrivel time is ";
 
 	@FXML
 	// Setup screen before launching view
@@ -89,6 +90,8 @@ public class DeliveryManagementController {
 	private void save(ActionEvent event) {
 		if (changedDeliveryItems.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries, changedDeliveryItems));
+			//if(userToSend!=null)
+				//SMSMailHandlerController.SendSMSOrMail(SMS, userToSend, "Delivery", msg);
 			changedDeliveryItems.clear();
 		}
 
@@ -122,16 +125,27 @@ public class DeliveryManagementController {
 			@Override
 			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatus> event) {
 				DeliveryEntity deliveryEntity = event.getRowValue();
+				DeliveryEntity deliveryEntityUpdate=new DeliveryEntity(deliveryEntity.getOrderId(),deliveryEntity.getRegion(),deliveryEntity.getAddress(),
+						deliveryEntity.getEstimatedTime(),deliveryEntity.getDeliveryStatus(),deliveryEntity.getCustomerStatus());
 				DeliveryStatus oldStatus=deliveryEntity.getDeliveryStatus();
 				DeliveryStatus newStatus=event.getNewValue();
-				String msg="Hi!\nyour delivery is on the way,\nthe estimated arrivel time is ";
 				if(!oldStatus.equals(newStatus)) {
 					switch (newStatus){
+					case pendingApproval:
+						if(!CommonFunctions.isNullOrEmpty(deliveryEntity.getEstimatedTime()))
+							errorLbl.setText("Can't change to pendingApproval ");
+						else {
+							deliveryEntityUpdate.setEstimatedTime("");
+							deliveryEntityUpdate.setDeliveryStatus(newStatus);
+						}
+						break;
 					case outForDelivery:
 						if(oldStatus.equals(DeliveryStatus.pendingApproval)) {
-							deliveryEntity.setEstimatedTime(calculateEstimatedTime()); 
-							deliveryEntity.setDeliveryStatus(newStatus);
+							deliveryEntityUpdate.setEstimatedTime(calculateEstimatedTime());
+							deliveryEntityUpdate.setDeliveryStatus(newStatus);
+							errorLbl.setText("");
 							msg+=calculateEstimatedTime();
+							//chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer,deliveryEntity.getOrderId()));
 						//	SMSMailHandlerController.SendSMSOrMail(SMS, UserEntity to, "Delivery", msg);
 							//TODO add: send message to the costumer with the estimated Time
 						}
@@ -140,8 +154,10 @@ public class DeliveryManagementController {
 						break;
 					case done:
 						if(oldStatus.equals(DeliveryStatus.outForDelivery)) {
-							if( deliveryEntity.getCustomerStatus().equals(CustomerStatus.APPROVED))
-								deliveryEntity.setDeliveryStatus(newStatus);
+							if( deliveryEntity.getCustomerStatus().equals(CustomerStatus.APPROVED)) {
+								deliveryEntityUpdate.setDeliveryStatus(newStatus);
+								errorLbl.setText("");
+							}
 							else {
 							errorLbl.setText("The customer's status is \"not approved\". Unable to change status to \"Done\"");}
 						}
@@ -149,12 +165,15 @@ public class DeliveryManagementController {
 						errorLbl.setText("Can't change from pendingApproval status to done status ");}
 						break;
 					default:
-						errorLbl.setText("Can't change to done pendingApproval ");
+						
 						break;
 					}
-					if (!changedDeliveryItems.contains(deliveryEntity))
-						changedDeliveryItems.add(deliveryEntity);
+					
 				}
+				//for save the last update
+				if (changedDeliveryItems.contains(deliveryEntityUpdate))
+					changedDeliveryItems.remove(deliveryEntityUpdate);
+				changedDeliveryItems.add(deliveryEntityUpdate);
 			}
 
 		});
@@ -192,9 +211,13 @@ public class DeliveryManagementController {
 		return formatter.format(estimated.getTime());
 	}
 
-	/* adding the deliveryEntity to deliveries list */
+	/** adding the deliveryEntity to deliveries list */
 	public static void getDeliveryEntityFromServer(ArrayList<DeliveryEntity> deliveriesArr) {
 			deliveries.addAll(deliveriesArr);
 	}
+	
+	public static void getUserEntityFromServer(UserEntity userEntity) {
+		userToSend=userEntity;
+}
 
 }
