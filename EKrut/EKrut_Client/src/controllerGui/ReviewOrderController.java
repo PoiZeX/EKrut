@@ -201,7 +201,7 @@ public class ReviewOrderController {
 		 */
 		String successMsg = "Yayy!\n";
 		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
-		String supplyMethod = "CHANGE MEEEEEE"; // get supplyMethod from selectionController later
+		String supplyMethod = OrderController.getCurrentOrder().getSupplyMethod(); // get supplyMethod from selectionController later
 
 		// setup params according to configurations
 		switch (supplyMethod) {

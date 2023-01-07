@@ -29,19 +29,38 @@ public class OrderController {
 	// // itemId and itemEntity
 	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static int discounts = 0; // in NIS not %
-	public static OrderEntity currentOrder;
-	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>();; // for images i think(???)
+	private static OrderEntity currentOrder;
+	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
 
 	public OrderController() {
 
 	}
 
+	/**
+	 * Clear all static data. Be careful using it!
+	 */
+	public static void clearAll() {
+		itemsInCartList.clear();
+		discounts = 0;
+		currentOrder = null;
+		itemsList.clear();
+	}
+	
+	/**
+	 * get items list
+	 * @return
+	 */
 	public static Map<String, ItemInMachineEntity> getItemsList() {
 		return itemsList;
 	}
-	
-	public static void putItemInList(String name, ItemInMachineEntity entity) {
-		itemsList.put(name, entity);
+
+	/**
+	 * put an item in itemslist 
+	 * @param name
+	 * @param entity
+	 */
+	public static void putItemInList(ItemInMachineEntity entity) {
+		itemsList.put(entity.getName(), entity);
 	}
 
 	public static void clearItemsList() {
@@ -49,17 +68,18 @@ public class OrderController {
 			itemsList.clear();
 		}
 	}
-	
+
 	public static Image getImageOfItem(String name) {
 		return OrderController.itemsList.get(name).getItemImage();
 	}
-	public static void getCurrentOrder() {
 
+	public static OrderEntity getCurrentOrder() {
+		return currentOrder;
 	}
 
 	public static void setCurrentOrder(int user_id, String supplyMethod) {
-		currentOrder = new OrderEntity(user_id, supplyMethod);
-
+		if(currentOrder == null)
+			currentOrder = new OrderEntity(user_id, supplyMethod);
 	}
 
 	/**

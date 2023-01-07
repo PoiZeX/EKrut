@@ -110,11 +110,11 @@ public class ShipmentMethodPopupController {
 
 		setupLoading();
 
-		if (OrderController.currentOrder == null) {
+		if (OrderController.getCurrentOrder() == null) {
 			createNewScreen();
 			return;
 		}
-		prevMethod = OrderController.currentOrder.getSupplyMethod();
+		prevMethod = OrderController.getCurrentOrder().getSupplyMethod();
 		if (!selectedShipmentMethod.equals(prevMethod)) {
 			createNewScreen();
 			return;
@@ -124,7 +124,7 @@ public class ShipmentMethodPopupController {
 			return;
 		}
 		if (prevMethod.equals("Pickup")
-				&& OrderController.currentOrder.getMachine_id() != selectedMachine.getMachineId()) {
+				&& OrderController.getCurrentOrder().getMachine_id() != selectedMachine.getMachineId()) {
 			createNewScreen();
 			return;
 		} else {
@@ -156,7 +156,7 @@ public class ShipmentMethodPopupController {
 		switch (selectedShipmentMethod) {
 		case "Pickup":
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Pickup");
-			OrderController.currentOrder.setMachine_id(selectedMachine.machineId);
+			OrderController.getCurrentOrder().setMachine_id(selectedMachine.machineId);
 			break;
 		case "Delivery":
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Delivery");
