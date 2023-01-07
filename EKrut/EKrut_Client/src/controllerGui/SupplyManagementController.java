@@ -177,7 +177,7 @@ public class SupplyManagementController {
 			}
 
 		});
-		recievedData = false;
+		recievedData = true;
 	}
 
 	/***

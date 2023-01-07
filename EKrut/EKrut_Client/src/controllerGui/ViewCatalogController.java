@@ -52,9 +52,9 @@ public class ViewCatalogController {
 
 	@FXML
 	private TextField searchTextLabel;
-	
-    @FXML
-    private Label shipmentMethodLabel;
+
+	@FXML
+	private Label shipmentMethodLabel;
 
 	@FXML
 	private Group cartGroup;
@@ -77,15 +77,10 @@ public class ViewCatalogController {
 	@FXML
 	private ImageView totalMoneyImage;
 
-    @FXML
-    private ImageView onePlusOneImg;
-    @FXML
-    private ImageView salePersentageIconImg;
-
 	@FXML
 	private GridPane cartViewGridpane;
 
-	private int machineDiscount = 0;
+	private double machineDiscount = 1;
 	private int machineId = AppConfig.MACHINE_ID;
 	private ObservableList<Node> allCatalogItems;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
@@ -95,6 +90,7 @@ public class ViewCatalogController {
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
+		
 		generateCatalog(OrderController.getItemsList());
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
@@ -102,8 +98,10 @@ public class ViewCatalogController {
 		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) -> {
 			reorderCatalog(newValue);
 		});
+		
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
+		
 	}
 
 	private void checkRequestType() {
@@ -169,6 +167,8 @@ public class ViewCatalogController {
 			OrderController.putItemInList(item);
 		}
 		recievedData = true;
+		
+		
 	}
 
 	private static void convertImage(ItemInMachineEntity item) {
@@ -178,14 +178,20 @@ public class ViewCatalogController {
 	}
 
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList) {
+		
 		int i = 0, j = 0;
+		if (OrderController.isActiveSale()) {
+			machineDiscount = OrderController.getTotalDiscountsPercentage();
+
+		}
 		for (ItemInMachineEntity item : itemsList.values()) {
-			generateItem(item, machineDiscount, (i++)%4, i%4 == 0 ? j++ : j);
+			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
+
 		}
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
 
-	public void generateItem(ItemInMachineEntity item, int discountPrice, int i, int j) {
+	public void generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
 		try {
 			// Prepare the gridpanes for the items in machine
 			GridPane newItem = createGridPane("ItemGridBoundary");
@@ -198,11 +204,16 @@ public class ViewCatalogController {
 			Label priceLabel = (Label) newItem.getChildren().get(3);
 			Label productNameLabel = (Label) newItem.getChildren().get(4);
 			Label discountPriceLabel = (Label) newItem.getChildren().get(5);
-
-			discountPriceLabel.setText(discountPrice + "");
+			ImageView salePersentageIconImg = (ImageView)newItem.getChildren().get(6);
+			ImageView onePlusOneImg=(ImageView)newItem.getChildren().get(7);;
+			
+			discountPriceLabel.setVisible(OrderController.isPercentageSaleExit());
+			discountPriceLabel.setText(item.getPrice() + "₪");//ass a cross line cuse this will be the ole price
 			productNameLabel.setText(item.getName());
-			priceLabel.setText(item.getPrice() + "₪");
-
+			priceLabel.setText((OrderController.getItemPriceAfterDiscounts(item.getPrice()) + "₪"));
+			salePersentageIconImg.setVisible(OrderController.isPercentageSaleExit());
+			onePlusOneImg.setVisible(OrderController.isOnePlusOneSaleExist());
+		
 			// Prepare the gridpanes for the items in the cart
 			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
@@ -388,7 +399,7 @@ public class ViewCatalogController {
 			GridPane itemAsGrid = (GridPane) item;
 			Label productNameLabel = (Label) itemAsGrid.getChildren().get(4);
 			if (productNameLabel.getText().toLowerCase().contains(newValue.toLowerCase())) {
-				catalogViewGridpane.add(item, (i++)%4, i%4 == 0 ? j++ : j);
+				catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
 			}
 		}
 	}
@@ -396,8 +407,8 @@ public class ViewCatalogController {
 	private void renewCatalog() {
 		int i = 0, j = 0;
 		for (Node item : allCatalogItems) {
-			catalogViewGridpane.add(item, (i++)%4, i%4 == 0 ? j++ : j);
-			
+			catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
+
 		}
 	}
 

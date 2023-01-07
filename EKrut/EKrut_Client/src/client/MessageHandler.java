@@ -4,6 +4,7 @@ import common.CommonData;
 import common.Message;
 import common.TaskType;
 import controller.ItemsController;
+import controller.OrderController;
 import controllerGui.LoginController;
 import controllerGui.MarketingWorkerController;
 import controllerGui.OrdersReportController;
@@ -117,8 +118,15 @@ public class MessageHandler {
 		case ReviewOrderServerAnswer:
 			ReviewOrderController.getDataFromServer(obj);
 			break;
+
+		case ReceiveActiveSales:
+			OrderController.setActiveSales((ArrayList<SaleEntity>) obj);
+			break;
 		case ValidPickupAnswer:
+
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
+			break;
+
 		default:
 			break;
 		}

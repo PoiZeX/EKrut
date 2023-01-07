@@ -93,6 +93,14 @@
     -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
     -fx-background-radius: 0 0 15 15;
 }
+
+.LableOldPrice .text {
+	-fx-text-fill: #8e8e8e;
+	-fx-font-size: 9pt;
+    -fx-strikethrough: true;
+    
+}
+
 /* --------------------------------------TEXT FIELD------------------------------------------- */
 .TextField {
 	-fx-background-radius:15;
