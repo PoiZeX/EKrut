@@ -97,6 +97,7 @@ public class ViewCatalogController {
 		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) -> {
 			reorderCatalog(newValue);
 		});
+		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
 	}
 
