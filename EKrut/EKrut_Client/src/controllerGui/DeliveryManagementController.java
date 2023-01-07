@@ -32,10 +32,6 @@ public class DeliveryManagementController {
 
     @FXML
     private TableColumn<DeliveryEntity, String> addressCol;
-    
-
-    @FXML
-    private TableColumn<DeliveryEntity, Integer> customerIdCol;
 
 	@FXML
 	private TableView<DeliveryEntity> deliveryTable;
@@ -85,7 +81,7 @@ public class DeliveryManagementController {
 	private void refresh(ActionEvent event) {
 		if (deliveries != null)
 			deliveries.clear();
-		chat.acceptObj(new Message(TaskType.RequestDeliveriesFromServer, null)); // get all entities to ArrayList from
+		chat.acceptObj(new Message(TaskType.RequestDeliveriesFromServer,NavigationStoreController.connectedUser.getRegion())); // get all entities to ArrayList from
 																					// DB
 	}
 
@@ -107,7 +103,6 @@ public class DeliveryManagementController {
 
 		// factory
 		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
-		customerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("customerId"));
 		addressCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("address"));
 		estimatedTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
 		deliveryStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatus>("deliveryStatus"));
@@ -198,10 +193,8 @@ public class DeliveryManagementController {
 	}
 
 	/* adding the deliveryEntity to deliveries list */
-	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
-		String region =NavigationStoreController.connectedUser.getRegion();
-		if(deliveryEntity.getRegion().equals(region))
-			deliveries.add(deliveryEntity);
+	public static void getDeliveryEntityFromServer(ArrayList<DeliveryEntity> deliveriesArr) {
+			deliveries.addAll(deliveriesArr);
 	}
 
 }

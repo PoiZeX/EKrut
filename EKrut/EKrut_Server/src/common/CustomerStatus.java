@@ -2,5 +2,6 @@ package common;
 
 public enum CustomerStatus {
 	APPROVED, 
-	NOT_APPROVED
+	NOT_APPROVED,
+
 }

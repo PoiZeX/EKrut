@@ -228,7 +228,7 @@ public class ReviewOrderController {
 						"You must provide valid delivery information\n" + resValid + "\n");
 				return;
 			}
-			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(), address.toString());
+			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), address.toString());
 
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCurrentOrder()));
