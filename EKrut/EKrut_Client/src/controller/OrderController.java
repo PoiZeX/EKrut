@@ -6,11 +6,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import Store.NavigationStoreController;
+import common.RolesEnum;
+import common.SaleType;
 import entity.ItemEntity;
 import entity.ItemInCartEntity;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.OrderEntity;
+import entity.SaleEntity;
 import javafx.scene.image.Image;
 
 /**
@@ -29,10 +33,12 @@ public class OrderController {
 	// private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();
 	// // itemId and itemEntity
 	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
-	private static int discounts = 0; // in NIS not %
+	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
 	private static MachineEntity currentMachine;
 	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
+	private static ArrayList<SaleEntity> activeSales = null;
+	private static boolean isSaleActive =false;
 
 	public OrderController() {
 
@@ -43,13 +49,14 @@ public class OrderController {
 	 */
 	public static void clearAll() {
 		itemsInCartList.clear();
-		discounts = 0;
+		discounts = 1.0;
 		currentOrder = null;
 		itemsList.clear();
 	}
-	
+
 	/**
 	 * get items list
+	 * 
 	 * @return
 	 */
 	public static Map<String, ItemInMachineEntity> getItemsList() {
@@ -57,7 +64,8 @@ public class OrderController {
 	}
 
 	/**
-	 * put an item in itemslist 
+	 * put an item in itemslist
+	 * 
 	 * @param name
 	 * @param entity
 	 */
@@ -80,9 +88,11 @@ public class OrderController {
 	}
 
 	public static void setCurrentOrder(int user_id, String supplyMethod) {
-		if(currentOrder == null)
+		if (currentOrder == null)
 			currentOrder = new OrderEntity(user_id, supplyMethod);
 	}
+
+
 
 	/**
 	 * return the amount of a specific item in the cart
@@ -178,22 +188,48 @@ public class OrderController {
 		itemsInCartList.remove(item);
 		return true;
 	}
+//----------------------------------------------------------------------Sales 
+	private static boolean isActiveSale() {
+		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member) && !activeSales.isEmpty()) {
+			isSaleActive=true;
+		}
+		
+		return isSaleActive;
+	}
+	
+	private static ArrayList<SaleEntity> getActiveSales() {
+		return activeSales;
+	}
 
+	private static void setActiveSales(ArrayList<SaleEntity> activesales) {
+		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
+			if (activeSales == null) {
+				activeSales = new ArrayList<>();
+			}
+			activeSales.addAll(activesales);
+		}
+	}
 	/**
 	 * Get total discount in NIS
 	 * 
 	 * @return
 	 */
-	public static int getTotalDiscounts() {
+	public static double getTotalDiscounts() {
 		return getTotalPrice() * discounts / 100;
 	}
 
 	/**
-	 * Get total discount in %
+	 * Get total discount in double 
 	 * 
 	 * @return
 	 */
-	public static int getTotalDiscountsPercentage() {
+	public static double getTotalDiscountsPercentage() {
+		if(activeSales==null)
+			return getTotalPrice() ;
+		for(SaleEntity sale : activeSales) {
+			addDiscount(sale.getSaleType().getPrecentage());
+		}
+		
 		return discounts;
 	}
 
@@ -202,11 +238,14 @@ public class OrderController {
 	 * 
 	 * @param discount
 	 */
-	public static void addDiscount(int discount) {
-		discounts += discount;
+	public static void addDiscount(double discount) {
+		discounts = discounts*discount;
 	}
 
-	public static int getPriceAfterDiscounts() {
+	public static double getPriceAfterDiscounts() {
+		if(activeSales==null)
+			return getTotalPrice() ;
+				
 		return getTotalPrice() - getTotalDiscounts();
 	}
 

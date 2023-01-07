@@ -77,6 +77,11 @@ public class ViewCatalogController {
 	@FXML
 	private ImageView totalMoneyImage;
 
+    @FXML
+    private ImageView onePlusOneImg;
+    @FXML
+    private ImageView salePersentageIconImg;
+
 	@FXML
 	private GridPane cartViewGridpane;
 

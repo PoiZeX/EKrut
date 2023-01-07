@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import common.SaleType;
+
 
 public class SaleEntity implements Serializable {
 	//enum for sale status
 	public enum SaleStatus{Active, NotActive;
 	} ;
-	
+	private SaleType saletype;
 	private static final long serialVersionUID = 1L;
 	private int SaleID;
 	private String saleType, region, days ;
@@ -28,8 +30,10 @@ public class SaleEntity implements Serializable {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+	
 	public SaleEntity(String region, String saleType,String days, LocalTime startTime, LocalTime endTime) {
 		super();
+		
 		this.saleType = saleType;
 		this.region = region;
 		this.startTime = startTime;
