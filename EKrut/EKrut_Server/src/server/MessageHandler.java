@@ -122,6 +122,9 @@ public class MessageHandler {
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 			break;
+		case RequestActiveSales:
+			MarketingManagerDBController.getActiveSalesByRegion((String)obj, client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

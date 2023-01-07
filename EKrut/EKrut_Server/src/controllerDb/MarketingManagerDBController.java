@@ -40,7 +40,7 @@ public class MarketingManagerDBController {
 			ps.setString(5, saleEntity.getEndTime().toString());
 			
 			ps.executeUpdate();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -113,7 +113,7 @@ public class MarketingManagerDBController {
 						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
 				sales.add(saleEntity);
 			} 
-			client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, sales));
+			client.sendToClient(new Message(TaskType.ReceiveActiveSales, sales));
 			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();

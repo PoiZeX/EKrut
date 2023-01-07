@@ -84,9 +84,11 @@ public enum TaskType {
 	
 	//-------------------------------------Order
 	// Requests From Server //
+	RequestActiveSales,
 	// Receive Answers From Server //
 	ReviewOrderServerAnswer,
 	isMemberFirstPurchase,
+	ReceiveActiveSales,
 	// Update Database//
 	AddNewDelivery,
 	NewOrderCreation,
