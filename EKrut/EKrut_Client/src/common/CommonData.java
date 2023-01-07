@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import client.ClientController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
+import utils.AppConfig;
 
 public class CommonData {
 	private static ClientController chat = HostClientController.chat; // one instance
 	private static ArrayList<String> allRegions;
 	private static ArrayList<MachineEntity> allMachines;
+	private static MachineEntity currentMachine;
 
 	public static void initData() {
 		chat.acceptObj(new Message(TaskType.InitRegions, null));
@@ -26,8 +28,14 @@ public class CommonData {
 			return allRegions;
 		return new ArrayList<String>();
 	}
+	
+	@SuppressWarnings("unused")
 	public static void recieveMachines(ArrayList<MachineEntity> machines) {
 		allMachines = machines;
+		if(AppConfig.SYSTEM_CONFIGURATION == "EK")
+			for (MachineEntity m : allMachines)
+				if (m.getId() == AppConfig.MACHINE_ID)
+					setCurrentMachine(m);
 		return;
 	}
 	
@@ -35,5 +43,13 @@ public class CommonData {
 		if (allMachines!=null)
 			return allMachines;
 		return new ArrayList<MachineEntity>();
+	}
+
+	public static MachineEntity getCurrentMachine() {
+		return currentMachine;
+	}
+
+	public static void setCurrentMachine(MachineEntity currentMachine) {
+		CommonData.currentMachine = currentMachine;
 	}
 }

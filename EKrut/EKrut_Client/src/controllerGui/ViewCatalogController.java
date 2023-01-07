@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonData;
 import common.Message;
 import common.ScreensNames;
 import common.TaskType;
@@ -51,6 +52,9 @@ public class ViewCatalogController {
 
 	@FXML
 	private TextField searchTextLabel;
+	
+    @FXML
+    private Label shipmentMethodLabel;
 
 	@FXML
 	private Group cartGroup;
@@ -81,7 +85,6 @@ public class ViewCatalogController {
 	private ObservableList<Node> allCatalogItems;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
-	private String lastMethod;
 
 	public void initialize() throws InterruptedException {
 		checkRequestType();
@@ -94,20 +97,24 @@ public class ViewCatalogController {
 		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) -> {
 			reorderCatalog(newValue);
 		});
+		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
 	}
 
 	private void checkRequestType() {
 		if (OrderController.getCurrentOrder() == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
+			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		} else {
 			switch (OrderController.getCurrentOrder().getSupplyMethod()) {
 			case "Pickup":
-				this.machineId = OrderController.getCurrentOrder().getMachine_id();
+				machineId = OrderController.getCurrentOrder().getMachine_id();
+				shipmentMethodLabel.setText("Pickup - " + OrderController.getCurrentMachine().getMachineName());
 				chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 				break;
 			case "Delivery":
+				shipmentMethodLabel.setText("Delivery");
 				generateAllItems();
 				break;
 			}
