@@ -272,14 +272,18 @@ public class SupplyManagementDBController {
 
 	/**
 	 * Update items in machine with roll back option if update failed
+	 * 
 	 * @param itemsInMachine
 	 * @param client
 	 */
 	public static void updateItemsInMachine(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
 		try {
-			ItemInMachineEntity[] itemsArray = (ItemInMachineEntity[]) itemsInMachine.toArray();
-			int[] originalAmount = new int[itemsArray.length];  // amount of items
-			
+			ItemInMachineEntity[] itemsArray = new ItemInMachineEntity[itemsInMachine.size()];
+			// ItemInMachineEntity[itemsInMachine.size()]);
+			itemsInMachine.toArray(itemsArray);
+
+			int[] originalAmount = new int[itemsArray.length]; // amount of items
+
 			Statement stmt;
 			if (con == null)
 				return;
@@ -287,7 +291,7 @@ public class SupplyManagementDBController {
 
 			ItemInMachineEntity item = null;
 			for (int i = 0; i < itemsArray.length; i++) {
-				originalAmount[i] = getItemInMachineQuantity(item);
+				originalAmount[i] = getItemInMachineQuantity(itemsArray[i]);
 				item = updateSingleItemInMachine(itemsArray[i]);
 				if (item != null || originalAmount[i] == -1) {
 					RollBack(originalAmount, itemsArray, i);
@@ -296,7 +300,7 @@ public class SupplyManagementDBController {
 				}
 			}
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -305,6 +309,7 @@ public class SupplyManagementDBController {
 
 	/**
 	 * Roll back when update failed
+	 * 
 	 * @param originalAmount
 	 * @param itemsInMachine
 	 * @param failedIndex
@@ -317,7 +322,8 @@ public class SupplyManagementDBController {
 	}
 
 	/**
-	 * get quantity of item 
+	 * get quantity of item
+	 * 
 	 * @param item
 	 * @return
 	 */
@@ -330,7 +336,7 @@ public class SupplyManagementDBController {
 
 			stmt = MySqlClass.getConnection().createStatement();
 			PreparedStatement ps = con
-					.prepareStatement("SELECT current_amount FROM machines WHERE machine_id=? and item_id=?;");
+					.prepareStatement("SELECT current_amount FROM item_in_machine WHERE machine_id=? and item_id=?;");
 
 			ps.setInt(1, item.getMachineId());
 			ps.setInt(2, item.getItemId());
@@ -343,7 +349,6 @@ public class SupplyManagementDBController {
 			e.printStackTrace();
 		}
 		return -1;
-
 
 	}
 
