@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.MarketingManagerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.MarketingManagerController">
    <bottom>
       <GridPane prefHeight="69.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -90,9 +90,9 @@
                      </GridPane.margin>
                   </Label>
                   <ComboBox fx:id="typeCmb" prefHeight="26.0" prefWidth="144.0" promptText="Sale type" styleClass="ComboBox" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                  <ComboBox fx:id="startTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="endTimeCmb" editable="true" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-                  <MenuButton fx:id="daysMb" mnemonicParsing="false" prefWidth="144.0" text="Choose days" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="startTimeCmb" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="endTimeCmb" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                  <MenuButton fx:id="daysMb" mnemonicParsing="false" prefWidth="144.0" styleClass="ComboBox" stylesheets="@../styles/css/DateAndTime.css" text="Choose days" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" top="10.0" />

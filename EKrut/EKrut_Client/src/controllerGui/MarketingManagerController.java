@@ -87,7 +87,6 @@ public class MarketingManagerController {
     
     // for the entity
     private LocalTime startTime, endTime;
-    private LocalDate startDate, endDate; 
     private String saleType;
     private String region;
     private TooltipSetter tooltip;
@@ -109,6 +108,7 @@ public class MarketingManagerController {
     		chat.acceptObj(new Message(TaskType.RequestInsertNewSale, saleEntity));
     		CommonFunctions.createPopup(PopupTypeEnum.Success, "Yay! succeeding in creating a new sale");
     	}
+    	
     }
     
     @FXML
@@ -136,13 +136,14 @@ public class MarketingManagerController {
 		startTimeCmb.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				startTime=startTimeCmb.getValue();
+				startTime=startTimeCmb.getSelectionModel().getSelectedItem();
+				
 			}
 		});
 		endTimeCmb.addEventHandler(ComboBox.ON_HIDING, new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-				endTime=endTimeCmb.getValue();
+				endTime=endTimeCmb.getSelectionModel().getSelectedItem();
 			}
 		});
 		daysMb.setOnAction(event -> {
@@ -195,6 +196,7 @@ public class MarketingManagerController {
     }
     /** Initialize listView of days*/
     private void initDays() {
+    	
 		CustomMenuItem monday = new CustomMenuItem(new CheckBox("Monday")); 
 		CustomMenuItem tuesday = new CustomMenuItem(new CheckBox("Tuesday"));
 		CustomMenuItem wednesday = new CustomMenuItem(new CheckBox("Wednesday"));
@@ -210,9 +212,11 @@ public class MarketingManagerController {
 				String currDay = ((CheckBox)event.getSource()).getText();
 				if (((CheckBox)event.getSource()).isSelected()) {
 					daysArr.add(currDay);
+					daysMb.setText(daysArr.toString());
 				}
 				else {
 					daysArr.remove(currDay);
+					daysMb.setText(daysArr.toString());
 				}
 			});
 		}
