@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import common.Message;
 import common.TaskType;
 import entity.MachineEntity;
+import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
@@ -67,5 +68,32 @@ public class CommonDataDBController {
 		return machines;
 	}
 	
+	public static UserEntity getUserByOrderId(int OrderId, ConnectionToClient client) {
+		UserEntity user = new UserEntity();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return new UserEntity();
+			Connection conn = MySqlClass.getConnection();
+			String query = "SELECT ekrut.users.* FROM ekrut.orders, ekrut.users where orders.id=? And orders.user_id=users.id;";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setInt(1, OrderId);
+			ResultSet res = ps.executeQuery();
+
+			if (res.next()) {
+				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
+						res.getString(11), res.getBoolean(12), res.getBoolean(13));
+				user.setId(res.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient(new Message(TaskType.ReceiveUserByOrderIdFromServerDB, user));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 
 }

@@ -27,6 +27,7 @@ public enum TaskType {
 	RequestUnapprovedUsers,
 	RequestPersonalMessages,
 	RequestSupplyWorkers,
+	RequestUserByOrderIdFromServer, 
 	// Receive Answers From Server //
 	ReceiveUserUpdateInDB,
 	ReceiveUsersApproval,
@@ -36,6 +37,7 @@ public enum TaskType {
 	ReceiveUnapprovedUsers, 
 	ReceiveUserFromServerDB,
 	ReceiveUserInfoFromServerDB,
+	ReceiveUserByOrderIdFromServerDB, 
 	// Update Database//
 	RequestUserUpdateInDB,
 	

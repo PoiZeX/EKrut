@@ -123,10 +123,10 @@ public class MessageHandler {
 			OrderController.setActiveSales((ArrayList<SaleEntity>) obj);
 			break;
 		case ValidPickupAnswer:
-
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
 			break;
-
+		case ReceiveUserByOrderIdFromServerDB:
+			break;
 		default:
 			break;
 		}

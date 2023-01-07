@@ -50,9 +50,13 @@
 	-fx-text-fill: #1E3D58;
 	-fx-font-size: 10pt;
 }
+.Label-list-red {
+	-fx-text-fill: #FF0000;
+	-fx-font-size: 10pt;
+	
+}
 
 .LabelTitle{
-
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
     -fx-text-alignment:center;
