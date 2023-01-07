@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane fx:id="itemViewGridpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="itemViewGridpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
@@ -59,10 +59,7 @@
       <Button id="button_AddToCart" fx:id="AddToCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="178.0" stylesheets="@../styles/css/generalStyleSheet.css" text="Add To Cart" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <Label fx:id="priceLabel" prefHeight="15.0" prefWidth="58.0" styleClass="Label-list" text="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
       <Label fx:id="productLabel" styleClass="Label" text="Product Name" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-      <Label id="#strikethrough" fx:id="discountPriceLabel" prefHeight="15.0" prefWidth="142.0" styleClass="LableOldPrice" text="0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <font>
-            <Font size="11.0" />
-         </font></Label>
+      <Text fill="#1e3d58" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Label-list" text="0" visible="false" wrappingWidth="116.0390625" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <ImageView fx:id="salePersentageIconImg" fitHeight="48.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
             <Image url="@../styles/icons/saleIcon.png" />

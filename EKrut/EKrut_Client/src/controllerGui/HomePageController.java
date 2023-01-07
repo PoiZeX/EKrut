@@ -15,6 +15,7 @@ import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
 import controller.ItemsController;
+import controller.OrderController;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -75,20 +76,20 @@ public class HomePageController {
 		bottomBtn.setVisible(false);
 		mailBtn.setVisible(false);
 		Image image = null;
-
+		RolesEnum currentRole = currentUser.getRole_type();
 		// switch case by role
-		switch (currentUser.getRole_type()) {
+		switch (currentRole) {
 		case registered:
 		case member:
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need to change later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need to
-																												// change
-																												// later
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need to																									// later
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
+			if (currentRole == RolesEnum.member)
+				OrderController.getActiveSalesFromDB();
 			break;
 
 		case CEO:

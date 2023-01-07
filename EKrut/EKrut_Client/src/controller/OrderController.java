@@ -46,7 +46,7 @@ public class OrderController {
 	private static boolean onePlusOneSaleExist =false;
 	private static boolean percentageSaleExit=false;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
-	private static boolean isDataRecived = false;
+	private static boolean isDataReceived = false;
 	private static Object data; 
 	
 	public OrderController() {
@@ -59,14 +59,15 @@ public class OrderController {
 	 * @throws Exception
 	 */
 	private void waitOn(Message msg) throws Exception {
-		isDataRecived = false;
+		isDataReceived = false;
 		chat.acceptObj(msg);
-		while (!isDataRecived)
+		while (!isDataReceived)
 			Thread.sleep(100);
 	}
+	
 	public static void getDataFromServer(Object dataRecived) {
 		data = dataRecived;
-		isDataRecived = true;
+		isDataReceived = true;
 	}
 
 	/**
@@ -226,20 +227,18 @@ public class OrderController {
 	public static ArrayList<SaleEntity> getActiveSales() {
 		return activeSales;
 	}
-	public static void getActiveSalesFromDB() throws Exception {
-		while(currentOrder==null)
-			Thread.sleep(100);
-		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)&& currentOrder.getMachine_id()!=-1) { 
-			isDataRecived=false;
-			chat.acceptObj(new Message(TaskType.RequestActiveSales, NavigationStoreController.connectedUser.getRegion()));
-		while (!isDataRecived)
-			Thread.sleep(100);}
 	
+	public static void getActiveSalesFromDB() {
+		chat.acceptObj(new Message(TaskType.RequestActiveSales, NavigationStoreController.connectedUser.getRegion()));
+		while (!isDataReceived) {
+			try {
+				Thread.sleep(100);
+			} catch (Exception e) {e.printStackTrace();}
+		}
 	}
 
 
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
-		
 			if (activeSales == null ) {
 				activeSales = new ArrayList<>();
 			}
@@ -251,9 +250,9 @@ public class OrderController {
 					onePlusOneSaleExist=true;
 				if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
 					percentageSaleExit=true;
-					}
+			}
 			getTotalDiscountsPercentage();
-			isDataRecived=true;
+			isDataReceived=true;
 	}
 	
 	public static boolean isOnePlusOneSaleExist() {
@@ -269,7 +268,7 @@ public class OrderController {
 	 * @return
 	 */
 	public static double getTotalDiscounts() {
-		return getTotalPrice() * discounts / 100;
+		return getTotalPrice() - (discounts / 100);
 	}
 
 	/**
@@ -282,6 +281,10 @@ public class OrderController {
 			return getTotalPrice() ;
 		for(SaleEntity sale : activeSales) 
 			addDiscount(SaleType.getSaleType(sale.getSaleType()).getPrecentage());
+		return discounts;
+	}
+	
+	public static double getDiscountsPercentage() {
 		return discounts;
 	}
 
@@ -297,15 +300,15 @@ public class OrderController {
 		if(activeSales==null)
 			return itemPrice ;
 		for(SaleEntity sale : activeSales) 
-			itemPrice= itemPrice*(1-SaleType.getSaleType(sale.getSaleType()).getPrecentage());
+			if (!sale.getSaleType().equals("1+1"))
+				itemPrice= itemPrice*(1-SaleType.getSaleType(sale.getSaleType()).getPrecentage());
 		
 				
 		return itemPrice;
 	}
 	public static double getPriceAfterDiscounts() {
 		if(activeSales==null)
-			return getTotalPrice() ;
-				
+			return getTotalPrice() ;			
 		return getTotalPrice() - getTotalDiscounts();
 	}
 

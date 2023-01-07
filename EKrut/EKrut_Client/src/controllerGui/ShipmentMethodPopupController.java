@@ -152,12 +152,6 @@ public class ShipmentMethodPopupController {
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Pickup");
 			OrderController.getCurrentOrder().setMachine_id(selectedMachine.machineId);
 			OrderController.setCurrentMachine(selectedMachine);
-			try {
-				OrderController.getActiveSalesFromDB();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			break;
 		case "Delivery":
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Delivery");

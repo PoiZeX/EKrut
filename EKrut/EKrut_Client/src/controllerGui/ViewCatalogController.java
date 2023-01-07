@@ -34,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import utils.AppConfig;
 
 public class ViewCatalogController {
@@ -73,6 +74,9 @@ public class ViewCatalogController {
 
 	@FXML
 	private Label totalPriceLabel;
+	
+	@FXML
+	private Label discountTotalLabel;
 
 	@FXML
 	private ImageView totalMoneyImage;
@@ -83,6 +87,7 @@ public class ViewCatalogController {
 	private double machineDiscount = 1;
 	private int machineId = AppConfig.MACHINE_ID;
 	private ObservableList<Node> allCatalogItems;
+	private String currentSupplyMethod;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
 
@@ -90,7 +95,6 @@ public class ViewCatalogController {
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
-		
 		generateCatalog(OrderController.getItemsList());
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
@@ -98,10 +102,14 @@ public class ViewCatalogController {
 		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) -> {
 			reorderCatalog(newValue);
 		});
-		
+
+		if (currentSupplyMethod.equals("Delivery")) {
+			discountTotalLabel.setVisible(false);
+			GridPane.setRowIndex(totalPriceLabel, 0);
+			GridPane.setRowSpan(totalPriceLabel, 2);	
+		}
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
-		
 	}
 
 	private void checkRequestType() {
@@ -110,7 +118,8 @@ public class ViewCatalogController {
 			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		} else {
-			switch (OrderController.getCurrentOrder().getSupplyMethod()) {
+			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
+			switch (currentSupplyMethod) {
 			case "Pickup":
 				machineId = OrderController.getCurrentOrder().getMachine_id();
 				shipmentMethodLabel.setText("Pickup - " + OrderController.getCurrentMachine().getMachineName());
@@ -167,8 +176,7 @@ public class ViewCatalogController {
 			OrderController.putItemInList(item);
 		}
 		recievedData = true;
-		
-		
+
 	}
 
 	private static void convertImage(ItemInMachineEntity item) {
@@ -178,15 +186,11 @@ public class ViewCatalogController {
 	}
 
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList) {
-		
 		int i = 0, j = 0;
-		if (OrderController.isActiveSale()) {
+		if (OrderController.isActiveSale())
 			machineDiscount = OrderController.getTotalDiscountsPercentage();
-
-		}
 		for (ItemInMachineEntity item : itemsList.values()) {
 			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
-
 		}
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
@@ -203,17 +207,27 @@ public class ViewCatalogController {
 			Button addToCartBtn = (Button) newItem.getChildren().get(2);
 			Label priceLabel = (Label) newItem.getChildren().get(3);
 			Label productNameLabel = (Label) newItem.getChildren().get(4);
-			Label discountPriceLabel = (Label) newItem.getChildren().get(5);
-			ImageView salePersentageIconImg = (ImageView)newItem.getChildren().get(6);
-			ImageView onePlusOneImg=(ImageView)newItem.getChildren().get(7);;
-			
-			discountPriceLabel.setVisible(OrderController.isPercentageSaleExit());
-			discountPriceLabel.setText(item.getPrice() + "₪");//ass a cross line cuse this will be the ole price
+			Text discountPriceLabel = (Text) newItem.getChildren().get(5);
+			ImageView salePersentageIconImg = (ImageView) newItem.getChildren().get(6);
+			ImageView onePlusOneImg = (ImageView) newItem.getChildren().get(7);
+
 			productNameLabel.setText(item.getName());
-			priceLabel.setText((OrderController.getItemPriceAfterDiscounts(item.getPrice()) + "₪"));
-			salePersentageIconImg.setVisible(OrderController.isPercentageSaleExit());
-			onePlusOneImg.setVisible(OrderController.isOnePlusOneSaleExist());
-		
+
+			if (OrderController.isPercentageSaleExit() && currentSupplyMethod != "Delivery") {
+				onePlusOneImg.setVisible(OrderController.isOnePlusOneSaleExist());
+				salePersentageIconImg.setVisible(OrderController.isPercentageSaleExit());
+				discountPriceLabel.setVisible(OrderController.isPercentageSaleExit());
+				discountPriceLabel.setText(item.getPrice() + "₪");
+				discountPriceLabel.setStrikethrough(true);
+				priceLabel.getStyleClass().clear();
+				priceLabel.getStyleClass().add("Label-list-red");
+				priceLabel.setText(String.format("%.2f₪", (OrderController.getItemPriceAfterDiscounts(item.getPrice()))));
+
+
+			} else {
+				priceLabel.setText(item.getPrice() + "₪");
+			}
+
 			// Prepare the gridpanes for the items in the cart
 			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
@@ -224,7 +238,7 @@ public class ViewCatalogController {
 			Button deleteItemBtn = (Button) newItemInCart.getChildren().get(5);
 			itemInCartNameLabel.setText(item.getName());
 
-			itemInCartNameLabel.setWrapText(true); // Total: 50₪ //80 Items
+			itemInCartNameLabel.setWrapText(true);
 			// Handle delete button
 			deleteItemBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
@@ -365,15 +379,24 @@ public class ViewCatalogController {
 	}
 
 	private void updateCartTotalLabels() {
+		int totalPrice = OrderController.getTotalPrice();
 		if (OrderController.getCartSize() == 0) {
 			cartSizeLabel.setText("Cart is Empty");
 			totalPriceLabel.setVisible(false);
 			totalMoneyImage.setVisible(false);
+			discountTotalLabel.setVisible(false);
 		} else {
 			totalMoneyImage.setVisible(true);
 			totalPriceLabel.setVisible(true);
-			cartSizeLabel.setText(OrderController.getCartSize() + " Items");
-			totalPriceLabel.setText("Total: " + OrderController.getTotalPrice() + "₪");
+			cartSizeLabel.setText(OrderController.getCartSize() + " Items");//+ (OrderController.getTotalPrice() -  OrderController.getTotalDiscounts()) + "₪"
+			
+			if (currentSupplyMethod.equals("Delivery"))
+				totalPriceLabel.setText("Total: " + totalPrice + "₪");
+			else {
+				discountTotalLabel.setVisible(true);
+				discountTotalLabel.setText("Discount: " + totalPrice*OrderController.getDiscountsPercentage() + "₪");
+				totalPriceLabel.setText("Total: " + ( totalPrice - totalPrice*OrderController.getDiscountsPercentage()) + "₪");
+			}
 		}
 	}
 
