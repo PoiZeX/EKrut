@@ -13,6 +13,7 @@ import common.ScreensNames;
 import common.TaskType;
 import controllerGui.HomePageController;
 import entity.DeliveryEntity;
+import entity.PickupEntity;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -111,13 +112,14 @@ public class ConfirmOnlineOrderController {
     	}
     	details[0]= NavigationStoreController.connectedUser.getId()+"";
     	details[1]=orderNum;
+    	
     	switch (AppConfig.SYSTEM_CONFIGURATION) {
     	case "EK":
     		isValidOrder = null;
-    		chat.acceptObj(new Message(TaskType.updatePickupStatus,details));
+    		chat.acceptObj(new Message(TaskType.RequestPickupFromServer,details));
     		break;
     	case "OL":
-    		 isValidOrder = null;
+    		isValidOrder = null;
     		chat.acceptObj(new Message(TaskType.RequestDeliveryFromServer,details));
     		break;
     	}
@@ -154,10 +156,20 @@ public class ConfirmOnlineOrderController {
 		}
 	}
 	
-	public static void getPickupAnswer(Boolean ans) {
-		if(!ans)
-			errorMsg="Order doesn't exist";
-		isValidOrder=ans;
+	public static void getPickupAnswer(PickupEntity pickupEntity) {
+		
+		if(pickupEntity==null) {
+			errorMsg=("Order doesn't exist\n");
+			isValidOrder=false;
+		}
+		else if(pickupEntity.getMachine_id()!=AppConfig.MACHINE_ID) {
+			errorMsg="This isn't the correct machine";
+			isValidOrder=false;
+		}
+		else {
+			isValidOrder=true;
+			CommonFunctions.SleepFor(200, ()->{chat.acceptObj(new Message(TaskType.updatePickupStatus,pickupEntity.getOrderId()));});
+		}
 	}
 	
 }

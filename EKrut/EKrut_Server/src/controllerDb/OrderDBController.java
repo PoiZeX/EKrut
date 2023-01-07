@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 import common.CustomerStatus;
 import common.DeliveryStatus;
 import common.Message;
@@ -21,6 +23,7 @@ import common.TaskType;
 import entity.DeliveryEntity;
 import entity.OrderEntity;
 import entity.PersonalMessageEntity;
+import entity.PickupEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
@@ -86,26 +89,41 @@ public class OrderDBController {
 
 	}
 	
-	public static void updatePickupStatus(String[] details, ConnectionToClient client) {
+	public static void updatePickupStatus(int orderId, ConnectionToClient client) {
 		
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null) 
+				return;
+			PreparedStatement ps=con.prepareStatement("UPDATE ekrut.pickups SET pickup_status='done' WHERE order_id=?;");
+			ps.setInt(1, orderId);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void isPickupValid(String[] details, ConnectionToClient client) {
+		PickupEntity pickup=null;
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.pickups WHERE customer_id=? AND order_id=? "
-					+ "And pickup_status!='done';");
+			PreparedStatement ps=con.prepareStatement("SELECT ekrut.pickups.* , ekrut.orders.machine_id "
+					+ "FROM ekrut.pickups, ekrut.orders "
+					+ "WHERE orders.user_id=? AND pickups.order_id=? AND"
+					+ " pickups.order_id=orders.id AND pickup_status!='done';");
 			ps.setString(1, details[0]);
 			ps.setString(2, details[1]);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				PreparedStatement ps1=con.prepareStatement("UPDATE ekrut.pickups SET pickup_status='done';");
-				ps1.executeUpdate();
-				client.sendToClient(new Message(TaskType.ValidPickupAnswer, true));
+				PickupEntity.Status st=PickupEntity.Status.valueOf(rs.getString(2));
+				pickup=new PickupEntity(rs.getInt(1),st ,rs.getInt(3));
 			}
-			else {
-			client.sendToClient(new Message(TaskType.ValidPickupAnswer, false)); //alredy pickup
-			}
+			
+			client.sendToClient(new Message(TaskType.ValidPickupAnswer, pickup)); //alredy pickup
+			
 			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();

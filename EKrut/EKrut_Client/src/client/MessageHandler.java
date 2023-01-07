@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
+import entity.PickupEntity;
 import entity.SaleEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
@@ -117,7 +118,7 @@ public class MessageHandler {
 			ReviewOrderController.getDataFromServer(obj);
 			break;
 		case ValidPickupAnswer:
-			ConfirmOnlineOrderController.getPickupAnswer((Boolean)obj);
+			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
 		default:
 			break;
 		}

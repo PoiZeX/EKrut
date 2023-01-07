@@ -124,8 +124,10 @@ public class MessageHandler {
 			break;
 
 		case updatePickupStatus:
-			OrderDBController.updatePickupStatus((String[])obj, client);
-			
+			OrderDBController.updatePickupStatus((int)obj, client);
+			break;
+		case  RequestPickupFromServer:
+			OrderDBController.isPickupValid((String[])obj, client);
 		case UpdateItemsUnderMin:
 			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj);
 
