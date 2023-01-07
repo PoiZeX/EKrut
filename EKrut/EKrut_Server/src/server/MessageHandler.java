@@ -103,7 +103,7 @@ public class MessageHandler {
 			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
 			break;
 		case RequestSalesFromServer:
-			MarketingManagerDBController.getSales(client);
+			MarketingManagerDBController.getSales((String)obj,client);
 			break;
 		case RequestSupplyWorkers:
 			SupplyManagementDBController.getSupplyWorkers(client);
