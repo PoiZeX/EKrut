@@ -110,7 +110,7 @@ public class MarketingManagerDBController {
 			while (rs.next()) {
 				saleStatus=SaleStatus.valueOf(rs.getString(7));
 				saleEntity = new SaleEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)
-						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
+						 , LocalTime.parse(rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
 				sales.add(saleEntity);
 			} 
 			client.sendToClient(new Message(TaskType.ReceiveActiveSales, sales));
