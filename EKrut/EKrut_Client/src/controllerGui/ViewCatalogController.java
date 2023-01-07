@@ -92,6 +92,7 @@ public class ViewCatalogController {
 	private static boolean recievedData = false;
 
 	public void initialize() throws InterruptedException {
+		OrderController.clearAll();
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
@@ -103,10 +104,11 @@ public class ViewCatalogController {
 			reorderCatalog(newValue);
 		});
 
-		if (currentSupplyMethod.equals("Delivery")) {
+		if (currentSupplyMethod.equals("Delivery") || !OrderController.isActiveSale()) {
 			discountTotalLabel.setVisible(false);
 			GridPane.setRowIndex(totalPriceLabel, 0);
-			GridPane.setRowSpan(totalPriceLabel, 2);	
+			GridPane.setRowSpan(totalPriceLabel, 2);
+			GridPane.setFillHeight(totalPriceLabel, true);
 		}
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
@@ -115,6 +117,7 @@ public class ViewCatalogController {
 	private void checkRequestType() {
 		if (OrderController.getCurrentOrder() == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
+			OrderController.getCurrentOrder().setMachine_id(AppConfig.MACHINE_ID);
 			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
 			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
@@ -213,9 +216,9 @@ public class ViewCatalogController {
 			ImageView onePlusOneImg = (ImageView) newItem.getChildren().get(7);
 
 			productNameLabel.setText(item.getName());
-
-			if (OrderController.isPercentageSaleExit() && currentSupplyMethod != "Delivery") {
+			if (OrderController.isOnePlusOneSaleExist() && currentSupplyMethod != "Delivery")
 				onePlusOneImg.setVisible(OrderController.isOnePlusOneSaleExist());
+			if (OrderController.isPercentageSaleExit() && currentSupplyMethod != "Delivery") {
 				salePersentageIconImg.setVisible(OrderController.isPercentageSaleExit());
 				discountPriceLabel.setVisible(OrderController.isPercentageSaleExit());
 				discountPriceLabel.setText(item.getPrice() + "₪");
@@ -391,7 +394,7 @@ public class ViewCatalogController {
 			totalPriceLabel.setVisible(true);
 			cartSizeLabel.setText(OrderController.getCartSize() + " Items");//+ (OrderController.getTotalPrice() -  OrderController.getTotalDiscounts()) + "₪"
 			
-			if (currentSupplyMethod.equals("Delivery"))
+			if (currentSupplyMethod.equals("Delivery") ||  !OrderController.isActiveSale())
 				totalPriceLabel.setText("Total: " + totalPrice + "₪");
 			else {
 				discountTotalLabel.setVisible(true);
