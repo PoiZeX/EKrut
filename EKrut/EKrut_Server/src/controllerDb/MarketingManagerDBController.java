@@ -67,31 +67,55 @@ public class MarketingManagerDBController {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void getSales(ConnectionToClient client) {
-		Statement stmt;
+	/**
+	 * get sales by region
+	 * @param region
+	 * @param client
+	 */
+	public static void getSales(String region ,ConnectionToClient client) {
+		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();
 		SaleEntity saleEntity;
 		SaleStatus saleStatus;
 		try {
-			if (MySqlClass.getConnection() == null) {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
 				return;
-			}
-			stmt = (MySqlClass.getConnection()).createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM ekrut.sales;");
-			
+			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales WHERE region=?;");
+			ps.setString(1,region);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				
 				saleStatus=SaleStatus.valueOf(rs.getString(7));
 				saleEntity = new SaleEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)
 						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
-				try {
-					client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, saleEntity)); // finally send the entity
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				sales.add(saleEntity);
 			} 
+			client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, sales));
 			rs.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void getActiveSalesByRegion(String region ,ConnectionToClient client) {
+		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();
+		SaleEntity saleEntity;
+		SaleStatus saleStatus;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales WHERE region=? AND sale_status='Active';");
+			ps.setString(1,region);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				saleStatus=SaleStatus.valueOf(rs.getString(7));
+				saleEntity = new SaleEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)
+						 , LocalTime.parse( rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
+				sales.add(saleEntity);
+			} 
+			client.sendToClient(new Message(TaskType.ReceiveSalesFromServer, sales));
+			rs.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

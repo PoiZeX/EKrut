@@ -83,7 +83,8 @@ public class MarketingWorkerController {
     void refresh(ActionEvent event) {
     	if (sales != null)
     		sales.clear();
-		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, null));
+    	String region =NavigationStoreController.connectedUser.getRegion();
+		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, region));
     }
 
     @FXML
@@ -128,10 +129,8 @@ public class MarketingWorkerController {
 		});
 	}
 	/* adding the saleEntity to sales list */
-	public static void getSalesEntityFromServer(SaleEntity saleEntity) {
-		String region =NavigationStoreController.connectedUser.getRegion();
-		if(saleEntity.getRegion().equals(region))
-			sales.add(saleEntity);
+	public static void getSalesEntityFromServer(ArrayList<SaleEntity> saleArr) {
+		sales.addAll(saleArr);
 	}
 	
 }

@@ -99,7 +99,7 @@ public class MessageHandler {
 			navigateItems((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
-			MarketingWorkerController.getSalesEntityFromServer((SaleEntity) obj);
+			MarketingWorkerController.getSalesEntityFromServer((ArrayList<SaleEntity>) obj);
 			break;
 		case ReceiveSupplyWorkersFromServer:
 			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
