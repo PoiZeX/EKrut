@@ -82,8 +82,8 @@ public class HomePageController {
 		case member:
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
-			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", null); // need to change later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmDelivery); // need to
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need to change later
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need to
 																												// change
 																												// later
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
@@ -107,14 +107,11 @@ public class HomePageController {
 					ScreensNames.RegistrationForm);
 			break;
 
-		case deliveryWorker:
+		case deliveryOperator:
 			setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
 					ScreensNames.DeliveryManagement);
 			break;
 
-		case deliveryManager:
-			setBtn(topBtn, "Manage deliveries", "See details about all deliveries", ScreensNames.DeliveryManagement);
-			break;
 
 		case marketingWorker:
 			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if

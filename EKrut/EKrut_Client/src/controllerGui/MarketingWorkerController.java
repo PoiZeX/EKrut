@@ -99,7 +99,6 @@ public class MarketingWorkerController {
 		salesTable.setEditable(true); // make table editable
 		salesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		salesTable.setItems(sales);
-
 		// factory
 		saleTypeCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, String>("saleType"));
 		daysCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, String>("days"));

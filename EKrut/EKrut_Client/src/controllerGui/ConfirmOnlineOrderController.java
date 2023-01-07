@@ -25,7 +25,7 @@ import javafx.scene.image.ImageView;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
-public class ConfirmDeliveryController {
+public class ConfirmOnlineOrderController {
 
     @FXML
     private Button submitBtn;
@@ -38,7 +38,6 @@ public class ConfirmDeliveryController {
     
     @FXML
     private ImageView img;
-    private String config="OL";
     private TooltipSetter tooltip;
     private String orderNum;
     private static String errorMsg="";
@@ -51,7 +50,7 @@ public class ConfirmDeliveryController {
      * in case of "EK": order pickup
      * in case of "OL": confirm delivery receipt
      */
-    public void c() {
+    public void initialize() {
     	switch(AppConfig.SYSTEM_CONFIGURATION) {
     	case "EK":
     		setBtnAndPicture(submitBtn, "Collect", "Collect your order now","../styles/images/pickup.png");
@@ -110,10 +109,12 @@ public class ConfirmDeliveryController {
 			isValidOrder=false;
 			return;
     	}
-    	details[0]= NavigationStoreController.connectedUser.getId_num();
+    	details[0]= NavigationStoreController.connectedUser.getId()+"";
     	details[1]=orderNum;
     	switch (AppConfig.SYSTEM_CONFIGURATION) {
     	case "EK":
+    		isValidOrder = null;
+    		chat.acceptObj(new Message(TaskType.updatePickupStatus,details));
     		break;
     	case "OL":
     		 isValidOrder = null;
@@ -152,4 +153,11 @@ public class ConfirmDeliveryController {
 
 		}
 	}
+	
+	public static void getPickupAnswer(Boolean ans) {
+		if(!ans)
+			errorMsg="Order doesn't exist";
+		isValidOrder=ans;
+	}
+	
 }

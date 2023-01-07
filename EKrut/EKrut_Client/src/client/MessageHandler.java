@@ -18,7 +18,7 @@ import controllerGui.UsersManagementController;
 
 import controllerGui.ViewCatalogController;
 import controllerGui.ClientsReportController;
-import controllerGui.ConfirmDeliveryController;
+import controllerGui.ConfirmOnlineOrderController;
 import controllerGui.DeliveryManagementController;
 import java.io.*;
 import java.util.ArrayList;
@@ -65,7 +65,10 @@ public class MessageHandler {
 		// Registration Form
 		case ReceiveUserInfoFromServerDB:
 		case ReceiveUserUpdateInDB:
+			RegistrationFormController.receiveDataFromServer(obj);
+			break;
 		case ReceiveManagerInfoFromServerDB:
+			ReviewOrderController.getDataFromServer(obj);
 			RegistrationFormController.receiveDataFromServer(obj);
 			break;
 		//
@@ -85,10 +88,10 @@ public class MessageHandler {
 			ItemsController.getItemsFromServer((ItemEntity) obj);
 			break;
 		case ReceiveDeliveriesFromServer:
-			DeliveryManagementController.getDeliveryEntityFromServer((DeliveryEntity) obj);
+			DeliveryManagementController.getDeliveryEntityFromServer((ArrayList<DeliveryEntity>) obj);
 			break;
 		case ReceiveDeliveryFromServer:
-			ConfirmDeliveryController.getDeliveryEntityFromServer((DeliveryEntity) obj);
+			ConfirmOnlineOrderController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
 		case ReceivePersonalMessages:
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
@@ -114,8 +117,13 @@ public class MessageHandler {
 		case ReviewOrderServerAnswer:
 			ReviewOrderController.getDataFromServer(obj);
 			break;
+
 		case ReceiveActiveSales:
 			OrderController.setActiveSales((ArrayList<SaleEntity>) obj);
+			break;
+		case ValidPickupAnswer:
+			ConfirmOnlineOrderController.getPickupAnswer((Boolean)obj);
+			break;
 		default:
 			break;
 		}

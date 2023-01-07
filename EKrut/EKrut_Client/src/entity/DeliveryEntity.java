@@ -10,7 +10,7 @@ public class DeliveryEntity implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String customerId, estimatedTime;
+	private String estimatedTime;
 	private int orderId;
 	private String address, region; //change later to AddressEntity
 	private DeliveryStatus deliveryStatus;
@@ -28,11 +28,10 @@ public class DeliveryEntity implements Serializable{
 	 * @param deliveryStatus
 	 * @param customerStatus
 	 */
-	public DeliveryEntity(int orderId, String region, String customerId,  String address, String estimatedTime,
+	public DeliveryEntity(int orderId, String region,  String address, String estimatedTime,
 			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
 		super();
 		this.estimatedTime = estimatedTime;
-		this.customerId = customerId;
 		this.orderId = orderId;
 		this.address = address;
 		this.region = region;
@@ -46,8 +45,7 @@ public class DeliveryEntity implements Serializable{
 	 * @param customerId
 	 * @param address
 	 */
-	public DeliveryEntity(String region, String customerId, String address) {
-		this.customerId = customerId;
+	public DeliveryEntity(String region, String address) {
 		this.address=address;
 		this.region = region;
 		this.deliveryStatus = DeliveryStatus.pendingApproval;
@@ -62,16 +60,6 @@ public class DeliveryEntity implements Serializable{
 
 	public void setEstimatedTime(String estimatedTime) {
 		this.estimatedTime = estimatedTime;
-	}
-
-
-	public String getCustomerId() {
-		return customerId;
-	}
-
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
 	}
 
 

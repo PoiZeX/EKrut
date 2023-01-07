@@ -51,7 +51,7 @@ public class MessageHandler {
 			ItemDBController.sendImgToClient(client);
 			break;
 		case RequestDeliveriesFromServer:
-			DeliveryManagementDBController.getTable(client);
+			DeliveryManagementDBController.getTable((String)obj, client);
 			break;
 		case RequestDeliveryFromServer:
 			DeliveryManagementDBController.getDelivery((String[])obj, client);
@@ -122,9 +122,19 @@ public class MessageHandler {
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 			break;
+
 		case RequestActiveSales:
 			MarketingManagerDBController.getActiveSalesByRegion((String)obj, client);
 			break;
+
+
+		case updatePickupStatus:
+			OrderDBController.updatePickupStatus((String[])obj, client);
+			break;
+		case UpdateItemsUnderMin:
+			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj);
+			break;
+
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

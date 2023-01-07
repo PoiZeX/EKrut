@@ -5,14 +5,13 @@ public enum RolesEnum {
 	registered, 
 	member,
 	customerServiceWorker,
-	deliveryWorker,
-	deliveryManager,
 	marketingWorker,
 	marketingManager,
 	supplyWorker,
 	supplyManager, 
 	regionManager,
-	CEO,
+	CEO, 
+	deliveryOperator,
 	
 
 }

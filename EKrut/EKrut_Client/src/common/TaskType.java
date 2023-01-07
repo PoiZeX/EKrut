@@ -71,6 +71,7 @@ public enum TaskType {
 	RequestUpdateItemsInMachine,
 	RequestItemsInMachineUpdateFromServer,
 	RequestItemsInMachineRestockFromServer,
+	UpdateItemsUnderMin,
 	
 	//-------------------------------------Deliveries
 	// Requests From Server //
@@ -93,6 +94,8 @@ public enum TaskType {
 	AddNewDelivery,
 	NewOrderCreation,
 	UpdateItemsWithAnswer,
+	ValidPickupAnswer, 
+	updatePickupStatus,
 	
 	//-------------------------------------Reports
 	// Requests From Server //

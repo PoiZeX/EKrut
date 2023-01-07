@@ -14,8 +14,11 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
+import common.CustomerStatus;
+import common.DeliveryStatus;
 import common.Message;
 import common.TaskType;
+import entity.DeliveryEntity;
 import entity.OrderEntity;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
@@ -81,6 +84,32 @@ public class OrderDBController {
 			}
 		}
 
+	}
+	
+	public static void updatePickupStatus(String[] details, ConnectionToClient client) {
+		
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.pickups WHERE customer_id=? AND order_id=? "
+					+ "And pickup_status!='done';");
+			ps.setString(1, details[0]);
+			ps.setString(2, details[1]);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				PreparedStatement ps1=con.prepareStatement("UPDATE ekrut.pickups SET pickup_status='done';");
+				ps1.executeUpdate();
+				client.sendToClient(new Message(TaskType.ValidPickupAnswer, true));
+			}
+			else {
+			client.sendToClient(new Message(TaskType.ValidPickupAnswer, false)); //alredy pickup
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

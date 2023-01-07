@@ -71,6 +71,7 @@ public enum TaskType {
 	RequestUpdateItemsInMachine,
 	RequestItemsInMachineUpdateFromServer,
 	RequestItemsInMachineRestockFromServer,
+	UpdateItemsUnderMin,
 	
 	//-------------------------------------Deliveries
 	// Requests From Server //
@@ -88,11 +89,13 @@ public enum TaskType {
 	// Receive Answers From Server //
 	ReviewOrderServerAnswer,
 	isMemberFirstPurchase,
-	ReceiveActiveSales,
+	ReceiveActiveSales,	
 	// Update Database//
 	AddNewDelivery,
 	NewOrderCreation,
 	UpdateItemsWithAnswer,
+	ValidPickupAnswer, 
+	updatePickupStatus, 
 	
 	//-------------------------------------Reports
 	// Requests From Server //
