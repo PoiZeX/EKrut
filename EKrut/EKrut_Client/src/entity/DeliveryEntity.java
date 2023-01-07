@@ -18,6 +18,16 @@ public class DeliveryEntity implements Serializable{
 
 	
 
+	/**
+	 * For getting delivery entity
+	 * @param orderId
+	 * @param region
+	 * @param customerId
+	 * @param address
+	 * @param estimatedTime
+	 * @param deliveryStatus
+	 * @param customerStatus
+	 */
 	public DeliveryEntity(int orderId, String region, String customerId,  String address, String estimatedTime,
 			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
 		super();
@@ -30,7 +40,12 @@ public class DeliveryEntity implements Serializable{
 		this.customerStatus = customerStatus;
 	}
 
-
+	/**
+	 * For build new delivery entity
+	 * @param region
+	 * @param customerId
+	 * @param address
+	 */
 	public DeliveryEntity(String region, String customerId, String address) {
 		this.customerId = customerId;
 		this.address=address;

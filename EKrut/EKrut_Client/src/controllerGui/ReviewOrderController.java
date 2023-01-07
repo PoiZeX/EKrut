@@ -21,9 +21,11 @@ import common.TaskType;
 import controller.OrderController;
 import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
+import entity.OrderEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -103,8 +105,8 @@ public class ReviewOrderController {
 
 	@FXML
 	private GridPane productsGrid;
+	
 
-	private boolean isSelfPickup;
 
 	private static Object data;
 	private static boolean isDataRecived = false;
@@ -158,8 +160,12 @@ public class ReviewOrderController {
 //			GridPane.setRowSpan(imageView, 2);
 			}
 
-			// start the manager process
-			///////////////////////////// reviewProcessManager();
+			/* TODO:
+			 * 1. Future payment for member
+			 * 2. check if item is under minimum 
+			 * 3. Cancel order button
+			 */
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -182,7 +188,16 @@ public class ReviewOrderController {
 		while (!isDataRecived)
 			Thread.sleep(100);
 	}
-
+    
+	@FXML
+    void startProcess(ActionEvent event) {
+		try {
+			reviewProcessManager();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+	
 	/**
 	 * Manage the review process
 	 * 
@@ -199,9 +214,10 @@ public class ReviewOrderController {
 		 * 
 		 * ROLL BACK HERE?
 		 */
-		String successMsg = "Yayy!\n";
-		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
+		int orderId = -1;
+		String successMsg = "Yayy!\nOrder #" +orderId+ " was placed successfuly\n";
 		String supplyMethod = OrderController.getCurrentOrder().getSupplyMethod(); // get supplyMethod from selectionController later
+		int machineIdToPickup = AppConfig.MACHINE_ID; // by default the same machine
 
 		// setup params according to configurations
 		switch (supplyMethod) {
@@ -212,28 +228,36 @@ public class ReviewOrderController {
 						"You must provide valid delivery information\n" + resValid + "\n");
 				return;
 			}
-			successMsg += "Your order placed successfuly\nYou will receive an SMS once the order approved!";
+			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(), address.toString());
 
 			// insert new order
-			waitOn(new Message(TaskType.NewOrderCreation, "OrderController.getCart()"));
-			if (data instanceof Boolean && !(boolean) data) {
+			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCurrentOrder()));
+			if (data instanceof Integer && (int) data == -1) {
 				// error inserting the order
 				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
 				return;
 			}
-
-			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), user.getId_num(), address.toString());
+			orderId = (int) data;
+			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
+			
+			successMsg += "Order #" +orderId+ " placed successfuly\n\nYou will receive an SMS once \nthe delivery approved!";
 			break;
 
+			
+		// ---- Pickup / On-site ----
 		case "Pickup":
 		case "On-site":
 			if (supplyMethod.equals("Pickup"))
+			{
+				machineIdToPickup = OrderController.getCurrentOrder().getMachine_id();  // set the machine to pickup from
 				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup + "\n";
+			}
 			else
-				successMsg += "Your order is placed successfuly\n";
+				successMsg += "order is placed successfuly\n";
 
 			waitOn(new Message(TaskType.UpdateItemsWithAnswer, OrderController.getCart()));
+			
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
 				// error inserting items (Roll back of this should be taken on server side)
@@ -241,6 +265,7 @@ public class ReviewOrderController {
 						"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
 				return;
 			}
+			orderId = (int) data;
 
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, OrderController.getCart()));
@@ -274,7 +299,12 @@ public class ReviewOrderController {
 
 	}
 
+	/**
+	 * External payment process. Will Always success
+	 */
 	private void paymentProccess() {
+		
+		System.out.println("Payment");
 		// make a popup for simulation of payment process
 
 	}
@@ -304,7 +334,7 @@ public class ReviewOrderController {
 		if (!Pattern.matches("^[a-zA-Z][a-zA-Z ]{1,12}$", cityTxtField.getText()))
 			errMsg.append("City can contain letters and space only in length of 2-12\n");
 
-		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", streetTxtField.getText()))
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z 0-9]{1,12}$", streetTxtField.getText()))
 			errMsg.append("Street can contain number and '/' only in length of 1-5\n");
 
 		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText()))

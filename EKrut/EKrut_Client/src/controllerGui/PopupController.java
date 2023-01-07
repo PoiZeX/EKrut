@@ -41,6 +41,7 @@ public class PopupController {
 		yesOkBtn.setVisible(false);
 		NoCancelBtn.setVisible(false);
 		yesOkBtn.setText("OK");
+		messageLabel.setWrapText(true);
 
 	}
 
