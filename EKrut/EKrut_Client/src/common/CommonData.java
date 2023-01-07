@@ -3,6 +3,7 @@ package common;
 import java.util.ArrayList;
 
 import client.ClientController;
+import controller.OrderController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
 import entity.UserEntity;
@@ -35,8 +36,10 @@ public class CommonData {
 		allMachines = machines;
 		if(AppConfig.SYSTEM_CONFIGURATION == "EK")
 			for (MachineEntity m : allMachines)
-				if (m.getId() == AppConfig.MACHINE_ID)
+				if (m.getId() == AppConfig.MACHINE_ID) {
 					setCurrentMachine(m);
+					OrderController.setCurrentMachine(m);
+				}
 		return;
 	}
 	

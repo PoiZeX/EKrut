@@ -115,6 +115,7 @@ public class ViewCatalogController {
 	private void checkRequestType() {
 		if (OrderController.getCurrentOrder() == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
+			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
 			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 		} else {
