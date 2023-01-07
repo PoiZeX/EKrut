@@ -187,6 +187,8 @@ public class HomePageController {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 						CommonFunctions.createShipmentPopup();
+					else
+						NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
 				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);

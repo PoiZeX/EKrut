@@ -104,12 +104,6 @@ public class ShipmentMethodPopupController {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Select Pickup Machine");
 			return;
 		}
-		CommonFunctions.SleepFor(1500, () -> {
-			((Stage) gridPane.getScene().getWindow()).close();
-		});
-
-		setupLoading();
-
 		if (OrderController.getCurrentOrder() == null) {
 			createNewScreen();
 			return;
@@ -119,15 +113,12 @@ public class ShipmentMethodPopupController {
 			createNewScreen();
 			return;
 		}
-		if (selectedShipmentMethod.equals("Delivery") && prevMethod.equals("Delivery")) {
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
-			return;
-		}
 		if (prevMethod.equals("Pickup")
 				&& OrderController.getCurrentOrder().getMachine_id() != selectedMachine.getMachineId()) {
 			createNewScreen();
 			return;
 		} else {
+			((Stage) confirmBtn.getScene().getWindow()).close();
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
 		}
 	}
@@ -137,9 +128,9 @@ public class ShipmentMethodPopupController {
 		gridPane.setMaxSize(150, 150);
 		gridPane.getColumnConstraints().clear();
 		gridPane.getRowConstraints().clear();
-		Label loadingLabel = new Label("Loading, Please Wait...");
-		loadingLabel.getStyleClass().add("LabelRoleTitle");
+		Label loadingLabel = new Label("Loading Catalog, Please Wait...");
 		ImageView img = new ImageView(new Image("/styles/images/loadingGif.gif"));
+		loadingLabel.getStyleClass().add("LabelRoleTitle");
 		img.setFitHeight(200);
 		img.setFitWidth(200);
 		gridPane.add(loadingLabel, 1, 1);
@@ -148,18 +139,23 @@ public class ShipmentMethodPopupController {
 		GridPane.setHalignment(loadingLabel, HPos.CENTER);
 		GridPane.setHalignment(img, HPos.CENTER);
 		GridPane.setValignment(loadingLabel, VPos.TOP);
-
 	}
 
 	private void createNewScreen() {
-
+		setupLoading();
+		CommonFunctions.SleepFor(2500, () -> {
+			((Stage) gridPane.getScene().getWindow()).close();
+		});
+		OrderController.clearAll();
 		switch (selectedShipmentMethod) {
 		case "Pickup":
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Pickup");
 			OrderController.getCurrentOrder().setMachine_id(selectedMachine.machineId);
+			OrderController.setCurrentMachine(selectedMachine);
 			break;
 		case "Delivery":
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "Delivery");
+			OrderController.setCurrentMachine(null);
 			break;
 		}
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);

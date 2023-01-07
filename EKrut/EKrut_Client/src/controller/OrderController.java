@@ -9,6 +9,7 @@ import java.util.Map;
 import entity.ItemEntity;
 import entity.ItemInCartEntity;
 import entity.ItemInMachineEntity;
+import entity.MachineEntity;
 import entity.OrderEntity;
 import javafx.scene.image.Image;
 
@@ -30,6 +31,7 @@ public class OrderController {
 	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static int discounts = 0; // in NIS not %
 	private static OrderEntity currentOrder;
+	private static MachineEntity currentMachine;
 	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
 
 	public OrderController() {
@@ -206,6 +208,14 @@ public class OrderController {
 
 	public static int getPriceAfterDiscounts() {
 		return getTotalPrice() - getTotalDiscounts();
+	}
+
+	public static MachineEntity getCurrentMachine() {
+		return currentMachine;
+	}
+
+	public static void setCurrentMachine(MachineEntity currentMachine) {
+		OrderController.currentMachine = currentMachine;
 	}
 
 }

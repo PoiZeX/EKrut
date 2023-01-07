@@ -52,7 +52,7 @@
       </GridPane>
    </bottom>
    <top>
-      <GridPane id="headerBar" hgap="10.0" prefHeight="84.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
+      <GridPane id="headerBar" hgap="10.0" prefHeight="84.0" prefWidth="900.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="238.0" minWidth="-Infinity" prefWidth="205.0" />
@@ -97,6 +97,7 @@
                   </Group>
                </children>
             </StackPane>
+            <Label fx:id="shipmentMethodLabel" alignment="CENTER" prefHeight="40.0" prefWidth="916.0" styleClass="LabelSmallArea" GridPane.columnSpan="4" GridPane.rowIndex="1" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" />
