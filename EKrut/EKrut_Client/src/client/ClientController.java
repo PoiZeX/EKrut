@@ -8,6 +8,9 @@ import java.io.*;
 import Store.NavigationStoreController;
 import client.*;
 import common.ChatIF;
+import common.CommonData;
+import common.CommonFunctions;
+import common.PopupTypeEnum;
 
 public class ClientController implements ChatIF {
 
@@ -19,7 +22,7 @@ public class ClientController implements ChatIF {
 		try {
 			client = new ChatClient(host, port, this);
 		} catch (Exception exception) {
-			System.out.println("Error: Can't setup connection!" + " Terminating client.");
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "Can't setup connection! Terminating client.");
 			NavigationStoreController.closeAllScreens();
 		}
 	}

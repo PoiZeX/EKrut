@@ -7,6 +7,7 @@ package controllerGui;
 import Store.NavigationStoreController;
 import common.CommonData;
 import common.CommonFunctions;
+import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
 import controller.ItemsController;
@@ -128,7 +129,7 @@ public class HomePageController {
 
 		default:
 			// TODO: add label to inform the user he needs to contact customer support
-			System.out.println("No role detected!"); // show the screen anyway because the login succeed
+			CommonFunctions.createPopup(PopupTypeEnum.Warning, "No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com"); // show the screen anyway because the login succeed
 			break;
 		}
 		CommonData.initData(); // initialize all common data's from DB.

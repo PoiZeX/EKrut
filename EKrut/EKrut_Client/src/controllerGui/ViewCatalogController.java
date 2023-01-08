@@ -13,7 +13,9 @@ import java.util.concurrent.Executors;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.Message;
+import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
 import common.TaskType;
@@ -314,7 +316,7 @@ public class ViewCatalogController {
 					cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText())
 							- OrderController.getItemAmount(item) + "");
 					if (!OrderController.changeItemQuantity(item, 0))
-						System.out.println("Couldn't change the item's amount");
+						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
 					// Update total amount and price
 					updateCartTotalLabels();
 					addToCartBtn.setOpacity(1);
@@ -345,7 +347,7 @@ public class ViewCatalogController {
 							itemInCartPlusBtn.setDisable(true);
 						}
 						if (!OrderController.addItemToCart(item, amount)) // Add item to cart
-							System.out.println("Couldn't add the item to the cart\n");
+							CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 					}
 					cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) + 1 + "");
 					cartGroup.setVisible(true);
@@ -399,14 +401,14 @@ public class ViewCatalogController {
 					addToCartBtn.setOpacity(1);
 					addToCartBtn.setMouseTransparent(false);
 					if (!OrderController.changeItemQuantity(item, 0))
-						System.out.println("Couldn't change the item's amount");
+						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
 					reorderCart(cartViewGridpane);
 				} else {
 					itemInCartAmountLabel.setText(amountLabel.getText());
 					if (!OrderController.changeItemQuantity(item, amount))
-						System.out.println("Couldn't change the item's amount");
+						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 				}
 				if (flag) {
 					viewCartPane.setVisible(false);
@@ -436,7 +438,7 @@ public class ViewCatalogController {
 					itemInCartPlusBtn.setDisable(true);
 				}
 				if (!OrderController.changeItemQuantity(item, amount))
-					System.out.println("Couldn't change the item's amount");
+					CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 
 				itemInCartAmountLabel.setText(amountLabel.getText());
 				if (flag) {

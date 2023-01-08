@@ -108,7 +108,6 @@ public class ReviewOrderController {
 
 	@FXML
 	private GridPane productsGrid;
-
 	private static Object data;
 	private static boolean isDataRecived = false;
 
@@ -119,51 +118,23 @@ public class ReviewOrderController {
 
 	public void initialize() {
 		try {
-			// tooltip = new TooltipSetter("Cancel the order");
-			// cancelOrderBtn.setTooltip(tooltip.getTooltip());
 
-			// get cart
+			// cancelOrderBtn  --<<< add ??? 
+
+			// set current cart  (replace with order entity?)
 			cart = OrderController.getCart();
 
 			// build graphical side
 			buildReviewOrder();
 
 			// initialize fields
-			totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()) + "₪");
-			totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
-			totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
-			firstNameTxtField.setText(user.getFirst_name());
-			firstNameTxtField.setDisable(true);
-			lastNameTxtField.setText(user.getLast_name());
-			lastNameTxtField.setDisable(true);
-			phoneNumTxtField.setText(user.getPhone_number());
-			phoneNumTxtField.setDisable(true);
+			setTextFields();
 
-			if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)) {
-				waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
-				if ((boolean) data) {
-					// give discount
-					if (!OrderController.isFirstPurchaseDiscountApplied) {
-						OrderController.addDiscount(20);
-						OrderController.isFirstPurchaseDiscountApplied = true;
-					}
-
-					// show special label or something
-					totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
-					totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
-				}
-			}
+			// apply discounts if exists
+			checkAndApplyDiscounts();
 
 			// check if OL/EK (for delivery)
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
-				// rightGridPane.setVisible(false);
-//			rightGridPane.getChildren().clear();
-//			Image image = new Image();
-//			ImageView imageView = new ImageView(image);
-//			rightGridPane.add(imageView, 0, 2);
-//			GridPane.setColumnSpan(imageView, 2);
-//			GridPane.setRowSpan(imageView, 2);
-			}
+			rightGridHandle();
 
 			/*
 			 * TODO: 1. Future payment for member 2. check if item is under minimum 3.
@@ -175,6 +146,78 @@ public class ReviewOrderController {
 		}
 	}
 
+	/**
+	 * Set text / labels according to relevant data
+	 */
+	private void setTextFields() {
+		totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()) + "₪");
+		totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
+		totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
+		firstNameTxtField.setText(user.getFirst_name());
+		firstNameTxtField.setDisable(true);
+		lastNameTxtField.setText(user.getLast_name());
+		lastNameTxtField.setDisable(true);
+		phoneNumTxtField.setText(user.getPhone_number());
+		phoneNumTxtField.setDisable(true);
+	}
+
+	/**
+	 * Check if there are any sales and handle this case
+	 * 
+	 * @throws Exception
+	 */
+	private void checkAndApplyDiscounts() throws Exception {
+		StringBuilder sb = new StringBuilder("You got some discounts:\n");
+
+		if (OrderController.getTotalDiscounts() != 0) {
+			String salesDiscounts = OrderController.getActiveSalesTypeAsString();
+			for (String discount : salesDiscounts.split(" ")) {
+				sb.append("* " + discount + "\n");
+			}
+		}
+
+		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)
+				&& !OrderController.isFirstPurchaseDiscountApplied) {
+			waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
+			if ((boolean) data) {
+				// give discount just one time
+				OrderController.addMemberFirstPurchaseDiscount();
+				sb.append("* 20% for first purchase as a member!\n");
+				// show a relevant label / tooltip
+
+			}
+
+			// show special label or something
+			totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
+			totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
+		}
+		if (!totulDiscountSumLbl.getText().equals("0₪")) {
+			// set tooltip text and apply to label (will be with an image)
+			totulDiscountSumLbl.setTooltip((new TooltipSetter(sb.toString()).getTooltip()));
+		}
+
+	}
+
+	/**
+	 * Checks the app. configuration and handle the case it's 'EK'
+	 */
+	private void rightGridHandle() {
+		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
+			rightGridPane.setVisible(false);
+//		rightGridPane.getChildren().clear();
+//		Image image = new Image();
+//		ImageView imageView = new ImageView(image);
+//		rightGridPane.add(imageView, 0, 2);
+//		GridPane.setColumnSpan(imageView, 2);
+//		GridPane.setRowSpan(imageView, 2);
+		}
+
+	}
+
+	/**
+	 * Handle the answers from server when needed
+	 * @param dataRecived
+	 */
 	public static void getDataFromServer(Object dataRecived) {
 		data = dataRecived;
 		isDataRecived = true;
@@ -214,7 +257,11 @@ public class ReviewOrderController {
 		String successMsg = "Yayy!\n";
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
 		String supplyMethod = orderEntity.getSupplyMethod();
-
+		if(cart.size() == 0)
+		{
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
+			return;
+		}
 		// setup params according to configurations
 		switch (supplyMethod) {
 		case "Delivery": // online order
@@ -287,9 +334,10 @@ public class ReviewOrderController {
 
 		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
 
-		CommonFunctions.SleepFor(5000, () -> {
+		CommonFunctions.SleepFor(200, () -> {
 			OrderController.clearAll();
 			// goto homepage
+			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
 		});
 

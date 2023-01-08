@@ -49,13 +49,13 @@ public class HostClientController {
 
 		// Validate
 		if (CommonFunctions.isNullOrEmpty(port) || CommonFunctions.isNullOrEmpty(host)) {
-			System.out.println("Please fill host & port");
+			CommonFunctions.createPopup(PopupTypeEnum.Warning, "Please fill host & port");
 			return;
 		}
 		try {
 			Integer.parseInt(port);
 		} catch (Exception ex) {
-			System.out.println("Please insert digits only");
+			CommonFunctions.createPopup(PopupTypeEnum.Warning, "Please insert digits only");
 			return;
 		}
 
