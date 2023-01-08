@@ -205,6 +205,7 @@ public class HomePageController {
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {
+		OrderController.clearAll();
 		NavigationStoreController.ExitHandler(false);
 	}
 

@@ -123,29 +123,8 @@ public class ShipmentMethodPopupController {
 		}
 	}
 
-	private void setupLoading() {
-		gridPane.getChildren().clear();
-		gridPane.setMaxSize(150, 150);
-		gridPane.getColumnConstraints().clear();
-		gridPane.getRowConstraints().clear();
-		Label loadingLabel = new Label("Loading Catalog, Please Wait...");
-		ImageView img = new ImageView(new Image("/styles/images/loadingGif.gif"));
-		loadingLabel.getStyleClass().add("LabelRoleTitle");
-		img.setFitHeight(200);
-		img.setFitWidth(200);
-		gridPane.add(loadingLabel, 1, 1);
-		gridPane.add(img, 1, 2);
-		loadingLabel.setPadding(new Insets(10, 0, 0, 0));
-		GridPane.setHalignment(loadingLabel, HPos.CENTER);
-		GridPane.setHalignment(img, HPos.CENTER);
-		GridPane.setValignment(loadingLabel, VPos.TOP);
-	}
 
 	private void createNewScreen() {
-		setupLoading();
-		CommonFunctions.SleepFor(2500, () -> {
-			((Stage) gridPane.getScene().getWindow()).close();
-		});
 		OrderController.clearAll();
 		switch (selectedShipmentMethod) {
 		case "Pickup":
@@ -158,6 +137,7 @@ public class ShipmentMethodPopupController {
 			OrderController.setCurrentMachine(null);
 			break;
 		}
+		((Stage) gridPane.getScene().getWindow()).close();
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
 	}
 

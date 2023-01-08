@@ -7,8 +7,15 @@ import java.util.TimerTask;
 import controllerGui.PopupController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -123,6 +130,24 @@ public class CommonFunctions {
 		} else
 			goodName = splitString[0];
 		return goodName;
+	}
+	
+	public static void setupLoadingGridPane(GridPane gridPane) {
+		gridPane.getChildren().clear();
+		gridPane.setMaxSize(150, 150);
+		gridPane.getColumnConstraints().clear();
+		gridPane.getRowConstraints().clear();
+		Label loadingLabel = new Label("Loading Catalog, Please Wait...");
+		ImageView img = new ImageView(new Image("/styles/images/loadingGif.gif"));
+		loadingLabel.getStyleClass().add("LabelRoleTitle");
+		img.setFitHeight(200);
+		img.setFitWidth(200);
+		gridPane.add(loadingLabel, 1, 1);
+		gridPane.add(img, 1, 2);
+		loadingLabel.setPadding(new Insets(10, 0, 0, 0));
+		GridPane.setHalignment(loadingLabel, HPos.CENTER);
+		GridPane.setHalignment(img, HPos.CENTER);
+		GridPane.setValignment(loadingLabel, VPos.TOP);
 	}
 
 }
