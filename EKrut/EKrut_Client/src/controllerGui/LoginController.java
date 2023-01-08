@@ -206,12 +206,11 @@ public class LoginController {
 		returnedMsg = "Success";
 
 		user.setLogged_in(true); // change in entity and send the entity for update in DB
-		CommonFunctions.SleepFor(1000, () -> {
+		CommonFunctions.SleepFor(700, () -> {
 			chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user));
 		});
 		NavigationStoreController.connectedUser = user; // set the current connected user to system
 		return;
-
 	}
 
 	/**

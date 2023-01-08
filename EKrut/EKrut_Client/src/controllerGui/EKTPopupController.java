@@ -23,7 +23,7 @@ public class EKTPopupController extends LoginController {
 	protected static Timer timerTimeLimit;
 	
 	// define username and password to login with
-	private String[] usernamePasswordStub = new String[] { "customer4", "123456" }; // customer[1-3: registered, 4-6: member]
+	private String[] usernamePasswordStub = new String[] { "mbrN", "123456" }; // mbr + [N/S/U]
 
 	
 	/**
