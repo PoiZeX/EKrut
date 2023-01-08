@@ -1,5 +1,6 @@
 package controllerGui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,9 +30,13 @@ import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -48,6 +53,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
@@ -119,9 +126,9 @@ public class ReviewOrderController {
 	public void initialize() {
 		try {
 
-			// cancelOrderBtn  --<<< add ??? 
+			// cancelOrderBtn --<<< add ???
 
-			// set current cart  (replace with order entity?)
+			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
 
 			// build graphical side
@@ -216,6 +223,7 @@ public class ReviewOrderController {
 
 	/**
 	 * Handle the answers from server when needed
+	 * 
 	 * @param dataRecived
 	 */
 	public static void getDataFromServer(Object dataRecived) {
@@ -257,8 +265,7 @@ public class ReviewOrderController {
 		String successMsg = "Yayy!\n";
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
 		String supplyMethod = orderEntity.getSupplyMethod();
-		if(cart.size() == 0)
-		{
+		if (cart.size() == 0) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
 			return;
 		}
@@ -330,26 +337,53 @@ public class ReviewOrderController {
 			return;
 		}
 
-		paymentProccess();
+		if (user.getRole_type().toString().equalsIgnoreCase("member")) {
+			//waitOn(new Message(TaskType.AddMemberPayment, orderId));
+		} else
+			paymentProccess();
 
-		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
-
-		CommonFunctions.SleepFor(200, () -> {
-			OrderController.clearAll();
-			// goto homepage
-			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
-		});
+		successfullEndProcess(successMsg);
 
 	}
 
 	/**
+	 * Handle the end of the process
+	 * @param successMsg
+	 */
+	private void successfullEndProcess(String successMsg) {
+		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
+
+		CommonFunctions.SleepFor(200, () -> {
+			OrderController.refreshOrderToHomePage();
+		});
+	}
+	
+	/**
 	 * External payment process. Will Always success
 	 */
 	private void paymentProccess() {
-
-		System.out.println("Payment");
 		// make a popup for simulation of payment process
+		Stage primaryStage = new Stage();
+
+		Parent root;
+		try {
+
+			String path = "/boundary/PaymentPopupBoundary.fxml";
+			root = FXMLLoader.load(getClass().getResource(path));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.setTitle("External payment");
+			primaryStage.show();
+			// set actions
+//			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//				public void handle(WindowEvent we) {
+//				
+//					setLoginBtnDisable(false);
+//				}
+//			});
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
