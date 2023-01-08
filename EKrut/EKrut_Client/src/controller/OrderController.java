@@ -69,18 +69,20 @@ public class OrderController {
 	}
 
 	public static void getDataFromServer(Object dataRecived) {
-		data = dataRecived;
+		data = dataRecived; 
 		isDataReceived = true;
 	}
 
 	/**
 	 * Clear all static data. Be careful using it!
 	 */
-	public static void clearAll() {
+	public static boolean clearAll() {
+		if (itemsList == null) return false;
 		itemsInCartList.clear();
 		discounts = 1.0;
 		currentOrder = null;
 		itemsList.clear();
+		return true;
 	}
 
 	/**

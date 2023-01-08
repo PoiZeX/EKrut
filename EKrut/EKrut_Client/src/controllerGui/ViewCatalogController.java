@@ -101,8 +101,15 @@ public class ViewCatalogController {
 
 
 	public void initialize() throws InterruptedException, ExecutionException {
-		OrderController.clearAll();
-		checkRequestType();
+		ExecutorService executor = Executors.newFixedThreadPool(3);
+        List<Callable<Boolean>> tasks = new ArrayList<>();
+        // Add tasks
+        tasks.add(() -> OrderController.clearAll());
+        tasks.add(() -> checkRequestType());
+        // Invoke all the tasks
+        executor.invokeAll(tasks);
+        // Shutdown the executor 
+        executor.shutdown();
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog(OrderController.getItemsList());
@@ -124,13 +131,14 @@ public class ViewCatalogController {
 		recievedData = false;
 	}
 
-	private void checkRequestType() {
+	private boolean checkRequestType() {
 		if (OrderController.getCurrentOrder() == null) { // EK
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
 			OrderController.getCurrentOrder().setMachine_id(AppConfig.MACHINE_ID);
 			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
 			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
+			return true;
 		} else {
 			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
 			switch (currentSupplyMethod) {
@@ -138,13 +146,14 @@ public class ViewCatalogController {
 				machineId = OrderController.getCurrentOrder().getMachine_id();
 				shipmentMethodLabel.setText("Pickup - " + OrderController.getCurrentMachine().getMachineName());
 				chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
-				break;
+				return true;
 			case "Delivery":
 				shipmentMethodLabel.setText("Delivery");
 				generateAllItems();
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private void generateAllItems() {
@@ -206,7 +215,7 @@ public class ViewCatalogController {
         List<Callable<GridPane>> tasks = new ArrayList<>();
         // Add tasks
         for (int i = 1; i <= itemsList.size(); i++) {
-        	int index = i;
+        	int index = i; 
         	int col = (i - 1) % 4;
         	int row = i % 4 == 0 ? j++ : j;
         	tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount, col, row));
@@ -219,8 +228,6 @@ public class ViewCatalogController {
 //		for (ItemInMachineEntity item : itemsList.values()) {
 //		//generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
 //	}
-	
-        
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
 
