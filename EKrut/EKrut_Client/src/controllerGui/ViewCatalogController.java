@@ -5,7 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
@@ -22,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -91,7 +99,7 @@ public class ViewCatalogController {
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
 
-	public void initialize() throws InterruptedException {
+	public void initialize() throws InterruptedException, ExecutionException {
 		checkRequestType();
 		while (!recievedData)
 			Thread.sleep(100);
@@ -103,9 +111,11 @@ public class ViewCatalogController {
 			reorderCatalog(newValue);
 		});
 
-		if (currentSupplyMethod.equals("Delivery")) {
+		if (currentSupplyMethod.equals("Delivery") || currentSupplyMethod.equals("On-site")) {
 			discountTotalLabel.setVisible(false);
 			GridPane.setRowIndex(totalPriceLabel, 0);
+			GridPane.setFillHeight(totalPriceLabel, true);
+			GridPane.setValignment(totalPriceLabel, VPos.CENTER);
 			GridPane.setRowSpan(totalPriceLabel, 2);	
 		}
 		shipmentMethodLabel.setMouseTransparent(true);
@@ -132,7 +142,6 @@ public class ViewCatalogController {
 				break;
 			}
 		}
-
 	}
 
 	private void generateAllItems() {
@@ -177,7 +186,6 @@ public class ViewCatalogController {
 			OrderController.putItemInList(item);
 		}
 		recievedData = true;
-
 	}
 
 	private static void convertImage(ItemInMachineEntity item) {
@@ -186,20 +194,38 @@ public class ViewCatalogController {
 		item.setItemImage(fileImg);
 	}
 
-	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList) {
-		int i = 0, j = 0;
+	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList) throws InterruptedException, ExecutionException {
+		int j = 0;
 		if (OrderController.isActiveSale())
 			machineDiscount = OrderController.getTotalDiscountsPercentage();
-		for (ItemInMachineEntity item : itemsList.values()) {
-			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
-		}
+		
+		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
+        List<Callable<GridPane>> tasks = new ArrayList<>();
+        // Add tasks
+        for (int i = 1; i <= itemsList.size(); i++) {
+        	int index = i;
+        	int col = (i - 1) % 4;
+        	int row = i % 4 == 0 ? j++ : j;
+        	tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount, col, row));
+        }
+        // Invoke all the tasks
+        executor.invokeAll(tasks);
+        // Shutdown the executor
+        executor.shutdown();
+
+//		for (ItemInMachineEntity item : itemsList.values()) {
+//		//generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
+//	}
+	
+        
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
 
-	public void generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
+	public GridPane generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
+		GridPane newItem = new GridPane();
 		try {
 			// Prepare the gridpanes for the items in machine
-			GridPane newItem = createGridPane("ItemGridBoundary");
+			newItem = createGridPane("ItemGridBoundary");
 			ImageView image = (ImageView) newItem.getChildren().get(0);
 			GridPane btnBar = (GridPane) ((ButtonBar) newItem.getChildren().get(1)).getButtons().get(0);
 			Button minusBtn = (Button) btnBar.getChildren().get(0);
@@ -304,10 +330,11 @@ public class ViewCatalogController {
 				addToCartBtn.setText("Not Available");
 			}
 			catalogViewGridpane.add(newItem, i, j);
-
+			return newItem;
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		return newItem;
 	}
 
 	// Handle removing an item from the cart
@@ -391,7 +418,7 @@ public class ViewCatalogController {
 			totalPriceLabel.setVisible(true);
 			cartSizeLabel.setText(OrderController.getCartSize() + " Items");//+ (OrderController.getTotalPrice() -  OrderController.getTotalDiscounts()) + "₪"
 			
-			if (currentSupplyMethod.equals("Delivery"))
+			if (currentSupplyMethod.equals("Delivery") || currentSupplyMethod.equals("On-site"))
 				totalPriceLabel.setText("Total: " + totalPrice + "₪");
 			else {
 				discountTotalLabel.setVisible(true);

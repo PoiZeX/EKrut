@@ -57,7 +57,7 @@
             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="238.0" minWidth="-Infinity" prefWidth="205.0" />
             <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="555.0" />
-            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="65.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="43.333335876464844" vgrow="SOMETIMES" />
@@ -126,12 +126,12 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="250.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="15.0" top="5.0" />
                      </padding>
                   </GridPane>
                </content>
             </ScrollPane>
-            <Pane fx:id="viewCartPane" layoutX="556.0" layoutY="-26.0" opacity="0.8" prefHeight="408.0" prefWidth="300.0">
+            <Pane fx:id="viewCartPane" layoutX="556.0" layoutY="-26.0" opacity="0.95" prefHeight="408.0" prefWidth="300.0" visible="false">
                <children>
                   <GridPane hgap="5.0" layoutY="238.0" prefHeight="168.0" prefWidth="300.0" styleClass="GridPane" vgap="5.0">
                     <columnConstraints>
@@ -155,7 +155,7 @@
                           </rowConstraints>
                            <children>
                               <Label fx:id="cartSizeLabel" styleClass="Label" text="0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowSpan="2" />
-                              <Label fx:id="totalPriceLabel" prefHeight="19.0" prefWidth="120.0" styleClass="Label" text="0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Label fx:id="totalPriceLabel" prefHeight="19.0" prefWidth="120.0" styleClass="Label" text="0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
                                  <image>
                                     <Image url="@../styles/icons/005-add%20to%20cart.png" />
@@ -166,7 +166,7 @@
                                     <Image url="@../styles/icons/093-money%20bag.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="discountTotalLabel" prefHeight="19.0" prefWidth="120.0" style="-fx-text-fill: red;" styleClass="Label" text="0" GridPane.columnIndex="3" GridPane.valignment="BOTTOM" />
+                              <Label fx:id="discountTotalLabel" prefHeight="19.0" prefWidth="120.0" style="-fx-text-fill: red;" styleClass="Label" text="0" GridPane.columnIndex="3" GridPane.valignment="CENTER" />
                            </children>
                            <GridPane.margin>
                               <Insets />
@@ -180,7 +180,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </GridPane>
-                  <ScrollPane fx:id="cartView" hbarPolicy="NEVER" opacity="0.8" prefHeight="317.0" prefWidth="300.0" styleClass="GridPaneChild" vbarPolicy="NEVER">
+                  <ScrollPane fx:id="cartView" hbarPolicy="NEVER" prefHeight="317.0" prefWidth="300.0" styleClass="GridPaneChild" vbarPolicy="NEVER">
                      <content>
                         <GridPane fx:id="cartViewGridpane" hgap="5.0" opacity="0.8" prefHeight="309.0" prefWidth="280.0" vgap="5.0">
                           <columnConstraints>

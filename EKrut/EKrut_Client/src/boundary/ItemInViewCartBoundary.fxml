@@ -9,36 +9,36 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="45.0" prefWidth="270.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="45.0" prefWidth="270.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.14" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="51.0" minWidth="-Infinity" prefWidth="35.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="62.0" minWidth="-Infinity" prefWidth="54.0" />
       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="60.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="68.0" minWidth="10.0" prefWidth="42.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="39.0" minWidth="-Infinity" prefWidth="39.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <ImageView fx:id="itemInCartImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-      <Label fx:id="itemInCartNameLabel" contentDisplay="CENTER" prefHeight="37.0" prefWidth="71.0" styleClass="Label-list" text="Label" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+      <Label fx:id="itemInCartNameLabel" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="65.0" styleClass="Label-list" text="Label" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets left="10.0" />
+            <Insets right="10.0" />
          </GridPane.margin></Label>
       <Button fx:id="minusAmountInCartBtn" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" styleClass="Button-NoBG" text="-" GridPane.columnIndex="3" GridPane.halignment="CENTER">
          <graphic>
-            <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../styles/icons/minus.png" />
                </image>
             </ImageView>
          </graphic></Button>
-      <Label fx:id="itemInCartAmountLabel" alignment="CENTER" prefHeight="15.0" prefWidth="33.0" styleClass="Label-list" text="0" GridPane.columnIndex="4" />
+      <Label fx:id="itemInCartAmountLabel" alignment="CENTER" prefHeight="15.0" prefWidth="33.0" text="0" GridPane.columnIndex="4" />
       <Button fx:id="plusAmountInCartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" styleClass="Button-NoBG" text="+" GridPane.columnIndex="5">
          <graphic>
-            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../styles/icons/plus.png" />
                </image>
@@ -54,4 +54,7 @@
          </graphic>
       </Button>
    </children>
+   <padding>
+      <Insets right="10.0" />
+   </padding>
 </GridPane>
