@@ -9,7 +9,7 @@ public class ItemEntity extends MainEntity {
 	private double price;
 	private ImgEntity itemImg;
 	private String img_relative_path;
-	private Image itemImage;
+	private transient Image itemImage;
 
 	public ItemEntity(int item_id, String name, double price) {
 		super(item_id);

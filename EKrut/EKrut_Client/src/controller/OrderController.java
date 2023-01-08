@@ -8,6 +8,7 @@ import java.util.Map;
 
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonData;
 import common.Message;
 import common.RolesEnum;
 import common.SaleType;
@@ -20,6 +21,7 @@ import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.SaleEntity;
 import javafx.scene.image.Image;
+import utils.AppConfig;
 
 /**
  * The class handles the WHOLE order process
@@ -36,22 +38,23 @@ public class OrderController {
 
 	// private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();
 	// // itemId and itemEntity
-	private static Map<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
+	private static LinkedHashMap<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
-	private static MachineEntity currentMachine;
-	private static Map<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
+	private static MachineEntity currentMachine = CommonData.getCurrentMachine();
+	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
 	private static ArrayList<SaleEntity> activeSales = null;
-	private static boolean isSaleActive =false;
-	private static boolean onePlusOneSaleExist =false;
-	private static boolean percentageSaleExit=false;
+	private static boolean isSaleActive = false;
+	private static boolean onePlusOneSaleExist = false;
+	private static boolean percentageSaleExit = false;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean isDataReceived = false;
-	private static Object data; 
-	
+	private static Object data;
+
 	public OrderController() {
 
 	}
+
 	/**
 	 * local function to handle sending and waiting for answer
 	 * 
@@ -64,7 +67,7 @@ public class OrderController {
 		while (!isDataReceived)
 			Thread.sleep(100);
 	}
-	
+
 	public static void getDataFromServer(Object dataRecived) {
 		data = dataRecived;
 		isDataReceived = true;
@@ -85,7 +88,7 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	public static Map<String, ItemInMachineEntity> getItemsList() {
+	public static LinkedHashMap<String, ItemInMachineEntity> getItemsList() {
 		return itemsList;
 	}
 
@@ -117,8 +120,6 @@ public class OrderController {
 		if (currentOrder == null)
 			currentOrder = new OrderEntity(user_id, supplyMethod);
 	}
-
-
 
 	/**
 	 * return the amount of a specific item in the cart
@@ -165,7 +166,7 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	public static Map<ItemInMachineEntity, Integer> getCart() {
+	public static LinkedHashMap<ItemInMachineEntity, Integer> getCart() {
 		return itemsInCartList;
 	}
 
@@ -214,47 +215,50 @@ public class OrderController {
 		itemsInCartList.remove(item);
 		return true;
 	}
+
 //----------------------------------------------------------------------Sales 
 	public static boolean isActiveSale() {
-		if ( activeSales!=null && currentOrder!=null) {
-			if(!activeSales.isEmpty() && currentOrder.getMachine_id()!=-1) {
-				isSaleActive=true;
+		if (activeSales != null && currentOrder != null) {
+			if (!activeSales.isEmpty() && currentOrder.getMachine_id() != -1) {
+				return true;
+			}
 		}
-		}
-		return isSaleActive;
+		return false;
 	}
-	
+
 	public static ArrayList<SaleEntity> getActiveSales() {
 		return activeSales;
 	}
-	
+
 	public static void getActiveSalesFromDB() {
 		chat.acceptObj(new Message(TaskType.RequestActiveSales, NavigationStoreController.connectedUser.getRegion()));
 		while (!isDataReceived) {
 			try {
 				Thread.sleep(100);
-			} catch (Exception e) {e.printStackTrace();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
-			if (activeSales == null ) {
-				activeSales = new ArrayList<>();
-			}
-			else if (!activeSales.isEmpty())
-				activeSales.clear();
-			activeSales.addAll(activesales);
-			for(SaleEntity sale : activeSales) {
-				if (sale.getSaleType().equals("1+1"))
-					onePlusOneSaleExist=true;
-				if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
-					percentageSaleExit=true;
-			}
-			getTotalDiscountsPercentage();
-			isDataReceived=true;
+		onePlusOneSaleExist = false;
+		percentageSaleExit = false;
+		if (activeSales == null) {
+			activeSales = new ArrayList<>();
+		} else if (!activeSales.isEmpty())
+			activeSales.clear();
+		activeSales.addAll(activesales);
+		for (SaleEntity sale : activeSales) {
+			if (sale.getSaleType().equals("1+1"))
+				onePlusOneSaleExist = true;
+			if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
+				percentageSaleExit = true;
+		}
+		getTotalDiscountsPercentage();
+		isDataReceived = true;
 	}
-	
+
 	public static boolean isOnePlusOneSaleExist() {
 		return onePlusOneSaleExist;
 	}
@@ -262,6 +266,7 @@ public class OrderController {
 	public static boolean isPercentageSaleExit() {
 		return percentageSaleExit;
 	}
+
 	/**
 	 * Get total discount in NIS
 	 * 
@@ -272,18 +277,18 @@ public class OrderController {
 	}
 
 	/**
-	 * Get total discount in double 
+	 * Get total discount in double
 	 * 
 	 * @return
 	 */
 	public static double getTotalDiscountsPercentage() {
-		if(activeSales==null)
-			return getTotalPrice() ;
-		for(SaleEntity sale : activeSales) 
+		if (activeSales == null)
+			return getTotalPrice();
+		for (SaleEntity sale : activeSales)
 			addDiscount(SaleType.getSaleType(sale.getSaleType()).getPrecentage());
 		return discounts;
 	}
-	
+
 	public static double getDiscountsPercentage() {
 		return discounts;
 	}
@@ -294,21 +299,22 @@ public class OrderController {
 	 * @param discount
 	 */
 	public static void addDiscount(double discount) {
-		discounts = discounts*discount;
+		discounts = discounts * discount;
 	}
+
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
-		if(activeSales==null)
-			return itemPrice ;
-		for(SaleEntity sale : activeSales) 
+		if (activeSales == null)
+			return itemPrice;
+		for (SaleEntity sale : activeSales)
 			if (!sale.getSaleType().equals("1+1"))
-				itemPrice= itemPrice*(1-SaleType.getSaleType(sale.getSaleType()).getPrecentage());
-		
-				
+				itemPrice = itemPrice * (1 - SaleType.getSaleType(sale.getSaleType()).getPrecentage());
+
 		return itemPrice;
 	}
+
 	public static double getPriceAfterDiscounts() {
-		if(activeSales==null)
-			return getTotalPrice() ;			
+		if (activeSales == null)
+			return getTotalPrice();
 		return getTotalPrice() - getTotalDiscounts();
 	}
 

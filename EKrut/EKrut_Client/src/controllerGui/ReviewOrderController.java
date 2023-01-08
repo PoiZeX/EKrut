@@ -111,7 +111,7 @@ public class ReviewOrderController {
 	private static Object data;
 	private static boolean isDataRecived = false;
 
-	private static Map<ItemInMachineEntity, Integer> cart;
+	private static LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private static OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
 	private StringBuilder address = new StringBuilder();
@@ -128,9 +128,9 @@ public class ReviewOrderController {
 			buildReviewOrder();
 
 			// initialize fields
-			totulProductsSumLbl.setText(String.valueOf(orderEntity.getProductsAmount()) + "₪");
+			totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()) + "₪");
 			totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()) + "₪");
-			totalSumLbl.setText(String.valueOf(orderEntity.getTotal_sum()) + "₪");
+			totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()) + "₪");
 			firstNameTxtField.setText(user.getFirst_name());
 			firstNameTxtField.setDisable(true);
 			lastNameTxtField.setText(user.getLast_name());
@@ -207,8 +207,8 @@ public class ReviewOrderController {
 	 */
 	private void reviewProcessManager() throws Exception {
 		int orderId = -1;
-		String successMsg = "Yayy!\nOrder #" + orderId + " was placed successfuly\n";
-		int machineIdToPickup = orderEntity.getMachine_id(); // by default the same machine
+		String successMsg = "Yayy!\n";
+		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
 		String supplyMethod = orderEntity.getSupplyMethod();
 
 		// setup params according to configurations
@@ -240,13 +240,7 @@ public class ReviewOrderController {
 		// ---- Pickup / On-site ----
 		case "Pickup":
 		case "On-site":
-			if (supplyMethod.equals("Pickup")) {
-				machineIdToPickup = orderEntity.getMachine_id(); // set the machine to pickup from
-				successMsg += "Your order will be waiting for you in machine #" + machineIdToPickup + "\n";
-			} else
-				successMsg += "order is placed successfuly\n";
-
-			waitOn(new Message(TaskType.UpdateItemsWithAnswer, OrderController.getCart()));
+			waitOn(new Message(TaskType.UpdateItemsWithAnswer, cart));
 
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
@@ -267,6 +261,12 @@ public class ReviewOrderController {
 				return;
 			}
 
+			orderId = (int) data;
+
+			if (supplyMethod.equals("Pickup")) {
+				successMsg += "Order #" + orderId + " is waiting for you in machine #" + machine.getMachineId() + " ("+machine.getMachineName()+")\n";
+			} else
+				successMsg += "Order #" + orderId + " was placed successfuly\n";
 			// check and act if some items under min amount
 			handleItemsUnderMinAmount();
 			break;
@@ -281,11 +281,8 @@ public class ReviewOrderController {
 		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
 
 		CommonFunctions.SleepFor(5000, () -> {
-			// OrderController.clear();
-
-			// refresh stages
-			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ReviewOrder);
-			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
+			OrderController.clearAll();
+			// goto homepage
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
 		});
 
@@ -308,12 +305,11 @@ public class ReviewOrderController {
 	 */
 	private void handleItemsUnderMinAmount() throws Exception {
 		StringBuilder sb = new StringBuilder(); // string for formal message
-		sb.append("Machine #" + OrderController.getCurrentMachine().getMachineId());
-		Map<ItemInMachineEntity, Integer> cart = OrderController.getCart();
-
-		MachineEntity machine = OrderController.getCurrentMachine();
-		int minAmount = OrderController.getCurrentMachine().getMinamount();
 		ArrayList<int[]> machineItemsId = new ArrayList<>(); // list to send to server
+		LinkedHashMap<ItemInMachineEntity, Integer> cart = OrderController.getCart();
+		MachineEntity machine = OrderController.getCurrentMachine();
+		int minAmount = machine.getMinamount();
+		sb.append("Alert!\nThere are some items under the minimum amount of Machine #" + machine.getMachineId()+":\n");
 
 		for (ItemInMachineEntity item : cart.keySet()) {
 			int totalAmount = item.getCurrentAmount();
@@ -324,13 +320,14 @@ public class ReviewOrderController {
 			}
 		}
 		// delete the last ', '
-		sb.deleteCharAt(sb.length());
-		sb.deleteCharAt(sb.length());
-		waitOn(new Message(TaskType.UpdateItemsUnderMin, machineItemsId));
+		sb.deleteCharAt(sb.length() - 1);
+		sb.deleteCharAt(sb.length() - 1);
+		chat.acceptObj(new Message(TaskType.UpdateItemsUnderMin, machineItemsId));
 
 		if (machineItemsId.size() > 0) {
 			// get region manager of machine
 			waitOn(new Message(TaskType.RequesManagerInfoFromServerDB, machine.getRegionName()));
+
 			UserEntity regionManager = (UserEntity) data;
 			if (regionManager != null) {
 				SMSMailHandlerController.SendSMSOrMail("SMS", regionManager, "Minimum amount Alert", sb.toString());

@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import common.Message;
 import common.TaskType;
@@ -113,7 +114,7 @@ public class MessageHandler {
 			OrderDBController.isMemberFirstPurchase((UserEntity)obj, client);
 			break;
 		case UpdateItemsWithAnswer:
-			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
+			SupplyManagementDBController.decreaseItemsAmountInMachine((Map<ItemInMachineEntity, Integer>) obj, client);
 			break;
 		case NewOrderCreation:
 			OrderDBController.insertOrderEntity((OrderEntity)obj, client);
@@ -135,12 +136,14 @@ public class MessageHandler {
 			OrderDBController.isPickupValid((String[])obj, client);
 			break;
 		case UpdateItemsUnderMin:
-			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj);
+			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj, client);
 			break;
-
+		case RequestUserByOrderIdFromServer:
+			CommonDataDBController.getUserByOrderId((int)obj, client);
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;
 		}
 	}
+	
 }
