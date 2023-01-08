@@ -8,6 +8,7 @@ import client.ClientController;
 import common.CommonData;
 import common.Message;
 import common.SaleType;
+import common.ScreensNames;
 import common.TaskType;
 import controllerGui.HostClientController;
 import entity.ItemInMachineEntity;
@@ -341,6 +342,16 @@ public class OrderController {
 
 	public static void setCurrentMachine(MachineEntity currentMachine) {
 		OrderController.currentMachine = currentMachine;
+	}
+	
+	/**
+	 * Handle the refresh of view-catalog, review-order and clear order-controller fields
+	 */
+	public static void refreshOrderToHomePage() {
+		OrderController.clearAll();
+		// goto homepage
+		NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
+		NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
 	}
 
 }
