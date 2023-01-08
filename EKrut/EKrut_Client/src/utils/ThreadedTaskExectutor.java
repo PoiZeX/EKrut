@@ -18,6 +18,7 @@ public class ThreadedTaskExectutor {
 		tasks = new ArrayList<>();
 	}
 	public boolean addTask(Task task) {
-		tasks.add(task);
+		tasks.add((Callable<Boolean>) task);
+		return true;
 	}
 }

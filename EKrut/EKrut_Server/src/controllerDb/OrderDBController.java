@@ -148,12 +148,19 @@ public class OrderDBController {
 				return;
 			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
 			ps.setInt(1, pickup.getOrderId());
-			ps.setString(2, pickup.getStatus().toString());
-			ps.executeQuery();
-			
+			PickupEntity.Status s=pickup.getStatus();
+			ps.setString(2, s.toString());
+			ps.executeUpdate();
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}  
 		}
 	}
+		
 
 }

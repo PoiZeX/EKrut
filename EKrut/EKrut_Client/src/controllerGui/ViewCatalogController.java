@@ -101,15 +101,17 @@ public class ViewCatalogController {
 
 
 	public void initialize() throws InterruptedException, ExecutionException {
-		ExecutorService executor = Executors.newFixedThreadPool(3);
-        List<Callable<Boolean>> tasks = new ArrayList<>();
+	//	ExecutorService executor = Executors.newFixedThreadPool(3);
+    //    List<Callable<Boolean>> tasks = new ArrayList<>();
         // Add tasks
-        tasks.add(() -> OrderController.clearAll());
-        tasks.add(() -> checkRequestType());
+
+        checkRequestType();
+//        tasks.add(() -> OrderController.clearAll());
+//        tasks.add(() -> checkRequestType());
         // Invoke all the tasks
-        executor.invokeAll(tasks);
+ //       executor.invokeAll(tasks);
         // Shutdown the executor 
-        executor.shutdown();
+  //      executor.shutdown();
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog(OrderController.getItemsList());
@@ -133,6 +135,7 @@ public class ViewCatalogController {
 
 	private boolean checkRequestType() {
 		if (OrderController.getCurrentOrder() == null) { // EK
+	        OrderController.clearAll();
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
 			OrderController.getCurrentOrder().setMachine_id(AppConfig.MACHINE_ID);
 			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
