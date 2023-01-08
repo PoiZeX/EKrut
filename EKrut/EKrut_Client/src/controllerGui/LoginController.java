@@ -8,6 +8,7 @@ import client.ClientController;
 import common.CommonFunctions;
 import common.TaskType;
 import common.Message;
+import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
 import entity.UserEntity;
@@ -104,7 +105,8 @@ public class LoginController {
 		}
 
 		else {
-			System.out.println(returnedMsg);
+			CommonFunctions.createPopup(PopupTypeEnum.Error, returnedMsg);
+
 			return false;
 		}
 		return true;
@@ -160,7 +162,7 @@ public class LoginController {
 			return true;
 
 		// show popup message for error
-		System.out.println(errorMsg.toString());
+		CommonFunctions.createPopup(PopupTypeEnum.Error, errorMsg.toString());
 		return false;
 
 	}

@@ -298,7 +298,6 @@ public class SupplyManagementController {
 			for (ItemInMachineEntity i : toUpdate) {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Processed);
 				i.setWorkerId(supplyworker.getId());
-				System.out.println(i.toString());
 			}
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
 
