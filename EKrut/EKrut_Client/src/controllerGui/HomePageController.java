@@ -73,13 +73,12 @@ public class HomePageController {
 		case member:
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
-			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need
-																															// to
-																															// change
-																															// later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need
-																												// to //
-																												// later
+			if(AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
+				setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need
+			else if(AppConfig.SYSTEM_CONFIGURATION.equals("OL"))																												
+				setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); 
+																												
+																												
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
