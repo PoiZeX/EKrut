@@ -43,7 +43,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import utils.AppConfig;
-
+/**
+ * Controller class for the view catalog screen.
+ */
 public class ViewCatalogController {
 
 	@FXML
@@ -99,7 +101,12 @@ public class ViewCatalogController {
 	private String currentSupplyMethod;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
-
+	 /**
+     * Initialize the view catalog screen.
+     * 
+     * @throws InterruptedException if the thread is interrupted while waiting for data to be received
+     * @throws ExecutionException   if there was an error executing the task to request items from the machine
+     */
 	public void initialize() throws InterruptedException, ExecutionException {
 		checkRequestType();
 
@@ -125,7 +132,11 @@ public class ViewCatalogController {
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
 	}
-
+	/**
+	 * Check the request type and set the current supply method and machine ID accordingly.
+	 * 
+	 * @return true if the request type was successfully set, false otherwise
+	 */
 	private boolean checkRequestType() {
 		OrderController.calculateDiscountsPercentage();
 		if (OrderController.getCurrentOrder() == null) { // EK
@@ -152,7 +163,9 @@ public class ViewCatalogController {
 		}
 		return false;
 	}
-
+	/**
+	 * Generate all items in the catalog by creating new ItemInMachineEntity objects and adding them to the order.
+	 */
 	private void generateAllItems() {
 		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
 		for (ItemEntity item : tempItems) {
@@ -160,17 +173,29 @@ public class ViewCatalogController {
 		}
 		recievedData = true;
 	}
-
+	/**
+	 * Handle the cancel order button press.
+	 * 
+	 * @param event the action event triggered by the button press
+	 */
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		System.out.println("CANCEL");
 	}
-
+	/**
+	 * Handle the place order button press by navigating to the review order screen.
+	 * 
+	 * @param event the action event triggered by the button press
+	 */
 	@FXML
 	void placeOrder(ActionEvent event) {
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
 	}
-
+	/**
+	 * Handle the view cart button press by toggling the visibility of the view cart pane.
+	 * 
+	 * @param event the action event triggered by the button press
+	 */
 	@FXML
 	void viewCart(ActionEvent event) {
 		updateCartTotalLabels();
@@ -228,7 +253,17 @@ public class ViewCatalogController {
 
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 	}
-
+	/**
+	 * The generateItem method generates a GUI element for displaying information about an ItemInMachineEntity object, 
+	 * as well as adding functionality for adding and removing the item from a cart, and modifying the item's quantity 
+	 * in the cart.
+	 *
+	 * @param item The ItemInMachineEntity object to be displayed in the GUI element.
+	 * @param discountPrice The discount price to be applied to the item.
+	 * @param i An integer value representing the row position of the GUI element in a grid.
+	 * @param j An integer value representing the column position of the GUI element in a grid.
+	 * @return A GridPane object representing the generated GUI element.
+	 */
 	public GridPane generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
 		GridPane newItem = new GridPane();
 		try {
