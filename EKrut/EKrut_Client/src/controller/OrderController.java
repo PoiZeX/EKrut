@@ -125,7 +125,7 @@ public class OrderController {
 	private static int getAmount(ItemInMachineEntity item) {
 		return itemsInCartList.get(item);
 	}
-
+//------------------------------------------------ cart
 	/**
 	 * returns the amount of items in the cart
 	 * 
@@ -301,11 +301,7 @@ public class OrderController {
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
 		if (activeSales == null)
 			return itemPrice;
-		for (SaleEntity sale : activeSales)
-			if (!sale.getSaleType().equals("1+1"))
-				itemPrice = itemPrice * (1 - (((double)SaleType.getSaleType(sale.getSaleType()).getPrecentage()) / 100));
-
-		return itemPrice;
+		return itemPrice *discounts;
 	}
 
 	public static double getPriceAfterDiscounts() {

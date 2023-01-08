@@ -233,7 +233,7 @@
                   </ComboBox>
                </children>
             </GridPane>
-            <Label styleClass="Label" text="Prosseced\ Completed calls" underline="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <Label styleClass="Label" text="Not opened " underline="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <padding>
                   <Insets bottom="5.0" />
                </padding>
