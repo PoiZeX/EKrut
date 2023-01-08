@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
+import common.CommonFunctions;
 import common.DeliveryStatus;
 import common.Message;
+import common.PopupTypeEnum;
 import common.ScreensNames;
 import common.TaskType;
 import entity.DeliveryEntity;
@@ -89,15 +91,15 @@ public class SupplyUpdateController {
 		Thread.sleep(100);
 		if (machineLst.isEmpty()) {
 			setDisableItems();
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "No new calls for items");
 
-			System.out.println("pop up - no new calls for items");
 		} else {
 			machineCmb.setItems(machineLst);
 			machineCmb.addEventHandler(ComboBox.ON_HIDDEN, new EventHandler<Event>() {
 				@Override
 				public void handle(Event event) {
 					if (machineCmb.getSelectionModel().isEmpty())
-						System.out.println("pop up - you have to pick a machine");
+						CommonFunctions.createPopup(PopupTypeEnum.Error, "You have to pick a machine");
 					else {
 						machine = machineCmb.getValue();
 						if (!machine.equals(null)) {
@@ -133,11 +135,10 @@ public class SupplyUpdateController {
 		currentAmountCol.setOnEditCommit(new EventHandler<CellEditEvent<ItemInMachineEntity, Integer>>() {
 			@Override
 			public void handle(CellEditEvent<ItemInMachineEntity, Integer> event) {
-				System.out.println("ho");
 				ItemInMachineEntity item = event.getRowValue();
 				if (event.getNewValue() != null) {
 					if (event.getNewValue() < event.getOldValue()) {
-						System.out.println("Pop up -you can dicrease the amount of current items ");
+						CommonFunctions.createPopup(PopupTypeEnum.Error, "You can't decrease the amount of current items");
 					}
 
 					else {
@@ -145,7 +146,7 @@ public class SupplyUpdateController {
 						if (event.getNewValue() >= machine.getMinamount()) {
 							item.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 						} else {
-							System.out.println("Pop up -the call will still be opend , you can fill more if you have ");
+							CommonFunctions.createPopup(PopupTypeEnum.Warning, "The item is still under the minimum so the call still open\nPlease fill more if you have");
 						}
 						toUpdate.add(item);
 					}
@@ -179,7 +180,7 @@ public class SupplyUpdateController {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 		}
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
-		System.out.println("updated has benn done sucssefully");
+		CommonFunctions.createPopup(PopupTypeEnum.Success, "Update success!");
 		toUpdate.clear();
 		
 		refresh(null);

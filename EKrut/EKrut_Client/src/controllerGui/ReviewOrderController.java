@@ -257,7 +257,11 @@ public class ReviewOrderController {
 		String successMsg = "Yayy!\n";
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
 		String supplyMethod = orderEntity.getSupplyMethod();
-
+		if(cart.size() == 0)
+		{
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
+			return;
+		}
 		// setup params according to configurations
 		switch (supplyMethod) {
 		case "Delivery": // online order
@@ -330,9 +334,10 @@ public class ReviewOrderController {
 
 		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
 
-		CommonFunctions.SleepFor(5000, () -> {
+		CommonFunctions.SleepFor(200, () -> {
 			OrderController.clearAll();
 			// goto homepage
+			NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
 			NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
 		});
 
