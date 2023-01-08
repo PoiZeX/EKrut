@@ -128,7 +128,6 @@ public class MessageHandler {
 			MarketingManagerDBController.getActiveSalesByRegion((String)obj, client);
 			break;
 
-
 		case updatePickupStatus:
 			OrderDBController.updatePickupStatus((int)obj, client);
 			break;
@@ -140,6 +139,10 @@ public class MessageHandler {
 			break;
 		case RequestUserByOrderIdFromServer:
 			CommonDataDBController.getUserByOrderId((int)obj, client);
+			break;
+		case InsertNewPickup:
+			OrderDBController.insertPickupEntity((PickupEntity)obj, client);
+			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;

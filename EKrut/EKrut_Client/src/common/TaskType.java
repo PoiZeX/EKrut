@@ -101,6 +101,7 @@ public enum TaskType {
 	UpdateItemsWithAnswer,
 	ValidPickupAnswer, 
 	updatePickupStatus,
+	InsertNewPickup,  
 	
 	//-------------------------------------Reports
 	// Requests From Server //
@@ -111,7 +112,7 @@ public enum TaskType {
 	ReceiveManagerInfoFromServerDB,
 	ReceiveOrderReport,
 	ReceiveSupplyReport,
-	ReceiveClientsReport,  
+	ReceiveClientsReport, 
 	// Update Database//
 	
 }

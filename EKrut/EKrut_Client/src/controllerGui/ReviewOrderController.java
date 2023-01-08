@@ -24,6 +24,7 @@ import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.OrderEntity;
+import entity.PickupEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -265,6 +266,8 @@ public class ReviewOrderController {
 
 			if (supplyMethod.equals("Pickup")) {
 				successMsg += "Order #" + orderId + " is waiting for you in machine #" + machine.getMachineId() + " ("+machine.getMachineName()+")\n";
+				PickupEntity pickup=new PickupEntity(orderId, PickupEntity.Status.inProgress, machine.getMachineId());
+				waitOn(new Message(TaskType.InsertNewPickup, pickup));
 			} else
 				successMsg += "Order #" + orderId + " was placed successfuly\n";
 			// check and act if some items under min amount

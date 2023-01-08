@@ -88,9 +88,12 @@ public class OrderDBController {
 		}
 
 	}
-	
+	/**
+	 * update pickup status to 'done'
+	 * @param orderId
+	 * @param client
+	 */
 	public static void updatePickupStatus(int orderId, ConnectionToClient client) {
-		
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null) 
@@ -102,7 +105,11 @@ public class OrderDBController {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * getting the pickup order for specific client from db if exist
+	 * @param details
+	 * @param client
+	 */
 	public static void isPickupValid(String[] details, ConnectionToClient client) {
 		PickupEntity pickup=null;
 		try {
@@ -125,6 +132,25 @@ public class OrderDBController {
 			client.sendToClient(new Message(TaskType.ValidPickupAnswer, pickup)); //alredy pickup
 			
 			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * insert new pickup entity
+	 * @param pickup
+	 * @param client
+	 */
+	public static void insertPickupEntity(PickupEntity pickup, ConnectionToClient client) {
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
+			ps.setInt(1, pickup.getOrderId());
+			ps.setString(2, pickup.getStatus().toString());
+			ps.executeQuery();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
