@@ -2,17 +2,17 @@ package common;
 
 public enum SaleType {
 
-	onePlusOne("1+1",1.00),
-	tenPercent("10%",0.1),
-	twentyPercent("20%",0.2),
-	thirtyPercent("30%",0.3);
+	onePlusOne("1+1",0),
+	tenPercent("10%",10),
+	twentyPercent("20%",20),
+	thirtyPercent("30%",30);
 	private final String name;
-	private final double precentage;
-	SaleType(String name,double d) {
+	private final int precentage;
+	SaleType(String name,int d) {
 		this.name=name;
 		this.precentage=d;
 	}
-	public double getPrecentage() {
+	public int getPrecentage() {
 		return precentage;
 	}
 	public String getName() {

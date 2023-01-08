@@ -2,8 +2,6 @@ package controllerGui;
 
 import java.util.ArrayList;
 
-import javax.swing.GroupLayout.Alignment;
-
 import Store.NavigationStoreController;
 import common.CommonData;
 import common.CommonFunctions;
@@ -15,14 +13,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -123,7 +115,6 @@ public class ShipmentMethodPopupController {
 		}
 	}
 
-
 	private void createNewScreen() {
 		OrderController.clearAll();
 		switch (selectedShipmentMethod) {
@@ -138,6 +129,7 @@ public class ShipmentMethodPopupController {
 			break;
 		}
 		((Stage) gridPane.getScene().getWindow()).close();
+		
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
 	}
 

@@ -4,16 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Stack;
-
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.TaskType;
-import controller.ItemsController;
 import common.ScreensNames;
-import controllerGui.HomePageController;
 import controllerGui.HostClientController;
 import entity.ScreenEntity;
 import entity.UserEntity;
@@ -23,10 +19,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,7 +35,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -186,7 +179,10 @@ public class NavigationStoreController {
 		if (scene == null)
 			return null;
 		se.setScene(scene);
-		screenScenes.replace(screenName, se); // replace the last stage with new
+		if (!screenScenes.containsKey(screenName))
+			screenScenes.put(screenName, se);
+		else
+			screenScenes.replace(screenName, se); // replace the last stage with new
 		// REPLACE the stack head
 		setWindowTitle(screenName);
 		return se;
@@ -236,7 +232,6 @@ public class NavigationStoreController {
 				}
 			});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return scene;

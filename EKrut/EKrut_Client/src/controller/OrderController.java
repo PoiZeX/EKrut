@@ -1,27 +1,19 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
 import common.Message;
-import common.RolesEnum;
 import common.SaleType;
 import common.TaskType;
 import controllerGui.HostClientController;
-import entity.ItemEntity;
-import entity.ItemInCartEntity;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.SaleEntity;
 import javafx.scene.image.Image;
-import utils.AppConfig;
 
 /**
  * The class handles the WHOLE order process
@@ -44,11 +36,12 @@ public class OrderController {
 	private static MachineEntity currentMachine = CommonData.getCurrentMachine();
 	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i think(???)
 	private static ArrayList<SaleEntity> activeSales = null;
-	private static boolean isSaleActive = false;
+//	private static boolean isSaleActive = false;
 	private static boolean onePlusOneSaleExist = false;
 	private static boolean percentageSaleExit = false;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean isDataReceived = false;
+	public static boolean isFirstPurchaseDiscountApplied = false;
 	private static Object data;
 
 	public OrderController() {
@@ -78,8 +71,8 @@ public class OrderController {
 	 */
 	public static boolean clearAll() {
 		if (itemsList == null) return false;
+		isFirstPurchaseDiscountApplied = false;
 		itemsInCartList.clear();
-		discounts = 1.0;
 		currentOrder = null;
 		itemsList.clear();
 		return true;
@@ -257,7 +250,7 @@ public class OrderController {
 			if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
 				percentageSaleExit = true;
 		}
-		getTotalDiscountsPercentage();
+		calculateDiscountsPercentage();
 		isDataReceived = true;
 	}
 
@@ -272,10 +265,10 @@ public class OrderController {
 	/**
 	 * Get total discount in NIS
 	 * 
-	 * @return
+	 * @return //price 100 discounts 0.3 : give 30
 	 */
 	public static double getTotalDiscounts() {
-		return getTotalPrice() - (discounts / 100);
+		return getTotalPrice() * (1-discounts);
 	}
 
 	/**
@@ -283,12 +276,12 @@ public class OrderController {
 	 * 
 	 * @return
 	 */
-	public static double getTotalDiscountsPercentage() {
+	public static void calculateDiscountsPercentage() {
 		if (activeSales == null)
-			return getTotalPrice();
+			return;
+		discounts = 1;
 		for (SaleEntity sale : activeSales)
 			addDiscount(SaleType.getSaleType(sale.getSaleType()).getPrecentage());
-		return discounts;
 	}
 
 	public static double getDiscountsPercentage() {
@@ -300,16 +293,17 @@ public class OrderController {
 	 * 
 	 * @param discount
 	 */
-	public static void addDiscount(double discount) {
-		discounts = discounts * discount;
+	public static void addDiscount(int discount) {
+		discounts *= (1-(((double)discount)/100));
 	}
 
+	
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
 		if (activeSales == null)
 			return itemPrice;
 		for (SaleEntity sale : activeSales)
 			if (!sale.getSaleType().equals("1+1"))
-				itemPrice = itemPrice * (1 - SaleType.getSaleType(sale.getSaleType()).getPrecentage());
+				itemPrice = itemPrice * (1 - (((double)SaleType.getSaleType(sale.getSaleType()).getPrecentage()) / 100));
 
 		return itemPrice;
 	}

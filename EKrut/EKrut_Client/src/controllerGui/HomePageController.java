@@ -4,32 +4,22 @@
 
 package controllerGui;
 
-import java.io.IOException;
-
 import Store.NavigationStoreController;
 import common.CommonData;
 import common.CommonFunctions;
-import common.Message;
-import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.ScreensNames;
-import common.TaskType;
 import controller.ItemsController;
 import controller.OrderController;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
@@ -83,8 +73,13 @@ public class HomePageController {
 		case member:
 			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
-			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need to change later
-			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need to																									// later
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need
+																															// to
+																															// change
+																															// later
+			setBtn(bottomBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); // need
+																												// to //
+																												// later
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
@@ -112,7 +107,6 @@ public class HomePageController {
 			setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
 					ScreensNames.DeliveryManagement);
 			break;
-
 
 		case marketingWorker:
 			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if

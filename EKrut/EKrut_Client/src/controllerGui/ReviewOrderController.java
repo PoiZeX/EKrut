@@ -130,8 +130,8 @@ public class ReviewOrderController {
 
 			// initialize fields
 			totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()) + "₪");
-			totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts()) + "₪");
-			totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts()) + "₪");
+			totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
+			totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
 			firstNameTxtField.setText(user.getFirst_name());
 			firstNameTxtField.setDisable(true);
 			lastNameTxtField.setText(user.getLast_name());
@@ -143,11 +143,14 @@ public class ReviewOrderController {
 				waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
 				if ((boolean) data) {
 					// give discount
-					OrderController.addDiscount(20);
+					if (!OrderController.isFirstPurchaseDiscountApplied) {
+						OrderController.addDiscount(20);
+						OrderController.isFirstPurchaseDiscountApplied = true;
+					}
 
 					// show special label or something
-					totulDiscountSumLbl.setText(String.valueOf(OrderController.getTotalDiscounts() + "₪"));
-					totalSumLbl.setText(String.valueOf(OrderController.getPriceAfterDiscounts() + "₪"));
+					totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
+					totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
 				}
 			}
 
@@ -265,8 +268,9 @@ public class ReviewOrderController {
 			orderId = (int) data;
 
 			if (supplyMethod.equals("Pickup")) {
-				successMsg += "Order #" + orderId + " is waiting for you in machine #" + machine.getMachineId() + " ("+machine.getMachineName()+")\n";
-				PickupEntity pickup=new PickupEntity(orderId, PickupEntity.Status.inProgress, machine.getMachineId());
+				successMsg += "Order #" + orderId + " is waiting for you in machine #" + machine.getMachineId() + " ("
+						+ machine.getMachineName() + ")\n";
+				PickupEntity pickup = new PickupEntity(orderId, PickupEntity.Status.inProgress, machine.getMachineId());
 				waitOn(new Message(TaskType.InsertNewPickup, pickup));
 			} else
 				successMsg += "Order #" + orderId + " was placed successfuly\n";
@@ -312,7 +316,8 @@ public class ReviewOrderController {
 		LinkedHashMap<ItemInMachineEntity, Integer> cart = OrderController.getCart();
 		MachineEntity machine = OrderController.getCurrentMachine();
 		int minAmount = machine.getMinamount();
-		sb.append("Alert!\nThere are some items under the minimum amount of Machine #" + machine.getMachineId()+":\n");
+		sb.append(
+				"Alert!\nThere are some items under the minimum amount of Machine #" + machine.getMachineId() + ":\n");
 
 		for (ItemInMachineEntity item : cart.keySet()) {
 			int totalAmount = item.getCurrentAmount();
