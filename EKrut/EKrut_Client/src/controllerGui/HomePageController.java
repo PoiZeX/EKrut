@@ -72,14 +72,14 @@ public class HomePageController {
 		switch (currentRole) {
 		case registered:
 		case member:
-			mailBtn.setVisible(true);
 			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
-			if(AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
-				setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready", ScreensNames.ConfirmOnlineOrder); // need
-			else if(AppConfig.SYSTEM_CONFIGURATION.equals("OL"))																												
-				setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder); 
-																												
-																												
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
+				setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready",
+						ScreensNames.ConfirmOnlineOrder); // need
+			else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+				setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder);
+
+			mailBtn.setVisible(true);
 			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
@@ -89,46 +89,74 @@ public class HomePageController {
 
 		case CEO:
 		case regionManager:
-			// CEO has 3 buttons.
-			setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
-			setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
-			setBtn(bottomBtn, "Supply Management", "Manage the available supply", ScreensNames.SupplyManagement);
-			if (currentUser.getRole_type() == RolesEnum.regionManager)
-				setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
-			image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				if (currentRole.equals(RolesEnum.regionManager)) {
+					setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
+					setBtn(bottomBtn, "Supply Management", "Manage the available supply",
+							ScreensNames.SupplyManagement);
+				}
+				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
+				if (currentUser.getRole_type() == RolesEnum.regionManager)
+					setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
+				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
+			}
+			else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
+			
 			break;
 
 		case customerServiceWorker:
-			setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
-					ScreensNames.RegistrationForm);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+				setBtn(middleBtn, "Open New Account", "Open new registered / subscribed account",
+						ScreensNames.RegistrationForm);
+			else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case deliveryOperator:
-			setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
-					ScreensNames.DeliveryManagement);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+				setBtn(middleBtn, "Handle Delivery", "See details and change status of current delivery",
+						ScreensNames.DeliveryManagement);
+			else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
+
 			break;
 
 		case marketingWorker:
-			setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker); // just if
-																											// the
-																											// manager
-																											// activated
-																											// it
-			// already
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker);
+			else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case marketingManager:
-			setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNames.MarketingManager);
-			image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				setBtn(middleBtn, "Activate New Sale", "Activate global sale by pattern",
+						ScreensNames.MarketingManager);
+				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
+			} else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
+
 			break;
 
 		case supplyWorker:
-			setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+				setBtn(middleBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
+			else
+				CommonFunctions.createPopup(PopupTypeEnum.Warning,
+						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		default:
 			// TODO: add label to inform the user he needs to contact customer support
-			CommonFunctions.createPopup(PopupTypeEnum.Warning, "No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com"); // show the screen anyway because the login succeed
+			// show the screen anyway because the login succeed
+			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					"No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
 			break;
 		}
 		CommonData.initData(); // initialize all common data's from DB.

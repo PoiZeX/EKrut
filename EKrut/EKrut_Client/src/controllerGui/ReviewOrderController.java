@@ -27,6 +27,7 @@ import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.PickupEntity;
 import entity.UserEntity;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -338,9 +339,16 @@ public class ReviewOrderController {
 		}
 
 		if (user.getRole_type().toString().equalsIgnoreCase("member")) {
-			//waitOn(new Message(TaskType.AddMemberPayment, orderId));
-		} else
+			// waitOn(new Message(TaskType.AddMemberPayment, orderId));
+		} else {
 			paymentProccess();
+			try {
+				Thread.sleep(10*1000);
+			}
+			catch (InterruptedException e) { 
+			System.out.println("Thread end?");
+			}
+		}
 
 		successfullEndProcess(successMsg);
 
@@ -348,6 +356,7 @@ public class ReviewOrderController {
 
 	/**
 	 * Handle the end of the process
+	 * 
 	 * @param successMsg
 	 */
 	private void successfullEndProcess(String successMsg) {
@@ -357,33 +366,52 @@ public class ReviewOrderController {
 			OrderController.refreshOrderToHomePage();
 		});
 	}
-	
+
+	static boolean staySleep = true;
+
 	/**
 	 * External payment process. Will Always success
+	 * 
+	 * @throws InterruptedException
 	 */
-	private void paymentProccess() {
+	private void paymentProccess() throws InterruptedException {
 		// make a popup for simulation of payment process
-		Stage primaryStage = new Stage();
+		new Thread(() ->
+		{
+			Platform.runLater(() ->
+			{
+				Stage primaryStage = new Stage();
+				Parent root = null;
+				FXMLLoader loader;
+				String path = "/boundary/PaymentPopupBoundary.fxml";
+				try {
+					loader = new FXMLLoader(getClass().getResource(path));
+					root = loader.load();
+					
+					// get controller and use it
+					PaymentPopupController paymentController = loader.getController();
+					paymentController.setThread(Thread.currentThread());
+					
+			
+				primaryStage.setScene(new Scene(root));
+				primaryStage.setTitle("External payment");
 
-		Parent root;
-		try {
+				primaryStage.show();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+		}).start();
+		
+//				// set actions
+//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//					public void handle(WindowEvent we) {
+//						staySleep = false;
+//
+//					}
+//				});
 
-			String path = "/boundary/PaymentPopupBoundary.fxml";
-			root = FXMLLoader.load(getClass().getResource(path));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.setTitle("External payment");
-			primaryStage.show();
-			// set actions
-//			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//				public void handle(WindowEvent we) {
-//				
-//					setLoginBtnDisable(false);
-//				}
-//			});
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//			while(staySleep)
 
 	}
 

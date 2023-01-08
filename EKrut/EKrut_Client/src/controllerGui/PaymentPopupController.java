@@ -27,14 +27,23 @@ public class PaymentPopupController {
 	 * Simulate the external payment process
 	 */
 	private void simulatePayment() {
-		CommonFunctions.SleepFor(2500, () ->{
-			CommonFunctions.SleepFor(1500, () ->{
+		while (threadToWake == null)
+			;
+		CommonFunctions.SleepFor(2500, () -> {
+			CommonFunctions.SleepFor(1500, () -> {
 				headlineLabel.setText("Payment success!");
-			});
-			Platform.runLater(() -> {
-				((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+				Platform.runLater(() -> {
+					((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+					threadToWake.interrupt();
+					threadToWake.notify();
+				});
 			});
 		});
 	}
 
+	private static Thread threadToWake = null;
+
+	public void setThread(Thread thread) {
+		threadToWake = thread;
+	}
 }
