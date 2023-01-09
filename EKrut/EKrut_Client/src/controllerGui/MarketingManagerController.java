@@ -216,7 +216,11 @@ public class MarketingManagerController {
 				}
 				else {
 					daysArr.remove(currDay);
-					daysMb.setText(daysArr.toString());
+					if(daysArr.isEmpty())
+						daysMb.setText("Choose days");
+					else {
+						daysMb.setText(daysArr.toString());
+					}
 				}
 			});
 		}
