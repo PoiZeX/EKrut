@@ -25,6 +25,8 @@ public class PopupController {
 
 	@FXML
 	private Button yesOkBtn;
+    @FXML
+    private ImageView onePlusOneImg;
 
 	// define colors
 	private static final String ERROR_COLOR = "#ff0303";
@@ -74,7 +76,11 @@ public class PopupController {
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
 			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
 			break;
-
+		case Sale:
+			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
+			onePlusOneImg.setVisible(true);
+			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
+			break;
 		case Decision:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/decision.png"));
 			titleLabel.setStyle("-fx-text-fill: " + DECISION_COLOR);

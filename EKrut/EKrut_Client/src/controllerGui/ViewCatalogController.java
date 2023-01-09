@@ -43,6 +43,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import utils.AppConfig;
+
 /**
  * Controller class for the view catalog screen.
  */
@@ -101,18 +102,22 @@ public class ViewCatalogController {
 	private String currentSupplyMethod;
 	private static ClientController chat = HostClientController.chat; // define the chat for th
 	private static boolean recievedData = false;
-	 /**
-     * Initialize the view catalog screen.
-     * 
-     * @throws InterruptedException if the thread is interrupted while waiting for data to be received
-     * @throws ExecutionException   if there was an error executing the task to request items from the machine
-     */
+
+	/**
+	 * Initialize the view catalog screen.
+	 * 
+	 * @throws InterruptedException if the thread is interrupted while waiting for
+	 *                              data to be received
+	 * @throws ExecutionException   if there was an error executing the task to
+	 *                              request items from the machine
+	 */
 	public void initialize() throws InterruptedException, ExecutionException {
 		checkRequestType();
 
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog(OrderController.getItemsList());
+
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
@@ -131,9 +136,12 @@ public class ViewCatalogController {
 		}
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
+		
 	}
+
 	/**
-	 * Check the request type and set the current supply method and machine ID accordingly.
+	 * Check the request type and set the current supply method and machine ID
+	 * accordingly.
 	 * 
 	 * @return true if the request type was successfully set, false otherwise
 	 */
@@ -163,8 +171,10 @@ public class ViewCatalogController {
 		}
 		return false;
 	}
+
 	/**
-	 * Generate all items in the catalog by creating new ItemInMachineEntity objects and adding them to the order.
+	 * Generate all items in the catalog by creating new ItemInMachineEntity objects
+	 * and adding them to the order.
 	 */
 	private void generateAllItems() {
 		ArrayList<ItemEntity> tempItems = ItemsController.allItems;
@@ -173,6 +183,7 @@ public class ViewCatalogController {
 		}
 		recievedData = true;
 	}
+
 	/**
 	 * Handle the cancel order button press.
 	 * 
@@ -182,6 +193,7 @@ public class ViewCatalogController {
 	void cancelOrder(ActionEvent event) {
 		System.out.println("CANCEL");
 	}
+
 	/**
 	 * Handle the place order button press by navigating to the review order screen.
 	 * 
@@ -191,8 +203,10 @@ public class ViewCatalogController {
 	void placeOrder(ActionEvent event) {
 		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
 	}
+
 	/**
-	 * Handle the view cart button press by toggling the visibility of the view cart pane.
+	 * Handle the view cart button press by toggling the visibility of the view cart
+	 * pane.
 	 * 
 	 * @param event the action event triggered by the button press
 	 */
@@ -244,7 +258,7 @@ public class ViewCatalogController {
 					col, row));
 		}
 		// Invoke all the tasks
-		executor.invokeAll(tasks);
+		executor.invokeAll(tasks); 
 		// Shutdown the executor
 		executor.shutdown();
 
@@ -252,16 +266,26 @@ public class ViewCatalogController {
 //		generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
 
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
+		if (OrderController.isOnePlusOneSaleExist()) {
+
+			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
+	
 	}
+	}
+
 	/**
-	 * The generateItem method generates a GUI element for displaying information about an ItemInMachineEntity object, 
-	 * as well as adding functionality for adding and removing the item from a cart, and modifying the item's quantity 
+	 * The generateItem method generates a GUI element for displaying information
+	 * about an ItemInMachineEntity object, as well as adding functionality for
+	 * adding and removing the item from a cart, and modifying the item's quantity
 	 * in the cart.
 	 *
-	 * @param item The ItemInMachineEntity object to be displayed in the GUI element.
+	 * @param item          The ItemInMachineEntity object to be displayed in the
+	 *                      GUI element.
 	 * @param discountPrice The discount price to be applied to the item.
-	 * @param i An integer value representing the row position of the GUI element in a grid.
-	 * @param j An integer value representing the column position of the GUI element in a grid.
+	 * @param i             An integer value representing the row position of the
+	 *                      GUI element in a grid.
+	 * @param j             An integer value representing the column position of the
+	 *                      GUI element in a grid.
 	 * @return A GridPane object representing the generated GUI element.
 	 */
 	public GridPane generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
