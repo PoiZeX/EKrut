@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
--- Host: localhost    Database: ekrut
+-- Host: 127.0.0.1    Database: ekrut
 -- ------------------------------------------------------
 -- Server version	8.0.31
 
@@ -24,12 +24,13 @@ DROP TABLE IF EXISTS `clients_report`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clients_report` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `description` varchar(500) DEFAULT NULL,
-  `supplymethods` varchar(45) DEFAULT NULL,
-  `totalorders` varchar(45) DEFAULT NULL,
-  `year` varchar(45) DEFAULT NULL,
-  `month` varchar(45) DEFAULT NULL,
-  `region` varchar(45) DEFAULT NULL,
+  `description` varchar(500) NOT NULL,
+  `supplymethods` varchar(45) NOT NULL,
+  `totalorders` varchar(45) NOT NULL,
+  `user_status` varchar(45) NOT NULL,
+  `year` varchar(45) NOT NULL,
+  `month` varchar(45) NOT NULL,
+  `region` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,37 +41,8 @@ CREATE TABLE `clients_report` (
 
 LOCK TABLES `clients_report` WRITE;
 /*!40000 ALTER TABLE `clients_report` DISABLE KEYS */;
-INSERT INTO `clients_report` VALUES (1,'0-2,40,3-6,65,6-12,98,13-17,15,18-25,9','100,27','227','2021','01','North');
+INSERT INTO `clients_report` VALUES (1,'0-2,40,3-6,65,6-12,98,13-17,15,18-25,9','100,27','227','117,110','2021','01','North');
 /*!40000 ALTER TABLE `clients_report` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `customers`
---
-
-DROP TABLE IF EXISTS `customers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `customers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `creditCardNumber` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `expireMonth` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `expireYear` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `cvv` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `subscriberID` int DEFAULT NULL,
-  `firstPurchase` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `subscriberID_UNIQUE` (`subscriberID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customers`
---
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -83,7 +55,6 @@ DROP TABLE IF EXISTS `deliveries`;
 CREATE TABLE `deliveries` (
   `order_id` int NOT NULL,
   `region` varchar(128) NOT NULL,
-  `customer_id` varchar(45) NOT NULL,
   `address` varchar(128) NOT NULL,
   `estimated_time` varchar(128) DEFAULT NULL,
   `deilvery_status` enum('pendingApproval','outForDelivery','done') NOT NULL DEFAULT 'pendingApproval',
@@ -98,35 +69,8 @@ CREATE TABLE `deliveries` (
 
 LOCK TABLES `deliveries` WRITE;
 /*!40000 ALTER TABLE `deliveries` DISABLE KEYS */;
-INSERT INTO `deliveries` VALUES (1,'North','007818859','abcd 3/5 ','25/12/2022 16:50','pendingApproval','NOT_APPROVED'),(2,'North','007818859','aaa 2/3 ','28/12/2022 19:57','outForDelivery','APPROVED'),(3,'North','2','cc 2',NULL,'pendingApproval','NOT_APPROVED'),(4,'UAE','6','aaaa 44/5 karmiel',NULL,'pendingApproval','NOT_APPROVED');
+INSERT INTO `deliveries` VALUES (5,'North','abcd 3/5 ','08/01/2023 13:16','outForDelivery','NOT_APPROVED'),(6,'North','aaa 2/3 ','28/12/2022 19:57','done','APPROVED'),(14,'North','cc 2','','pendingApproval','NOT_APPROVED'),(15,'UAE','aaaa 44/5 karmiel',NULL,'pendingApproval','NOT_APPROVED'),(24,'North','aaa 2/3 ','08/01/2023 13:16','outForDelivery','APPROVED'),(25,'South','aaa 2/3 ',NULL,'pendingApproval','NOT_APPROVED');
 /*!40000 ALTER TABLE `deliveries` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `delivery_address`
---
-
-DROP TABLE IF EXISTS `delivery_address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `delivery_address` (
-  `city` varchar(45) NOT NULL,
-  `street` varchar(45) DEFAULT NULL,
-  `zipcode` varchar(45) DEFAULT NULL,
-  `house_num` int DEFAULT NULL,
-  `floor` int DEFAULT NULL,
-  `apparetment_num` int DEFAULT NULL,
-  PRIMARY KEY (`city`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `delivery_address`
---
-
-LOCK TABLES `delivery_address` WRITE;
-/*!40000 ALTER TABLE `delivery_address` DISABLE KEYS */;
-/*!40000 ALTER TABLE `delivery_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -153,7 +97,7 @@ CREATE TABLE `item_in_machine` (
 
 LOCK TABLES `item_in_machine` WRITE;
 /*!40000 ALTER TABLE `item_in_machine` DISABLE KEYS */;
-INSERT INTO `item_in_machine` VALUES (0,1,10,'NotOpened',0,0),(0,2,10,'NotOpened',0,0),(0,3,10,'NotOpened',0,0),(0,4,10,'NotOpened',0,0),(0,5,10,'NotOpened',0,0),(0,6,10,'NotOpened',0,0),(0,7,10,'NotOpened',0,0),(0,8,10,'NotOpened',0,0),(0,9,10,'NotOpened',0,0),(0,10,10,'NotOpened',0,0),(0,11,10,'NotOpened',0,0),(0,12,10,'NotOpened',0,0),(0,13,10,'NotOpened',0,0),(0,14,10,'NotOpened',0,0),(0,15,10,'NotOpened',0,0),(0,16,10,'NotOpened',0,0),(0,17,10,'NotOpened',0,0),(0,18,10,'NotOpened',0,0),(0,19,10,'NotOpened',0,0),(0,20,10,'NotOpened',0,0),(0,21,10,'NotOpened',0,0),(0,22,10,'NotOpened',0,0),(0,23,10,'NotOpened',0,0),(0,24,10,'NotOpened',0,0),(0,25,10,'NotOpened',0,0),(0,26,10,'NotOpened',0,0),(1,1,10,'NotOpened',0,0),(1,2,10,'NotOpened',0,0),(1,3,10,'NotOpened',0,0),(1,4,10,'NotOpened',0,0),(1,5,10,'NotOpened',0,0),(1,6,10,'NotOpened',0,0),(1,7,10,'NotOpened',0,0),(1,8,10,'NotOpened',0,0),(1,9,10,'NotOpened',0,0),(1,10,10,'NotOpened',0,0),(1,11,10,'NotOpened',0,0),(1,12,10,'NotOpened',0,0),(1,13,10,'NotOpened',0,0),(1,14,10,'NotOpened',0,0),(1,15,10,'NotOpened',0,0),(1,16,10,'NotOpened',0,0),(1,17,10,'NotOpened',0,0),(1,18,10,'NotOpened',0,0),(1,19,10,'NotOpened',0,0),(1,20,10,'NotOpened',0,0),(1,21,10,'NotOpened',0,0),(1,22,10,'NotOpened',0,0),(1,23,10,'NotOpened',0,0),(1,24,10,'NotOpened',0,0),(1,25,10,'NotOpened',0,0),(1,26,10,'NotOpened',0,0),(2,1,10,'NotOpened',0,0),(2,2,10,'NotOpened',0,0),(2,3,10,'NotOpened',0,0),(2,4,10,'NotOpened',0,0),(2,5,10,'NotOpened',0,0),(2,6,10,'NotOpened',0,0),(2,7,10,'NotOpened',0,0),(2,8,10,'NotOpened',0,0),(2,9,10,'NotOpened',0,0),(2,10,10,'NotOpened',0,0),(2,11,10,'NotOpened',0,0),(2,12,10,'NotOpened',0,0),(2,13,10,'NotOpened',0,0),(2,14,10,'NotOpened',0,0),(2,15,10,'NotOpened',0,0),(2,16,10,'NotOpened',0,0),(2,17,10,'NotOpened',0,0),(2,18,10,'NotOpened',0,0),(2,19,10,'NotOpened',0,0),(2,20,10,'NotOpened',0,0),(2,21,10,'NotOpened',0,0),(2,22,10,'NotOpened',0,0),(2,23,10,'NotOpened',0,0),(2,24,10,'NotOpened',0,0),(2,25,10,'NotOpened',0,0),(2,26,10,'NotOpened',0,0),(3,1,10,'NotOpened',0,0),(3,2,10,'NotOpened',0,0),(3,3,10,'NotOpened',0,0),(3,4,10,'NotOpened',0,0),(3,5,10,'NotOpened',0,0),(3,6,10,'NotOpened',0,0),(3,7,10,'NotOpened',0,0),(3,8,10,'NotOpened',0,0),(3,9,10,'NotOpened',0,0),(3,10,10,'NotOpened',0,0),(3,11,10,'NotOpened',0,0),(3,12,10,'NotOpened',0,0),(3,13,10,'NotOpened',0,0),(3,14,10,'NotOpened',0,0),(3,15,10,'NotOpened',0,0),(3,16,10,'NotOpened',0,0),(3,17,10,'NotOpened',0,0),(3,18,10,'NotOpened',0,0),(3,19,10,'NotOpened',0,0),(3,20,10,'NotOpened',0,0),(3,21,10,'NotOpened',0,0),(3,22,10,'NotOpened',0,0),(3,23,10,'NotOpened',0,0),(3,24,10,'NotOpened',0,0),(3,25,10,'NotOpened',0,0),(3,26,10,'NotOpened',0,0),(4,1,10,'NotOpened',0,0),(4,2,10,'NotOpened',0,0),(4,3,10,'NotOpened',0,0),(4,4,10,'NotOpened',0,0),(4,5,10,'NotOpened',0,0),(4,6,10,'NotOpened',0,0),(4,7,10,'NotOpened',0,0),(4,8,10,'NotOpened',0,0),(4,9,10,'NotOpened',0,0),(4,10,10,'NotOpened',0,0),(4,11,10,'NotOpened',0,0),(4,12,10,'NotOpened',0,0),(4,13,10,'NotOpened',0,0),(4,14,10,'NotOpened',0,0),(4,15,10,'NotOpened',0,0),(4,16,10,'NotOpened',0,0),(4,17,10,'NotOpened',0,0),(4,18,10,'NotOpened',0,0),(4,19,10,'NotOpened',0,0),(4,20,10,'NotOpened',0,0),(4,21,10,'NotOpened',0,0),(4,22,10,'NotOpened',0,0),(4,23,10,'NotOpened',0,0),(4,24,10,'NotOpened',0,0),(4,25,10,'NotOpened',0,0),(4,26,10,'NotOpened',0,0),(5,1,10,'Processed',0,32),(5,2,10,'NotOpened',0,0),(5,3,10,'Processed',0,34),(5,4,10,'NotOpened',0,0),(5,5,10,'NotOpened',0,0),(5,6,10,'NotOpened',0,0),(5,7,10,'NotOpened',0,0),(5,8,10,'NotOpened',0,0),(5,9,10,'NotOpened',0,0),(5,10,10,'NotOpened',0,0),(5,11,10,'NotOpened',0,0),(5,12,10,'NotOpened',0,0),(5,13,10,'NotOpened',0,0),(5,14,10,'NotOpened',0,0),(5,15,10,'NotOpened',0,0),(5,16,10,'NotOpened',0,0),(5,17,10,'NotOpened',0,0),(5,18,10,'NotOpened',0,0),(5,19,10,'NotOpened',0,0),(5,20,10,'NotOpened',0,0),(5,21,10,'NotOpened',0,0),(5,22,10,'NotOpened',0,0),(5,23,10,'NotOpened',0,0),(5,24,10,'NotOpened',0,0),(5,25,10,'NotOpened',0,0),(5,26,10,'NotOpened',0,0),(6,1,10,'NotOpened',0,0),(6,2,10,'NotOpened',0,0),(6,3,10,'NotOpened',0,0),(6,4,10,'NotOpened',0,0),(6,5,10,'NotOpened',0,0),(6,6,10,'NotOpened',0,0),(6,7,10,'NotOpened',0,0),(6,8,10,'NotOpened',0,0),(6,9,10,'NotOpened',0,0),(6,10,10,'NotOpened',0,0),(6,11,10,'NotOpened',0,0),(6,12,10,'NotOpened',0,0),(6,13,10,'NotOpened',0,0),(6,14,10,'NotOpened',0,0),(6,15,10,'NotOpened',0,0),(6,16,10,'NotOpened',0,0),(6,17,10,'NotOpened',0,0),(6,18,10,'NotOpened',0,0),(6,19,10,'NotOpened',0,0),(6,20,10,'NotOpened',0,0),(6,21,10,'NotOpened',0,0),(6,22,10,'NotOpened',0,0),(6,23,10,'NotOpened',0,0),(6,24,10,'NotOpened',0,0),(6,25,10,'NotOpened',0,0),(6,26,10,'NotOpened',0,0),(7,1,10,'NotOpened',0,0),(7,2,10,'NotOpened',0,0),(7,3,10,'NotOpened',0,0),(7,4,10,'NotOpened',0,0),(7,5,10,'NotOpened',0,0),(7,6,10,'NotOpened',0,0),(7,7,10,'NotOpened',0,0),(7,8,10,'NotOpened',0,0),(7,9,10,'NotOpened',0,0),(7,10,10,'NotOpened',0,0),(7,11,10,'NotOpened',0,0),(7,12,0,'NotOpened',0,0),(7,13,10,'NotOpened',0,0),(7,14,10,'NotOpened',0,0),(7,15,10,'NotOpened',0,0),(7,16,10,'NotOpened',0,0),(7,17,10,'NotOpened',0,0),(7,18,10,'NotOpened',0,0),(7,19,10,'NotOpened',0,0),(7,20,10,'NotOpened',0,0),(7,21,10,'NotOpened',0,0),(7,22,10,'NotOpened',0,0),(7,23,10,'NotOpened',0,0),(7,24,10,'NotOpened',0,0),(7,25,10,'NotOpened',0,0),(7,26,10,'NotOpened',0,0),(8,1,10,'NotOpened',0,0),(8,2,10,'NotOpened',0,0),(8,3,10,'NotOpened',0,0),(8,4,10,'NotOpened',0,0),(8,5,10,'NotOpened',0,0),(8,6,10,'NotOpened',0,0),(8,7,10,'NotOpened',0,0),(8,8,10,'NotOpened',0,0),(8,9,10,'NotOpened',0,0),(8,10,10,'NotOpened',0,0),(8,11,10,'NotOpened',0,0),(8,12,10,'NotOpened',0,0),(8,13,10,'NotOpened',0,0),(8,14,10,'NotOpened',0,0),(8,15,10,'NotOpened',0,0),(8,16,10,'NotOpened',0,0),(8,17,10,'NotOpened',0,0),(8,18,10,'NotOpened',0,0),(8,19,10,'NotOpened',0,0),(8,20,10,'NotOpened',0,0),(8,21,10,'NotOpened',0,0),(8,22,10,'NotOpened',0,0),(8,23,10,'NotOpened',0,0),(8,24,10,'NotOpened',0,0),(8,25,10,'NotOpened',0,0),(8,26,10,'NotOpened',0,0),(9,1,10,'NotOpened',0,0),(9,2,10,'NotOpened',0,0),(9,3,10,'NotOpened',0,0),(9,4,10,'NotOpened',0,0),(9,5,10,'NotOpened',0,0),(9,6,10,'NotOpened',0,0),(9,7,10,'NotOpened',0,0),(9,8,10,'NotOpened',0,0),(9,9,10,'NotOpened',0,0),(9,10,10,'NotOpened',0,0),(9,11,10,'NotOpened',0,0),(9,12,10,'NotOpened',0,0),(9,13,10,'NotOpened',0,0),(9,14,10,'NotOpened',0,0),(9,15,10,'NotOpened',0,0),(9,16,10,'NotOpened',0,0),(9,17,10,'NotOpened',0,0),(9,18,10,'NotOpened',0,0),(9,19,10,'NotOpened',0,0),(9,20,10,'NotOpened',0,0),(9,21,10,'NotOpened',0,0),(9,22,10,'NotOpened',0,0),(9,23,10,'NotOpened',0,0),(9,24,10,'NotOpened',0,0),(9,25,10,'NotOpened',0,0),(9,26,10,'NotOpened',0,0),(10,1,10,'NotOpened',0,0),(10,2,10,'NotOpened',0,0),(10,3,10,'NotOpened',0,0),(10,4,10,'NotOpened',0,0),(10,5,10,'NotOpened',0,0),(10,6,10,'NotOpened',0,0),(10,7,10,'NotOpened',0,0),(10,8,10,'NotOpened',0,0),(10,9,10,'NotOpened',0,0),(10,10,10,'NotOpened',0,0),(10,11,10,'NotOpened',0,0),(10,12,10,'NotOpened',0,0),(10,13,10,'NotOpened',0,0),(10,14,10,'NotOpened',0,0),(10,15,10,'NotOpened',0,0),(10,16,10,'NotOpened',0,0),(10,17,10,'NotOpened',0,0),(10,18,10,'NotOpened',0,0),(10,19,10,'NotOpened',0,0),(10,20,10,'NotOpened',0,0),(10,21,10,'NotOpened',0,0),(10,22,10,'NotOpened',0,0),(10,23,10,'NotOpened',0,0),(10,24,10,'NotOpened',0,0),(10,25,10,'NotOpened',0,0),(10,26,10,'NotOpened',0,0),(11,1,10,'NotOpened',0,0),(11,2,10,'NotOpened',0,0),(11,3,10,'NotOpened',0,0),(11,4,10,'NotOpened',0,0),(11,5,10,'NotOpened',0,0),(11,6,10,'NotOpened',0,0),(11,7,10,'NotOpened',0,0),(11,8,10,'NotOpened',0,0),(11,9,10,'NotOpened',0,0),(11,10,10,'NotOpened',0,0),(11,11,10,'NotOpened',0,0),(11,12,10,'NotOpened',0,0),(11,13,10,'NotOpened',0,0),(11,14,10,'NotOpened',0,0),(11,15,10,'NotOpened',0,0),(11,16,10,'NotOpened',0,0),(11,17,10,'NotOpened',0,0),(11,18,10,'NotOpened',0,0),(11,19,10,'NotOpened',0,0),(11,20,10,'NotOpened',0,0),(11,21,10,'NotOpened',0,0),(11,22,10,'NotOpened',0,0),(11,23,10,'NotOpened',0,0),(11,24,10,'NotOpened',0,0),(11,25,10,'NotOpened',0,0),(11,26,10,'NotOpened',0,0),(12,1,10,'NotOpened',0,0),(12,2,10,'NotOpened',0,0),(12,3,10,'NotOpened',0,0),(12,4,10,'NotOpened',0,0),(12,5,10,'NotOpened',0,0),(12,6,10,'NotOpened',0,0),(12,7,10,'NotOpened',0,0),(12,8,10,'NotOpened',0,0),(12,9,10,'NotOpened',0,0),(12,10,10,'NotOpened',0,0),(12,11,10,'NotOpened',0,0),(12,12,10,'NotOpened',0,0),(12,13,10,'NotOpened',0,0),(12,14,10,'NotOpened',0,0),(12,15,10,'NotOpened',0,0),(12,16,10,'NotOpened',0,0),(12,17,10,'NotOpened',0,0),(12,18,10,'NotOpened',0,0),(12,19,10,'NotOpened',0,0),(12,20,10,'NotOpened',0,0),(12,21,10,'NotOpened',0,0),(12,22,10,'NotOpened',0,0),(12,23,10,'NotOpened',0,0),(12,24,10,'NotOpened',0,0),(12,25,10,'NotOpened',0,0),(12,26,10,'NotOpened',0,0),(13,1,10,'NotOpened',0,0),(13,2,10,'NotOpened',0,0),(13,3,10,'NotOpened',0,0),(13,4,10,'NotOpened',0,0),(13,5,10,'NotOpened',0,0),(13,6,10,'NotOpened',0,0),(13,7,10,'NotOpened',0,0),(13,8,10,'NotOpened',0,0),(13,9,10,'NotOpened',0,0),(13,10,10,'NotOpened',0,0),(13,11,10,'NotOpened',0,0),(13,12,10,'NotOpened',0,0),(13,13,10,'NotOpened',0,0),(13,14,10,'NotOpened',0,0),(13,15,10,'NotOpened',0,0),(13,16,10,'NotOpened',0,0),(13,17,10,'NotOpened',0,0),(13,18,10,'NotOpened',0,0),(13,19,10,'NotOpened',0,0),(13,20,10,'NotOpened',0,0),(13,21,10,'NotOpened',0,0),(13,22,10,'NotOpened',0,0),(13,23,10,'NotOpened',0,0),(13,24,10,'NotOpened',0,0),(13,25,10,'NotOpened',0,0),(13,26,10,'NotOpened',0,0),(14,1,10,'NotOpened',0,0),(14,2,10,'NotOpened',0,0),(14,3,10,'NotOpened',0,0),(14,4,10,'NotOpened',0,0),(14,5,10,'NotOpened',0,0),(14,6,10,'NotOpened',0,0),(14,7,10,'NotOpened',0,0),(14,8,10,'NotOpened',0,0),(14,9,10,'NotOpened',0,0),(14,10,10,'NotOpened',0,0),(14,11,10,'NotOpened',0,0),(14,12,10,'NotOpened',0,0),(14,13,10,'NotOpened',0,0),(14,14,10,'NotOpened',0,0),(14,15,10,'NotOpened',0,0),(14,16,10,'NotOpened',0,0),(14,17,10,'NotOpened',0,0),(14,18,10,'NotOpened',0,0),(14,19,10,'NotOpened',0,0),(14,20,10,'NotOpened',0,0),(14,21,10,'NotOpened',0,0),(14,22,10,'NotOpened',0,0),(14,23,10,'NotOpened',0,0),(14,24,10,'NotOpened',0,0),(14,25,10,'NotOpened',0,0),(14,26,10,'NotOpened',0,0);
+INSERT INTO `item_in_machine` VALUES (1,1,10,'NotOpened',0,0),(1,2,10,'NotOpened',0,0),(1,3,10,'NotOpened',0,0),(1,4,10,'NotOpened',0,0),(1,5,10,'NotOpened',0,0),(1,6,10,'NotOpened',0,0),(1,7,10,'NotOpened',0,0),(1,8,10,'NotOpened',0,0),(1,9,10,'NotOpened',0,0),(1,10,10,'NotOpened',0,0),(1,11,10,'NotOpened',0,0),(1,12,10,'NotOpened',0,0),(1,13,10,'NotOpened',0,0),(1,14,10,'NotOpened',0,0),(1,15,10,'NotOpened',0,0),(1,16,10,'NotOpened',0,0),(1,17,10,'NotOpened',0,0),(1,18,10,'NotOpened',0,0),(1,19,10,'NotOpened',0,0),(1,20,10,'NotOpened',0,0),(1,21,10,'NotOpened',0,0),(1,22,10,'NotOpened',0,0),(1,23,10,'NotOpened',0,0),(1,24,10,'NotOpened',0,0),(1,25,10,'NotOpened',0,0),(1,26,10,'NotOpened',0,0),(2,1,10,'NotOpened',0,0),(2,2,10,'NotOpened',0,0),(2,3,8,'NotOpened',0,0),(2,4,7,'NotOpened',0,0),(2,5,2,'NotOpened',1,0),(2,6,10,'NotOpened',0,0),(2,7,10,'NotOpened',0,0),(2,8,9,'NotOpened',0,0),(2,9,10,'NotOpened',0,0),(2,10,10,'NotOpened',0,0),(2,11,10,'NotOpened',0,0),(2,12,10,'NotOpened',0,0),(2,13,10,'NotOpened',0,0),(2,14,10,'NotOpened',0,0),(2,15,10,'NotOpened',0,0),(2,16,10,'NotOpened',0,0),(2,17,10,'NotOpened',0,0),(2,18,10,'NotOpened',0,0),(2,19,10,'NotOpened',0,0),(2,20,10,'NotOpened',0,0),(2,21,10,'NotOpened',0,0),(2,22,10,'NotOpened',0,0),(2,23,10,'NotOpened',0,0),(2,24,10,'NotOpened',0,0),(2,25,10,'NotOpened',0,0),(2,26,10,'NotOpened',0,0),(3,1,10,'NotOpened',0,0),(3,2,9,'NotOpened',0,0),(3,3,6,'NotOpened',0,0),(3,4,10,'NotOpened',0,0),(3,5,10,'NotOpened',0,0),(3,6,10,'NotOpened',0,0),(3,7,10,'NotOpened',0,0),(3,8,10,'NotOpened',0,0),(3,9,10,'NotOpened',0,0),(3,10,10,'NotOpened',0,0),(3,11,10,'NotOpened',0,0),(3,12,10,'NotOpened',0,0),(3,13,10,'NotOpened',0,0),(3,14,10,'NotOpened',0,0),(3,15,10,'NotOpened',0,0),(3,16,10,'NotOpened',0,0),(3,17,10,'NotOpened',0,0),(3,18,10,'NotOpened',0,0),(3,19,10,'NotOpened',0,0),(3,20,10,'NotOpened',0,0),(3,21,10,'NotOpened',0,0),(3,22,10,'NotOpened',0,0),(3,23,10,'NotOpened',0,0),(3,24,10,'NotOpened',0,0),(3,25,10,'NotOpened',0,0),(3,26,10,'NotOpened',0,0),(4,1,10,'NotOpened',0,0),(4,2,10,'NotOpened',0,0),(4,3,8,'NotOpened',1,0),(4,4,9,'NotOpened',0,0),(4,5,8,'NotOpened',1,0),(4,6,10,'NotOpened',0,0),(4,7,10,'NotOpened',0,0),(4,8,10,'NotOpened',0,0),(4,9,10,'NotOpened',0,0),(4,10,10,'NotOpened',0,0),(4,11,10,'NotOpened',0,0),(4,12,10,'NotOpened',0,0),(4,13,10,'NotOpened',0,0),(4,14,10,'NotOpened',0,0),(4,15,9,'NotOpened',0,0),(4,16,10,'NotOpened',0,0),(4,17,10,'NotOpened',0,0),(4,18,10,'NotOpened',0,0),(4,19,10,'NotOpened',0,0),(4,20,10,'NotOpened',0,0),(4,21,9,'NotOpened',0,0),(4,22,10,'NotOpened',0,0),(4,23,10,'NotOpened',0,0),(4,24,10,'NotOpened',0,0),(4,25,10,'NotOpened',0,0),(4,26,10,'NotOpened',0,0),(5,1,10,'Processed',0,32),(5,2,10,'NotOpened',0,0),(5,3,10,'Processed',0,34),(5,4,10,'NotOpened',0,0),(5,5,10,'NotOpened',0,0),(5,6,10,'NotOpened',0,0),(5,7,10,'NotOpened',0,0),(5,8,10,'NotOpened',0,0),(5,9,10,'NotOpened',0,0),(5,10,10,'NotOpened',0,0),(5,11,10,'NotOpened',0,0),(5,12,10,'NotOpened',0,0),(5,13,10,'NotOpened',0,0),(5,14,10,'NotOpened',0,0),(5,15,10,'NotOpened',0,0),(5,16,10,'NotOpened',0,0),(5,17,10,'NotOpened',0,0),(5,18,10,'NotOpened',0,0),(5,19,10,'NotOpened',0,0),(5,20,10,'NotOpened',0,0),(5,21,10,'NotOpened',0,0),(5,22,10,'NotOpened',0,0),(5,23,10,'NotOpened',0,0),(5,24,10,'NotOpened',0,0),(5,25,10,'NotOpened',0,0),(5,26,10,'NotOpened',0,0),(6,1,10,'NotOpened',0,0),(6,2,10,'NotOpened',0,0),(6,3,10,'NotOpened',0,0),(6,4,10,'NotOpened',0,0),(6,5,10,'NotOpened',0,0),(6,6,10,'NotOpened',0,0),(6,7,10,'NotOpened',0,0),(6,8,10,'NotOpened',0,0),(6,9,10,'NotOpened',0,0),(6,10,10,'NotOpened',0,0),(6,11,10,'NotOpened',0,0),(6,12,10,'NotOpened',0,0),(6,13,10,'NotOpened',0,0),(6,14,10,'NotOpened',0,0),(6,15,10,'NotOpened',0,0),(6,16,10,'NotOpened',0,0),(6,17,10,'NotOpened',0,0),(6,18,10,'NotOpened',0,0),(6,19,10,'NotOpened',0,0),(6,20,10,'NotOpened',0,0),(6,21,10,'NotOpened',0,0),(6,22,10,'NotOpened',0,0),(6,23,10,'NotOpened',0,0),(6,24,10,'NotOpened',0,0),(6,25,10,'NotOpened',0,0),(6,26,10,'NotOpened',0,0),(7,1,10,'NotOpened',0,0),(7,2,10,'NotOpened',0,0),(7,3,10,'NotOpened',0,0),(7,4,10,'NotOpened',0,0),(7,5,10,'NotOpened',0,0),(7,6,10,'NotOpened',0,0),(7,7,10,'NotOpened',0,0),(7,8,10,'NotOpened',0,0),(7,9,10,'NotOpened',0,0),(7,10,10,'NotOpened',0,0),(7,11,10,'NotOpened',0,0),(7,12,0,'NotOpened',0,0),(7,13,10,'NotOpened',0,0),(7,14,10,'NotOpened',0,0),(7,15,10,'NotOpened',0,0),(7,16,10,'NotOpened',0,0),(7,17,10,'NotOpened',0,0),(7,18,10,'NotOpened',0,0),(7,19,10,'NotOpened',0,0),(7,20,10,'NotOpened',0,0),(7,21,10,'NotOpened',0,0),(7,22,10,'NotOpened',0,0),(7,23,10,'NotOpened',0,0),(7,24,10,'NotOpened',0,0),(7,25,10,'NotOpened',0,0),(7,26,10,'NotOpened',0,0),(8,1,10,'NotOpened',0,0),(8,2,10,'NotOpened',0,0),(8,3,10,'NotOpened',0,0),(8,4,10,'NotOpened',0,0),(8,5,10,'NotOpened',0,0),(8,6,10,'NotOpened',0,0),(8,7,10,'NotOpened',0,0),(8,8,10,'NotOpened',0,0),(8,9,10,'NotOpened',0,0),(8,10,10,'NotOpened',0,0),(8,11,10,'NotOpened',0,0),(8,12,10,'NotOpened',0,0),(8,13,10,'NotOpened',0,0),(8,14,10,'NotOpened',0,0),(8,15,10,'NotOpened',0,0),(8,16,10,'NotOpened',0,0),(8,17,10,'NotOpened',0,0),(8,18,10,'NotOpened',0,0),(8,19,10,'NotOpened',0,0),(8,20,10,'NotOpened',0,0),(8,21,10,'NotOpened',0,0),(8,22,10,'NotOpened',0,0),(8,23,10,'NotOpened',0,0),(8,24,10,'NotOpened',0,0),(8,25,10,'NotOpened',0,0),(8,26,10,'NotOpened',0,0),(9,1,10,'NotOpened',0,0),(9,2,10,'NotOpened',0,0),(9,3,10,'NotOpened',0,0),(9,4,10,'NotOpened',0,0),(9,5,10,'NotOpened',0,0),(9,6,10,'NotOpened',0,0),(9,7,10,'NotOpened',0,0),(9,8,10,'NotOpened',0,0),(9,9,10,'NotOpened',0,0),(9,10,10,'NotOpened',0,0),(9,11,10,'NotOpened',0,0),(9,12,10,'NotOpened',0,0),(9,13,10,'NotOpened',0,0),(9,14,10,'NotOpened',0,0),(9,15,10,'NotOpened',0,0),(9,16,10,'NotOpened',0,0),(9,17,10,'NotOpened',0,0),(9,18,10,'NotOpened',0,0),(9,19,10,'NotOpened',0,0),(9,20,10,'NotOpened',0,0),(9,21,10,'NotOpened',0,0),(9,22,10,'NotOpened',0,0),(9,23,10,'NotOpened',0,0),(9,24,10,'NotOpened',0,0),(9,25,10,'NotOpened',0,0),(9,26,10,'NotOpened',0,0),(10,1,10,'NotOpened',0,0),(10,2,10,'NotOpened',0,0),(10,3,10,'NotOpened',0,0),(10,4,10,'NotOpened',0,0),(10,5,10,'NotOpened',0,0),(10,6,10,'NotOpened',0,0),(10,7,10,'NotOpened',0,0),(10,8,10,'NotOpened',0,0),(10,9,10,'NotOpened',0,0),(10,10,10,'NotOpened',0,0),(10,11,10,'NotOpened',0,0),(10,12,10,'NotOpened',0,0),(10,13,10,'NotOpened',0,0),(10,14,10,'NotOpened',0,0),(10,15,10,'NotOpened',0,0),(10,16,10,'NotOpened',0,0),(10,17,10,'NotOpened',0,0),(10,18,10,'NotOpened',0,0),(10,19,10,'NotOpened',0,0),(10,20,10,'NotOpened',0,0),(10,21,10,'NotOpened',0,0),(10,22,10,'NotOpened',0,0),(10,23,10,'NotOpened',0,0),(10,24,10,'NotOpened',0,0),(10,25,10,'NotOpened',0,0),(10,26,10,'NotOpened',0,0),(11,1,10,'NotOpened',0,0),(11,2,10,'NotOpened',0,0),(11,3,10,'NotOpened',0,0),(11,4,10,'NotOpened',0,0),(11,5,10,'NotOpened',0,0),(11,6,10,'NotOpened',0,0),(11,7,10,'NotOpened',0,0),(11,8,10,'NotOpened',0,0),(11,9,10,'NotOpened',0,0),(11,10,10,'NotOpened',0,0),(11,11,10,'NotOpened',0,0),(11,12,10,'NotOpened',0,0),(11,13,10,'NotOpened',0,0),(11,14,10,'NotOpened',0,0),(11,15,10,'NotOpened',0,0),(11,16,10,'NotOpened',0,0),(11,17,10,'NotOpened',0,0),(11,18,10,'NotOpened',0,0),(11,19,10,'NotOpened',0,0),(11,20,10,'NotOpened',0,0),(11,21,10,'NotOpened',0,0),(11,22,10,'NotOpened',0,0),(11,23,10,'NotOpened',0,0),(11,24,10,'NotOpened',0,0),(11,25,10,'NotOpened',0,0),(11,26,10,'NotOpened',0,0),(12,1,10,'NotOpened',0,0),(12,2,10,'NotOpened',0,0),(12,3,10,'NotOpened',0,0),(12,4,10,'NotOpened',0,0),(12,5,10,'NotOpened',0,0),(12,6,10,'NotOpened',0,0),(12,7,10,'NotOpened',0,0),(12,8,10,'NotOpened',0,0),(12,9,10,'NotOpened',0,0),(12,10,10,'NotOpened',0,0),(12,11,10,'NotOpened',0,0),(12,12,10,'NotOpened',0,0),(12,13,10,'NotOpened',0,0),(12,14,10,'NotOpened',0,0),(12,15,10,'NotOpened',0,0),(12,16,10,'NotOpened',0,0),(12,17,10,'NotOpened',0,0),(12,18,10,'NotOpened',0,0),(12,19,10,'NotOpened',0,0),(12,20,10,'NotOpened',0,0),(12,21,10,'NotOpened',0,0),(12,22,10,'NotOpened',0,0),(12,23,10,'NotOpened',0,0),(12,24,10,'NotOpened',0,0),(12,25,10,'NotOpened',0,0),(12,26,10,'NotOpened',0,0),(13,1,10,'NotOpened',0,0),(13,2,10,'NotOpened',0,0),(13,3,10,'NotOpened',0,0),(13,4,10,'NotOpened',0,0),(13,5,10,'NotOpened',0,0),(13,6,10,'NotOpened',0,0),(13,7,10,'NotOpened',0,0),(13,8,10,'NotOpened',0,0),(13,9,10,'NotOpened',0,0),(13,10,10,'NotOpened',0,0),(13,11,10,'NotOpened',0,0),(13,12,10,'NotOpened',0,0),(13,13,10,'NotOpened',0,0),(13,14,10,'NotOpened',0,0),(13,15,10,'NotOpened',0,0),(13,16,10,'NotOpened',0,0),(13,17,10,'NotOpened',0,0),(13,18,10,'NotOpened',0,0),(13,19,10,'NotOpened',0,0),(13,20,10,'NotOpened',0,0),(13,21,10,'NotOpened',0,0),(13,22,10,'NotOpened',0,0),(13,23,10,'NotOpened',0,0),(13,24,10,'NotOpened',0,0),(13,25,10,'NotOpened',0,0),(13,26,10,'NotOpened',0,0),(14,1,10,'NotOpened',0,0),(14,2,10,'NotOpened',0,0),(14,3,10,'NotOpened',0,0),(14,4,10,'NotOpened',0,0),(14,5,10,'NotOpened',0,0),(14,6,10,'NotOpened',0,0),(14,7,10,'NotOpened',0,0),(14,8,10,'NotOpened',0,0),(14,9,10,'NotOpened',0,0),(14,10,10,'NotOpened',0,0),(14,11,10,'NotOpened',0,0),(14,12,10,'NotOpened',0,0),(14,13,10,'NotOpened',0,0),(14,14,10,'NotOpened',0,0),(14,15,10,'NotOpened',0,0),(14,16,10,'NotOpened',0,0),(14,17,10,'NotOpened',0,0),(14,18,10,'NotOpened',0,0),(14,19,10,'NotOpened',0,0),(14,20,10,'NotOpened',0,0),(14,21,10,'NotOpened',0,0),(14,22,10,'NotOpened',0,0),(14,23,10,'NotOpened',0,0),(14,24,10,'NotOpened',0,0),(14,25,10,'NotOpened',0,0),(14,26,10,'NotOpened',0,0);
 /*!40000 ALTER TABLE `item_in_machine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,10 +169,10 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `buytime` varchar(45) NOT NULL,
   `products_amount` varchar(45) NOT NULL,
-  `products_description` varchar(45) DEFAULT NULL,
+  `payment_status` varchar(45) DEFAULT NULL,
   `supply_method` enum('Delivery','Pickup','On-site') NOT NULL DEFAULT 'On-site',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,30 +181,8 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (0,1,112,2,'22/12/2022 14:43','3',NULL,'On-site'),(1,1,112,1,'22/12/2022 14:43','3',NULL,'On-site'),(2,1,142,2,'22/12/2022 14:43','3',NULL,'On-site'),(3,2,155,1,'22/12/2022 14:43','13',NULL,'On-site'),(4,2,41,4,'22/12/2022 14:43','3',NULL,'On-site'),(5,3,77,3,'22/12/2022 14:43','3',NULL,'Delivery'),(6,3,17,5,'22/12/2022 14:43','3',NULL,'Delivery'),(7,1,12,1,'22/12/2022 14:43','3',NULL,'On-site'),(8,2,115,2,'22/12/2022 14:43','3',NULL,'On-site'),(9,1,11,3,'22/12/2022 14:43','3',NULL,'On-site'),(10,3,110,1,'22/12/2022 14:43','3',NULL,'On-site'),(11,2,142,4,'22/12/2022 14:43','3',NULL,'On-site'),(12,6,155,5,'22/12/2022 14:43','13',NULL,'Pickup'),(13,2,41,2,'22/12/2022 14:43','3',NULL,'Pickup'),(14,7,77,1,'22/12/2022 14:43','3',NULL,'Delivery'),(15,3,17,3,'22/12/2022 14:43','3',NULL,'Delivery'),(16,6,12,2,'22/12/2022 14:43','3',NULL,'Pickup'),(17,4,115,1,'22/12/2022 14:43','3',NULL,'Pickup'),(18,5,11,3,'22/12/2022 14:43','3',NULL,'Pickup'),(19,6,110,4,'22/12/2022 14:43','3',NULL,'Pickup'),(20,4,112,3,'11/12/2022 14:43','3',NULL,'Pickup'),(21,2,142,2,'20/12/2022 14:43','3',NULL,'Pickup'),(22,26,155,1,'26/12/2022 14:43','13',NULL,'Pickup'),(23,2,41,5,'13/12/2022 14:43','3',NULL,'Pickup'),(24,2,77,6,'17/12/2022 14:43','3',NULL,'Delivery'),(25,24,17,7,'16/12/2022 14:43','3',NULL,'Delivery'),(26,6,12,7,'05/12/2022 14:43','3',NULL,'Pickup'),(27,21,115,7,'11/12/2022 14:43','3',NULL,'Pickup'),(28,23,11,7,'12/12/2022 14:43','3',NULL,'Pickup'),(29,6,110,7,'25/12/2022 14:43','3',NULL,'Pickup'),(30,11,37,7,'22/12/2022 14:43','1',NULL,'Pickup');
+INSERT INTO `orders` VALUES (0,1,112,2,'22/12/2022 14:43','3',NULL,'On-site'),(1,1,112,1,'22/12/2022 14:43','3',NULL,'On-site'),(2,1,142,2,'22/12/2022 14:43','3',NULL,'On-site'),(3,2,155,1,'22/12/2022 14:43','13',NULL,'On-site'),(4,2,41,4,'22/12/2022 14:43','3',NULL,'On-site'),(5,3,77,3,'22/12/2022 14:43','3',NULL,'Delivery'),(6,3,17,5,'22/12/2022 14:43','3',NULL,'Delivery'),(7,1,12,1,'22/12/2022 14:43','3',NULL,'On-site'),(8,2,115,2,'22/12/2022 14:43','3',NULL,'On-site'),(9,1,11,3,'22/12/2022 14:43','3',NULL,'On-site'),(10,3,110,1,'22/12/2022 14:43','3',NULL,'On-site'),(11,2,142,4,'22/12/2022 14:43','3',NULL,'On-site'),(12,6,155,5,'22/12/2022 14:43','13',NULL,'Pickup'),(13,2,41,2,'22/12/2022 14:43','3',NULL,'Pickup'),(14,7,77,1,'22/12/2022 14:43','3',NULL,'Delivery'),(15,3,17,3,'22/12/2022 14:43','3',NULL,'Delivery'),(16,6,12,2,'22/12/2022 14:43','3',NULL,'Pickup'),(17,4,115,1,'22/12/2022 14:43','3',NULL,'Pickup'),(18,5,11,3,'22/12/2022 14:43','3',NULL,'Pickup'),(19,6,110,4,'22/12/2022 14:43','3',NULL,'Pickup'),(20,4,112,3,'11/12/2022 14:43','3',NULL,'Pickup'),(21,2,142,2,'20/12/2022 14:43','3',NULL,'Pickup'),(22,26,155,1,'26/12/2022 14:43','13',NULL,'Pickup'),(23,2,41,5,'13/12/2022 14:43','3',NULL,'Pickup'),(24,2,77,129,'17/12/2022 14:43','3',NULL,'Delivery'),(25,24,17,129,'16/12/2022 14:43','3',NULL,'Delivery'),(26,6,12,129,'05/12/2022 14:43','3',NULL,'Pickup'),(27,21,115,129,'11/12/2022 14:43','3',NULL,'Pickup'),(28,23,11,129,'12/12/2022 14:43','3',NULL,'Pickup'),(29,6,110,7,'25/12/2022 14:43','3',NULL,'Pickup'),(30,11,37,7,'22/12/2022 14:43','1',NULL,'Pickup'),(31,2,-1,132,'08/01/2023 14:14','-1',NULL,'Pickup'),(32,3,-1,132,'08/01/2023 14:26','-1',NULL,'Pickup'),(33,2,-1,132,'08/01/2023 14:30','-1',NULL,'Pickup'),(34,4,-1,132,'08/01/2023 14:36','-1',NULL,'Pickup'),(35,4,-1,132,'08/01/2023 14:37','-1',NULL,'Pickup'),(36,4,-1,132,'08/01/2023 14:38','-1',NULL,'Pickup'),(37,4,-1,132,'08/01/2023 14:38','-1',NULL,'Pickup'),(38,4,-1,132,'08/01/2023 14:38','-1',NULL,'Pickup'),(39,4,-1,132,'08/01/2023 14:39','-1',NULL,'Pickup'),(40,-1,-1,132,'08/01/2023 16:01','-1',NULL,'Delivery'),(41,-1,-1,132,'08/01/2023 16:45','-1',NULL,'Delivery'),(42,-1,-1,132,'08/01/2023 16:46','-1',NULL,'Delivery'),(43,4,-1,132,'08/01/2023 23:20','-1',NULL,'Pickup'),(44,2,-1,132,'09/01/2023 12:44','-1',NULL,'Pickup');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `orders_online`
---
-
-DROP TABLE IF EXISTS `orders_online`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders_online` (
-  `shipment_method` varchar(45) NOT NULL,
-  PRIMARY KEY (`shipment_method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `orders_online`
---
-
-LOCK TABLES `orders_online` WRITE;
-/*!40000 ALTER TABLE `orders_online` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders_online` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -286,7 +208,7 @@ CREATE TABLE `orders_report` (
 
 LOCK TABLES `orders_report` WRITE;
 /*!40000 ALTER TABLE `orders_report` DISABLE KEYS */;
-INSERT INTO `orders_report` VALUES (40,'Ort Braude Academic Collage,5,389,Big Karmiel,7,677,City hall,1,110,Lev Karmiel Mall,6,554,Ort Pasgot,3,342,Karmiel Train Station,2,22,Haifa University,1,37','12','2022','North'),(41,'Savidor center Train sation,1,115,Tel Aviv university,1,11','12','2022','Center'),(42,'Dimona Atomic reactor,1,155','12','2022','South'),(43,'Ort Braude Academic Collage,5,389,Big Karmiel,7,677,City hall,1,110,Lev Karmiel Mall,5,399,Ort Pasgot,2,227,Karmiel Train Station,1,11,Haifa University,1,37','12','2022','North');
+INSERT INTO `orders_report` VALUES (40,'Ort Braude Academic Collage,5,389,Big Karmiel,7,677,City hall,1,110,Lev Karmiel Mall,6,554,Ort Pasgot,3,342,Karmiel Train Station,2,22,Haifa University,1,37','12','2022','North');
 /*!40000 ALTER TABLE `orders_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +226,7 @@ CREATE TABLE `personal_messages` (
   `type` varchar(64) NOT NULL,
   `message` varchar(2048) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -313,7 +235,7 @@ CREATE TABLE `personal_messages` (
 
 LOCK TABLES `personal_messages` WRITE;
 /*!40000 ALTER TABLE `personal_messages` DISABLE KEYS */;
-INSERT INTO `personal_messages` VALUES (5,0,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(6,32,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(7,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(8,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(9,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(10,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(11,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(12,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(13,83,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(14,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(15,83,'28/12/2022','title','Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here ');
+INSERT INTO `personal_messages` VALUES (5,0,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(6,32,'26/12/2022','message title','This message sent via Email to Email lidi@gmail.com:\nThe whole message is here nigga'),(7,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(8,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(9,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(10,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(11,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(12,0,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(13,83,'28/12/2022','Need your action','New user has been signed up\nplease go to \'Users Approval\' to review and approve the request'),(14,83,'28/12/2022','message title','This message sent via Email to dudy@gmail.com:\nThe whole message is here nigga'),(15,83,'28/12/2022','title','Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here Long here '),(16,110,'08/01/2023','Minimum amount Alert','This message sent via SMS to 0538503033:\nAlert!\nThere are some items under the minimum amount of Machine #4:\nKlik Conrflakes, Apple Flavored Water'),(17,110,'08/01/2023','Minimum amount Alert','This message sent via Email to lidor@EKrut.com:\nAlert!\nThere are some items under the minimum amount of Machine #4:\nKlik Conrflakes, Apple Flavored Water'),(18,110,'09/01/2023','Minimum amount Alert','This message sent via SMS to 0538503033:\nAlert!\nThere are some items under the minimum amount of Machine #2:\nKlik Conrflakes'),(19,110,'09/01/2023','Minimum amount Alert','This message sent via Email to lidor@EKrut.com:\nAlert!\nThere are some items under the minimum amount of Machine #2:\nKlik Conrflakes');
 /*!40000 ALTER TABLE `personal_messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +248,6 @@ DROP TABLE IF EXISTS `pickups`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pickups` (
   `order_id` int NOT NULL,
-  `customer_id` varchar(45) NOT NULL,
   `pickup_status` enum('done','inProgress') NOT NULL DEFAULT 'inProgress',
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -338,6 +259,7 @@ CREATE TABLE `pickups` (
 
 LOCK TABLES `pickups` WRITE;
 /*!40000 ALTER TABLE `pickups` DISABLE KEYS */;
+INSERT INTO `pickups` VALUES (12,'inProgress'),(13,'inProgress'),(16,'inProgress'),(17,'inProgress'),(18,'inProgress'),(19,'inProgress'),(20,'inProgress'),(21,'inProgress'),(22,'inProgress'),(23,'inProgress'),(26,'inProgress'),(27,'done'),(28,'inProgress'),(29,'inProgress'),(30,'inProgress'),(33,'inProgress'),(34,'inProgress'),(43,'inProgress'),(44,'inProgress'),(45,'done');
 /*!40000 ALTER TABLE `pickups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,31 +288,6 @@ INSERT INTO `regions` VALUES (1,'North'),(2,'UAE'),(3,'South');
 UNLOCK TABLES;
 
 --
--- Table structure for table `report`
---
-
-DROP TABLE IF EXISTS `report`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `report` (
-  `region` varchar(45) NOT NULL,
-  `city` varchar(45) DEFAULT NULL,
-  `machine_id` varchar(45) DEFAULT NULL,
-  `time` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `report`
---
-
-LOCK TABLES `report` WRITE;
-/*!40000 ALTER TABLE `report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `report` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sales`
 --
 
@@ -406,7 +303,7 @@ CREATE TABLE `sales` (
   `end_time` time NOT NULL,
   `sale_status` enum('Active','NotActive') NOT NULL DEFAULT 'NotActive',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,32 +312,8 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (1,'North','1+1','Sunday','08:00:00','10:00:00','NotActive'),(2,'North','1+1','Sunday,Monday','14:00:00','16:00:00','NotActive'),(7,'UAE','Monday, Tuesday','10%','06:00:00','08:00:00','NotActive');
+INSERT INTO `sales` VALUES (1,'North','1+1','Sunday','08:00:00','10:00:00','Active'),(2,'North','1+1','Sunday,Monday','14:00:00','16:00:00','Active'),(8,'UAE','10%','Tuesday, Wednesday, Thursday, Monday, Sunday','00:00:00','01:00:00','NotActive'),(9,'UAE','30%','Monday, Tuesday','05:00:00','20:00:00','NotActive'),(10,'North','10%','Monday','08:00:00','20:00:00','NotActive'),(11,'UAE','10%','Monday','08:00:00','20:00:00','Active'),(12,'South','10%','Monday','08:00:00','20:00:00','Active'),(13,'North','1+1','Tuesday, Monday, Wednesday','07:00:00','08:00:00','Active'),(14,'North','1+1','Tuesday, Monday, Wednesday','07:00:00','08:00:00','NotActive'),(56,'North','1+1','Sunday','08:00:00','10:00:00','Active'),(57,'North','1+1','Sunday','08:00:00','10:00:00','NotActive');
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sales_type`
---
-
-DROP TABLE IF EXISTS `sales_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sales_type` (
-  `type_id` int NOT NULL,
-  `type_name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sales_type`
---
-
-LOCK TABLES `sales_type` WRITE;
-/*!40000 ALTER TABLE `sales_type` DISABLE KEYS */;
-INSERT INTO `sales_type` VALUES (1,'\'1+1\''),(2,'\'10%\''),(3,'\'20%\''),(4,'\'30%\'');
-/*!40000 ALTER TABLE `sales_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -498,7 +371,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userName_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +380,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (85,'100878859','rmNorth','123456','Lidor','Ankava','lidor@EKrut.com','0538503033',NULL,'North','regionManager',0,0),(86,'101868859','doNorth','123456','Eyal','Greenberg','eyal@EKrut.com','0538503033',NULL,'North','deliveryOperator',0,0),(87,'106828759','mwNorth','123456','Ofer','Gold','ofer@EKrut.com','0538503033',NULL,'North','marketingWorker',0,0),(88,'102858859','rmSouth','123456','Neta','The fork','neta@EKrut.com','0538503033',NULL,'South','regionManager',0,0),(89,'103848859','doSouth','123456','Yossef','Ben porat','yossef@EKrut.com','0538503033',NULL,'South','deliveryOperator',0,0),(90,'106828858','mwSouth','123456','Bigi','Amzalag','ofer@EKrut.com','0538503033',NULL,'South','marketingWorker',0,0),(91,'104838859','rmUAE','123456','Dima','Chdnsky','dima@EKrut.com','0538503033',NULL,'UAE','regionManager',0,0),(92,'105828859','doUAE','123456','Hamudi','Kabudi','hamudi@EKrut.com','0538503033',NULL,'UAE','deliveryOperator',0,0),(93,'106828957','mwUAE','123456','Guy','Amzalag','ofer@EKrut.com','0538503033',NULL,'UAE','marketingWorker',0,0),(94,'106818859','csworker','123456','Ravit','Gamliel','ravit@EKrut.com','0538503033',NULL,'null','customerServiceWorker',0,0),(95,'106838659','mktmanager','123456','Vital','Marciano','vital@EKrut.com','0538503033',NULL,'null','marketingManager',0,0),(96,'106848559','spw1','123456','David','Asulin','david@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(97,'106858459','spw2','123456','Yair','Asulin','yair@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(98,'106868359','spw3','123456','Saray','Asulin','saray@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(99,'106878259','spw4','123456','Rivka','Asulin','rivka@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(100,'106888159','ceo','123456','Adam','Mizrahi','adam@EKrut.com','0538503033',NULL,'null','CEO',0,0),(101,'007818859','usrN','123456','Anna','Zak','anna@gmail.com','0538503033',NULL,'North','user',0,1),(102,'205818859','usrS','123456','Omer','Adam','omer@gmail.com','0538503033',NULL,'South','user',0,1),(103,'304818859','usrU','123456','Eden','Ben Zaken','kapara@gmail.com','0538503033',NULL,'UAE','user',0,1),(104,'403818859','rgsN','123456','Ravid','Plotnik','nechi@gmail.com','0538503033',NULL,'North','registered',0,0),(105,'502818859','rgsS','123456','Keren','Peles','keren@gmail.com','0538503033',NULL,'South','registered',0,0),(106,'601818859','rgsU','123456','Berry','Sakharof','berry@gmail.com','0538503033',NULL,'UAE','registered',0,0),(107,'700818859','mbrN','123456','Idan','Haviv','idan@gmail.com','0538503033',NULL,'North','member',0,0),(108,'800808859','mbrS','123456','Itay','Levi','itay@gmail.com','0538503033',NULL,'UAE','member',0,0),(109,'900808759','mbrU','123456','Daniel','Salomon','daniel@gmail.com','0538503033',NULL,'South','member',0,0);
+INSERT INTO `users` VALUES (1,'100878859','rmNorth','123456','Lidor','Ankava','lidor@EKrut.com','0538503033',NULL,'North','regionManager',0,0),(2,'101868859','doNorth','123456','Eyal','Greenberg','eyal@EKrut.com','0538503033',NULL,'North','deliveryOperator',0,0),(3,'106828759','mwNorth','123456','Ofer','Gold','ofer@EKrut.com','0538503033',NULL,'North','marketingWorker',0,0),(4,'102858859','rmSouth','123456','Neta','The fork','neta@EKrut.com','0538503033',NULL,'South','regionManager',0,0),(5,'103848859','doSouth','123456','Yossef','Ben porat','yossef@EKrut.com','0538503033',NULL,'South','deliveryOperator',0,0),(6,'106828858','mwSouth','123456','Bigi','Amzalag','ofer@EKrut.com','0538503033',NULL,'South','marketingWorker',0,0),(7,'104838859','rmUAE','123456','Dima','Chdnsky','dima@EKrut.com','0538503033',NULL,'UAE','regionManager',0,0),(8,'105828859','doUAE','123456','Hamudi','Kabudi','hamudi@EKrut.com','0538503033',NULL,'UAE','deliveryOperator',0,0),(9,'106828957','mwUAE','123456','Guy','Amzalag','ofer@EKrut.com','0538503033',NULL,'UAE','marketingWorker',0,0),(10,'106818859','csworker','123456','Ravit','Gamliel','ravit@EKrut.com','0538503033',NULL,'null','customerServiceWorker',0,0),(11,'106838659','mktmanager','123456','Vital','Marciano','vital@EKrut.com','0538503033',NULL,'null','marketingManager',0,0),(12,'106848559','spw1','123456','David','Asulin','david@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(13,'106858459','spw2','123456','Yair','Asulin','yair@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(14,'106868359','spw3','123456','Saray','Asulin','saray@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(15,'106878259','spw4','123456','Rivka','Asulin','rivka@EKrut.com','0538503033',NULL,'null','supplyWorker',0,0),(16,'106888159','ceo','123456','Adam','Mizrahi','adam@EKrut.com','0538503033',NULL,'null','CEO',0,0),(17,'007818859','usrN','123456','Anna','Zak','anna@gmail.com','0538503033',NULL,'North','user',0,1),(18,'205818859','usrS','123456','Omer','Adam','omer@gmail.com','0538503033',NULL,'South','user',0,1),(19,'304818859','usrU','123456','Eden','Ben Zaken','kapara@gmail.com','0538503033',NULL,'UAE','user',0,1),(20,'403818859','rgsN','123456','Ravid','Plotnik','nechi@gmail.com','0538503033','1234123412341234','North','registered',0,0),(21,'502818859','rgsS','123456','Keren','Peles','keren@gmail.com','0538503033','1234123412341234','South','registered',0,0),(22,'601818859','rgsU','123456','Berry','Sakharof','berry@gmail.com','0538503033','1234123412341234','UAE','registered',0,0),(23,'700818859','mbrN','123456','Idan','Haviv','idan@gmail.com','0538503033','1234123412341234','North','member',0,0),(24,'800808859','mbrS','123456','Itay','Levi','itay@gmail.com','0538503033','1234123412341234','South','member',0,0),(25,'900808759','mbrU','123456','Daniel','Salomon','daniel@gmail.com','0538503033','1234123412341234','UAE','member',0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -520,4 +393,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-07 16:19:41
+-- Dump completed on 2023-01-09 22:58:08
