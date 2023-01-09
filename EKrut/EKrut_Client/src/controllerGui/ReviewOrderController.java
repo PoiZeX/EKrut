@@ -292,15 +292,12 @@ public class ReviewOrderController {
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
 				// error inserting the order
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
-				return;
-			}
-			orderId = (int) data;
-			if (orderId == -1) {
 				RollBack();
 				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
 				return;
 			}
+			orderId = (int) data;
+			
 			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
 

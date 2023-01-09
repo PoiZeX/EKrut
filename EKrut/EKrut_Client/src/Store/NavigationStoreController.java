@@ -164,18 +164,32 @@ public class NavigationStoreController {
 	 * @return
 	 */
 	public boolean refreshStage(ScreensNames screenName) {
-		ScreenEntity se = refreshWithoutScreenChange(screenName);
-		if (se == null)
+		ScreenEntity screenEntity = refreshWithoutScreenChange(screenName);
+		if (screenEntity == null)
 			return false;
-		if (history.size() > 0)
-			if(history.peek().getSc().equals(screenName))
-				history.pop(); // remove the last instance of the current screen and sets a new one
-		primaryStage.setScene(history.push(se).getScene());
-		setTopBarLabels(se);
+
+		// checks if the screen already in the stack and remove
+		// avoid circles (usually when going backwards)
+		while (history.size() > 0 && history.contains(screenEntity))
+			history.pop();
+
+		primaryStage.setScene(history.push(screenEntity).getScene());
+		setTopBarLabels(screenEntity);
 
 		return true;
 	}
 
+	public boolean stackCircleHandler(ScreenEntity screenEntity) {
+
+		return true;
+	}
+
+	/**
+	 * Sets a new ScreenEntity in the dictionary
+	 * 
+	 * @param screenName
+	 * @return
+	 */
 	public ScreenEntity refreshWithoutScreenChange(ScreensNames screenName) {
 		ScreenEntity se = new ScreenEntity(screenName, null);
 		Scene scene = createSingleScene(screenName, se); // create new instance
