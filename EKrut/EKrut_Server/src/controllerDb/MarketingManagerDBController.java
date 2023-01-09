@@ -62,7 +62,7 @@ public class MarketingManagerDBController {
 
 			stmt = MySqlClass.getConnection().createStatement();
 			for (SaleEntity saleEntity : saleLst) {
-				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.sales SET sale_sataus=? WHERE id=?;");
+				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.sales SET sale_status=? WHERE id=?;");
 				ps.setString(1, saleEntity.getSaleStatus().toString());
 				ps.setInt(2, saleEntity.getSaleID());
 				ps.executeUpdate();
