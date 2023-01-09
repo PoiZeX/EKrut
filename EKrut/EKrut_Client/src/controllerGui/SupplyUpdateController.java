@@ -66,6 +66,9 @@ public class SupplyUpdateController {
 	private Label regionNameLbl;
 
 	@FXML
+	private Label machineIdLbl;
+
+	@FXML
 	private TableView<ItemInMachineEntity> supplyMangmentTbl;
 
 	@FXML
@@ -74,12 +77,12 @@ public class SupplyUpdateController {
 	@FXML
 	private Button updatedBtn;
 
-	private MachineEntity machine;
+	private static MachineEntity machine;
 
 	public static ObservableList<ItemInMachineEntity> itemsInMachineLst = FXCollections.observableArrayList();
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	private static ClientController chat = HostClientController.chat; // define the chat for th
-	private ArrayList<ItemInMachineEntity> toUpdate = new ArrayList<>();;
+	private static ArrayList<ItemInMachineEntity> toUpdate = new ArrayList<>();;
 	private int[] arr = new int[2];
 	private String[] arrStr = new String[2];
 	public static boolean recievedData = false;
@@ -89,19 +92,21 @@ public class SupplyUpdateController {
 	public void initialize() throws Exception {
 		arrStr[0] = "1";
 		arrStr[1] = NavigationStoreController.connectedUser.getId() + "";
+		recievedData = false;
 		chat.acceptObj(new Message(TaskType.InitMachinesSupplyUpdate, arrStr));
 		while (!recievedData)
 			Thread.sleep(100);
-		if (machineLst.isEmpty()) {
-			setDisableItems();
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "No new calls for items");
-			
-		} 
 		setUpMachineComboBox();
+		
 
 	}
+
 	public void setUpMachineComboBox() {
 		machineCmb.setItems(machineLst);
+		if (machineLst.isEmpty()) {
+			setDisableItems();
+			CommonFunctions.createPopup(PopupTypeEnum.Warning, "No new calls for items");
+		}
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
 				machine = machineCmb.getValue();
@@ -109,25 +114,51 @@ public class SupplyUpdateController {
 					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
 				else if (oldValue != newValue) {
 					regionNameLbl.setText(machine.getRegionName());
-
 					machineNameLbl.setText(machine.machineName);
+					machineIdLbl.setText(machine.machineId + "");
 					machineNameLbl.setVisible(true);
 					minamountLbl.setText(machine.getMinamount() + "");
-					setupTable(machine.machineId);
+					try {
+						setupTable(machine.machineId);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
 		});
-		recievedData = true;
 	}
-	@SuppressWarnings("unchecked")
-	private void setupTable(int machineId) {
+
+	void setDisableItems() {
+		machineCmb.setDisable(true);
+		updatedBtn.setDisable(true);
+	}
+
+	/***
+	 * table setup
+	 * 
+	 * @param machineId
+	 * @throws InterruptedException 
+	 */
+	private void setupTable(int machineId) throws InterruptedException {
 		arr[0] = machineId;
 		arr[1] = NavigationStoreController.connectedUser.getId();
+		recievedData = false;
 		chat.acceptObj(new Message(TaskType.RequestProssecedItemsInMachine, arr));
+		while (!recievedData) 
+			Thread.sleep(100);
 		supplyMangmentTbl.setItems(itemsInMachineLst);
 		supplyMangmentTbl.setEditable(true);
 		// factory
+		setFactoryCols();
+	}
+
+	/***
+	 * set column for table
+	 */
+	@SuppressWarnings("unchecked")
+	private void setFactoryCols() {
 		machineIdCol
 				.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("machineId"));
 		itemIdCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
@@ -160,30 +191,23 @@ public class SupplyUpdateController {
 				}
 			}
 		});
-
 	}
 
-	/**
-	 * get machines and put them in a combo box
+	// ---------------------------------- set buttons event
+	/***
+	 * press refresh button to refresh table and item displayed ask from data base
+	 * to load updated table
 	 * 
-	 * @param arrayList
+	 * @param event
 	 */
-	public static void getAllMachines(ArrayList<MachineEntity> arrayList) {
-		Platform.runLater(() -> {
-			if (!machineLst.isEmpty())
-				machineLst.clear();
-		});
-		machineLst.addAll(arrayList);
-	}
-
 	@FXML
 	void refresh(ActionEvent event) {
 		MachineEntity tempMachine = machineCmb.getValue();
 		Platform.runLater(() -> {
 			try {
-				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyManagement);
+				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyUpdate);
 				CommonFunctions.SleepFor(300, () -> {
-					SupplyManagementController sc = (SupplyManagementController) NavigationStoreController.getInstance()
+					SupplyUpdateController sc = (SupplyUpdateController) NavigationStoreController.getInstance()
 							.getController();
 					sc.machineCmb.getSelectionModel().select(tempMachine);
 				});
@@ -203,24 +227,37 @@ public class SupplyUpdateController {
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
 		CommonFunctions.createPopup(PopupTypeEnum.Success, "Update success!");
 		toUpdate.clear();
-
 		refresh(null);
-
-		// supplyMangmentTbl.refresh();
 	}
 
-	/** get machines from server */
+	// ----------------------------------------------------------------- get data
+	/**
+	 * get machines and put them in a combo box
+	 * 
+	 * @param arrayList
+	 */
+	public static void getAllMachines(ArrayList<MachineEntity> arrayList) {
+		//Platform.runLater(() -> {
+			if (!machineLst.isEmpty())
+				machineLst.clear();
+			machineLst.addAll(arrayList);
+	//	});
+
+		recievedData = true;
+	}
+
+	/***
+	 * get items in machine from server in processed status
+	 * 
+	 * @param obj
+	 */
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
 		// TODO Auto-generated method stub
 		if (!itemsInMachineLst.isEmpty()) {
 			itemsInMachineLst.clear();
 		}
 		itemsInMachineLst.addAll(obj);
+		recievedData = true;
 	}
 
-	void setDisableItems() {
-		machineCmb.setDisable(true);
-
-		updatedBtn.setDisable(true);
-	}
 }
