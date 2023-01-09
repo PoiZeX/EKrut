@@ -92,7 +92,7 @@ public class MessageHandler {
 			SupplyManagementDBController.getProcessedMachineItems((int[]) obj, client);
 			break;
 		case RequestInsertNewSale:
-			MarketingManagerDBController.insertSaleEntities((SaleEntity) obj, client);
+			MarketingManagementDBController.insertSaleEntities((SaleEntity) obj, client);
 			break;
 		case RequestUpdateMachineMinAmount:
 			SupplyManagementDBController.updateMachineMinAmount((MachineEntity) obj, client);
@@ -101,10 +101,10 @@ public class MessageHandler {
 			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
-			MarketingManagerDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
+			MarketingManagementDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
 			break;
 		case RequestSalesFromServer:
-			MarketingManagerDBController.getSales((String)obj,client);
+			MarketingManagementDBController.getSales((String)obj,client);
 			break;
 		case RequestSupplyWorkers:
 			SupplyManagementDBController.getSupplyWorkers(client);
@@ -125,7 +125,7 @@ public class MessageHandler {
 			break;
 
 		case RequestActiveSales:
-			MarketingManagerDBController.getActiveSalesByRegion((String)obj, client);
+			MarketingManagementDBController.getActiveSalesByRegion((String)obj, client);
 			break;
 
 		case updatePickupStatus:

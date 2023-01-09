@@ -11,6 +11,7 @@ import common.CustomerStatus;
 import common.DeliveryStatus;
 import common.Message;
 import common.PopupTypeEnum;
+import common.RolesEnum;
 import common.SaleType;
 import common.ScreensNames;
 import common.TaskType;
@@ -32,7 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import utils.TooltipSetter;
 
-public class MarketingWorkerController {
+public class SalesManagementController {
 
 
     @FXML
@@ -82,13 +83,10 @@ public class MarketingWorkerController {
 		refreshBtn.setTooltip(tooltip.getTooltip()); 
 		
 	}
-
-   	
     @FXML
     void refresh(ActionEvent event) {
 
-    	NavigationStoreController.getInstance().refreshStage(ScreensNames.MarketingWorker);
-
+    	NavigationStoreController.getInstance().refreshStage(ScreensNames.SalesManagement);
     }
 
     @FXML
@@ -100,7 +98,8 @@ public class MarketingWorkerController {
 		}
     }
 	private void setupTable() {
-		salesTable.setEditable(true); // make table editable
+		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingWorker))
+			salesTable.setEditable(true); // make table editable
 		salesTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		salesTable.setItems(sales);
 		// factory

@@ -46,7 +46,7 @@ public enum TaskType {
 	RequestSalesFromServer,
 	// Receive Answers From Server //
 	ReceiveSalesFromServer,
-	
+	 InsertSaleAnswer,
 	// Update Database//
 	RequestInsertNewSale,
 	RequestUpdateSales,
@@ -112,7 +112,7 @@ public enum TaskType {
 	ReceiveManagerInfoFromServerDB,
 	ReceiveOrderReport,
 	ReceiveSupplyReport,
-	ReceiveClientsReport, 
+	ReceiveClientsReport,
 	// Update Database//
 	
 }
