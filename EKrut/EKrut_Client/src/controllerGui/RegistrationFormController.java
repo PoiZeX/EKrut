@@ -141,7 +141,7 @@ public class RegistrationFormController{
         });
     	creditcardTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
     		if (newValue != null) {
-	    	    if (newValue.length() != 16) {
+	    	    if (!creditcardTxtField.getText().matches("[0-9]{16}")) {
 	    	    	creditCardChecker = false;
 	    	    	creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
 	    	    }
