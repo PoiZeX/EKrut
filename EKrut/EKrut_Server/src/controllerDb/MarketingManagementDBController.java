@@ -28,15 +28,17 @@ import javafx.scene.control.CustomMenuItem;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
-public class MarketingManagerDBController {
+public class MarketingManagementDBController {
 	public static void insertSaleEntities(SaleEntity saleEntity, ConnectionToClient client) {
 		
 		try {
-			
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			
+				if(isSaleExist(saleEntity)) {
+					client.sendToClient(new Message(TaskType.InsertSaleAnswer, false));
+					return;
+				} 
 			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.sales (region, sale_type,days, start_time, end_time) "
 					+ "VALUES (?, ?, ?, ?, ?);");
 			ps.setString(1,saleEntity.getRegion());
@@ -44,10 +46,9 @@ public class MarketingManagerDBController {
 			ps.setString(3,saleEntity.getDays());
 			ps.setString(4, saleEntity.getStartTime().toString());
 			ps.setString(5, saleEntity.getEndTime().toString());
-			
 			ps.executeUpdate();
-			
-		} catch (SQLException e) {
+			client.sendToClient(new Message(TaskType.InsertSaleAnswer, true));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -102,6 +103,32 @@ public class MarketingManagerDBController {
 		}
 	}
 	
+	public static Boolean isSaleExist(SaleEntity saleEntity) {
+	
+		SaleStatus saleStatus;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return false;
+			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales WHERE region=? And sale_type=? And days=?"
+					+ " And start_time=? And end_time=?;");
+			ps.setString(1,saleEntity.getRegion());
+			ps.setString(2,saleEntity.getSaleType());
+			ps.setString(3,saleEntity.getDays());
+			ps.setString(4,saleEntity.getStartTime().toString());
+			ps.setString(5,saleEntity.getEndTime().toString());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return true;
+			} 
+			rs.close();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	//"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
 	public static void getActiveSalesByRegion(String region ,ConnectionToClient client) {
@@ -140,4 +167,6 @@ public class MarketingManagerDBController {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

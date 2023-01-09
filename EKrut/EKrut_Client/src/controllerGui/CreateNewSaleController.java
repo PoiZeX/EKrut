@@ -47,7 +47,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import utils.TooltipSetter;
 
-public class MarketingManagerController {
+public class CreateNewSaleController {
 
     @FXML
     private Label EndTimeLbl;
@@ -90,7 +90,7 @@ public class MarketingManagerController {
     private String saleType;
     private String region;
     private TooltipSetter tooltip;
-    
+    private static Boolean valid = null;
     ArrayList<String> daysArr=new ArrayList<>();
     ClientController chat = HostClientController.chat; // define the chat for the controller
     
@@ -99,6 +99,7 @@ public class MarketingManagerController {
     @FXML
     void createSale(ActionEvent event) {
     	String errMsg=validateFields();
+    	
     	errLbl.setText(errMsg);
     	if(errMsg.equals("")) {
     		StringBuilder days=new StringBuilder(daysArr.toString());
@@ -106,11 +107,25 @@ public class MarketingManagerController {
     		days.deleteCharAt(days.length()-1);
     		SaleEntity saleEntity=new SaleEntity(region,saleType,days.toString(), startTime, endTime);
     		chat.acceptObj(new Message(TaskType.RequestInsertNewSale, saleEntity));
-    		CommonFunctions.createPopup(PopupTypeEnum.Success, "Yay! succeeding in creating a new sale");
+    		while (valid == null) {
+    			try {
+    				Thread.sleep(100);
+    			} catch (InterruptedException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		if(valid)
+    			CommonFunctions.createPopup(PopupTypeEnum.Success, "Yay! succeeding in creating a new sale");
+    		else {
+    			CommonFunctions.createPopup(PopupTypeEnum.Error, "Sale is already exist");
+    		}
     	}
     	
     }
     
+    public static void isSaleExist(Boolean ans) {
+		valid=ans;
+	}
     @FXML
 	/** Setup screen before launching view */
 	public void initialize() throws Exception {

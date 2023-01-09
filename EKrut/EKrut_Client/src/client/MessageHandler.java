@@ -6,7 +6,8 @@ import common.TaskType;
 import controller.ItemsController;
 import controller.OrderController;
 import controllerGui.LoginController;
-import controllerGui.MarketingWorkerController;
+import controllerGui.CreateNewSaleController;
+import controllerGui.SalesManagementController;
 import controllerGui.OrdersReportController;
 import controllerGui.PersonalMessagesController;
 import controllerGui.RegistrationFormController;
@@ -104,7 +105,7 @@ public class MessageHandler {
 			navigateItems((ArrayList<ItemInMachineEntity>) obj);
 			break;
 		case ReceiveSalesFromServer:
-			MarketingWorkerController.getSalesEntityFromServer((ArrayList<SaleEntity>) obj);
+			SalesManagementController.getSalesEntityFromServer((ArrayList<SaleEntity>) obj);
 			break;
 		case ReceiveSupplyWorkersFromServer:
 			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
@@ -126,6 +127,9 @@ public class MessageHandler {
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
 			break;
 		case ReceiveUserByOrderIdFromServerDB:
+			break;
+		case InsertSaleAnswer:
+			CreateNewSaleController.isSaleExist((Boolean)obj);
 			break;
 		default:
 			break;

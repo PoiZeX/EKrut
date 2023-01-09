@@ -127,7 +127,7 @@ public class HomePageController {
 
 		case marketingWorker:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.MarketingWorker);
+				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.SalesManagement);
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
@@ -135,8 +135,9 @@ public class HomePageController {
 
 		case marketingManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				setBtn(middleBtn, "Activate New Sale", "Activate global sale by pattern",
-						ScreensNames.MarketingManager);
+				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern",
+						ScreensNames.CreateNewSale);
+				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.SalesManagement);
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
