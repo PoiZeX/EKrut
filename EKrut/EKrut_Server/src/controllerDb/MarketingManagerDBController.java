@@ -116,7 +116,7 @@ public class MarketingManagerDBController {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			
+			// CONTAINS (days, '<yourSubstring>');
 			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales"
 					+ " WHERE region =? AND sale_status = 'Active' AND days LIKE ?"
 					+ "  AND ( (start_time < end_time AND CURTIME() BETWEEN start_time AND end_time)"
@@ -124,7 +124,7 @@ public class MarketingManagerDBController {
 					+ "        (end_time < start_time AND CURTIME() NOT BETWEEN start_time AND end_time)"
 					+ "      );");
 			ps.setString(1,region);
-			ps.setString(2,day);
+			ps.setString(2,"%"+day+"%");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				saleStatus=SaleStatus.valueOf(rs.getString(7));
