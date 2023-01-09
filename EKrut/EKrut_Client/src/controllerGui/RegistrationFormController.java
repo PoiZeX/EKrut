@@ -96,13 +96,11 @@ public class RegistrationFormController{
     @FXML
     private ComboBox<String> regionComboBox;
 
-
-
     ClientController chat = HostClientController.chat;
 	protected static Object recivedData;
 	protected static boolean isDataRecived = false;
 	private String roleType;
-	private boolean creditCardChecker = true;
+	private boolean creditCardChecker = false;
     
     public void initialize() {
     	dataArray = new ArrayList<>();
@@ -142,17 +140,19 @@ public class RegistrationFormController{
             }
         });
     	creditcardTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
-    	    if (newValue.length() != 16) {
-    	    	creditCardChecker = false;
-    	    	creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-    	    }
-    	    else if (newValue.length() == 0) {
-    	    	creditcardTxtField.setStyle("-fx-border-color: none;");
-    	    }
-    	    else {
-    	    	creditCardChecker = true;
-    			creditcardTxtField.setStyle("-fx-border-color: none;");
-    	    }
+    		if (newValue != null) {
+	    	    if (!creditcardTxtField.getText().matches("[0-9]{16}")) {
+	    	    	creditCardChecker = false;
+	    	    	creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+	    	    }
+	    	    else if (newValue.length() == 0) {
+	    	    	creditcardTxtField.setStyle("-fx-border-color: none;");
+	    	    }
+	    	    else {
+	    	    	creditCardChecker = true;
+	    			creditcardTxtField.setStyle("-fx-border-color: none;");
+	    	    }
+    		}
     	});
     }
 
@@ -163,7 +163,7 @@ public class RegistrationFormController{
     	
     	// Check for empty text fields
     	for (TextField field : dataArray) {
-    		if (field.getText().equals("")) {
+    		if (field.getText() != null && field.getText().equals("")) {
     			if (field != userSearchTxtField) {
         			missingTextFields++;
             		field.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
@@ -174,21 +174,22 @@ public class RegistrationFormController{
     			field.setStyle("-fx-border-color: none;");
     		}
     	}
-    	if (creditCardChecker == false) {
+    	if (missingTextFields > 0) {
+			errorMsgLabel.setText("There are missing fields!");
+			regionComboBox.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 1;");
+			return;
+    	}
+    	else if (creditCardChecker == false) {
     		errorMsgLabel.setText("Invalid Credit Card Number!");
     		creditcardTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+    		return;
     	}
-    	else {
-        	if (missingTextFields == 0) {
-        		updateUser();
-        	}
-        	else {
-    			errorMsgLabel.setText("There are missing fields!");
-    			regionComboBox.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 1;");
-        	}
+    	else if (missingTextFields == 0) {
+    		updateUser();
     	}
-
     }
+
+    
 
     /**
      * Update the user entity
@@ -328,6 +329,7 @@ public class RegistrationFormController{
     		userSearchMsgLabel.setStyle("-fx-text-fill: #000000");
     		
     		// fill fields
+    		creditcardTxtField.setText("");
     		firstnameTxtField.setText(userDetails.getFirst_name());
     		lastnameTxtField.setText(userDetails.getLast_name());
     		emailTxtField.setText(userDetails.getEmail());
@@ -338,7 +340,6 @@ public class RegistrationFormController{
     		usernameTxtField.setText(userDetails.getUsername());
     		regionComboBox.setValue(userDetails.getRegion());
        		creditcardTxtField.setDisable(false);  // the only one if need to change
-    		
     	}
     }
 }

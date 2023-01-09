@@ -139,7 +139,7 @@ public class UsersManagementDBController {
 	 * 
 	 * @return user
 	 */
-	public static boolean updateUserRoleType(String[] details, ConnectionToClient client) {
+	public static boolean updateUserInDB(String[] details, ConnectionToClient client) {
 		if(details.length < 1 && CommonFunctions.isNullOrEmpty(details[1])) 
 			return false;
 		String idNumber = details[0];
@@ -154,7 +154,7 @@ public class UsersManagementDBController {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, roleType);
 			ps.setString(2, region);
-			ps.setInt(3, Integer.parseInt(creditCardNumber));
+			ps.setString(3, creditCardNumber);
 			ps.setString(4, idNumber);
 			ps.executeUpdate();
 		} catch (SQLException e) {
