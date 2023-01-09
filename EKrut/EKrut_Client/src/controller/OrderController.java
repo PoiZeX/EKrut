@@ -3,6 +3,9 @@ package controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonData;
@@ -226,7 +229,7 @@ public class OrderController {
 //----------------------------------------------------------------------Sales 
 	public static boolean isActiveSale() {
 		if (activeSales != null && currentOrder != null) {
-			if (!activeSales.isEmpty() && currentOrder.getMachine_id() != -1) {
+			if (!activeSales.isEmpty() && !(currentOrder.getSupplyMethod().equals("Delivery"))) {
 				return true;
 			}
 		}
