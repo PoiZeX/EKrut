@@ -136,7 +136,7 @@ public class MessageHandler {
 		Object currentController = NavigationStoreController.getInstance().getController();
 		if (currentController instanceof SupplyManagementController) 
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
-		else if (currentController instanceof SupplyManagementController)
+		else if (currentController instanceof SupplyUpdateController)
 			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 		else
 			ViewCatalogController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);

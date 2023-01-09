@@ -70,7 +70,7 @@ public class SupplyManagementDBController {
 		PreparedStatement ps;
 		try {
 			int minAmount = getMachineMinAmount(machineId);
-			ps = conn.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.item_id, ekrut.items.name "
+			ps = conn.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
 					+ " WHERE item_in_machine.machine_id=? AND (item_in_machine.current_amount < ? OR  item_in_machine.call_status!=?) AND item_in_machine.item_id=items.item_id ;");
 			ps.setInt(1, machineId);
@@ -119,7 +119,7 @@ public class SupplyManagementDBController {
 				else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
-							res.getString(8), 0, "");
+							res.getString(7), 0, "");
 				}
 
 				itemsInMachine.add(item);
@@ -182,7 +182,7 @@ public class SupplyManagementDBController {
 		try {
 			minAmount = getMachineMinAmount(machineId);
 
-			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
+			PreparedStatement ps = conn.prepareStatement("SELECT  item_in_machine.*, items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
 					+ " WHERE item_in_machine.machine_id=(?) AND  item_in_machine.call_status=(?) AND item_in_machine.item_id=items.item_id AND item_in_machine.worker_id=(?)  ;");
 			ps.setInt(1, machineId);
@@ -504,7 +504,8 @@ public class SupplyManagementDBController {
 
 			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.machines.* "
 					+ "FROM ekrut.machines, ekrut.item_in_machine "
-					+ "WHERE item_in_machine.call_status=(?) AND worker_id=(?) AND machines.machine_id=item_in_machine.machine_id ;");
+					+ "WHERE item_in_machine.call_status=(?) AND worker_id=(?) AND machines.machine_id=item_in_machine.machine_id "+
+					" GROUP BY machine_id;");
 			ps.setString(1, ItemInMachineEntity.Call_Status.Processed.toString());
 			ps.setInt(2, workerId);
 			ResultSet res = ps.executeQuery();
