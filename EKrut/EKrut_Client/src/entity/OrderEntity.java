@@ -9,10 +9,10 @@ public class OrderEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private int machine_id;
-	private int total_sum;
+	private double total_sum;
 	private int user_id;
 	private String buytime;
-	private int productsAmount;
+	private double productsAmount;
 	private String payment_status;
 	private String supplyMethod;
 
@@ -26,7 +26,7 @@ public class OrderEntity implements Serializable {
 		this.payment_status = "";
 	}
 
-	public OrderEntity(int id, int machine_id, int total_sum, int user_id, String buytime, int productsAmount,
+	public OrderEntity(int id, int machine_id, double total_sum, int user_id, String buytime, double productsAmount,
 			String payment_status, String supplyMethod) {
 		this(user_id, supplyMethod);
 		this.id = id;
@@ -45,11 +45,11 @@ public class OrderEntity implements Serializable {
 		this.machine_id = machine_id;
 	}
 
-	public int getTotal_sum() {
+	public double getTotal_sum() {
 		return total_sum;
 	}
 
-	public void setTotal_sum(int total_sum) {
+	public void setTotal_sum(double total_sum) {
 		this.total_sum = total_sum;
 	}
 
@@ -69,11 +69,11 @@ public class OrderEntity implements Serializable {
 		this.buytime = buytime;
 	}
 
-	public int getProductsAmount() {
+	public double getProductsAmount() {
 		return productsAmount;
 	}
 
-	public void setProductsAmount(int productsAmount) {
+	public void setProductsAmount(double productsAmount) {
 		this.productsAmount = productsAmount;
 	}
 

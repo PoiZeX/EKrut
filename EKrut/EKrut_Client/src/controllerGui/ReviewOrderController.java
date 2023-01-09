@@ -128,8 +128,12 @@ public class ReviewOrderController {
 	public void initialize() {
 		try {
 
-			// cancelOrderBtn --<<< add ???
-
+			/*
+			 * TODO:  2. check if item is under minimum 
+			 * 3. Cancel order button
+			 */
+			
+			
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
 
@@ -145,10 +149,9 @@ public class ReviewOrderController {
 			// check if OL/EK (for delivery)
 			rightGridHandle();
 
-			/*
-			 * TODO: 1. Future payment for member 2. check if item is under minimum 3.
-			 * Cancel order button
-			 */
+	
+			orderEntity.setProductsAmount(Double.parseDouble(totulProductsSumLbl.getText().split("₪")[0]));
+			orderEntity.setTotal_sum(Double.parseDouble(totalSumLbl.getText().split("₪")[0]));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -213,12 +216,12 @@ public class ReviewOrderController {
 	private void rightGridHandle() {
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
 			rightGridPane.setVisible(false);
-//		rightGridPane.getChildren().clear();
-//		Image image = new Image();
-//		ImageView imageView = new ImageView(image);
-//		rightGridPane.add(imageView, 0, 2);
-//		GridPane.setColumnSpan(imageView, 2);
-//		GridPane.setRowSpan(imageView, 2);
+		rightGridPane.getChildren().clear();
+		Image image = new Image();
+		ImageView imageView = new ImageView(image);
+		rightGridPane.add(imageView, 0, 2);
+		GridPane.setColumnSpan(imageView, 2);
+		GridPane.setRowSpan(imageView, 2);
 		}
 
 	}
@@ -271,6 +274,11 @@ public class ReviewOrderController {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
 			return;
 		}
+		if (CommonFunctions.isNullOrEmpty(user.getCc_num())) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error,
+					"The credit card number is invalid, please contact customer service");
+			return;
+		}
 		// if member he always pay in the end of the month
 		String paymentStatus = NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member) ? "later"
 				: "paid";
@@ -287,7 +295,7 @@ public class ReviewOrderController {
 			}
 			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), address.toString());
 			orderEntity.setMachine_id(-1);
-			
+
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
@@ -297,7 +305,7 @@ public class ReviewOrderController {
 				return;
 			}
 			orderId = (int) data;
-			
+
 			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
 
@@ -347,14 +355,10 @@ public class ReviewOrderController {
 		}
 
 		if (!user.getRole_type().equals(RolesEnum.member)) {
-			paymentProccess();
-			try {
-				Thread.sleep(10 * 1000);
-			} catch (InterruptedException e) {
-				System.out.println("Thread end?");
-			}
+			paymentProccess(user.getCc_num(), orderEntity.getTotal_sum());
+		} else {
+			successMsg += "\nAs a member, the payment will be done on the first of the next month";
 		}
-
 		successfullEndProcess(successMsg);
 
 	}
@@ -379,30 +383,28 @@ public class ReviewOrderController {
 	 * 
 	 * @throws InterruptedException
 	 */
-	private void paymentProccess() throws InterruptedException {
+	private void paymentProccess(String ccNumber, double totalSum) throws InterruptedException {
 		// make a popup for simulation of payment process
 
-		Platform.runLater(() -> {
-			Stage primaryStage = new Stage();
-			Parent root = null;
-			FXMLLoader loader;
-			String path = "/boundary/PaymentPopupBoundary.fxml";
-			try {
-				loader = new FXMLLoader(getClass().getResource(path));
-				root = loader.load();
+		Stage primaryStage = new Stage();
+		Parent root = null;
+		FXMLLoader loader;
+		String path = "/boundary/PaymentPopupBoundary.fxml";
+		try {
+			loader = new FXMLLoader(getClass().getResource(path));
+			root = loader.load();
 
-				// get controller and use it
-				PaymentPopupController paymentController = loader.getController();
-				paymentController.setThread(Thread.currentThread());
+			// get controller and use it
+			PaymentPopupController paymentController = loader.getController();
+			paymentController.setLabel(ccNumber, totalSum);
 
-				primaryStage.setScene(new Scene(root));
-				primaryStage.setTitle("External payment");
-				primaryStage.initModality(Modality.APPLICATION_MODAL);
-				primaryStage.showAndWait();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+			primaryStage.setScene(new Scene(root));
+			primaryStage.setTitle("External payment");
+			primaryStage.initModality(Modality.APPLICATION_MODAL);
+			primaryStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 //				// set actions
 //				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
