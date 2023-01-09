@@ -89,8 +89,7 @@ public class SupplyManagementController {
 	@FXML
 	private TableColumn<ItemInMachineEntity, String> itemNameCol;
 
-	@FXML
-	private ComboBox<MachineEntity> machineCmb;
+	@FXML ComboBox<MachineEntity> machineCmb;
 
 	@FXML
 	private Label machineNameLbl;

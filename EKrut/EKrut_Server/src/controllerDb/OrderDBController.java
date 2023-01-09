@@ -59,7 +59,7 @@ public class OrderDBController {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			Date date = new Date();
 			PreparedStatement ps = con.prepareStatement("INSERT INTO orders "
-					+ "(machine_id, total_sum, user_id, buytime, products_amount, supply_method) VALUES "
+					+ "(machine_id, total_sum, user_id, buytime, products_amount, payment_status, supply_method) VALUES "
 					+ "(?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 
 			ps.setInt(1, entity.getMachine_id());
@@ -67,7 +67,8 @@ public class OrderDBController {
 			ps.setInt(3, entity.getUser_id());
 			ps.setString(4, formatter.format(date));
 			ps.setInt(5, entity.getProductsAmount());
-			ps.setString(6, entity.getSupplyMethod());
+			ps.setString(6, entity.getPaymentStatus());
+			ps.setString(7, entity.getSupplyMethod());
 			ps.executeUpdate();
 
 			ResultSet rs = ps.getGeneratedKeys();
@@ -88,56 +89,62 @@ public class OrderDBController {
 		}
 
 	}
+
 	/**
 	 * update pickup status to 'done'
+	 * 
 	 * @param orderId
 	 * @param client
 	 */
 	public static void updatePickupStatus(int orderId, ConnectionToClient client) {
 		try {
 			Connection con = MySqlClass.getConnection();
-			if (con == null) 
+			if (con == null)
 				return;
-			PreparedStatement ps=con.prepareStatement("UPDATE ekrut.pickups SET pickup_status='done' WHERE order_id=?;");
+			PreparedStatement ps = con
+					.prepareStatement("UPDATE ekrut.pickups SET pickup_status='done' WHERE order_id=?;");
 			ps.setInt(1, orderId);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * getting the pickup order for specific client from db if exist
+	 * 
 	 * @param details
 	 * @param client
 	 */
 	public static void isPickupValid(String[] details, ConnectionToClient client) {
-		PickupEntity pickup=null;
+		PickupEntity pickup = null;
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			PreparedStatement ps=con.prepareStatement("SELECT ekrut.pickups.* , ekrut.orders.machine_id "
-					+ "FROM ekrut.pickups, ekrut.orders "
-					+ "WHERE orders.user_id=? AND pickups.order_id=? AND"
+			PreparedStatement ps = con.prepareStatement("SELECT ekrut.pickups.* , ekrut.orders.machine_id "
+					+ "FROM ekrut.pickups, ekrut.orders " + "WHERE orders.user_id=? AND pickups.order_id=? AND"
 					+ " pickups.order_id=orders.id AND pickup_status!='done';");
 			ps.setString(1, details[0]);
 			ps.setString(2, details[1]);
 			ResultSet rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
-				PickupEntity.Status st=PickupEntity.Status.valueOf(rs.getString(2));
-				pickup=new PickupEntity(rs.getInt(1),st ,rs.getInt(3));
+				PickupEntity.Status st = PickupEntity.Status.valueOf(rs.getString(2));
+				pickup = new PickupEntity(rs.getInt(1), st, rs.getInt(3));
 			}
-			
-			client.sendToClient(new Message(TaskType.ValidPickupAnswer, pickup)); //alredy pickup
-			
+
+			client.sendToClient(new Message(TaskType.ValidPickupAnswer, pickup)); // alredy pickup
+
 			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * insert new pickup entity
+	 * 
 	 * @param pickup
 	 * @param client
 	 */
@@ -146,9 +153,10 @@ public class OrderDBController {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
+			PreparedStatement ps = con
+					.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
 			ps.setInt(1, pickup.getOrderId());
-			PickupEntity.Status s=pickup.getStatus();
+			PickupEntity.Status s = pickup.getStatus();
 			ps.setString(2, s.toString());
 			ps.executeUpdate();
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
@@ -158,9 +166,8 @@ public class OrderDBController {
 				client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
 			} catch (IOException e1) {
 				e1.printStackTrace();
-			}  
+			}
 		}
 	}
-		
 
 }
