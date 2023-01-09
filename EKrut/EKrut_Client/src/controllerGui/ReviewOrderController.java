@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
+import javax.management.relation.Role;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -129,11 +131,9 @@ public class ReviewOrderController {
 		try {
 
 			/*
-			 * TODO:  2. check if item is under minimum 
-			 * 3. Cancel order button
+			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
-			
-			
+
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
 
@@ -149,7 +149,6 @@ public class ReviewOrderController {
 			// check if OL/EK (for delivery)
 			rightGridHandle();
 
-	
 			orderEntity.setProductsAmount(Double.parseDouble(totulProductsSumLbl.getText().split("₪")[0]));
 			orderEntity.setTotal_sum(Double.parseDouble(totalSumLbl.getText().split("₪")[0]));
 
@@ -216,12 +215,12 @@ public class ReviewOrderController {
 	private void rightGridHandle() {
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
 			rightGridPane.setVisible(false);
-		rightGridPane.getChildren().clear();
-		Image image = new Image();
-		ImageView imageView = new ImageView(image);
-		rightGridPane.add(imageView, 0, 2);
-		GridPane.setColumnSpan(imageView, 2);
-		GridPane.setRowSpan(imageView, 2);
+//		rightGridPane.getChildren().clear();
+//		Image image = new Image();
+//		ImageView imageView = new ImageView(image);
+//		rightGridPane.add(imageView, 0, 2);
+//		GridPane.setColumnSpan(imageView, 2);
+//		GridPane.setRowSpan(imageView, 2);
 		}
 
 	}
@@ -357,7 +356,7 @@ public class ReviewOrderController {
 		if (!user.getRole_type().equals(RolesEnum.member)) {
 			paymentProccess(user.getCc_num(), orderEntity.getTotal_sum());
 		} else {
-			successMsg += "\nAs a member, the payment will be done on the first of the next month";
+			successMsg += "As a member, the payment will be done on the first of the next month";
 		}
 		successfullEndProcess(successMsg);
 
@@ -528,8 +527,10 @@ public class ReviewOrderController {
 		GridPane gridpane = new GridPane();
 		Label productName = new Label();
 		Label price = new Label();
+		Label priceAfterDiscount = new Label();
 		Label quantity = new Label();
 		Label sum = new Label();
+		Label sumAfterDiscount = new Label();
 		Line line = new Line();
 		Image image = OrderController.getImageOfItem(item.getName());
 		ImageView imageView = new ImageView(image);
@@ -586,11 +587,43 @@ public class ReviewOrderController {
 
 		GridPane.setRowSpan(imageView, 3);
 
+		// price after discount
+		if (OrderController.isActiveSale() && user.getRole_type().equals(RolesEnum.member)) {
+			// set item price
+			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
+			priceAfterDiscount.setText(String.valueOf(priceAfterDis) + "₪");
+			priceAfterDiscount.setPrefSize(262, 18);
+			priceAfterDiscount.getStyleClass().add("Label-list-red");
+
+			price.getStyleClass().remove("Label-list");
+			price.getStyleClass().add("LableOldPrice");
+			priceAfterDiscount.setVisible(true);
+			gridpane.add(price, 1, 1);
+			gridpane.add(priceAfterDiscount, 1, 2);
+			
+			
+			// set total price for item * quantity
+			// sum
+			tempSum = priceAfterDis * cart.get(item);  // price after discount * quantity
+			sumAfterDiscount.setText(String.valueOf(tempSum) + "₪");
+			sumAfterDiscount.setPrefSize(62, 18);
+			sumAfterDiscount.getStyleClass().add("Label-list-red");
+			
+			sum.getStyleClass().remove("Label-list");
+			sum.getStyleClass().add("LableOldPrice");
+			gridpane.add(sum, 3, 1);
+			gridpane.add(sumAfterDiscount, 3, 2);
+			
+
+		} else {
+			gridpane.add(price, 1, 1);
+			gridpane.add(sum, 3, 1);
+
+		}
+
 		gridpane.add(imageView, 0, 0);
 		gridpane.add(productName, 1, 0);
-		gridpane.add(price, 1, 1);
 		gridpane.add(quantity, 2, 1);
-		gridpane.add(sum, 3, 1);
 		gridpane.add(line, 0, 2);
 		return gridpane;
 
