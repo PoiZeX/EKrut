@@ -54,6 +54,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -270,6 +271,11 @@ public class ReviewOrderController {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
 			return;
 		}
+		// if member he always pay in the end of the month
+		String paymentStatus = NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member) ? "later"
+				: "paid";
+		orderEntity.setPaymentStatus(paymentStatus);
+
 		// setup params according to configurations
 		switch (supplyMethod) {
 		case "Delivery": // online order
@@ -280,7 +286,8 @@ public class ReviewOrderController {
 				return;
 			}
 			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), address.toString());
-
+			orderEntity.setMachine_id(-1);
+			
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
@@ -289,6 +296,11 @@ public class ReviewOrderController {
 				return;
 			}
 			orderId = (int) data;
+			if (orderId == -1) {
+				RollBack();
+				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+				return;
+			}
 			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
 
@@ -314,7 +326,6 @@ public class ReviewOrderController {
 			if (data instanceof Boolean && !(boolean) data) {
 				// error inserting the order
 				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
-
 				// ROLL BACK
 				RollBack();
 				return;
@@ -338,15 +349,12 @@ public class ReviewOrderController {
 			return;
 		}
 
-		if (user.getRole_type().toString().equalsIgnoreCase("member")) {
-			// waitOn(new Message(TaskType.AddMemberPayment, orderId));
-		} else {
+		if (!user.getRole_type().equals(RolesEnum.member)) {
 			paymentProccess();
 			try {
-				Thread.sleep(10*1000);
-			}
-			catch (InterruptedException e) { 
-			System.out.println("Thread end?");
+				Thread.sleep(10 * 1000);
+			} catch (InterruptedException e) {
+				System.out.println("Thread end?");
 			}
 		}
 
@@ -376,33 +384,29 @@ public class ReviewOrderController {
 	 */
 	private void paymentProccess() throws InterruptedException {
 		// make a popup for simulation of payment process
-		new Thread(() ->
-		{
-			Platform.runLater(() ->
-			{
-				Stage primaryStage = new Stage();
-				Parent root = null;
-				FXMLLoader loader;
-				String path = "/boundary/PaymentPopupBoundary.fxml";
-				try {
-					loader = new FXMLLoader(getClass().getResource(path));
-					root = loader.load();
-					
-					// get controller and use it
-					PaymentPopupController paymentController = loader.getController();
-					paymentController.setThread(Thread.currentThread());
-					
-			
+
+		Platform.runLater(() -> {
+			Stage primaryStage = new Stage();
+			Parent root = null;
+			FXMLLoader loader;
+			String path = "/boundary/PaymentPopupBoundary.fxml";
+			try {
+				loader = new FXMLLoader(getClass().getResource(path));
+				root = loader.load();
+
+				// get controller and use it
+				PaymentPopupController paymentController = loader.getController();
+				paymentController.setThread(Thread.currentThread());
+
 				primaryStage.setScene(new Scene(root));
 				primaryStage.setTitle("External payment");
+				primaryStage.initModality(Modality.APPLICATION_MODAL);
+				primaryStage.showAndWait();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 
-				primaryStage.show();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		}).start();
-		
 //				// set actions
 //				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 //					public void handle(WindowEvent we) {
