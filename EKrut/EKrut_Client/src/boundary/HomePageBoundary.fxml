@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HomePageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.HomePageController">
    <top>
       <GridPane id="headerBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -45,6 +45,30 @@
          </children>
       </GridPane>
    </top>
+   <bottom>
+      <GridPane prefHeight="55.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="logOutBtn" mnemonicParsing="false" onAction="#logOutAction" prefHeight="40.0" prefWidth="129.0" styleClass="ButtonLogOut" text="Log out">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="15.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <right>
+      <VBox fx:id="rigthVbox" alignment="CENTER" prefHeight="425.0" prefWidth="412.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="35.0" left="25.0" top="40.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
    <center>
       <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="298.0" prefWidth="375.0" spacing="15.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <opaqueInsets>
@@ -78,28 +102,4 @@
          </children>
       </VBox>
    </center>
-   <bottom>
-      <GridPane prefHeight="55.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button fx:id="logOutBtn" mnemonicParsing="false" onAction="#logOutAction" prefHeight="40.0" prefWidth="129.0" styleClass="ButtonLogOut" text="Log out">
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="15.0" />
-               </GridPane.margin>
-            </Button>
-         </children>
-      </GridPane>
-   </bottom>
-   <left>
-      <VBox fx:id="rigthVbox" alignment="CENTER" prefHeight="425.0" prefWidth="412.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="35.0" left="25.0" top="40.0" />
-         </BorderPane.margin>
-      </VBox>
-   </left>
 </BorderPane>

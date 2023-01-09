@@ -167,6 +167,8 @@ public class NavigationStoreController {
 		ScreenEntity se = refreshWithoutScreenChange(screenName);
 		if (se == null)
 			return false;
+		if (history.size() > 0)
+			history.pop(); // remove the last instance of the current screen and sets a new one
 		primaryStage.setScene(history.push(se).getScene());
 		setTopBarLabels(se);
 

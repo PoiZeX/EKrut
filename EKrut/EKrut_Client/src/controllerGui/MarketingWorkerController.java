@@ -12,6 +12,7 @@ import common.DeliveryStatus;
 import common.Message;
 import common.PopupTypeEnum;
 import common.SaleType;
+import common.ScreensNames;
 import common.TaskType;
 import entity.DeliveryEntity;
 import entity.SaleEntity;
@@ -69,7 +70,11 @@ public class MarketingWorkerController {
    	@FXML
 	// Setup screen before launching view
 	public void initialize() throws Exception {
-		refresh(null);
+    	if (sales != null)
+    		sales.clear();
+    	String region =NavigationStoreController.connectedUser.getRegion();
+		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, region));
+		
 		setupTable(); // setup columns connection
 		tooltip = new TooltipSetter("Save changes");
 		saveBtn.setTooltip(tooltip.getTooltip());
@@ -81,10 +86,9 @@ public class MarketingWorkerController {
    	
     @FXML
     void refresh(ActionEvent event) {
-    	if (sales != null)
-    		sales.clear();
-    	String region =NavigationStoreController.connectedUser.getRegion();
-		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, region));
+
+    	NavigationStoreController.getInstance().refreshStage(ScreensNames.MarketingWorker);
+
     }
 
     @FXML

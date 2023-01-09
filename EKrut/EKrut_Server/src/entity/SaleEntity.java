@@ -7,8 +7,7 @@ import java.time.LocalTime;
 
 public class SaleEntity implements Serializable {
 	//enum for sale status
-	public enum SaleStatus{Active, NotActive;
-	} ;
+	public enum SaleStatus{Active, NotActive;} ;
 	
 	private static final long serialVersionUID = 1L;
 	private int SaleID;
