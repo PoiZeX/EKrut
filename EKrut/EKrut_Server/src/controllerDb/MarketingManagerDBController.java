@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import common.CustomerStatus;
 import common.DeliveryStatus;
@@ -107,6 +108,7 @@ public class MarketingManagerDBController {
 		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();
 		SaleEntity saleEntity;
 		SaleStatus saleStatus;
+		Locale.setDefault(Locale.ENGLISH);
 		Format dayFormat = new SimpleDateFormat("EEEEEEE"); 
 		Date date = new Date();
 		String day = dayFormat.format(date);
