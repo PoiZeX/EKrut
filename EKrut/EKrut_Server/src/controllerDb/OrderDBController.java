@@ -60,13 +60,13 @@ public class OrderDBController {
 			Date date = new Date();
 			PreparedStatement ps = con.prepareStatement("INSERT INTO orders "
 					+ "(machine_id, total_sum, user_id, buytime, products_amount, payment_status, supply_method) VALUES "
-					+ "(?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+					+ "(?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 
 			ps.setInt(1, entity.getMachine_id());
-			ps.setInt(2, entity.getTotal_sum());
+			ps.setDouble(2, entity.getTotal_sum());
 			ps.setInt(3, entity.getUser_id());
 			ps.setString(4, formatter.format(date));
-			ps.setInt(5, entity.getProductsAmount());
+			ps.setDouble(5, entity.getProductsAmount());
 			ps.setString(6, entity.getPaymentStatus());
 			ps.setString(7, entity.getSupplyMethod());
 			ps.executeUpdate();

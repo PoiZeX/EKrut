@@ -39,7 +39,7 @@ public class MessageHandler {
 			UsersManagementDBController.getUserByRoleFromDB((String[]) obj, client);
 			break;
 		case RequestUserUpdateInDB:
-			UsersManagementDBController.updateUserRoleType((String[]) obj, client);
+			UsersManagementDBController.updateUserInDB((String[]) obj, client);
 			break;
 		case RequesManagerInfoFromServerDB:
 			UsersManagementDBController.getRegionManagerFromDB((String) obj, client);

@@ -197,10 +197,11 @@ public class SupplyManagementController {
 	}
 
 //----------------------------------------------------------------------------   buttons
-	/**
-	 * press refresh button to refresh table and item displayed ask from data base
-	 * to load updated table
-	 */
+/***
+ * press refresh button to refresh table and item displayed ask from data base
+ * to load updated table
+ * @param event
+ */
 	@FXML
 	void refresh(ActionEvent event) {
 		MachineEntity tempMachine = machineCmb.getValue();
@@ -382,8 +383,7 @@ public class SupplyManagementController {
 							checkBox.setSelected(true);
 								toUpdate.add(item);
 							}
-//							if (allSelected)
-//								allSelected = false;
+
 							else {
 								checkBox.setSelected(false);
 								toUpdate.remove(item);
@@ -395,79 +395,6 @@ public class SupplyManagementController {
 			});
 			return cell;
 		});
-//		refillcol.setCellFactory(column -> {
-//			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-//			
-//			return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
-//			
-//			
-//
-//			};
-//		});
-//		@Override
-//		public void updateItem(Boolean item, boolean empty) {
-//			super.updateItem(item, empty);
-//			TableRow<ItemInMachineEntity> currentRow = getTableRow();
-//			ItemInMachineEntity currentItem = currentRow.getItem();
-//			
-//			CheckBox checkBox = (CheckBox) this.getGraphic();
-//
-//			if (currentRow != null && !empty ) {
-//				
-//				if(this.selectedProperty().get())
-//					toUpdate.add(currentItem);
-//				if(!this.selectedProperty().get())
-//					toUpdate.add(currentItem);
-//			}
-//			
-//		}		
-//
-//		refillcol.setCellFactory(column -> {
-//			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-//			cell.setOnMouseClicked(event -> {
-//				if (event.getClickCount() > 0) {
-//					CheckBox checkBox = (CheckBox) cell.getGraphic();
-//					ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
-//					if (checkBox != null) {
-//						if (checkBox.isSelected()) {
-//							checkBox.setSelected(false);
-//							toUpdate.remove(item);
-//					
-//
-//						} else {
-//							checkBox.setSelected(true);
-//							toUpdate.add(item);
-//						}
-//					}
-//				}
-//			});
-//			return cell;
-//		});
-//		return;
-//	
-//		refillcol.setCellFactory(column -> {
-//		    return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
-//		        @Override
-//		        public void updateItem(Boolean item, boolean empty) {
-//		            super.updateItem(item, empty);
-//		            if (item == null || empty ) {
-//		                setVisible(false);
-//		            } else {
-//		            	ItemInMachineEntity obj = getTableView().getItems().get(getIndex());
-//		            	if(obj.isCallOpen())
-//		            		setVisible(false);
-//		            	else {
-//		            		setVisible(true);
-//		            	
-//		            	}
-//		            }
-//		        }
-//			
-//
-//		        
-//		    };
-//		    
-//		});
 
 	}
 
@@ -558,3 +485,76 @@ public class SupplyManagementController {
 	}
 
 }
+//refillcol.setCellFactory(column -> {
+//TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+//
+//return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
+//
+//
+//
+//};
+//});
+//@Override
+//public void updateItem(Boolean item, boolean empty) {
+//super.updateItem(item, empty);
+//TableRow<ItemInMachineEntity> currentRow = getTableRow();
+//ItemInMachineEntity currentItem = currentRow.getItem();
+//
+//CheckBox checkBox = (CheckBox) this.getGraphic();
+//
+//if (currentRow != null && !empty ) {
+//	
+//	if(this.selectedProperty().get())
+//		toUpdate.add(currentItem);
+//	if(!this.selectedProperty().get())
+//		toUpdate.add(currentItem);
+//}
+//
+//}		
+//
+//refillcol.setCellFactory(column -> {
+//TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
+//cell.setOnMouseClicked(event -> {
+//	if (event.getClickCount() > 0) {
+//		CheckBox checkBox = (CheckBox) cell.getGraphic();
+//		ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
+//		if (checkBox != null) {
+//			if (checkBox.isSelected()) {
+//				checkBox.setSelected(false);
+//				toUpdate.remove(item);
+//		
+//
+//			} else {
+//				checkBox.setSelected(true);
+//				toUpdate.add(item);
+//			}
+//		}
+//	}
+//});
+//return cell;
+//});
+//return;
+//
+//refillcol.setCellFactory(column -> {
+//return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
+//    @Override
+//    public void updateItem(Boolean item, boolean empty) {
+//        super.updateItem(item, empty);
+//        if (item == null || empty ) {
+//            setVisible(false);
+//        } else {
+//        	ItemInMachineEntity obj = getTableView().getItems().get(getIndex());
+//        	if(obj.isCallOpen())
+//        		setVisible(false);
+//        	else {
+//        		setVisible(true);
+//        	
+//        	}
+//        }
+//    }
+//
+//
+//    
+//};
+//
+//});
