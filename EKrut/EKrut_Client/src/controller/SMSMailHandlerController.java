@@ -31,9 +31,11 @@ public class SMSMailHandlerController {
 		if (msgType.equals("SMS")) {
 			String phone_number = to.getPhone_number();
 			message = "This message sent via SMS to " + phone_number + ":\n" + message;
+			title = "Simulation: " + title;
 		} else if (msgType.equals("Mail")) {
 			String email = to.getEmail();
 			message = "This message sent via Email to " + email + ":\n" + message;
+			title = "Simulation: " + title;
 		}
 		else
 		{
