@@ -6,19 +6,47 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
-   <center>
-      <HBox prefWidth="880.0" BorderPane.alignment="CENTER">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
+   <top>
+      <GridPane prefHeight="88.0" prefWidth="899.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <VBox>
+            <Button fx:id="displayTypeBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeDisplayType" prefHeight="26.0" prefWidth="105.0" styleClass="Button-newSale" text="By Profit" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="70.0" />
+               </GridPane.margin>
+            </Button>
+            <Label prefHeight="40.0" prefWidth="80.0" text="Display :" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="reportDetailsLabel" alignment="CENTER" prefHeight="64.0" prefWidth="238.0" style="-fx-font-size: 15; -fx-text-fill: black;" styleClass="LabelRoleTitle" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </top>
+   <center>
+      <StackPane prefHeight="524.0" prefWidth="880.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="profitVBox" prefWidth="825.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="381.0" style="-fx-font-size: 17;" styleClass="Label-list" text="By Profit" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="993.0" style="-fx-font-size: 15;" styleClass="LabelRoleTitle" text="By Profit" />
                   <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="534.0" prefWidth="409.0" stylesheets="@../styles/css/generalStyleSheet.css">
                     <xAxis>
                       <CategoryAxis label="Machine Name" prefHeight="28.0" prefWidth="362.0" styleClass="Label" tickMarkVisible="false">
@@ -31,7 +59,11 @@
                         </CategoryAxis>
                     </xAxis>
                     <yAxis>
-                      <NumberAxis label="Profit In (K)" minorTickVisible="false" prefHeight="511.0" prefWidth="41.0" side="LEFT" />
+                      <NumberAxis label="Profit In (K)" minorTickVisible="false" prefHeight="440.0" prefWidth="45.0" side="LEFT" tickLength="5.0">
+                           <tickLabelFont>
+                              <Font size="13.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
                     </yAxis>
                      <styleClass>
                         <String fx:value="default-color0" />
@@ -41,19 +73,13 @@
                   </BarChart>
                </children>
             </VBox>
-            <VBox>
+            <VBox fx:id="quantityVBox">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="480.0" style="-fx-font-size: 17;" styleClass="Label-list" text="By Quantity" />
-                  <PieChart fx:id="pieChartOrders" prefHeight="543.0" prefWidth="486.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="900.0" style="-fx-font-size: 15;" styleClass="LabelRoleTitle" text="By Quantity" />
+                  <PieChart fx:id="pieChartOrders" prefHeight="543.0" prefWidth="900.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" />
                </children>
             </VBox>
          </children>
-      </HBox>
+      </StackPane>
    </center>
-   <top>
-      <Label fx:id="titleLabel" alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER" />
-   </top>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
 </BorderPane>

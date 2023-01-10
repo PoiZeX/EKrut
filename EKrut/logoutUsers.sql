@@ -1,0 +1,1 @@
+UPDATE users set logged_in=0 WHERE logged_in=1;
