@@ -15,6 +15,9 @@ public class PaymentPopupController {
 	@FXML
 	private ImageView paymentLoading;
 
+    @FXML
+    private Label ccnumAndSum;
+    
 	/**
 	 * Initialize screen
 	 */
@@ -27,23 +30,18 @@ public class PaymentPopupController {
 	 * Simulate the external payment process
 	 */
 	private void simulatePayment() {
-		while (threadToWake == null)
-			;
 		CommonFunctions.SleepFor(2500, () -> {
 			CommonFunctions.SleepFor(1500, () -> {
 				headlineLabel.setText("Payment success!");
 				Platform.runLater(() -> {
 					((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
-					threadToWake.interrupt();
-					threadToWake.notify();
 				});
 			});
 		});
+
 	}
 
-	private static Thread threadToWake = null;
-
-	public void setThread(Thread thread) {
-		threadToWake = thread;
+	public void setLabel(String ccNumber, double totalSum) {
+		ccnumAndSum.setText(String.format("Credit card number: %s, Total sum: %.2f₪", ccNumber, totalSum));
 	}
 }

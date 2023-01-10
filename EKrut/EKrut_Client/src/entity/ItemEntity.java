@@ -47,6 +47,10 @@ public class ItemEntity extends MainEntity {
 		return price;
 	}
 
+	public void setPrice(double price)
+	{
+		this.price = price;
+	}
 	
 	public ImgEntity getItemImg() {
 		return itemImg;
@@ -77,4 +81,6 @@ public class ItemEntity extends MainEntity {
 	public void setItemImage(Image itemImage) {
 		this.itemImage = itemImage;
 	}
+	
+	
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
+import javax.management.relation.Role;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -128,7 +130,9 @@ public class ReviewOrderController {
 	public void initialize() {
 		try {
 
-			// cancelOrderBtn --<<< add ???
+			/*
+			 * TODO: 2. check if item is under minimum 3. Cancel order button
+			 */
 
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
@@ -145,10 +149,8 @@ public class ReviewOrderController {
 			// check if OL/EK (for delivery)
 			rightGridHandle();
 
-			/*
-			 * TODO: 1. Future payment for member 2. check if item is under minimum 3.
-			 * Cancel order button
-			 */
+			orderEntity.setProductsAmount(Double.parseDouble(totulProductsSumLbl.getText().split("₪")[0]));
+			orderEntity.setTotal_sum(Double.parseDouble(totalSumLbl.getText().split("₪")[0]));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,6 +273,11 @@ public class ReviewOrderController {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
 			return;
 		}
+		if (CommonFunctions.isNullOrEmpty(user.getCc_num())) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error,
+					"The credit card number is invalid, please contact customer service");
+			return;
+		}
 		// if member he always pay in the end of the month
 		String paymentStatus = NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member) ? "later"
 				: "paid";
@@ -287,7 +294,7 @@ public class ReviewOrderController {
 			}
 			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), address.toString());
 			orderEntity.setMachine_id(-1);
-			
+
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
@@ -297,7 +304,7 @@ public class ReviewOrderController {
 				return;
 			}
 			orderId = (int) data;
-			
+
 			deliveryEntity.setOrderId(orderId); // set the order id from callback
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
 
@@ -347,14 +354,10 @@ public class ReviewOrderController {
 		}
 
 		if (!user.getRole_type().equals(RolesEnum.member)) {
-			paymentProccess();
-			try {
-				Thread.sleep(10 * 1000);
-			} catch (InterruptedException e) {
-				System.out.println("Thread end?");
-			}
+			paymentProccess(user.getCc_num(), orderEntity.getTotal_sum());
+		} else {
+			successMsg += "As a member, the payment will be done on the first of the next month";
 		}
-
 		successfullEndProcess(successMsg);
 
 	}
@@ -379,30 +382,28 @@ public class ReviewOrderController {
 	 * 
 	 * @throws InterruptedException
 	 */
-	private void paymentProccess() throws InterruptedException {
+	private void paymentProccess(String ccNumber, double totalSum) throws InterruptedException {
 		// make a popup for simulation of payment process
 
-		Platform.runLater(() -> {
-			Stage primaryStage = new Stage();
-			Parent root = null;
-			FXMLLoader loader;
-			String path = "/boundary/PaymentPopupBoundary.fxml";
-			try {
-				loader = new FXMLLoader(getClass().getResource(path));
-				root = loader.load();
+		Stage primaryStage = new Stage();
+		Parent root = null;
+		FXMLLoader loader;
+		String path = "/boundary/PaymentPopupBoundary.fxml";
+		try {
+			loader = new FXMLLoader(getClass().getResource(path));
+			root = loader.load();
 
-				// get controller and use it
-				PaymentPopupController paymentController = loader.getController();
-				paymentController.setThread(Thread.currentThread());
+			// get controller and use it
+			PaymentPopupController paymentController = loader.getController();
+			paymentController.setLabel(ccNumber, totalSum);
 
-				primaryStage.setScene(new Scene(root));
-				primaryStage.setTitle("External payment");
-				primaryStage.initModality(Modality.APPLICATION_MODAL);
-				primaryStage.showAndWait();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+			primaryStage.setScene(new Scene(root));
+			primaryStage.setTitle("External payment");
+			primaryStage.initModality(Modality.APPLICATION_MODAL);
+			primaryStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 //				// set actions
 //				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -502,6 +503,16 @@ public class ReviewOrderController {
 	}
 
 	/**
+	 * Manage the discounts of 1+1 sale
+	 */
+	private static void HandleOnePlusOneSale() {
+		// sort items ascending
+
+		// set price for half of the list as 0
+
+	}
+
+	/**
 	 * Build all graphical side for all items
 	 */
 	private void buildReviewOrder() {
@@ -526,8 +537,10 @@ public class ReviewOrderController {
 		GridPane gridpane = new GridPane();
 		Label productName = new Label();
 		Label price = new Label();
+		Label priceAfterDiscount = new Label();
 		Label quantity = new Label();
 		Label sum = new Label();
+		Label sumAfterDiscount = new Label();
 		Line line = new Line();
 		Image image = OrderController.getImageOfItem(item.getName());
 		ImageView imageView = new ImageView(image);
@@ -584,11 +597,53 @@ public class ReviewOrderController {
 
 		GridPane.setRowSpan(imageView, 3);
 
+		// price after discount
+		if (OrderController.isActiveSale() && user.getRole_type().equals(RolesEnum.member)) {
+			// set item price
+			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
+			priceAfterDiscount.setText(String.valueOf(priceAfterDis) + "₪");
+			priceAfterDiscount.setPrefSize(262, 18);
+			priceAfterDiscount.getStyleClass().add("Label-list-red");
+
+			price.getStyleClass().remove("Label-list");
+			price.getStyleClass().add("LableOldPrice");
+			priceAfterDiscount.setVisible(true);
+			gridpane.add(price, 1, 1);
+			gridpane.add(priceAfterDiscount, 1, 2);
+
+
+			if (OrderController.isOnePlusOneSaleExist()) {
+				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
+				tempSum = quantityToGiveFree * item.getPrice();   // price before or after discount
+				if (cart.get(item) % 2 == 1)
+					tempSum += item.getPrice();
+			}
+			
+			
+			// set total price for item * quantity
+			//tempSum = cart.get(item) * (OrderController.isPercentageSaleExit() ? priceAfterDis : item.getPrice());
+
+			tempSum = OrderController.isPercentageSaleExit() ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
+
+			
+			sumAfterDiscount.setText(String.valueOf(tempSum) + "₪");
+			sumAfterDiscount.setPrefSize(62, 18);
+			sumAfterDiscount.getStyleClass().add("Label-list-red");
+
+			sum.getStyleClass().remove("Label-list");
+			sum.getStyleClass().add("LableOldPrice");
+			gridpane.add(sum, 3, 1);
+			gridpane.add(sumAfterDiscount, 3, 2);
+
+		} else {
+			gridpane.add(price, 1, 1);
+			gridpane.add(sum, 3, 1);
+
+		}
+
 		gridpane.add(imageView, 0, 0);
 		gridpane.add(productName, 1, 0);
-		gridpane.add(price, 1, 1);
 		gridpane.add(quantity, 2, 1);
-		gridpane.add(sum, 3, 1);
 		gridpane.add(line, 0, 2);
 		return gridpane;
 

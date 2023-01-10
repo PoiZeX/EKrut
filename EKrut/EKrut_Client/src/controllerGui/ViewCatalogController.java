@@ -29,18 +29,28 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import utils.AppConfig;
 
@@ -136,7 +146,7 @@ public class ViewCatalogController {
 		}
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
-		
+
 	}
 
 	/**
@@ -216,11 +226,11 @@ public class ViewCatalogController {
 		viewCartPane.setVisible(!viewCartPane.isVisible());
 	}
 
-	private GridPane createGridPane(String boundaryName) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
-		GridPane gridPane = (GridPane) loader.load();
-		return gridPane;
-	}
+//	private GridPane createGridPane(String boundaryName) throws IOException {
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
+//		GridPane gridPane = (GridPane) loader.load();
+//		return gridPane;
+//	}
 
 	/**
 	 * Receives the items from a specific machine
@@ -244,33 +254,33 @@ public class ViewCatalogController {
 
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList)
 			throws InterruptedException, ExecutionException {
-		int j = 0;
 		if (OrderController.isActiveSale())
 			machineDiscount = OrderController.getDiscountsPercentage();
-		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
-		List<Callable<GridPane>> tasks = new ArrayList<>();
-		// Add tasks
-		for (int i = 1; i <= itemsList.size(); i++) {
-			int index = i;
-			int col = (i - 1) % 4;
-			int row = i % 4 == 0 ? j++ : j;
-			tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount,
-					col, row));
-		}
-		// Invoke all the tasks
-		executor.invokeAll(tasks); 
-		// Shutdown the executor
-		executor.shutdown();
+//		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
+//		List<Callable<Boolean>> tasks = new ArrayList<>();
+//		 Add tasks
+		int j=0,i=0;
+//		for (int i = 1; i <= itemsList.size(); i++) {
+//			int index = i;
+//			int col = (i - 1) % 4;
+//			int row = i % 4 == 0 ? j++ : j;
+//			tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount,
+//					col, row));
+//		}
+//		// Invoke all the tasks
+//		executor.invokeAll(tasks);
+//		// Shutdown the executor
+//		executor.shutdown();
 
-//		for (ItemInMachineEntity item : itemsList.values()) 
-//		generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
+		for (ItemInMachineEntity item : itemsList.values())
+			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
 
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 		if (OrderController.isOnePlusOneSaleExist()) {
 
 			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
-	
-	}
+
+		}
 	}
 
 	/**
@@ -288,11 +298,10 @@ public class ViewCatalogController {
 	 *                      GUI element in a grid.
 	 * @return A GridPane object representing the generated GUI element.
 	 */
-	public GridPane generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
-		GridPane newItem = new GridPane();
+	public boolean generateItem(ItemInMachineEntity item, double discountPrice, int i, int j) {
 		try {
 			// Prepare the gridpanes for the items in machine
-			newItem = createGridPane("ItemGridBoundary");
+			GridPane newItem = createSingleCatalogItem();
 			ImageView image = (ImageView) newItem.getChildren().get(0);
 			GridPane btnBar = (GridPane) ((ButtonBar) newItem.getChildren().get(1)).getButtons().get(0);
 			Button minusBtn = (Button) btnBar.getChildren().get(0);
@@ -323,7 +332,7 @@ public class ViewCatalogController {
 			}
 
 			// Prepare the gridpanes for the items in the cart
-			GridPane newItemInCart = createGridPane("ItemInViewCartBoundary");
+			GridPane newItemInCart = createSingleCartItem();
 			ImageView newItemInCartImage = (ImageView) newItemInCart.getChildren().get(0);
 			Label itemInCartNameLabel = (Label) newItemInCart.getChildren().get(1);
 			Label itemInCartAmountLabel = (Label) newItemInCart.getChildren().get(3);
@@ -400,11 +409,11 @@ public class ViewCatalogController {
 				catalogViewGridpane.add(newItem, i, j);
 			}
 
-			return newItem;
-		} catch (IOException e1) {
+			return true;
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return newItem;
+		return true;
 	}
 
 	// Handle removing an item from the cart
@@ -535,4 +544,377 @@ public class ViewCatalogController {
 		}
 	}
 
+	private GridPane createSingleCatalogItem() {
+		// Create a GridPane
+		GridPane itemViewGridpane = new GridPane();
+		itemViewGridpane.setPrefSize(200, 250);
+		itemViewGridpane.getStyleClass().add("GridPaneChild");
+		itemViewGridpane.getStylesheets().add("/styles/css/generalStyleSheet.css");
+
+		// Create column constraints for the GridPane
+		ColumnConstraints col1 = new ColumnConstraints();
+		col1.setPrefWidth(60);
+		col1.setHgrow(Priority.SOMETIMES);
+		ColumnConstraints col2 = new ColumnConstraints();
+		col2.setPrefWidth(120);
+		col2.setHgrow(Priority.SOMETIMES);
+		itemViewGridpane.getColumnConstraints().addAll(col1, col2);
+
+		// Create row constraints for the GridPane
+		RowConstraints row1 = new RowConstraints();
+		row1.setPrefHeight(135);
+		row1.setVgrow(Priority.SOMETIMES);
+		RowConstraints row2 = new RowConstraints();
+		row2.setPrefHeight(25);
+		row2.setVgrow(Priority.SOMETIMES);
+		RowConstraints row3 = new RowConstraints();
+		row3.setPrefHeight(20);
+		row3.setVgrow(Priority.SOMETIMES);
+		RowConstraints row4 = new RowConstraints();
+		row4.setPrefHeight(50);
+		row4.setVgrow(Priority.SOMETIMES);
+		itemViewGridpane.getRowConstraints().addAll(row1, row2, row3, row4);
+
+		// Create an ImageView and add it to the GridPane
+		ImageView itemImageView = new ImageView();
+		itemImageView.setFitHeight(115);
+		itemImageView.setFitWidth(160);
+		itemImageView.setPickOnBounds(true);
+		itemImageView.setPreserveRatio(true);
+		DropShadow effect = new DropShadow();
+		effect.setHeight(30.00);
+		effect.setRadius(12.00);
+		effect.setColor(new Color(0, 0, 0, 0.427));
+		itemImageView.setEffect(effect);
+
+		// ----------------------------------------------------------------------
+		ButtonBar changeQuantityBtn = new ButtonBar();
+		changeQuantityBtn.setId("buttonBar_quantity");
+		changeQuantityBtn.setButtonMinWidth(40.0);
+		changeQuantityBtn.setMaxHeight(Double.NEGATIVE_INFINITY);
+		changeQuantityBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
+		changeQuantityBtn.setMinHeight(Double.NEGATIVE_INFINITY);
+		changeQuantityBtn.setMinWidth(Double.NEGATIVE_INFINITY);
+		changeQuantityBtn.setPrefHeight(40.0);
+		changeQuantityBtn.setPrefWidth(178.0);
+
+		GridPane buttonPane = new GridPane();
+		buttonPane.setAlignment(Pos.CENTER);
+		buttonPane.setMaxHeight(Double.NEGATIVE_INFINITY);
+		buttonPane.setMaxWidth(Double.NEGATIVE_INFINITY);
+		buttonPane.setMinHeight(Double.NEGATIVE_INFINITY);
+		buttonPane.setMinWidth(Double.NEGATIVE_INFINITY);
+		buttonPane.setPrefHeight(40.0);
+		buttonPane.setPrefWidth(190.0);
+
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setHalignment(HPos.LEFT);
+		column1.setHgrow(Priority.SOMETIMES);
+		column1.setMaxWidth(Double.NEGATIVE_INFINITY);
+		column1.setMinWidth(Double.NEGATIVE_INFINITY);
+		column1.setPrefWidth(65.0);
+
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.setHalignment(HPos.CENTER);
+		column2.setHgrow(Priority.SOMETIMES);
+		column2.setMaxWidth(85.0);
+		column2.setMinWidth(Double.NEGATIVE_INFINITY);
+		column2.setPrefWidth(60.0);
+
+		ColumnConstraints column3 = new ColumnConstraints();
+		column3.setHalignment(HPos.RIGHT);
+		column3.setHgrow(Priority.SOMETIMES);
+		column3.setMaxWidth(76.0);
+		column3.setMinWidth(Double.NEGATIVE_INFINITY);
+		column3.setPrefWidth(76.0);
+		buttonPane.getColumnConstraints().addAll(column1, column2, column3);
+
+		RowConstraints row11 = new RowConstraints();
+		row11.setMaxHeight(Double.NEGATIVE_INFINITY);
+		row11.setMinHeight(Double.NEGATIVE_INFINITY);
+		row11.setPrefHeight(35.0);
+		row11.setVgrow(Priority.SOMETIMES);
+		buttonPane.getRowConstraints().add(row11);
+
+		Button minusBtn = new Button("\u2212"); // Unicode character for "minus" symbol
+		minusBtn.setId("button_minusButton");
+		minusBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
+		minusBtn.setMinHeight(Double.NEGATIVE_INFINITY);
+		minusBtn.setMinWidth(Double.NEGATIVE_INFINITY);
+		minusBtn.setMnemonicParsing(false);
+		minusBtn.setPrefHeight(40.0);
+		minusBtn.setPrefWidth(55.0);
+		minusBtn.getStyleClass().add("Button-NoBG");
+
+		Label quantityLabel = new Label("#");
+		quantityLabel.setId("quntityLabel");
+
+		Button plusBtn = new Button("+");
+		plusBtn.setId("button_plusButton");
+		plusBtn.setMaxHeight(Double.NEGATIVE_INFINITY);
+		plusBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
+		plusBtn.setMinHeight(Double.NEGATIVE_INFINITY);
+		plusBtn.setMinWidth(Double.NEGATIVE_INFINITY);
+		plusBtn.setMnemonicParsing(false);
+		plusBtn.setPrefHeight(40.0);
+		plusBtn.setPrefWidth(55.0);
+		plusBtn.getStyleClass().add("Button-NoBG");
+
+		buttonPane.getChildren().addAll(minusBtn, quantityLabel, plusBtn);
+		changeQuantityBtn.getButtons().add(buttonPane);
+		// -------------------------------------------------------------------------
+
+		Button AddToCartBtn = new Button();
+		AddToCartBtn.setId("button_AddToCart");
+		AddToCartBtn.setMaxHeight(Double.NEGATIVE_INFINITY);
+		AddToCartBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
+		AddToCartBtn.setMinHeight(Double.NEGATIVE_INFINITY);
+		AddToCartBtn.setMinWidth(Double.NEGATIVE_INFINITY);
+		AddToCartBtn.setMnemonicParsing(false);
+		AddToCartBtn.setPrefHeight(40.0);
+		AddToCartBtn.setPrefWidth(178.0);
+		AddToCartBtn.getStylesheets().add("/styles/css/generalStyleSheet.css");
+		AddToCartBtn.setText("Add To Cart");
+
+		Label priceLabel = new Label();
+		priceLabel.setPrefHeight(15.0);
+		priceLabel.setPrefWidth(58.0);
+		priceLabel.getStyleClass().add("Label-list");
+		priceLabel.setText("0");
+
+		Label productLabel = new Label();
+		productLabel.getStyleClass().add("Label");
+		productLabel.setText("Product Name");
+
+		// Create a Text and add it to the GridPane
+		Text text = new Text();
+		text.setFill(javafx.scene.paint.Color.valueOf("#1e3d58"));
+		text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+		text.setStrokeWidth(0.0);
+		text.getStyleClass().add("Label-list");
+		text.setText("0");
+		text.setVisible(false);
+		text.setWrappingWidth(116.0390625);
+
+		ImageView salePersentageIconImg = new ImageView();
+		salePersentageIconImg.setFitHeight(48.0);
+		salePersentageIconImg.setFitWidth(46.0);
+		salePersentageIconImg.setPickOnBounds(true);
+		salePersentageIconImg.setPreserveRatio(true);
+		salePersentageIconImg.setVisible(false);
+		Image saleIcon = new Image("/styles/icons/saleIcon.png");
+		salePersentageIconImg.setImage(saleIcon);
+
+		ImageView onePlusOneImg = new ImageView();
+		onePlusOneImg.setFitHeight(48.0);
+		onePlusOneImg.setFitWidth(46.0);
+		onePlusOneImg.setPickOnBounds(true);
+		onePlusOneImg.setPreserveRatio(true);
+		onePlusOneImg.setVisible(false);
+		Image onePlusOneSale = new Image("/styles/icons/onePlusOneSale.png");
+		onePlusOneImg.setImage(onePlusOneSale);
+
+		itemViewGridpane.add(itemImageView, 0, 0);
+		itemViewGridpane.add(changeQuantityBtn, 0, 3);
+		itemViewGridpane.add(AddToCartBtn, 0, 3);
+		itemViewGridpane.add(priceLabel, 0, 2);
+		itemViewGridpane.add(productLabel, 0, 1);
+		itemViewGridpane.add(text, 1, 2);
+		itemViewGridpane.add(salePersentageIconImg, 1, 0);
+		itemViewGridpane.add(onePlusOneImg, 0, 0);
+		itemViewGridpane.setPadding(new Insets(10, 10, 10, 10));
+
+		GridPane.setValignment(onePlusOneImg, VPos.TOP);
+		GridPane.setColumnIndex(salePersentageIconImg, 1);
+		GridPane.setHalignment(salePersentageIconImg, HPos.RIGHT);
+		GridPane.setValignment(salePersentageIconImg, VPos.TOP);
+		GridPane.setColumnIndex(text, 1);
+		GridPane.setRowIndex(text, 2);
+		GridPane.setColumnSpan(productLabel, 2);
+		GridPane.setHalignment(productLabel, HPos.LEFT);
+		GridPane.setRowIndex(productLabel, 1);
+		GridPane.setColumnSpan(AddToCartBtn, 2);
+		GridPane.setRowIndex(AddToCartBtn, 3);
+		GridPane.setHalignment(plusBtn, HPos.RIGHT);
+		GridPane.setRowIndex(plusBtn, 0);
+		GridPane.setHalignment(quantityLabel, HPos.CENTER);
+		GridPane.setColumnIndex(quantityLabel, 1);
+		GridPane.setMargin(itemImageView, new Insets(10, 10, 10, 10));
+		GridPane.setColumnSpan(itemImageView, 2);
+		GridPane.setHalignment(itemImageView, HPos.CENTER);
+		GridPane.setRowSpan(itemImageView, 2);
+		GridPane.setValignment(itemImageView, VPos.TOP);
+		GridPane.setColumnSpan(changeQuantityBtn, 2);
+		GridPane.setRowIndex(changeQuantityBtn, 3);
+		GridPane.setHalignment(minusBtn, HPos.LEFT);
+		GridPane.setRowIndex(minusBtn, 0);
+		GridPane.setHalignment(priceLabel, HPos.LEFT);
+		GridPane.setRowIndex(priceLabel, 2);
+		GridPane.setColumnIndex(plusBtn, 2);
+		GridPane.setHalignment(plusBtn, HPos.CENTER);
+		GridPane.setValignment(plusBtn, VPos.CENTER);
+
+		return itemViewGridpane;
+	}
+
+	private GridPane createSingleCartItem() {
+		// Create a GridPane layout container
+		GridPane gridPane = new GridPane();
+		gridPane.setPrefHeight(45.0);
+		gridPane.setPrefWidth(270.0);
+		gridPane.getStyleClass().add("GridPaneChild");
+		gridPane.getStylesheets().add("/styles/css/generalStyleSheet.css");
+
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setHalignment(HPos.LEFT);
+		column1.setHgrow(Priority.SOMETIMES);
+		column1.setMaxWidth(51.0);
+		column1.setMinWidth(-1.0);
+		column1.setPrefWidth(35.0);
+
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.setHalignment(HPos.CENTER);
+		column2.setHgrow(Priority.SOMETIMES);
+		column2.setMaxWidth(62.0);
+		column2.setMinWidth(-1.0);
+		column2.setPrefWidth(54.0);
+
+		ColumnConstraints column3 = new ColumnConstraints();
+		column3.setHalignment(HPos.LEFT);
+		column3.setHgrow(Priority.SOMETIMES);
+		column3.setMaxWidth(109.0);
+		column3.setMinWidth(10.0);
+		column3.setPrefWidth(60.0);
+
+		ColumnConstraints column4 = new ColumnConstraints();
+		column4.setHalignment(HPos.CENTER);
+		column4.setHgrow(Priority.SOMETIMES);
+		column4.setMaxWidth(-1.0);
+		column4.setMinWidth(-1.0);
+		column4.setPrefWidth(25.0);
+
+		ColumnConstraints column5 = new ColumnConstraints();
+		column5.setHalignment(HPos.CENTER);
+		column5.setHgrow(Priority.SOMETIMES);
+		column5.setMaxWidth(-1.0);
+		column5.setMinWidth(-1.0);
+		column5.setPrefWidth(30.0);
+
+		ColumnConstraints column6 = new ColumnConstraints();
+		column6.setHalignment(HPos.CENTER);
+		column6.setHgrow(Priority.SOMETIMES);
+		column6.setMaxWidth(-1.0);
+		column6.setMinWidth(-1.0);
+		column6.setPrefWidth(25.0);
+
+		gridPane.getColumnConstraints().addAll(column1, column2, column3, column4, column5, column6);
+
+		RowConstraints row1 = new RowConstraints();
+		row1.setMaxHeight(-1.0);
+		row1.setMinHeight(-1.0);
+		row1.setPrefHeight(50.0);
+		row1.setValignment(VPos.CENTER);
+		row1.setVgrow(Priority.SOMETIMES);
+
+		gridPane.getRowConstraints().add(row1);
+
+		// childs
+		ImageView itemInCartImage = new ImageView();
+		itemInCartImage.setFitHeight(45.0);
+		itemInCartImage.setFitWidth(45.0);
+		itemInCartImage.setPickOnBounds(true);
+		itemInCartImage.setPreserveRatio(true);
+
+		Label itemInCartNameLabel = new Label();
+		itemInCartNameLabel.setContentDisplay(ContentDisplay.CENTER);
+		itemInCartNameLabel.setMaxHeight(-1.0);
+		itemInCartNameLabel.setMaxWidth(-1.0);
+		itemInCartNameLabel.setMinHeight(-1.0);
+		itemInCartNameLabel.setMinWidth(-1.0);
+		itemInCartNameLabel.setPrefHeight(50.0);
+		itemInCartNameLabel.setPrefWidth(65.0);
+		itemInCartNameLabel.getStyleClass().add("Label-list");
+		itemInCartNameLabel.setText("Label");
+
+		Insets right10 = new Insets(0, 0, 0, 10.0);
+
+		Button minusAmountInCartBtn = new Button();
+		minusAmountInCartBtn.setAlignment(Pos.CENTER);
+		minusAmountInCartBtn.setMaxHeight(-1.0);
+		minusAmountInCartBtn.setMaxWidth(-1.0);
+		minusAmountInCartBtn.setMinHeight(-1.0);
+		minusAmountInCartBtn.setMinWidth(-1.0);
+		minusAmountInCartBtn.setMnemonicParsing(false);
+		minusAmountInCartBtn.setPrefHeight(25.0);
+		minusAmountInCartBtn.setPrefWidth(40.0);
+		minusAmountInCartBtn.getStyleClass().add("Button-NoBG");
+		minusAmountInCartBtn.setText("");
+
+		ImageView minusGraphic = new ImageView();
+		minusGraphic.setFitHeight(20.0);
+		minusGraphic.setFitWidth(20.0);
+		minusGraphic.setPickOnBounds(true);
+		minusGraphic.setPreserveRatio(true);
+
+		Image minusImage = new Image(getClass().getResource("/styles/icons/minus.png").toExternalForm());
+		minusGraphic.setImage(minusImage);
+
+		minusAmountInCartBtn.setGraphic(minusGraphic);
+
+		Label itemInCartAmountLabel = new Label();
+		itemInCartAmountLabel.setAlignment(Pos.CENTER);
+		itemInCartAmountLabel.setPrefHeight(15.0);
+		itemInCartAmountLabel.setPrefWidth(33.0);
+		itemInCartAmountLabel.setText("0");
+
+		Button plusAmountInCartBtn = new Button();
+		plusAmountInCartBtn.getStyleClass().add("Button-NoBG");
+		plusAmountInCartBtn.setText("");
+		plusAmountInCartBtn.setMinHeight(-1.0);
+		plusAmountInCartBtn.setMinWidth(-1.0);
+		plusAmountInCartBtn.setPrefHeight(25.0);
+		plusAmountInCartBtn.setPrefWidth(40.0);
+
+		ImageView plusAmountInCartBtnGraphic = new ImageView();
+		plusAmountInCartBtnGraphic.setFitHeight(20.0);
+		plusAmountInCartBtnGraphic.setFitWidth(20.0);
+		plusAmountInCartBtnGraphic.setPickOnBounds(true);
+		plusAmountInCartBtnGraphic.setPreserveRatio(true);
+		Image plusAmountInCartBtnImage = new Image(getClass().getResourceAsStream("/styles/icons/plus.png"));
+		plusAmountInCartBtnGraphic.setImage(plusAmountInCartBtnImage);
+		plusAmountInCartBtn.setGraphic(plusAmountInCartBtnGraphic);
+
+		Button deleteItemBtn = new Button();
+		deleteItemBtn.getStyleClass().add("Button-NoBG");
+		deleteItemBtn.setText("");
+		deleteItemBtn.setMinHeight(-1.0);
+		deleteItemBtn.setMinWidth(-1.0);
+		deleteItemBtn.setPrefHeight(30.0);
+		deleteItemBtn.setPrefWidth(41.0);
+
+		ImageView deleteItemBtnGraphic = new ImageView();
+		deleteItemBtnGraphic.setFitHeight(25.0);
+		deleteItemBtnGraphic.setFitWidth(42.0);
+		deleteItemBtnGraphic.setPickOnBounds(true);
+		deleteItemBtnGraphic.setPreserveRatio(true);
+		Image deleteItemBtnImage = new Image(getClass().getResourceAsStream("/styles/icons/xIcon_noCircle.png"));
+		deleteItemBtnGraphic.setImage(deleteItemBtnImage);
+		deleteItemBtn.setGraphic(deleteItemBtnGraphic);
+
+		gridPane.add(itemInCartImage, 1, 0);
+		gridPane.add(itemInCartNameLabel, 2, 0);
+		gridPane.add(minusAmountInCartBtn, 3, 0);
+		gridPane.add(itemInCartAmountLabel, 4, 0);
+		gridPane.add(plusAmountInCartBtn, 5, 0);
+		gridPane.add(deleteItemBtn, 0, 0);
+
+		GridPane.setHalignment(minusAmountInCartBtn, HPos.CENTER);
+
+		GridPane.setHalignment(itemInCartNameLabel, HPos.LEFT);
+		GridPane.setValignment(itemInCartNameLabel, VPos.CENTER);
+
+		GridPane.setMargin(itemInCartNameLabel, right10);
+		gridPane.setPadding(right10);
+		return gridPane;
+	}
 }
