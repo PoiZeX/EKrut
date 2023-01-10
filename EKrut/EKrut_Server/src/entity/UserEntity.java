@@ -3,6 +3,8 @@ package entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import common.RolesEnum;
+
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -113,8 +115,9 @@ public class UserEntity implements Serializable {
 		this.phone_number = phone_number;
 	}
 
-	public String getRole_type() {
-		return role_type;
+	public RolesEnum getRole_type() {
+		RolesEnum role = Enum.valueOf(RolesEnum.class, role_type);
+		return role;
 	}
 
 	public void setRole_type(String role_type) {

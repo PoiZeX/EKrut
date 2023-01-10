@@ -36,7 +36,7 @@ public class MessageHandler {
 			break;
 		// Registartion Form //
 		case RequestUserInfoFromServerDB:
-			UsersManagementDBController.getUserByRoleFromDB((String[]) obj, client);
+			UsersManagementDBController.getUserByUsernameOrIDFromDB((String[]) obj, client);
 			break;
 		case RequestUserUpdateInDB:
 			UsersManagementDBController.updateUserInDB((String[]) obj, client);

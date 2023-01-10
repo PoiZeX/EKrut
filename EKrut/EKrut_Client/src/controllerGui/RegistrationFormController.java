@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonFunctions;
 import common.Message;
 import common.RolesEnum;
 import common.TaskType;
@@ -116,7 +117,7 @@ public class RegistrationFormController{
     	
     	regionComboBox.getItems().addAll("North", "Center", "South");
     	regionComboBox.setStyle("-fx-background-radius: 15px;");
-    	roleType = "registered";
+    	roleType = "member";
     	membershipRadioToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() 
         {
             public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n)
@@ -185,7 +186,7 @@ public class RegistrationFormController{
     		return;
     	}
     	else if (missingTextFields == 0) {
-    		updateUser();
+    		updateUser((UserEntity)recivedData);
     	}
     }
 
@@ -194,7 +195,9 @@ public class RegistrationFormController{
     /**
      * Update the user entity
      */
-    private void updateUser() {
+    private void updateUser(UserEntity user) {
+		if (!CommonFunctions.isNullOrEmpty(user.getRole_type().toString()) && !user.getRole_type().equals(RolesEnum.user)) 
+			roleType = user.getRole_type().toString();
     	String[] detailsToUpdate = {idnumberTxtField.getText(), roleType, regionComboBox.getValue(), creditcardTxtField.getText()};
     	chat.acceptObj(new Message(TaskType.RequestUserUpdateInDB, detailsToUpdate));
     	
@@ -210,6 +213,10 @@ public class RegistrationFormController{
 			errorMsgLabel.setStyle("-fx-text-fill: #000000");
 			errorMsgLabel.setText("User updated successuflly!");
 			sendMessageToRegionManager(((UserEntity)recivedData).getRegion());
+			roleType = "member";
+			clearBtnAction(null);
+			errorMsgLabel.setStyle("-fx-text-fill: #000000");
+			errorMsgLabel.setText("User updated successuflly!");
 			return;
 		}
 		else {
@@ -256,6 +263,7 @@ public class RegistrationFormController{
     
     @FXML
     void clearBtnAction(ActionEvent event) {
+		roleType = "member";
     	regionComboBox.setStyle("-fx-border-color: none;");
     	regionComboBox.setPromptText("Region");
     	regionComboBox.getSelectionModel().clearSelection();
@@ -304,7 +312,6 @@ public class RegistrationFormController{
     				e.printStackTrace();
     			}
     		}
-    		
     		UserEntity userDetails = ((UserEntity)recivedData);
     		if (userDetails.getId_num().equals("")) {
     			//System.out.println("Empty Report");
@@ -312,7 +319,10 @@ public class RegistrationFormController{
     			userSearchMsgLabel.setStyle("-fx-text-fill: #ff1414");
     			return;
     		}
-    		
+    		else if (!CommonFunctions.isNullOrEmpty(userDetails.getRole_type().toString()) && !userDetails.getRole_type().equals(RolesEnum.user)) {
+    			regionComboBox.setDisable(true);
+    		}
+
     		// Clear errors if found a user
     		errorMsgLabel.setText("");
            	for (TextField field : dataArray) {

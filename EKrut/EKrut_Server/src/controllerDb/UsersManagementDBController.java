@@ -11,6 +11,7 @@ import javax.crypto.SealedObject;
 
 import common.CommonFunctions;
 import common.Message;
+import common.RolesEnum;
 import common.TaskType;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -92,11 +93,9 @@ public class UsersManagementDBController {
 	 * 
 	 * @return user
 	 */
-	public static UserEntity getUserByRoleFromDB(String[] details, ConnectionToClient client) {
+	public static UserEntity getUserByUsernameOrIDFromDB(String[] details, ConnectionToClient client) {
 		// prepare
 		String idORusername = details[0];
-		String roleType = "user";
-		if(details.length > 1 && !CommonFunctions.isNullOrEmpty(details[1])) roleType = details[1];
 		UserEntity user = new UserEntity();
 		
 		try {
@@ -108,10 +107,10 @@ public class UsersManagementDBController {
 				Integer.parseInt(idORusername);  // is ID
 				searchBy = "id_number";
 			} catch (Exception e) { }
-			String query = "SELECT * FROM ekrut.users WHERE "+ searchBy +"=? AND role_type=?;";
+			
+			String query = "SELECT * FROM ekrut.users WHERE "+ searchBy + "=? AND cc_number is NULL;";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, idORusername);
-			ps.setString(2, roleType);
+			ps.setString(1, idORusername); 
 			ResultSet res = ps.executeQuery();
 			
 			// create the entity
@@ -133,7 +132,39 @@ public class UsersManagementDBController {
 		}
 		return user;
 	}
-
+	public static UserEntity getUserByIDFromDB(String[] details, ConnectionToClient client) {
+		String id_number = details[0];
+		UserEntity user = new UserEntity();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return new UserEntity();
+			Connection conn = MySqlClass.getConnection();
+			String query = "SELECT * FROM ekrut.users WHERE id_number=?;";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, id_number);
+			ResultSet res = ps.executeQuery();
+			// create the entity
+			while (res.next()) {
+				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
+						res.getString(11), res.getBoolean(12), res.getBoolean(13));
+				user.setId(res.getInt(1));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			if(client != null)  // will be null for internal use
+				client.sendToClient(new Message(TaskType.ReceiveUserInfoFromServerDB, user));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return user;
+		
+	}
+	
+	
 	/**
 	 * Handles the query of changing the user's role type in DB
 	 * 
@@ -144,7 +175,7 @@ public class UsersManagementDBController {
 			return false;
 		String idNumber = details[0];
 		String roleType = details[1];
-		String region = details[2];
+		String region = details[2]; // Member OR Registered
 		String creditCardNumber = details[3];
 		String query = "UPDATE users SET role_type=? ,region=? ,cc_number=? WHERE id_number=?;";
 		try {
@@ -161,7 +192,8 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		try {
-			UserEntity userToReturn = getUserByRoleFromDB(details, null);  // will return a single user
+			
+			UserEntity userToReturn = getUserByIDFromDB(details, null);  // will return a single user
 			client.sendToClient(new Message(TaskType.ReceiveUserUpdateInDB, userToReturn));
 		} catch (IOException e) {
 			e.printStackTrace();
