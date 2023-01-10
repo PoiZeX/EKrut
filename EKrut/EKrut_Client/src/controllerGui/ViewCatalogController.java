@@ -51,7 +51,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import utils.AppConfig;
 
@@ -227,11 +226,11 @@ public class ViewCatalogController {
 		viewCartPane.setVisible(!viewCartPane.isVisible());
 	}
 
-	private GridPane createGridPane(String boundaryName) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
-		GridPane gridPane = (GridPane) loader.load();
-		return gridPane;
-	}
+//	private GridPane createGridPane(String boundaryName) throws IOException {
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
+//		GridPane gridPane = (GridPane) loader.load();
+//		return gridPane;
+//	}
 
 	/**
 	 * Receives the items from a specific machine
