@@ -276,7 +276,7 @@ public class ViewCatalogController {
 			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
 
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
-		if (OrderController.isOnePlusOneSaleExist()) {
+		if (OrderController.isOnePlusOneSaleExist() && OrderController.isActiveSale()) {
 
 			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
 
