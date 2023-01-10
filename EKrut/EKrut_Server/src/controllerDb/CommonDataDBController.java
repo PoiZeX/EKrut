@@ -25,7 +25,7 @@ public class CommonDataDBController {
 
 	}
 
-	private static ArrayList<String> getRegionsListFromDB() {
+	public static ArrayList<String> getRegionsListFromDB() {
 		ArrayList<String> regions = new ArrayList<String>();
 		try {
 			if (MySqlClass.getConnection() == null)
