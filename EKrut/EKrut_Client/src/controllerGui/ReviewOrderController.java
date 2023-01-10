@@ -503,6 +503,16 @@ public class ReviewOrderController {
 	}
 
 	/**
+	 * Manage the discounts of 1+1 sale
+	 */
+	private static void HandleOnePlusOneSale() {
+		// sort items ascending
+
+		// set price for half of the list as 0
+
+	}
+
+	/**
 	 * Build all graphical side for all items
 	 */
 	private void buildReviewOrder() {
@@ -600,20 +610,30 @@ public class ReviewOrderController {
 			priceAfterDiscount.setVisible(true);
 			gridpane.add(price, 1, 1);
 			gridpane.add(priceAfterDiscount, 1, 2);
+
+
+			if (OrderController.isOnePlusOneSaleExist()) {
+				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
+				tempSum = quantityToGiveFree * item.getPrice();   // price before or after discount
+				if (cart.get(item) % 2 == 1)
+					tempSum += item.getPrice();
+			}
 			
 			
 			// set total price for item * quantity
-			// sum
-			tempSum = priceAfterDis * cart.get(item);  // price after discount * quantity
+			//tempSum = cart.get(item) * (OrderController.isPercentageSaleExit() ? priceAfterDis : item.getPrice());
+
+			tempSum = OrderController.isPercentageSaleExit() ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
+
+			
 			sumAfterDiscount.setText(String.valueOf(tempSum) + "₪");
 			sumAfterDiscount.setPrefSize(62, 18);
 			sumAfterDiscount.getStyleClass().add("Label-list-red");
-			
+
 			sum.getStyleClass().remove("Label-list");
 			sum.getStyleClass().add("LableOldPrice");
 			gridpane.add(sum, 3, 1);
 			gridpane.add(sumAfterDiscount, 3, 2);
-			
 
 		} else {
 			gridpane.add(price, 1, 1);
