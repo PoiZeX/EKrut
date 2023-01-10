@@ -324,7 +324,7 @@ public class NavigationStoreController {
 		ImageView helpImage = new ImageView();
 
 		// grid pane setup
-		gridPane.setId("headerBar");
+//		gridPane.setId("headerBar");
 		gridPane.getColumnConstraints()
 				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));

@@ -132,11 +132,9 @@ public class ViewCatalogController {
 		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
 		
 		checkRequestType();
-
 		while (!recievedData)
 			Thread.sleep(100);
 		generateCatalog(OrderController.getItemsList());
-
 		cartGroup.setVisible(false);
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
@@ -236,11 +234,11 @@ public class ViewCatalogController {
 		viewCartPane.setVisible(!viewCartPane.isVisible());
 	}
 
-//	private GridPane createGridPane(String boundaryName) throws IOException {
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
-//		GridPane gridPane = (GridPane) loader.load();
-//		return gridPane;
-//	}
+	private GridPane createGridPane(String boundaryName) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
+		GridPane gridPane = (GridPane) loader.load();
+		return gridPane;
+	}
 
 	/**
 	 * Receives the items from a specific machine
@@ -264,6 +262,7 @@ public class ViewCatalogController {
 
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList)
 			throws InterruptedException, ExecutionException {
+		generateRowConstraints(itemsList);
 		if (OrderController.isActiveSale())
 			machineDiscount = OrderController.getDiscountsPercentage();
 		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
@@ -291,6 +290,16 @@ public class ViewCatalogController {
 			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
 
 		}
+	}
+
+	/**
+	 * @param itemsList functions to determine how many rows the catalog will have
+	 *                  and generate row constraints for each row
+	 */
+	private void generateRowConstraints(Map<String, ItemInMachineEntity> itemsList) {
+		int rowsAmount = itemsList.size() / 4;
+		for (int i = 0; i < rowsAmount; i++)
+			catalogViewGridpane.getRowConstraints().add(new RowConstraints(250.0, 250.0, 250.0));
 	}
 
 	/**
@@ -529,7 +538,9 @@ public class ViewCatalogController {
 		}
 
 	}
-
+	/**
+	 * functions to remove all catalog childs and re-add them to re-arrange the catalog - usage in search bar
+	 */
 	private void reorderCatalog(String newValue) {
 		catalogViewGridpane.getChildren().clear();
 		int i = 0, j = 0;
@@ -546,11 +557,13 @@ public class ViewCatalogController {
 		}
 	}
 
+	/**
+	 * functions to remove all catalog childs and re-add them to re-arrange the catalog - usage in search bar
+	 */
 	private void renewCatalog() {
 		int i = 0, j = 0;
 		for (Node item : allCatalogItems) {
 			catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
-
 		}
 	}
 
