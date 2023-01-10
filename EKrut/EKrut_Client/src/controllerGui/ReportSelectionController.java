@@ -1,12 +1,12 @@
 package controllerGui;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.TaskType;
-import common.CommonData;
 import common.Message;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,21 +67,21 @@ public class ReportSelectionController {
 			case "supplyReport":
 //				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
 				SupplyReportController.setReport(year, month, region);
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.SupplyReport);
 				break;
 			case "ordersReport":
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
-				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
+				checkReportData(OrdersReportController.RecievedData, ScreensNamesEnum.OrdersReport);
 				break;
 			case "clientsReport": 
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"clients", region, month, year }));
-				checkReportData(ClientsReportController.RecievedData, ScreensNames.ClientsReport);
+				checkReportData(ClientsReportController.RecievedData, ScreensNamesEnum.ClientsReport);
 				break;
 			}
 		}
 	}
 
-	private void checkReportData(boolean RecievedData, ScreensNames screen) {
+	private void checkReportData(boolean RecievedData, ScreensNamesEnum screen) {
 		while (!RecievedData) {
 			try {
 				Thread.sleep(100);
@@ -120,7 +120,7 @@ public class ReportSelectionController {
 		ObservableList<String> months = FXCollections.observableArrayList();
 		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 				"November", "December");
-		ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
+		ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
 		setReportButtons();
 		regionCmb.setItems(regions);
 		monthItemsCmb.setItems(months);

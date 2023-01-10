@@ -5,10 +5,10 @@ package client;
 
 import java.io.*;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.*;
 import common.ChatIF;
-import common.CommonData;
 import common.CommonFunctions;
 import common.PopupTypeEnum;
 

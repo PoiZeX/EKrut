@@ -4,12 +4,12 @@
 
 package controllerGui;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
-import common.CommonData;
 import common.CommonFunctions;
 import common.PopupTypeEnum;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import controller.ItemsController;
 import controller.OrderController;
 import entity.UserEntity;
@@ -72,15 +72,15 @@ public class HomePageController {
 		switch (currentRole) {
 		case registered:
 		case member:
-			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNames.ViewCatalog);
+			setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNamesEnum.ViewCatalog);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
 				setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready",
-						ScreensNames.ConfirmOnlineOrder); // need
+						ScreensNamesEnum.ConfirmOnlineOrder); // need
 			else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-				setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNames.ConfirmOnlineOrder);
+				setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
 
 			mailBtn.setVisible(true);
-			setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
+			setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 			image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ItemsController.requestItemsFromServer();
 			if (currentRole == RolesEnum.member)
@@ -91,13 +91,13 @@ public class HomePageController {
 		case regionManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				if (currentRole.equals(RolesEnum.regionManager)) {
-					setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNames.UsersManagement);
+					setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNamesEnum.UsersManagement);
 					setBtn(bottomBtn, "Supply Management", "Manage the available supply",
-							ScreensNames.SupplyManagement);
+							ScreensNamesEnum.SupplyManagement);
 				}
-				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNames.ReportSelection);
+				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
 				if (currentUser.getRole_type() == RolesEnum.regionManager)
-					setBtn(mailBtn, "", "See messages", ScreensNames.PersonalMessages);
+					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
 			}
 			else
@@ -109,7 +109,7 @@ public class HomePageController {
 		case customerServiceWorker:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 				setBtn(middleBtn, "Open New Account", "Open new registered / subscribed account",
-						ScreensNames.RegistrationForm);
+						ScreensNamesEnum.RegistrationForm);
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
@@ -118,7 +118,7 @@ public class HomePageController {
 		case deliveryOperator:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 				setBtn(middleBtn, "Handle Delivery", "See details and change status of current delivery",
-						ScreensNames.DeliveryManagement);
+						ScreensNamesEnum.DeliveryManagement);
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
@@ -127,7 +127,7 @@ public class HomePageController {
 
 		case marketingWorker:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.SalesManagement);
+				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
@@ -136,8 +136,8 @@ public class HomePageController {
 		case marketingManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern",
-						ScreensNames.CreateNewSale);
-				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNames.SalesManagement);
+						ScreensNamesEnum.CreateNewSale);
+				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
@@ -147,7 +147,7 @@ public class HomePageController {
 
 		case supplyWorker:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-				setBtn(middleBtn, "Update supply", "Update supplies for item(s)", ScreensNames.SupplyUpdate);
+				setBtn(middleBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
@@ -160,7 +160,7 @@ public class HomePageController {
 					"No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
 			break;
 		}
-		CommonData.initData(); // initialize all common data's from DB.
+		DataStore.initData(); // initialize all common data's from DB.
 
 		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
 		String[] splitString = currentUser.getRole_type().toString()
@@ -198,7 +198,7 @@ public class HomePageController {
 	 * @param tooltiptext
 	 * @param scName
 	 */
-	private <T extends Button> void setBtn(T btn, String btnText, String tooltiptext, ScreensNames scName) {
+	private <T extends Button> void setBtn(T btn, String btnText, String tooltiptext, ScreensNamesEnum scName) {
 		btn.setText(btnText);
 		tooltip = new TooltipSetter(tooltiptext);
 		btn.setOnAction(new EventHandler<ActionEvent>() {

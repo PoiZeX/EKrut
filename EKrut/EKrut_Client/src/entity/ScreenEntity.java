@@ -3,17 +3,17 @@ package entity;
 import java.util.Objects;
 
 import common.CommonFunctions;
-import common.ScreensNames;
+import common.ScreensDescription;
+import common.ScreensNamesEnum;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-
 public class ScreenEntity {
 
-	private ScreensNames sc;
+	private ScreensNamesEnum sc;
 	private Scene scene;
 	private Label headline, path;
 	
-	public ScreenEntity(ScreensNames sc, Scene scene) {
+	public ScreenEntity(ScreensNamesEnum sc, Scene scene) {
 		super();
 		this.sc = sc;
 		this.scene = scene;
@@ -25,10 +25,10 @@ public class ScreenEntity {
 		return CommonFunctions.splitByUpperCase(sc.toString());
 	}
 	
-	public ScreensNames getSc() {
+	public ScreensNamesEnum getSc() {
 		return sc;
 	}
-	public void setSc(ScreensNames sc) {
+	public void setSc(ScreensNamesEnum sc) {
 		this.sc = sc;
 	}
 	public Scene getScene() {
@@ -49,6 +49,8 @@ public class ScreenEntity {
 	public void setPath(Label path) {
 		this.path = path;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(sc);

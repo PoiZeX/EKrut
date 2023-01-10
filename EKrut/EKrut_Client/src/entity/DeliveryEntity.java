@@ -2,8 +2,8 @@ package entity;
 
 import java.io.Serializable;
 
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 
 public class DeliveryEntity implements Serializable{
 	/**
@@ -13,8 +13,8 @@ public class DeliveryEntity implements Serializable{
 	private String estimatedTime;
 	private int orderId;
 	private String address, region; //change later to AddressEntity
-	private DeliveryStatus deliveryStatus;
-	private CustomerStatus customerStatus;
+	private DeliveryStatusEnum deliveryStatusEnum;
+	private CustomerStatusEnum customerStatusEnum;
 
 	
 
@@ -25,18 +25,18 @@ public class DeliveryEntity implements Serializable{
 	 * @param customerId
 	 * @param address
 	 * @param estimatedTime
-	 * @param deliveryStatus
-	 * @param customerStatus
+	 * @param deliveryStatusEnum
+	 * @param customerStatusEnum
 	 */
 	public DeliveryEntity(int orderId, String region,  String address, String estimatedTime,
-			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
+			DeliveryStatusEnum deliveryStatusEnum, CustomerStatusEnum customerStatusEnum) {
 		super();
 		this.estimatedTime = estimatedTime;
 		this.orderId = orderId;
 		this.address = address;
 		this.region = region;
-		this.deliveryStatus = deliveryStatus;
-		this.customerStatus = customerStatus;
+		this.deliveryStatusEnum = deliveryStatusEnum;
+		this.customerStatusEnum = customerStatusEnum;
 	}
 
 	/**
@@ -48,8 +48,8 @@ public class DeliveryEntity implements Serializable{
 	public DeliveryEntity(String region, String address) {
 		this.address=address;
 		this.region = region;
-		this.deliveryStatus = DeliveryStatus.pendingApproval;
-		this.customerStatus= CustomerStatus.NOT_APPROVED;
+		this.deliveryStatusEnum = DeliveryStatusEnum.pendingApproval;
+		this.customerStatusEnum= CustomerStatusEnum.NOT_APPROVED;
 	}
 
 
@@ -93,23 +93,23 @@ public class DeliveryEntity implements Serializable{
 	}
 
 
-	public DeliveryStatus getDeliveryStatus() {
-		return deliveryStatus;
+	public DeliveryStatusEnum getDeliveryStatus() {
+		return deliveryStatusEnum;
 	}
 
 
-	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
-		this.deliveryStatus = deliveryStatus;
+	public void setDeliveryStatus(DeliveryStatusEnum deliveryStatusEnum) {
+		this.deliveryStatusEnum = deliveryStatusEnum;
 	}
 
 
-	public CustomerStatus getCustomerStatus() {
-		return customerStatus;
+	public CustomerStatusEnum getCustomerStatus() {
+		return customerStatusEnum;
 	}
 
 
-	public void setCustomerStatus(CustomerStatus customerStatus) {
-		this.customerStatus = customerStatus;
+	public void setCustomerStatus(CustomerStatusEnum customerStatusEnum) {
+		this.customerStatusEnum = customerStatusEnum;
 	}
 
 	@Override

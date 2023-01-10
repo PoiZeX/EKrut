@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.SaleType;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import entity.DeliveryEntity;
 import entity.SaleEntity;
@@ -86,7 +86,7 @@ public class SalesManagementController {
     @FXML
     void refresh(ActionEvent event) {
 
-    	NavigationStoreController.getInstance().refreshStage(ScreensNames.SalesManagement);
+    	NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SalesManagement);
     }
 
     @FXML

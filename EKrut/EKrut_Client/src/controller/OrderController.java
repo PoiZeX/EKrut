@@ -6,12 +6,12 @@ import java.util.LinkedHashMap;
 
 import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonData;
 import common.Message;
 import common.SaleType;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import controllerGui.HostClientController;
 import entity.ItemInMachineEntity;
@@ -38,7 +38,7 @@ public class OrderController {
 	private static LinkedHashMap<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
-	private static MachineEntity currentMachine = CommonData.getCurrentMachine();
+	private static MachineEntity currentMachine = DataStore.getCurrentMachine();
 	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i
 																									// think(???)
 	private static ArrayList<SaleEntity> activeSales = null;
@@ -349,8 +349,8 @@ public class OrderController {
 	public static void refreshOrderToHomePage() {
 		OrderController.clearAll();
 		// goto homepage
-		NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNames.ViewCatalog);
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.HomePage);
+		NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNamesEnum.ViewCatalog);
+		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.HomePage);
 	}
 
 }

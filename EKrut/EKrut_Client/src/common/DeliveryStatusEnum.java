@@ -1,6 +1,6 @@
 package common;
 
-public enum DeliveryStatus {
+public enum DeliveryStatusEnum {
 	pendingApproval,
 	outForDelivery,
 	done

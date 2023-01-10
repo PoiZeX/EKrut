@@ -67,7 +67,7 @@ public class CommonFunctions {
 			// get controller and use it
 			PopupController popupController = loader.getController();
 			popupController.setupPopup(type, message);
-			
+
 			// create the stage & scene
 			Stage stage = new Stage();
 			Scene sc = new Scene(root);
@@ -77,28 +77,34 @@ public class CommonFunctions {
 			// set properties
 			stage.setTitle(type.toString());
 			stage.setResizable(false);
-			stage.setWidth(400);
-			stage.setHeight(350);
-			
+			if (type.equals(PopupTypeEnum.Information)) {
+				stage.setWidth(550);
+				stage.setHeight(500);
+			} else {
+				stage.setWidth(400);
+				stage.setHeight(350);
+			}
+
 			// freeze current screen until got popup close
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
 
-			//stage.show();
+			// stage.show();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void setLatestPopup(Scene sc) {
-		latestScene = sc;	
+		latestScene = sc;
 	}
+
 	public static Scene getLatestPopup() {
 		return latestScene;
 	}
-	
-	public static void createShipmentPopup()  {
+
+	public static void createShipmentPopup() {
 		FXMLLoader loader;
 		loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/ShipmentMethodPopupBoundary.fxml"));
 		Parent root;
@@ -111,15 +117,16 @@ public class CommonFunctions {
 			// set properties
 			stage.setTitle("Shipment Method");
 			stage.setResizable(false);
-			
+
 			// freeze current screen until got popup close
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.showAndWait();		
+			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
+
 	public static String splitByUpperCase(String str) {
 		String goodName = "";
 
@@ -131,7 +138,7 @@ public class CommonFunctions {
 			goodName = splitString[0];
 		return goodName;
 	}
-	
+
 	public static void setupLoadingGridPane(GridPane gridPane) {
 		gridPane.getChildren().clear();
 		gridPane.setMaxSize(150, 150);

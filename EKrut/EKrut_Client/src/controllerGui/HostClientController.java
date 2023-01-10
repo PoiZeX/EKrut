@@ -17,7 +17,7 @@ import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.TaskType;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 
 public class HostClientController {
 
@@ -64,7 +64,7 @@ public class HostClientController {
 		if (chat.acceptObj(new Message(TaskType.ClientConnect, null))) // send server that client connected
 		{
 			// Go to next screen (controller creates the screen)
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.Login);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.Login);
 		}
 
 		else {
@@ -74,7 +74,7 @@ public class HostClientController {
 	}
 
 	public void start(Stage primaryStage) throws Exception {
-		NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HostClient);
+		NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HostClient);
 		if(AppConfig.MACHINE_ID <= 0)
 			CommonFunctions.createPopup(PopupTypeEnum.Warning, "You must provide a machine id\nThe syntax should be:\n\n"
 					+"java -jar EKrut_Client.jar arg <machine_id>");

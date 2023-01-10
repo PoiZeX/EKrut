@@ -7,8 +7,8 @@ import java.util.Calendar;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
@@ -44,10 +44,10 @@ public class DeliveryManagementController {
     private TableColumn<DeliveryEntity, Integer> orderIdCol;
     
     @FXML
-    private TableColumn<DeliveryEntity, DeliveryStatus> deliveryStatusCol;
+    private TableColumn<DeliveryEntity, DeliveryStatusEnum> deliveryStatusCol;
     
     @FXML
-    private TableColumn<DeliveryEntity, CustomerStatus> customerStatusCol;
+    private TableColumn<DeliveryEntity, CustomerStatusEnum> customerStatusCol;
     
     @FXML
     private Button refreshBtn;
@@ -108,27 +108,27 @@ public class DeliveryManagementController {
 		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
 		addressCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("address"));
 		estimatedTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
-		deliveryStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatus>("deliveryStatus"));
-		customerStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, CustomerStatus>("customerStatus"));
+		deliveryStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatusEnum>("deliveryStatus"));
+		customerStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, CustomerStatusEnum>("customerStatus"));
 
 
 		// define the editable cells- delivery status
-		ObservableList<DeliveryStatus> statusLst = FXCollections.observableArrayList();
-		statusLst.addAll(DeliveryStatus.values());
+		ObservableList<DeliveryStatusEnum> statusLst = FXCollections.observableArrayList();
+		statusLst.addAll(DeliveryStatusEnum.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
 		
 		/** Handle delivery status edit:
 		 * can change from "pendingApproval" to "outForDelivery"
 		 * or from "outForDelivery" to "done".
 		 * in other cases, the changes aren't saved*/
-		deliveryStatusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatus>>() {
+		deliveryStatusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatusEnum>>() {
 			@Override
-			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatus> event) {
+			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatusEnum> event) {
 				DeliveryEntity deliveryEntity = event.getRowValue();
 				DeliveryEntity deliveryEntityUpdate=new DeliveryEntity(deliveryEntity.getOrderId(),deliveryEntity.getRegion(),deliveryEntity.getAddress(),
 						deliveryEntity.getEstimatedTime(),deliveryEntity.getDeliveryStatus(),deliveryEntity.getCustomerStatus());
-				DeliveryStatus oldStatus=deliveryEntity.getDeliveryStatus();
-				DeliveryStatus newStatus=event.getNewValue();
+				DeliveryStatusEnum oldStatus=deliveryEntity.getDeliveryStatus();
+				DeliveryStatusEnum newStatus=event.getNewValue();
 				if(!oldStatus.equals(newStatus)) {
 					switch (newStatus){
 					case pendingApproval:
@@ -140,7 +140,7 @@ public class DeliveryManagementController {
 						}
 						break;
 					case outForDelivery:
-						if(oldStatus.equals(DeliveryStatus.pendingApproval)) {
+						if(oldStatus.equals(DeliveryStatusEnum.pendingApproval)) {
 							deliveryEntityUpdate.setEstimatedTime(calculateEstimatedTime());
 							deliveryEntityUpdate.setDeliveryStatus(newStatus);
 							errorLbl.setText("");
@@ -153,8 +153,8 @@ public class DeliveryManagementController {
 						errorLbl.setText("Can't change from done status to outForDelivery status ");}
 						break;
 					case done:
-						if(oldStatus.equals(DeliveryStatus.outForDelivery)) {
-							if( deliveryEntity.getCustomerStatus().equals(CustomerStatus.APPROVED)) {
+						if(oldStatus.equals(DeliveryStatusEnum.outForDelivery)) {
+							if( deliveryEntity.getCustomerStatus().equals(CustomerStatusEnum.APPROVED)) {
 								deliveryEntityUpdate.setDeliveryStatus(newStatus);
 								errorLbl.setText("");
 							}

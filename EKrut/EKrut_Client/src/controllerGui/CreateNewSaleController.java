@@ -12,10 +12,10 @@ import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
+import Store.DataStore;
 import client.ClientController;
-import common.CommonData;
 import common.CommonFunctions;
-import common.DeliveryStatus;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
 import common.SaleType;
@@ -132,7 +132,7 @@ public class CreateNewSaleController {
     	initTimeCmb();
     	 initDays();
     	//initDatePickers();
-    	ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
+    	ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
 		regionCmb.setItems(regions);
 		ObservableList<String> types = FXCollections.observableArrayList();
 		tooltip = new TooltipSetter("Create new sale");

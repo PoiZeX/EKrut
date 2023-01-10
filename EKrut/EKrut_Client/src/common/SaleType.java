@@ -6,8 +6,11 @@ public enum SaleType {
 	tenPercent("10%",10),
 	twentyPercent("20%",20),
 	thirtyPercent("30%",30);
+	
+	
 	private final String name;
 	private final int precentage;
+	
 	SaleType(String name,int d) {
 		this.name=name;
 		this.precentage=d;

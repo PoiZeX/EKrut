@@ -1,6 +1,6 @@
 package common;
 
-public enum CustomerStatus {
+public enum CustomerStatusEnum {
 	APPROVED, 
 	NOT_APPROVED
 }

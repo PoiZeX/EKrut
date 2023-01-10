@@ -10,7 +10,7 @@ import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.UserEntity;
@@ -122,13 +122,13 @@ public class UsersManagementController {
 		}
 		CommonFunctions.SleepFor(1000, () -> 
 		{
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
+			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.UsersManagement);
 		});
 	}
 
 	@FXML
 	void refresh(ActionEvent event) {
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.UsersManagement);
+		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.UsersManagement);
 	}
 
 	@FXML

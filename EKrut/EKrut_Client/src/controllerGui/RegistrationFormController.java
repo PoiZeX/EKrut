@@ -3,9 +3,9 @@ package controllerGui;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonData;
 import common.Message;
 import common.RolesEnum;
 import common.TaskType;

@@ -10,14 +10,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import controller.ItemsController;
 import controller.OrderController;
@@ -40,6 +41,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,7 +54,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import utils.AppConfig;
+import utils.TooltipSetter;
 
 /**
  * Controller class for the view catalog screen.
@@ -104,6 +108,9 @@ public class ViewCatalogController {
 	@FXML
 	private GridPane cartViewGridpane;
 
+	@FXML
+	private Button helpBtn;
+	
 	private double machineDiscount = 1;
 	boolean isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true : false;
 	private Object lockSync = new Object();
@@ -122,6 +129,8 @@ public class ViewCatalogController {
 	 *                              request items from the machine
 	 */
 	public void initialize() throws InterruptedException, ExecutionException {
+		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
+		
 		checkRequestType();
 
 		while (!recievedData)
@@ -147,6 +156,7 @@ public class ViewCatalogController {
 		shipmentMethodLabel.setMouseTransparent(true);
 		recievedData = false;
 
+		
 	}
 
 	/**
@@ -162,7 +172,7 @@ public class ViewCatalogController {
 			OrderController.setCurrentOrder(NavigationStoreController.connectedUser.getId(), "On-site");
 			OrderController.getCurrentOrder().setMachine_id(AppConfig.MACHINE_ID);
 			currentSupplyMethod = OrderController.getCurrentOrder().getSupplyMethod();
-			shipmentMethodLabel.setText(CommonData.getCurrentMachine().getMachineName());
+			shipmentMethodLabel.setText(DataStore.getCurrentMachine().getMachineName());
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachine, machineId));
 			return true;
 		} else {
@@ -211,7 +221,7 @@ public class ViewCatalogController {
 	 */
 	@FXML
 	void placeOrder(ActionEvent event) {
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.ReviewOrder);
+		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);
 	}
 
 	/**
@@ -917,4 +927,11 @@ public class ViewCatalogController {
 		gridPane.setPadding(right10);
 		return gridPane;
 	}
+	
+    @FXML
+    void showDescription(ActionEvent event) {
+    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());
+    	
+    }
+	
 }

@@ -9,7 +9,7 @@ import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.TaskType;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import controllerGui.HostClientController;
 import entity.ScreenEntity;
 import entity.UserEntity;
@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
@@ -38,6 +39,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
+import utils.TooltipSetter;
 
 /**
  * The class handles the navigation store for different pages
@@ -46,11 +48,12 @@ import utils.AppConfig;
  *
  */
 public class NavigationStoreController {
-	private HashMap<ScreensNames, ScreenEntity> screenScenes; // saves the instance of the screen
+	private HashMap<ScreensNamesEnum, ScreenEntity> screenScenes; // saves the instance of the screen
 	private Stack<ScreenEntity> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage; // the main stage (window)
-	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
+	private ScreensNamesEnum[] isSkipped = { ScreensNamesEnum.HostClient, ScreensNamesEnum.HomePage,
+			ScreensNamesEnum.Login };
 	public static UserEntity connectedUser; // hold the current connected user
 
 	/**
@@ -83,7 +86,7 @@ public class NavigationStoreController {
 	 * 
 	 * @param scName
 	 */
-	public void setCurrentScreen(ScreensNames scName) {
+	public void setCurrentScreen(ScreensNamesEnum scName) {
 		ScreenEntity se = screenScenes.get(scName);
 		Scene scene = null;
 		if (se == null)
@@ -130,9 +133,13 @@ public class NavigationStoreController {
 	 * 
 	 * @param scName
 	 */
-	private void setWindowTitle(ScreensNames scName) {
+	private void setWindowTitle(ScreensNamesEnum scName) {
+		String configuration = AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? "Online"
+				: CommonFunctions.isNullOrEmpty(DataStore.getCurrentMachine().getMachineName()) ? ""
+						: " - " + DataStore.getCurrentMachine().getMachineName();
+
 		// Set title
-		primaryStage.setTitle(CommonFunctions.splitByUpperCase(scName.toString()));
+		primaryStage.setTitle("EKrut" + configuration);
 	}
 
 	/**
@@ -143,15 +150,13 @@ public class NavigationStoreController {
 		// history will never be null, you can't go back to login page (and even before)
 		if (history.size() >= 1) {
 			history.pop(); // throw the current
-			for (ScreensNames key : screenScenes.keySet()) {
+			for (ScreensNamesEnum key : screenScenes.keySet()) {
 				if (screenScenes.get(key).equals(history.peek())) {
 					primaryStage.setTitle(key.toString());
 					break;
 				}
 			}
 			primaryStage.setScene(history.peek().getScene());
-
-			// setTopBarLabels(se);
 
 		}
 
@@ -163,7 +168,7 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	public boolean refreshStage(ScreensNames screenName) {
+	public boolean refreshStage(ScreensNamesEnum screenName) {
 		ScreenEntity screenEntity = refreshWithoutScreenChange(screenName);
 		if (screenEntity == null)
 			return false;
@@ -190,7 +195,7 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	public ScreenEntity refreshWithoutScreenChange(ScreensNames screenName) {
+	public ScreenEntity refreshWithoutScreenChange(ScreensNamesEnum screenName) {
 		ScreenEntity se = new ScreenEntity(screenName, null);
 		Scene scene = createSingleScene(screenName, se); // create new instance
 		if (scene == null)
@@ -222,10 +227,10 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	private Scene createSingleScene(ScreensNames screenName, ScreenEntity se) {
+	private Scene createSingleScene(ScreensNamesEnum screenName, ScreenEntity se) {
 		Scene scene = null;
 
-		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
+		ArrayList<ScreensNamesEnum> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
@@ -298,7 +303,8 @@ public class NavigationStoreController {
 
 		else if (((BorderPane) stage).getTop() instanceof GridPane) {
 			GridPane top = (GridPane) ((BorderPane) stage).getTop();
-			top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
+			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog)) // ignore top on view catalog
+				top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
 		}
 
 		return stage;
@@ -312,8 +318,10 @@ public class NavigationStoreController {
 	 */
 	private GridPane getTopBar(ScreenEntity se) {
 		GridPane gridPane = new GridPane();
-		Label nameLbl = new Label(); // se.getHeadline();
-		Label roleLbl = new Label(); // se.getPath();
+		Label headlineLabel = new Label(); // se.getHeadline();
+		Label pathLbl = new Label(); // se.getPath();
+		Button helpBtn = new Button();
+		ImageView helpImage = new ImageView();
 
 		// grid pane setup
 		gridPane.setId("headerBar");
@@ -321,33 +329,62 @@ public class NavigationStoreController {
 				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
-		gridPane.setMouseTransparent(true);
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
+		//gridPane.setMouseTransparent(true);
 
 		// main label setup
-		nameLbl.setId("welcomeLabel");
-		nameLbl.setAlignment(Pos.CENTER);
-		nameLbl.setTextAlignment(TextAlignment.CENTER);
-		nameLbl.setPrefSize(900, 35);
-		nameLbl.getStyleClass().add("LabelTitle");
+		headlineLabel.setId("headlineLabel");
+		headlineLabel.setAlignment(Pos.CENTER);
+		headlineLabel.setTextAlignment(TextAlignment.CENTER);
+		headlineLabel.setPrefSize(900, 35);
+		headlineLabel.getStyleClass().add("LabelTitle");
 
 		// sub-label setup
-		roleLbl.setId("roleLabel");
-		roleLbl.setPrefSize(600, 40);
-		roleLbl.getStyleClass().add("LabelLocations");
+		pathLbl.setId("pathLbl");
+		pathLbl.setPrefSize(600, 40);
+		pathLbl.getStyleClass().add("LabelLocations");
 
-		gridPane.add(nameLbl, 0, 1);
-		gridPane.add(roleLbl, 0, 0);
+		// "help" button
+		Image image = new Image(getClass().getResourceAsStream("/styles/icons/question.png"));
+		helpImage.setImage(image);
+		helpImage.setFitHeight(30.0);
+		helpImage.setFitWidth(30.0);
+		helpImage.setPickOnBounds(true);
+		helpImage.setPreserveRatio(true);
+		helpImage.getStyleClass().add("Button-return");
 
-		se.setHeadline(nameLbl);
-		se.setPath(roleLbl);
+		helpBtn.setId("helpBtn");
+		helpBtn.setAlignment(Pos.CENTER);
+		helpBtn.setContentDisplay(ContentDisplay.BOTTOM);
+		helpBtn.setGraphic(helpImage);
+		helpBtn.setPrefSize(30.0, 30.0);
+		helpBtn.getStyleClass().add("Button-return");
+		helpBtn.setTooltip((new TooltipSetter("Click for help")).getTooltip());
+		helpBtn.setMouseTransparent(false);
+
+		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				System.out.println("here");
+				CommonFunctions.createPopup(PopupTypeEnum.Information, se.getSc().getDescription());
+			}
+		});
+
+		// add to grid
+		gridPane.add(pathLbl, 0, 0);
+		gridPane.add(headlineLabel, 0, 1);
+		gridPane.add(helpBtn, 2, 1);
+
+		se.setHeadline(headlineLabel);
+		se.setPath(pathLbl);
 
 		return gridPane;
 
 	}
 
 	/**
-	 * return the current 'user data' which hold the controller
+	 * return the current 'user data' which hold the controller (for the CURRENT
+	 * scene)
 	 * 
 	 * @return
 	 */
@@ -392,7 +429,7 @@ public class NavigationStoreController {
 			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			connectedUser = null;
 			NavigationStoreController.getInstance().clearAll();
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
 			CommonFunctions.SleepFor(200, () -> {
 				CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
 			});
@@ -418,7 +455,7 @@ public class NavigationStoreController {
 			connectedUser = null;
 			if (!closeAllScreens) { // reset all and refresh
 				NavigationStoreController.getInstance().clearAll();
-				NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
 			} else
 				closeAllScreens();
 		}

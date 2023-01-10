@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import controllerGui.HomePageController;
 import entity.DeliveryEntity;
@@ -138,18 +138,18 @@ public class ConfirmOnlineOrderController {
 			errorMsg=("Order doesn't exist\n");
 			isValidOrder=false;
 		}
-		else if(deliveryEntity.getDeliveryStatus().equals(DeliveryStatus.pendingApproval)) {
+		else if(deliveryEntity.getDeliveryStatus().equals(DeliveryStatusEnum.pendingApproval)) {
 			errorMsg=("Your order is still in process. Cannot be confirmed.\n");
 			isValidOrder=false;
 		}
-		else if(deliveryEntity.getCustomerStatus().equals(CustomerStatus.APPROVED)) {
+		else if(deliveryEntity.getCustomerStatus().equals(CustomerStatusEnum.APPROVED)) {
 			errorMsg=("You already confirm this order.\n");
 			isValidOrder=false;
 		}
 		else {
 			ArrayList<DeliveryEntity> de=new ArrayList<DeliveryEntity>();
 			de.add(deliveryEntity);
-			de.get(0).setCustomerStatus(CustomerStatus.APPROVED);
+			de.get(0).setCustomerStatus(CustomerStatusEnum.APPROVED);
 			isValidOrder=true;
 			CommonFunctions.SleepFor(200, ()->{chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries,de));});
 

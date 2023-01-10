@@ -10,7 +10,7 @@ import common.TaskType;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -101,7 +101,7 @@ public class LoginController {
 		if (isValidDetails) {
 			if (!isServiceEnable)
 				// Go to next screen (controller creates the screen)
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.HomePage);
+				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HomePage);
 		}
 
 		else {

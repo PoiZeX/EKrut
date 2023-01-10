@@ -3,13 +3,13 @@ package controllerGui;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 
 import entity.ItemInMachineEntity;
@@ -207,7 +207,7 @@ public class SupplyManagementController {
 		MachineEntity tempMachine = machineCmb.getValue();
 		Platform.runLater(() -> {
 			try {
-				NavigationStoreController.getInstance().refreshStage(ScreensNames.SupplyManagement);
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SupplyManagement);
 				CommonFunctions.SleepFor(300, () -> {
 					SupplyManagementController sc = (SupplyManagementController) NavigationStoreController.getInstance()
 							.getController();

@@ -44,7 +44,6 @@ public class PopupController {
 		NoCancelBtn.setVisible(false);
 		yesOkBtn.setText("OK");
 		messageLabel.setWrapText(true);
-
 	}
 
 	/**
@@ -75,6 +74,7 @@ public class PopupController {
 		case Information:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
 			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
+			
 			break;
 		case Sale:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));

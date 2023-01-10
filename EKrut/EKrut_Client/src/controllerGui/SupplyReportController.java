@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonData;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import entity.MachineEntity;
 import entity.SupplyReportEntity;
@@ -72,7 +72,7 @@ public class SupplyReportController {
 		titleLabel.setText("Supply Report : " + reportRegion);
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
-		allMachines = CommonData.getMachines();
+		allMachines = DataStore.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
 			if (NavigationStoreController.connectedUser != null)

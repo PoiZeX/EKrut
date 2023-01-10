@@ -98,6 +98,17 @@
                </children>
             </StackPane>
             <Label fx:id="shipmentMethodLabel" alignment="CENTER" prefHeight="40.0" prefWidth="916.0" styleClass="LabelSmallArea" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+            <Label fx:id="pathLbl" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="600.0" styleClass="LabelLocations" text="View Catalog" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
+            <Label alignment="CENTER" prefHeight="36.0" prefWidth="768.0" styleClass="LabelTitle" text="Items Catalog" textAlignment="CENTER" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="helpBtn" mnemonicParsing="false" onAction="#showDescription" prefHeight="30.0" prefWidth="30.0" styleClass="Button-return" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/question.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" />

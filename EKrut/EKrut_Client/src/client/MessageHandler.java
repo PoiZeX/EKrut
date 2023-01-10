@@ -1,6 +1,5 @@
 package client;
 
-import common.CommonData;
 import common.Message;
 import common.TaskType;
 import controller.ItemsController;
@@ -23,6 +22,8 @@ import controllerGui.ConfirmOnlineOrderController;
 import controllerGui.DeliveryManagementController;
 import java.io.*;
 import java.util.ArrayList;
+
+import Store.DataStore;
 import Store.NavigationStoreController;
 import entity.OrderReportEntity;
 import entity.PersonalMessageEntity;
@@ -59,7 +60,7 @@ public class MessageHandler {
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
 		case InitRegions:
-			CommonData.recieveRegions((ArrayList<String>) obj);
+			DataStore.recieveRegions((ArrayList<String>) obj);
 			break;
 		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
@@ -99,7 +100,7 @@ public class MessageHandler {
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
 		case InitMachines:
-			CommonData.recieveMachines((ArrayList<MachineEntity>) obj);
+			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
 		case ReceiveItemsInMachine:
 			navigateItems((ArrayList<ItemInMachineEntity>) obj);

@@ -2,11 +2,11 @@ package controllerGui;
 
 import java.util.ArrayList;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
-import common.CommonData;
 import common.CommonFunctions;
 import common.PopupTypeEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import controller.OrderController;
 import entity.MachineEntity;
 import javafx.collections.FXCollections;
@@ -43,7 +43,7 @@ public class ShipmentMethodPopupController {
 	public void initialize() {
 		shipmentMethod = FXCollections.observableArrayList(new String[] { "Delivery", "Pickup" });
 		ObservableList<MachineEntity> machines = FXCollections.observableArrayList();
-		allMachines = CommonData.getMachines();
+		allMachines = DataStore.getMachines();
 		shipmentMethodCmb.setItems(shipmentMethod);
 
 		for (MachineEntity machine : allMachines) {
@@ -111,7 +111,7 @@ public class ShipmentMethodPopupController {
 			return;
 		} else {
 			((Stage) confirmBtn.getScene().getWindow()).close();
-			NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.ViewCatalog);
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.ViewCatalog);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class ShipmentMethodPopupController {
 		}
 		((Stage) gridPane.getScene().getWindow()).close();
 		
-		NavigationStoreController.getInstance().refreshStage(ScreensNames.ViewCatalog);
+		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ViewCatalog);
 	}
 
 }

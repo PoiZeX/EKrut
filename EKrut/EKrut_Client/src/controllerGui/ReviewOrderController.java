@@ -19,7 +19,7 @@ import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
-import common.ScreensNames;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import controller.OrderController;
 import controller.SMSMailHandlerController;

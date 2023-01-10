@@ -1,15 +1,17 @@
-package common;
+package Store;
 
 import java.util.ArrayList;
 
 import client.ClientController;
+import common.Message;
+import common.TaskType;
 import controller.OrderController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
 import entity.UserEntity;
 import utils.AppConfig;
 
-public class CommonData {
+public class DataStore {
 	private static ClientController chat = HostClientController.chat; // one instance
 	private static ArrayList<String> allRegions;
 	private static ArrayList<MachineEntity> allMachines;
@@ -55,7 +57,7 @@ public class CommonData {
 	}
 
 	public static void setCurrentMachine(MachineEntity currentMachine) {
-		CommonData.currentMachine = currentMachine;
+		DataStore.currentMachine = currentMachine;
 	}
 
 }
