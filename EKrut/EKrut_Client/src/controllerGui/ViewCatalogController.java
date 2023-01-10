@@ -256,24 +256,24 @@ public class ViewCatalogController {
 			throws InterruptedException, ExecutionException {
 		if (OrderController.isActiveSale())
 			machineDiscount = OrderController.getDiscountsPercentage();
-		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
-		List<Callable<Boolean>> tasks = new ArrayList<>();
+//		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
+//		List<Callable<Boolean>> tasks = new ArrayList<>();
 //		 Add tasks
-		int j=0;
-		for (int i = 1; i <= itemsList.size(); i++) {
-			int index = i;
-			int col = (i - 1) % 4;
-			int row = i % 4 == 0 ? j++ : j;
-			tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount,
-					col, row));
-		}
-		// Invoke all the tasks
-		executor.invokeAll(tasks);
-		// Shutdown the executor
-		executor.shutdown();
+		int j=0,i=0;
+//		for (int i = 1; i <= itemsList.size(); i++) {
+//			int index = i;
+//			int col = (i - 1) % 4;
+//			int row = i % 4 == 0 ? j++ : j;
+//			tasks.add(() -> generateItem((ItemInMachineEntity) itemsList.values().toArray()[index], machineDiscount,
+//					col, row));
+//		}
+//		// Invoke all the tasks
+//		executor.invokeAll(tasks);
+//		// Shutdown the executor
+//		executor.shutdown();
 
-//		for (ItemInMachineEntity item : itemsList.values())
-//			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
+		for (ItemInMachineEntity item : itemsList.values())
+			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
 
 		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 		if (OrderController.isOnePlusOneSaleExist()) {
