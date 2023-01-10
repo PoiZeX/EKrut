@@ -213,7 +213,7 @@ public class ReviewOrderController {
 	 * Checks the app. configuration and handle the case it's 'EK'
 	 */
 	private void rightGridHandle() {
-		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK")) {
+		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
 			rightGridPane.setVisible(false);
 //		rightGridPane.getChildren().clear();
 //		Image image = new Image();

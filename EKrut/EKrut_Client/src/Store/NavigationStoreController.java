@@ -134,7 +134,7 @@ public class NavigationStoreController {
 	 * @param scName
 	 */
 	private void setWindowTitle(ScreensNamesEnum scName) {
-		String configuration = AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? "Online"
+		String configuration = AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? " Online"
 				: CommonFunctions.isNullOrEmpty(DataStore.getCurrentMachine().getMachineName()) ? ""
 						: " - " + DataStore.getCurrentMachine().getMachineName();
 
@@ -365,7 +365,6 @@ public class NavigationStoreController {
 		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				System.out.println("here");
 				CommonFunctions.createPopup(PopupTypeEnum.Information, se.getSc().getDescription());
 			}
 		});

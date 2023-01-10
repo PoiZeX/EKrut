@@ -329,16 +329,28 @@ public class OrderController {
 
 	}
 
+	/**
+	 * Get total price after discounts applied
+	 * @return
+	 */
 	public static double getPriceAfterDiscounts() {
 		if (activeSales == null)
 			return getTotalPrice();
 		return getTotalPrice() - getTotalDiscounts();
 	}
 
+	/**
+	 * Get the current machine for order 
+	 * @return
+	 */
 	public static MachineEntity getCurrentMachine() {
 		return currentMachine;
 	}
 
+	/**
+	 * Set the current machine to order from
+	 * @param currentMachine
+	 */
 	public static void setCurrentMachine(MachineEntity currentMachine) {
 		OrderController.currentMachine = currentMachine;
 	}
@@ -348,8 +360,6 @@ public class OrderController {
 	 */
 	public static void refreshOrderToHomePage() {
 		OrderController.clearAll();
-		// goto homepage
-		NavigationStoreController.getInstance().refreshWithoutScreenChange(ScreensNamesEnum.ViewCatalog);
 		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.HomePage);
 	}
 
