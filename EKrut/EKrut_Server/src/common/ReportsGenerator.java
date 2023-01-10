@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controllerDb.ReportsDBController;
 import mysql.MySqlClass;
 
 public class ReportsGenerator {
@@ -22,6 +23,11 @@ public class ReportsGenerator {
 		case "supply":
 			break;
 		}
+	}
+
+	private static boolean isReportExist(String reportType, String month, String year, String region) {
+		return ReportsDBController.isReportExist(reportType, month, year, region);
+
 	}
 
 	private static void generateClientsReport(String month, String year) {
