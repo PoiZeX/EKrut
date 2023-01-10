@@ -40,6 +40,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
@@ -54,7 +55,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
+import javafx.util.Duration;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
@@ -90,6 +91,9 @@ public class ViewCatalogController {
 	@FXML
 	private GridPane catalogViewGridpane;
 
+    @FXML
+    private ImageView searchImg;
+    
 	@FXML
 	private Pane viewCartPane;
 
@@ -108,6 +112,9 @@ public class ViewCatalogController {
 	@FXML
 	private GridPane cartViewGridpane;
 
+    @FXML
+    private ScrollPane catalogScrollPane;
+    
 	@FXML
 	private Button helpBtn;
 	
@@ -139,7 +146,6 @@ public class ViewCatalogController {
 		viewCartPane.setVisible(false);
 		viewCartPane.setMouseTransparent(true);
 		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) ->
-
 		{
 			reorderCatalog(newValue);
 		});
@@ -152,9 +158,20 @@ public class ViewCatalogController {
 
 		}
 		shipmentMethodLabel.setMouseTransparent(true);
+		setTooltips();
 		recievedData = false;
 
 		
+	}
+	
+	/**
+	 * set tooltips for all nodes to display information about action. 
+	 */
+	private void setTooltips() {
+		placeOrderBtn.setTooltip(new TooltipSetter("Procceed to Order Review and Payment.").getTooltip());
+		cancelOrderBtn.setTooltip(new TooltipSetter("Cancel Order and return to Home Page.").getTooltip());
+		viewCartBtn.setTooltip(new TooltipSetter("View your shopping cart.").getTooltip());
+		Tooltip.install(searchImg, new TooltipSetter("Search item by name.").getTooltip());		
 	}
 
 	/**
@@ -405,7 +422,7 @@ public class ViewCatalogController {
 					cartGroup.setVisible(true);
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
-
+					itemInCartNameLabel.setTooltip(new TooltipSetter(itemInCartNameLabel.getText()).getTooltip());
 					updateCartTotalLabels();
 				}
 			});
@@ -424,6 +441,10 @@ public class ViewCatalogController {
 				btnBar.setVisible(false);
 				addToCartBtn.setText("Not Available");
 			}
+			productNameLabel.setTooltip(new TooltipSetter(productNameLabel.getText()).getTooltip());
+			productNameLabel.getTooltip().setShowDelay(Duration.seconds(0.7));
+			Tooltip.install(image, new TooltipSetter(productNameLabel.getText()).getTooltip());
+			
 			synchronized (lockSync) {
 				catalogViewGridpane.add(newItem, i, j);
 			}
@@ -555,6 +576,7 @@ public class ViewCatalogController {
 				catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
 			}
 		}
+		catalogScrollPane.setVvalue(0);
 	}
 
 	/**

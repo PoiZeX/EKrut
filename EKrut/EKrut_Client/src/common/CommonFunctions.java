@@ -77,13 +77,13 @@ public class CommonFunctions {
 			// set properties
 			stage.setTitle(type.toString());
 			stage.setResizable(false);
-			if (type.equals(PopupTypeEnum.Information)) {
-				stage.setWidth(550);
-				stage.setHeight(500);
-			} else {
-				stage.setWidth(400);
-				stage.setHeight(350);
-			}
+//			if (type.equals(PopupTypeEnum.Information)) {
+//				stage.setWidth(550);
+//				stage.setHeight(500);
+//			} else {
+//				stage.setWidth(400);
+//				stage.setHeight(350);
+//			}
 
 			// freeze current screen until got popup close
 			stage.initModality(Modality.APPLICATION_MODAL);

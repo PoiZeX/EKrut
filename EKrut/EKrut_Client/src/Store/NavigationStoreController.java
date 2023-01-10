@@ -283,7 +283,7 @@ public class NavigationStoreController {
 		returnBtn.setGraphic(returnImage);
 		returnBtn.setPrefSize(24.0, 27.0);
 		returnBtn.getStyleClass().add("Button-return");
-
+		returnBtn.setTooltip(new TooltipSetter("Return to the previous screen").getTooltip());
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae) {
 				NavigationStoreController.getInstance().goBack();
@@ -324,7 +324,7 @@ public class NavigationStoreController {
 		ImageView helpImage = new ImageView();
 
 		// grid pane setup
-//		gridPane.setId("headerBar");
+		gridPane.setId("headerBar");
 		gridPane.getColumnConstraints()
 				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));

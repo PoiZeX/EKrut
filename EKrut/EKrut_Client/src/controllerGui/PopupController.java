@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class PopupController {
@@ -117,5 +118,8 @@ public class PopupController {
 		isOkPressed = true;
 		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
-
+	
+	public Label getMsgLabel() {
+		return messageLabel;
+	}
 }

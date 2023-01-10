@@ -17,7 +17,7 @@ public enum ScreensNamesEnum {
 	
 	// order
 	ViewCatalog(ScreensDescription.VIEW_CATALOG_DESCRIPTION),
-	ViewCart(ScreensDescription.VIEW_CART_DESCRIPTION),
+//	ViewCart(ScreensDescription.VIEW_CART_DESCRIPTION),
 	ReviewOrder(ScreensDescription.REVIEW_ORDER_DESCRIPTION),
 	
 	// management
