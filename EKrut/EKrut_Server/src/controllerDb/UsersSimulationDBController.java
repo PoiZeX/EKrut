@@ -20,19 +20,24 @@ public class UsersSimulationDBController {
 	 * Add all tuples to users table
 	 * 
 	 * @param tuplesToAdd
-	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertTuples(ArrayList<String[]> tuplesToAdd) throws SQLException {
+	public static void insertTuples(ArrayList<String[]> tuplesToAdd) throws SQLException {
 		/*
 		 * each tuple contains: firstname, lastname, user_id, email, phone, (for
 		 * workers: region, role_type)
 		 */
-		for (String[] tuple : tuplesToAdd) {
-			if (!insertSingleTuple(tuple))
-				return false;
+		ArrayList<String[]> imported = new ArrayList<>();
+		try {
+			for (String[] tuple : tuplesToAdd) {
+				insertSingleTuple(tuple);
+				imported.add(tuple);
+			}
+		} catch (SQLException e) {
+			UsersSimulationDBController.rollBackImport(imported);
+			throw e;
 		}
-		return true;
+
 	}
 
 	/**
@@ -52,8 +57,8 @@ public class UsersSimulationDBController {
 			String validateResult = isValidTuple(tuple);
 			if (!validateResult.equals(""))
 				throw new SQLException(validateResult);
-			
-			if(!tuple[8].toLowerCase().equals("user"))
+
+			if (!tuple[8].toLowerCase().equals("user"))
 				isNotWorker = false;
 			PreparedStatement ps = conn.prepareStatement("insert INTO ekrut.users "
 					+ "(`id_number`, `username`, `password`, `first_name`, `last_name`, `email`, `phone_number`, `cc_number`, `region`, `role_type`, `logged_in`, `is_not_approved`) "
@@ -107,11 +112,9 @@ public class UsersSimulationDBController {
 		if (!Pattern.matches("^05[0-9]{8}$", tuple[6]))
 			res.append("* phone number {" + tuple[6] + "} is not in the right format\n");
 
-//		// validate role
-//		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
-//			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
-//		
-		
+		// validate role
+		if (!tuple[8].equals(RolesEnum.user.toString()))
+			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
 		return res.toString();
 	}
 
@@ -137,5 +140,18 @@ public class UsersSimulationDBController {
 			return true;
 
 		return false;
+	}
+
+	public static void rollBackImport(ArrayList<String[]> res) {
+		try {
+			if (MySqlClass.getConnection() == null)
+				return;
+			Connection conn = MySqlClass.getConnection();
+			for (String[] user : res) {
+				PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id_number = ?");
+				ps.setString(1, user[0]); // id_number
+				ps.execute();
+			}
+		} catch (Exception e) {}
 	}
 }
