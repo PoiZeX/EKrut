@@ -87,9 +87,11 @@ public class OrderController {
 		if (itemsList == null)
 			return false;
 		isFirstPurchaseDiscountApplied = false;
-		itemsInCartList.clear();
+		if (itemsInCartList != null)
+			itemsInCartList.clear();
 		currentOrder = null;
-		itemsList.clear();
+		if (itemsList != null)
+			itemsList.clear();
 		return true;
 	}
 
@@ -140,6 +142,7 @@ public class OrderController {
 	private static int getAmount(ItemInMachineEntity item) {
 		return itemsInCartList.get(item);
 	}
+
 //------------------------------------------------ cart
 	/**
 	 * returns the amount of items in the cart
@@ -164,8 +167,8 @@ public class OrderController {
 	 * 
 	 * @return totalPrice;
 	 */
-	public static int getTotalPrice() {
-		int totalPrice = 0;
+	public static double getTotalPrice() {
+		double totalPrice = 0;
 		for (ItemInMachineEntity item : itemsInCartList.keySet())
 			totalPrice += (getAmount(item) * item.getPrice());
 		return totalPrice;
@@ -242,6 +245,7 @@ public class OrderController {
 
 	/**
 	 * Get a string of all current sales types as string
+	 * 
 	 * @return
 	 */
 	public static String getActiveSalesTypeAsString() {
@@ -325,12 +329,13 @@ public class OrderController {
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
 		if (activeSales == null)
 			return itemPrice;
-		return itemPrice *discounts;
+		return itemPrice * discounts;
 
 	}
 
 	/**
 	 * Get total price after discounts applied
+	 * 
 	 * @return
 	 */
 	public static double getPriceAfterDiscounts() {
@@ -340,7 +345,8 @@ public class OrderController {
 	}
 
 	/**
-	 * Get the current machine for order 
+	 * Get the current machine for order
+	 * 
 	 * @return
 	 */
 	public static MachineEntity getCurrentMachine() {
@@ -349,14 +355,16 @@ public class OrderController {
 
 	/**
 	 * Set the current machine to order from
+	 * 
 	 * @param currentMachine
 	 */
 	public static void setCurrentMachine(MachineEntity currentMachine) {
 		OrderController.currentMachine = currentMachine;
 	}
-	
+
 	/**
-	 * Handle the refresh of view-catalog, review-order and clear order-controller fields
+	 * Handle the refresh of view-catalog, review-order and clear order-controller
+	 * fields
 	 */
 	public static void refreshOrderToHomePage() {
 		OrderController.clearAll();

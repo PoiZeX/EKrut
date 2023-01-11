@@ -13,8 +13,8 @@ public class DeliveryEntity implements Serializable{
 	private String estimatedTime;
 	private int orderId;
 	private String address, region; //change later to AddressEntity
-	private DeliveryStatusEnum deliveryStatusEnum;
-	private CustomerStatusEnum customerStatusEnum;
+	private DeliveryStatusEnum deliveryStatus;
+	private CustomerStatusEnum customerStatus;
 
 	
 
@@ -35,8 +35,8 @@ public class DeliveryEntity implements Serializable{
 		this.orderId = orderId;
 		this.address = address;
 		this.region = region;
-		this.deliveryStatusEnum = deliveryStatusEnum;
-		this.customerStatusEnum = customerStatusEnum;
+		this.deliveryStatus = deliveryStatusEnum;
+		this.customerStatus = customerStatusEnum;
 	}
 
 	/**
@@ -48,8 +48,8 @@ public class DeliveryEntity implements Serializable{
 	public DeliveryEntity(String region, String address) {
 		this.address=address;
 		this.region = region;
-		this.deliveryStatusEnum = DeliveryStatusEnum.pendingApproval;
-		this.customerStatusEnum= CustomerStatusEnum.NOT_APPROVED;
+		this.deliveryStatus = DeliveryStatusEnum.pendingApproval;
+		this.customerStatus= CustomerStatusEnum.NOT_APPROVED;
 	}
 
 
@@ -94,22 +94,22 @@ public class DeliveryEntity implements Serializable{
 
 
 	public DeliveryStatusEnum getDeliveryStatus() {
-		return deliveryStatusEnum;
+		return deliveryStatus;
 	}
 
 
 	public void setDeliveryStatus(DeliveryStatusEnum deliveryStatusEnum) {
-		this.deliveryStatusEnum = deliveryStatusEnum;
+		this.deliveryStatus = deliveryStatusEnum;
 	}
 
 
 	public CustomerStatusEnum getCustomerStatus() {
-		return customerStatusEnum;
+		return customerStatus;
 	}
 
 
 	public void setCustomerStatus(CustomerStatusEnum customerStatusEnum) {
-		this.customerStatusEnum = customerStatusEnum;
+		this.customerStatus = customerStatusEnum;
 	}
 
 	@Override

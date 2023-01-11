@@ -2,8 +2,8 @@ package entity;
 
 import java.io.Serializable;
 
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 
 public class DeliveryEntity implements Serializable{
 	/**
@@ -13,8 +13,8 @@ public class DeliveryEntity implements Serializable{
 	private String estimatedTime;
 	private int orderId;
 	private String address, region; //change later to AddressEntity
-	private DeliveryStatus deliveryStatus;
-	private CustomerStatus customerStatus;
+	private DeliveryStatusEnum deliveryStatus;
+	private CustomerStatusEnum customerStatus;
 
 	
 
@@ -29,7 +29,7 @@ public class DeliveryEntity implements Serializable{
 	 * @param customerStatus
 	 */
 	public DeliveryEntity(int orderId, String region,  String address, String estimatedTime,
-			DeliveryStatus deliveryStatus, CustomerStatus customerStatus) {
+			DeliveryStatusEnum deliveryStatus, CustomerStatusEnum customerStatus) {
 		super();
 		this.estimatedTime = estimatedTime;
 		this.orderId = orderId;
@@ -48,8 +48,8 @@ public class DeliveryEntity implements Serializable{
 	public DeliveryEntity(String region, String address) {
 		this.address=address;
 		this.region = region;
-		this.deliveryStatus = DeliveryStatus.pendingApproval;
-		this.customerStatus= CustomerStatus.NOT_APPROVED;
+		this.deliveryStatus = DeliveryStatusEnum.pendingApproval;
+		this.customerStatus= CustomerStatusEnum.NOT_APPROVED;
 	}
 
 
@@ -93,22 +93,22 @@ public class DeliveryEntity implements Serializable{
 	}
 
 
-	public DeliveryStatus getDeliveryStatus() {
+	public DeliveryStatusEnum getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
 
-	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+	public void setDeliveryStatus(DeliveryStatusEnum deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
 
 
-	public CustomerStatus getCustomerStatus() {
+	public CustomerStatusEnum getCustomerStatus() {
 		return customerStatus;
 	}
 
 
-	public void setCustomerStatus(CustomerStatus customerStatus) {
+	public void setCustomerStatus(CustomerStatusEnum customerStatus) {
 		this.customerStatus = customerStatus;
 	}
 	

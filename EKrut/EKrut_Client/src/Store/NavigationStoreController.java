@@ -11,6 +11,7 @@ import common.PopupTypeEnum;
 import common.TaskType;
 import common.ScreensNamesEnum;
 import controllerGui.HostClientController;
+import entity.MachineEntity;
 import entity.ScreenEntity;
 import entity.UserEntity;
 import javafx.animation.PauseTransition;
@@ -134,14 +135,28 @@ public class NavigationStoreController {
 	 * @param scName
 	 */
 	private void setWindowTitle(ScreensNamesEnum scName) {
-		String configuration="";
-		if(!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
-			configuration=AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? " Online"
-				: CommonFunctions.isNullOrEmpty(DataStore.getCurrentMachine().getMachineName()) ? ""
-						: " - " + DataStore.getCurrentMachine().getMachineName();
+		try {
+		String configuration = "";
+		if (!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				configuration = " Online";
+			} else {
+				MachineEntity machine;
+				do {
+					Thread.sleep(100);
+					machine = DataStore.getCurrentMachine();
+				} while (machine == null);
+				String machineName = machine.getMachineName();
+				configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
+
+			}
 
 		// Set title
 		primaryStage.setTitle("EKrut" + configuration);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -153,7 +168,7 @@ public class NavigationStoreController {
 		if (history.size() >= 1) {
 			history.pop(); // throw the current
 			for (ScreensNamesEnum key : screenScenes.keySet()) {
-				if (screenScenes.get(key).equals(history.peek())) {
+				if (screenScenes.get(key) != null && screenScenes.get(key).equals(history.peek())) {
 					primaryStage.setTitle(key.toString());
 					break;
 				}
@@ -177,8 +192,9 @@ public class NavigationStoreController {
 
 		// checks if the screen already in the stack and remove
 		// avoid circles (usually when going backwards)
-		while (history.size() > 0 && history.contains(screenEntity))
-			history.pop();
+		while (history.size() > 0 && history.contains(screenEntity)) {
+			screenScenes.replace(history.pop().getSc(), null);
+		}
 
 		primaryStage.setScene(history.push(screenEntity).getScene());
 		setTopBarLabels(screenEntity);
@@ -332,7 +348,7 @@ public class NavigationStoreController {
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
-		//gridPane.setMouseTransparent(true);
+		// gridPane.setMouseTransparent(true);
 
 		// main label setup
 		headlineLabel.setId("headlineLabel");

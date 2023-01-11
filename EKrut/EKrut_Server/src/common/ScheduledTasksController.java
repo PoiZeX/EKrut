@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Timer;
 
 import controllerDb.CommonDataDBController;
+import controllerDb.OrderDBController;
 import controllerDb.ReportsDBController;
 import javafx.animation.PauseTransition;
 
@@ -81,6 +82,9 @@ public class ScheduledTasksController {
 		String month = now.format(monthYear).split(" ")[0];
 		String year = now.format(monthYear).split(" ")[1];
 
+		// specific case
+		if(month.equals("01"))
+			year = String.valueOf(Integer.parseInt(year) - 1); // for example 01-01-2020, we need to calculate for last year (01-12-2019 -> 31-12-2019)
 		// for every region -> check if there are reports for this date
 		for (String region : CommonDataDBController.getRegionsListFromDB()) {
 			if (!ReportsDBController.isReportExist("orders", month, year, region))
@@ -92,12 +96,14 @@ public class ScheduledTasksController {
 			if (!ReportsDBController.isReportExist("clients", month, year, region))
 				 ReportsGenerator.generateReportsDB("clients", month, year); // what about region?
 		}
-
 		
 		// make payment for all members (as part of the terms)
-		// TODO:
-		// get all orders of members between 01->31 for the last month which status = 'later'
-		// make status 'paid' 
+		OrderDBController.takeMonthlyMoneyScheduledManager(year, month);
+	
+		
 	}
+	
+	
+	
 
 }

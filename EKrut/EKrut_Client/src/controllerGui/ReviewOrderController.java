@@ -1,7 +1,10 @@
 package controllerGui;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -12,6 +15,8 @@ import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 import javax.management.relation.Role;
+
+import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.CalendarConversion;
 
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -37,6 +42,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -122,11 +128,12 @@ public class ReviewOrderController {
 	private static Object data;
 	private static boolean isDataRecived = false;
 
-	private static LinkedHashMap<ItemInMachineEntity, Integer> cart;
-	private static OrderEntity orderEntity = OrderController.getCurrentOrder();
+	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
+	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
 	private StringBuilder address = new StringBuilder();
-
+	private double totalDiscounts = 0;
+	
 	public void initialize() {
 		try {
 
@@ -162,8 +169,8 @@ public class ReviewOrderController {
 	 */
 	private void setTextFields() {
 		totulProductsSumLbl.setText(String.valueOf(OrderController.getTotalPrice()) + "₪");
-		totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
-		totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
+		totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
+		totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
 		firstNameTxtField.setText(user.getFirst_name());
 		firstNameTxtField.setDisable(true);
 		lastNameTxtField.setText(user.getLast_name());
@@ -180,7 +187,7 @@ public class ReviewOrderController {
 	private void checkAndApplyDiscounts() throws Exception {
 		StringBuilder sb = new StringBuilder("You got some discounts:\n");
 
-		if (OrderController.getTotalDiscounts() != 0) {
+		if (totalDiscounts != 0) {
 			String salesDiscounts = OrderController.getActiveSalesTypeAsString();
 			for (String discount : salesDiscounts.split(" ")) {
 				sb.append("* " + discount + "\n");
@@ -199,10 +206,10 @@ public class ReviewOrderController {
 			}
 
 			// show special label or something
-			totulDiscountSumLbl.setText(String.format("%.2f₪", OrderController.getTotalDiscounts()));
-			totalSumLbl.setText(String.format("%.2f₪", OrderController.getPriceAfterDiscounts()));
+			totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
+			totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
 		}
-		if (!totulDiscountSumLbl.getText().equals("0₪")) {
+		if (!totulDiscountSumLbl.getText().equals("0.00₪")) {
 			// set tooltip text and apply to label (will be with an image)
 			totulDiscountSumLbl.setTooltip((new TooltipSetter(sb.toString()).getTooltip()));
 		}
@@ -488,9 +495,9 @@ public class ReviewOrderController {
 		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText()))
 			errMsg.append("Apartment number can contain number and '/' only in length of 1-5\n");
 
-		address.append("Street: " + streetTxtField.getText());
-		address.append("Apartment: " + aptTxtField.getText());
-		address.append("City: " + cityTxtField.getText());
+		address.append(streetTxtField.getText());
+		address.append(" "+aptTxtField.getText());
+		address.append(" "+cityTxtField.getText());
 
 		return errMsg.toString();
 	}
@@ -502,15 +509,6 @@ public class ReviewOrderController {
 
 	}
 
-	/**
-	 * Manage the discounts of 1+1 sale
-	 */
-	private static void HandleOnePlusOneSale() {
-		// sort items ascending
-
-		// set price for half of the list as 0
-
-	}
 
 	/**
 	 * Build all graphical side for all items
@@ -548,8 +546,9 @@ public class ReviewOrderController {
 		imageView.setFitWidth(45);
 		imageView.setPreserveRatio(true);
 		double tempSum = 0;
-
-		gridpane.setPrefSize(348, 69);
+		double totalDiscountForRowInNIS = 0;
+		
+		gridpane.setPrefSize(330, 70);
 		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 70, 107, Priority.SOMETIMES, HPos.CENTER, false));
 		gridpane.getColumnConstraints()
 				.add(new ColumnConstraints(10, 192, 207, Priority.SOMETIMES, HPos.CENTER, false));
@@ -558,15 +557,19 @@ public class ReviewOrderController {
 		gridpane.getRowConstraints().add(new RowConstraints(20, 31, 47));
 		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
 		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
-
+		gridpane.getStyleClass().add("GridPaneChild");
+		GridPane.setMargin(gridpane, new Insets(5,5,5,5));
+		gridpane.setStyle("-fx-margin: 15,20,15,20");
+		
 		// product
 		productName.setText(item.getName());
 		productName.setPrefSize(229, 18);
 		productName.getStyleClass().add("Label-list");
 		GridPane.setHalignment(productName, HPos.LEFT);
-
+		productName.setTooltip(new TooltipSetter(item.getName()).getTooltip());
+		
 		// price
-		price.setText(String.valueOf(item.getPrice()) + "₪");
+		price.setText(String.format("%.2f₪", item.getPrice()));
 		price.setPrefSize(262, 18);
 		price.getStyleClass().add("Label-list");
 		GridPane.setHalignment(price, HPos.LEFT);
@@ -580,20 +583,11 @@ public class ReviewOrderController {
 
 		// sum
 		tempSum *= cart.get(item);
-		sum.setText(String.valueOf(tempSum) + "₪");
+		totalDiscountForRowInNIS = tempSum;
+		sum.setText(String.format("%.2f₪", tempSum));
 		sum.setPrefSize(62, 18);
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
-
-		// line
-		line.setStartX(-72);
-		line.setStartY(0.7216961979866028);
-		line.setEndX(260);
-		line.setEndY(0.7214934229850769);
-		line.setFill(Paint.valueOf("#908e8e"));
-		GridPane.setValignment(line, VPos.BOTTOM);
-		// GridPane.setHalignment(line, HPos.LEFT);
-		GridPane.setColumnSpan(line, 5);
 
 		GridPane.setRowSpan(imageView, 3);
 
@@ -601,32 +595,34 @@ public class ReviewOrderController {
 		if (OrderController.isActiveSale() && user.getRole_type().equals(RolesEnum.member)) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
-			priceAfterDiscount.setText(String.valueOf(priceAfterDis) + "₪");
+			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
+			if(OrderController.isPercentageSaleExit()) {
+				price.getStyleClass().remove("Label-list");
+				price.getStyleClass().add("LableOldPrice");
+				priceAfterDiscount.setVisible(true);
+				gridpane.add(priceAfterDiscount, 1, 2);
 
-			price.getStyleClass().remove("Label-list");
-			price.getStyleClass().add("LableOldPrice");
-			priceAfterDiscount.setVisible(true);
+			}
 			gridpane.add(price, 1, 1);
-			gridpane.add(priceAfterDiscount, 1, 2);
-
 
 			if (OrderController.isOnePlusOneSaleExist()) {
 				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
-				tempSum = quantityToGiveFree * item.getPrice();   // price before or after discount
+				tempSum = quantityToGiveFree * item.getPrice();   
 				if (cart.get(item) % 2 == 1)
 					tempSum += item.getPrice();
+				
 			}
 			
 			
 			// set total price for item * quantity
-			//tempSum = cart.get(item) * (OrderController.isPercentageSaleExit() ? priceAfterDis : item.getPrice());
-
 			tempSum = OrderController.isPercentageSaleExit() ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
 
+			// set total discounts for labels
+			totalDiscounts += totalDiscountForRowInNIS - tempSum;
 			
-			sumAfterDiscount.setText(String.valueOf(tempSum) + "₪");
+			sumAfterDiscount.setText(String.format("%.2f₪", tempSum));
 			sumAfterDiscount.setPrefSize(62, 18);
 			sumAfterDiscount.getStyleClass().add("Label-list-red");
 
@@ -634,6 +630,7 @@ public class ReviewOrderController {
 			sum.getStyleClass().add("LableOldPrice");
 			gridpane.add(sum, 3, 1);
 			gridpane.add(sumAfterDiscount, 3, 2);
+
 
 		} else {
 			gridpane.add(price, 1, 1);

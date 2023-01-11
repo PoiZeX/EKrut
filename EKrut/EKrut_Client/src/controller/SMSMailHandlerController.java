@@ -22,6 +22,7 @@ public class SMSMailHandlerController {
 	 * @param message
 	 * @return
 	 */
+	public static String lastMsg = "";
 	public static boolean SendSMSOrMail(String msgType, UserEntity to, String title, String message) {
 		// validate 
 		if(CommonFunctions.isNullOrEmpty(title) || CommonFunctions.isNullOrEmpty(message))
@@ -41,7 +42,8 @@ public class SMSMailHandlerController {
 		{
 			if (!msgType.equals("System")) return false;
 		}
-
+		
+		lastMsg = message; 
 		// Create current time string
 		Calendar now = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

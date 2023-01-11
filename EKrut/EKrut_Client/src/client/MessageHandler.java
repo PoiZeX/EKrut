@@ -128,6 +128,7 @@ public class MessageHandler {
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
 			break;
 		case ReceiveUserByOrderIdFromServerDB:
+			DeliveryManagementController.getUserEntityFromServer((UserEntity)obj);
 			break;
 		case InsertSaleAnswer:
 			CreateNewSaleController.isSaleExist((Boolean)obj);

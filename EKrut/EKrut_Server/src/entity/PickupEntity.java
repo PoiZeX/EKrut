@@ -4,19 +4,23 @@ import java.io.Serializable;
 
 public class PickupEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public enum Status{inProgress, done;} ;
+
+	public enum Status {
+		inProgress, done;
+	};
+
 	private int order_id, machine_id;
 	private Status status;
-	
+
 	public PickupEntity(int order_id) {
 		this.order_id = order_id;
-		this.status=Status.inProgress;
+		this.status = Status.inProgress;
 	}
-	
-	public PickupEntity(int order_id, PickupEntity.Status status,int machine_id) {
+
+	public PickupEntity(int order_id, PickupEntity.Status status, int machine_id) {
 		this.order_id = order_id;
-		this.status=status;
-		this.machine_id=machine_id;
+		this.status = status;
+		this.machine_id = machine_id;
 	}
 
 	public int getOrderId() {
@@ -42,7 +46,5 @@ public class PickupEntity implements Serializable {
 	public void setMachine_id(int machine_id) {
 		this.machine_id = machine_id;
 	}
-	
-	
-	
+
 }

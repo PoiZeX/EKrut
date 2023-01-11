@@ -1,30 +1,21 @@
 package controllerDb;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import common.CustomerStatus;
-import common.DeliveryStatus;
 import common.Message;
 import common.TaskType;
-import entity.DeliveryEntity;
 import entity.SaleEntity;
 import entity.SaleEntity.SaleStatus;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.CustomMenuItem;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
@@ -157,7 +148,6 @@ public class MarketingManagementDBController {
 				saleStatus=SaleStatus.valueOf(rs.getString(7));
 				saleEntity = new SaleEntity(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)
 						 , LocalTime.parse(rs.getString(5)), LocalTime.parse(rs.getString(6)), saleStatus);
-				System.out.println(saleEntity.toString());
 				sales.add(saleEntity);
 			} 
 			client.sendToClient(new Message(TaskType.ReceiveActiveSales, sales));

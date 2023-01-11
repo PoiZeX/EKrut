@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="viewCatalogBorderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCatalogController">
+<BorderPane fx:id="viewCatalogBorderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ViewCatalogController">
    <bottom>
       <GridPane prefHeight="62.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -87,8 +87,8 @@
                   </Button>
                   <Group fx:id="cartGroup" StackPane.alignment="TOP_RIGHT">
                      <children>
-                        <Circle fill="#ff9414" radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label fx:id="cartPopupAmountLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-9.0" layoutY="-9.0" prefHeight="18.0" prefWidth="17.0" text="0" textFill="WHITE">
+                        <Circle fill="#ff9414" radius="10.0" stroke="TRANSPARENT" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Label fx:id="cartPopupAmountLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-9.0" layoutY="-9.0" prefHeight="18.0" prefWidth="18.0" text="0" textFill="WHITE">
                            <padding>
                               <Insets top="1.0" />
                            </padding>

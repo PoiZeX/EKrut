@@ -4,22 +4,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
-import entity.SaleEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class DeliveryManagementDBController {
 	
-	/**update estimates delivery time, delivery status and customer status*/
+	/**update estimates delivery time, delivery status and customer status in DB*/
 	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		
 		try {
@@ -42,7 +38,7 @@ public class DeliveryManagementDBController {
 		return;
 	}
 	/**
-	 * insert new delivery 
+	 * insert new delivery to DB
 	 * @param deliveryEntity
 	 * @param client
 	 */
@@ -52,7 +48,7 @@ public class DeliveryManagementDBController {
 			if (con == null)
 				return;
 			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.deliveries (order_id, region,address, estimated_time,deilvery_status,customer_status) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?);");
+					+ "VALUES (?, ?, ?, ?, ?, ?);");
 			ps.setInt(1, deliveryEntity.getOrderId());
 			ps.setString(2, deliveryEntity.getRegion());
 			ps.setString(3, deliveryEntity.getAddress());
@@ -75,11 +71,10 @@ public class DeliveryManagementDBController {
 	}
 	
 	/**
-	 * get deliveries
+	 * get deliveries from DB
 	 * @param client
 	 */
 	public static void getTable(String region, ConnectionToClient client) {
-		Statement stmt;
 		DeliveryEntity deliveryEntity;
 		ArrayList<DeliveryEntity> deliveries=new ArrayList<DeliveryEntity>();
 		try {
@@ -90,8 +85,8 @@ public class DeliveryManagementDBController {
 			ps.setString(1, region);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(5));
-				CustomerStatus customerStatus= CustomerStatus.valueOf(rs.getString(6));
+				DeliveryStatusEnum deliveryStatus = DeliveryStatusEnum.valueOf(rs.getString(5));
+				CustomerStatusEnum customerStatus= CustomerStatusEnum.valueOf(rs.getString(6));
 				deliveryEntity = new DeliveryEntity(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),
 						 deliveryStatus, customerStatus);
 				deliveries.add(deliveryEntity);
@@ -102,6 +97,7 @@ public class DeliveryManagementDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * get specific delivery by customer id and order id
 	 * @param details
@@ -122,8 +118,8 @@ public class DeliveryManagementDBController {
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				DeliveryStatus deliveryStatus = DeliveryStatus.valueOf(rs.getString(5));
-				CustomerStatus customerStatus= CustomerStatus.valueOf(rs.getString(6));
+				DeliveryStatusEnum deliveryStatus = DeliveryStatusEnum.valueOf(rs.getString(5));
+				CustomerStatusEnum customerStatus= CustomerStatusEnum.valueOf(rs.getString(6));
 				deliveryEntity = new DeliveryEntity(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),
 						 deliveryStatus, customerStatus);
 					 // finally send the entity

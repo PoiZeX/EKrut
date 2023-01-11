@@ -1,21 +1,11 @@
 package controllerGui;
 
-import java.sql.Time;
-import java.time.LocalDate;
+
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-
-import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
-
 import Store.DataStore;
 import client.ClientController;
 import common.CommonFunctions;
-import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
 import common.SaleType;
@@ -27,61 +17,49 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.scene.layout.VBox;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import utils.TooltipSetter;
 
 public class CreateNewSaleController {
 
     @FXML
-    private Label EndTimeLbl;
-
-    @FXML
-    private Label StartTimeLbl;
-
-    @FXML
     private Button createBtn;
-    
-    @FXML
-    private Label endDateLbl;
     
     @FXML
     private ComboBox<LocalTime> endTimeCmb;
     
     @FXML
-    private Label errLbl;
-    
-    @FXML
     private ComboBox<String> regionCmb;
-    
-    @FXML
-    private Label regionLabel;
-    
-    @FXML
-    private MenuButton daysMb;
     
     @FXML
     private ComboBox<LocalTime> startTimeCmb;
 
     @FXML
     private ComboBox<String> typeCmb;
+    
+    @FXML
+    private MenuButton daysMb;
+    
+    @FXML
+    private Label errLbl;
+    
+    @FXML
+    private Label regionLabel;
+    
+    @FXML
+    private Label EndTimeLbl;
 
+    @FXML
+    private Label StartTimeLbl;
+  
+    @FXML
+    private Label endDateLbl;
+  
     @FXML
     private Label typeLbl;
     
@@ -123,11 +101,18 @@ public class CreateNewSaleController {
     	
     }
     
+    /**
+     * fet answer from server
+     * @param ans
+     */
     public static void isSaleExist(Boolean ans) {
 		valid=ans;
 	}
-    @FXML
+    
+    
+   
 	/** Setup screen before launching view */
+    @FXML
 	public void initialize() throws Exception {
     	initTimeCmb();
     	 initDays();
