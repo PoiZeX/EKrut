@@ -355,7 +355,7 @@ public class SupplyManagementController {
 		Callback<TableColumn<ItemInMachineEntity, Boolean>, TableCell<ItemInMachineEntity, Boolean>> booleanCellFactory = new Callback<TableColumn<ItemInMachineEntity, Boolean>, TableCell<ItemInMachineEntity, Boolean>>() {
 			@Override
 			public TableCell<ItemInMachineEntity, Boolean> call(TableColumn<ItemInMachineEntity, Boolean> p) {
-				return new CheckBoxColumn();
+				return new BooleanCheckBox();
 			}
 		};
 		refillcol.setCellFactory(booleanCellFactory);
@@ -448,10 +448,10 @@ public class SupplyManagementController {
 
 	}
 
-	private class CheckBoxColumn extends TableCell<ItemInMachineEntity, Boolean> {
+	private class BooleanCheckBox extends TableCell<ItemInMachineEntity, Boolean> {
 		private CheckBox checkBox;
 
-		public CheckBoxColumn() {
+		public BooleanCheckBox() {
 			checkBox = new CheckBox();
 			checkBox.setOnAction((evt) -> {
 				if (checkBox.isSelected())
