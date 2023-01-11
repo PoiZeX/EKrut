@@ -15,7 +15,8 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class PersonalMessagesDBController {
-
+	private static Connection con = MySqlClass.getConnection();
+	 
 	/**
 	 * Handles getting selected report and sending the entity back to client
 	 * 
@@ -31,7 +32,6 @@ public class PersonalMessagesDBController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -45,11 +45,10 @@ public class PersonalMessagesDBController {
 		PersonalMessageEntity entity = null;
 
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return messages;
 
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.personal_messages WHERE user_id=? ;");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM ekrut.personal_messages WHERE user_id=? ;");
 			ps.setInt(1, user.getId());
 
 			ResultSet res = ps.executeQuery();
@@ -74,20 +73,15 @@ public class PersonalMessagesDBController {
 	public static boolean setPersonalMessagesInDB(PersonalMessageEntity entity) {
 
 		int res = 0;
-		if (entity == null)
+		if (entity == null || con == null)
 			return false;
 		
 		try {
-			if (MySqlClass.getConnection() == null)
-				return false;
-
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO ekrut.personal_messages (user_id, date, type, message) VALUES (?, ?, ?, ?);");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO ekrut.personal_messages (user_id, date, type, message) VALUES (?, ?, ?, ?);");
 			ps.setInt(1, entity.getUserId());
 			ps.setString(2, entity.getDate());
 			ps.setString(3, entity.getTitle());
 			ps.setString(4, entity.getMessage());
-			
 			res = ps.executeUpdate();
 			
 		} catch (SQLException e) {

@@ -20,7 +20,7 @@ import ocsf.server.ConnectionToClient;
 public class ReportsDBController {
 	private static String reportType, month, year, region;
 	private static int machineID;
-
+	private static Connection con = MySqlClass.getConnection();
 	/**
 	 * Parse the string array into reportType region month and year
 	 * 
@@ -90,11 +90,9 @@ public class ReportsDBController {
 	protected static OrderReportEntity getOrderReportFromDB() {
 		OrderReportEntity report = new OrderReportEntity();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return report;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn
-					.prepareStatement("SELECT * FROM ekrut.orders_report WHERE month=? AND year=? AND region=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM ekrut.orders_report WHERE month=? AND year=? AND region=?;");
 			ps.setString(1, CommonFunctions.getNumericMonth(month));
 			ps.setString(2, year);
 			ps.setString(3, region);
@@ -105,7 +103,7 @@ public class ReportsDBController {
 				if (CommonFunctions.isNullOrEmpty(report.getDescription()))
 					report.setDescription("nosales");
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return report;

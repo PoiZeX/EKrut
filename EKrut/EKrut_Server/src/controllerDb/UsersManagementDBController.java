@@ -7,11 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.crypto.SealedObject;
 
 import common.CommonFunctions;
 import common.Message;
-import common.RolesEnum;
 import common.TaskType;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -275,4 +273,44 @@ public class UsersManagementDBController {
 		}
 		return user;
 	}
+	
+	/**
+	 * Query executer for getting all supply workers
+	 * @return
+	 * @throws SQLException
+	 */
+	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException{
+		ArrayList<UserEntity> supplyWorkers = new ArrayList<>();
+		UserEntity user = new UserEntity();
+		if (MySqlClass.getConnection() == null)
+			return supplyWorkers;
+		Connection conn = MySqlClass.getConnection();
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE role_type=?;");
+		ps.setString(1, "supplyWorker");
+
+		ResultSet res = ps.executeQuery();
+		while (res.next()) {
+			user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+					res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
+					res.getString(11), res.getBoolean(12), res.getBoolean(13));
+			user.setId(res.getInt(1));
+
+			supplyWorkers.add(user);
+		}
+		return supplyWorkers;
+	}
+
+	/**
+	 * get supply workers from DB
+	 * 
+	 * @param client
+	 */
+	public static void getSupplyWorkers(ConnectionToClient client) {
+		try {
+			client.sendToClient(new Message(TaskType.ReceiveSupplyWorkersFromServer, getSupplyWorkersQuery())); // finally
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
