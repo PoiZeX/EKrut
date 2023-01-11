@@ -134,7 +134,9 @@ public class NavigationStoreController {
 	 * @param scName
 	 */
 	private void setWindowTitle(ScreensNamesEnum scName) {
-		String configuration = AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? " Online"
+		String configuration="";
+		if(!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
+			configuration=AppConfig.SYSTEM_CONFIGURATION.equals("OL") ? " Online"
 				: CommonFunctions.isNullOrEmpty(DataStore.getCurrentMachine().getMachineName()) ? ""
 						: " - " + DataStore.getCurrentMachine().getMachineName();
 

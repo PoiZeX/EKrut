@@ -41,7 +41,7 @@ public class DataStore {
 			if (m.getId() == AppConfig.MACHINE_ID) {
 				setCurrentMachine(m);
 	
-					OrderController.setCurrentMachine(m);
+				OrderController.setCurrentMachine(m);
 			}
 		return;
 	}
