@@ -45,7 +45,7 @@ public class OrderController {
 //	private static boolean isSaleActive = false;
 	private static boolean onePlusOneSaleExist = false;
 	private static boolean percentageSaleExit = false;
-	private static ClientController chat = HostClientController.chat; // define the chat for th
+	private static ClientController chat = HostClientController.getChat(); // define the chat for th
 	private static boolean isDataReceived = false;
 	public static boolean isFirstPurchaseDiscountApplied = false;
 	private static Object data;
