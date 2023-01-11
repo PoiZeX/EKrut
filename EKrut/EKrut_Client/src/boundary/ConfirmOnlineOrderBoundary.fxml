@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmOnlineOrderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ConfirmOnlineOrderController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -46,7 +46,7 @@
                     </rowConstraints>
                      <children>
                         <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#confirm" prefHeight="37.0" prefWidth="144.0" style="-fx-background-color: #2CB103;" styleClass="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <TextField fx:id="orderNumTxtField" alignment="CENTER" prefHeight="33.0" prefWidth="170.0" promptText="enter your order number" styleClass="TextField" GridPane.halignment="CENTER">
+                        <TextField fx:id="orderNumTxtField" alignment="CENTER" prefHeight="34.0" prefWidth="261.0" promptText="enter your order number" styleClass="TextField" GridPane.halignment="CENTER">
                            <effect>
                               <DropShadow height="12.21" radius="4.1375" width="6.34">
                                  <color>
