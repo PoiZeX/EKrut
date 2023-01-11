@@ -300,8 +300,19 @@ public class ViewCatalogController {
 
 //		for (ItemInMachineEntity item : itemsList.values())
 //			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
-
-		allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
+		//allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
+		allCatalogItems = FXCollections.observableArrayList();
+		for (Node item : catalogViewGridpane.getChildren()) {
+			GridPane gp = (GridPane) item;
+			if (!gp.isDisable())
+				allCatalogItems.add(gp);
+		}
+		for (Node item : catalogViewGridpane.getChildren()) {
+			GridPane gp = (GridPane) item;
+			if (gp.isDisable())
+				allCatalogItems.add(gp);
+		}
+		reorderCatalog("");
 		if (OrderController.isOnePlusOneSaleExist() && OrderController.isActiveSale()) {
 
 			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
@@ -376,14 +387,11 @@ public class ViewCatalogController {
 			Button itemInCartPlusBtn = (Button) newItemInCart.getChildren().get(4);
 			Button deleteItemBtn = (Button) newItemInCart.getChildren().get(5);
 			itemInCartNameLabel.setText(item.getName());
-
 			itemInCartNameLabel.setWrapText(true);
 			// Handle delete button
 			deleteItemBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
-					cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText())
-							- OrderController.getItemAmount(item) + "");
 					if (!OrderController.changeItemQuantity(item, 0))
 						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
 					// Update total amount and price
@@ -392,8 +400,6 @@ public class ViewCatalogController {
 					addToCartBtn.setMouseTransparent(false);
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
 					reorderCart(cartViewGridpane);
-					if (Integer.parseInt(cartPopupAmountLabel.getText()) == 0)
-						cartGroup.setVisible(false);
 				}
 			});
 			newItemInCartImage.setImage(item.getItemImage());
@@ -418,7 +424,6 @@ public class ViewCatalogController {
 						if (!OrderController.addItemToCart(item, amount)) // Add item to cart
 							CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 					}
-					cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) + 1 + "");
 					cartGroup.setVisible(true);
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
@@ -456,6 +461,7 @@ public class ViewCatalogController {
 		return true;
 	}
 
+	
 	// Handle removing an item from the cart
 	private EventHandler<MouseEvent> getMinusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
 			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
@@ -487,9 +493,7 @@ public class ViewCatalogController {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-				cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) - 1 + "");
-				if (Integer.parseInt(cartPopupAmountLabel.getText()) == 0)
-					cartGroup.setVisible(false);
+
 				updateCartTotalLabels();
 			}
 		};
@@ -518,15 +522,36 @@ public class ViewCatalogController {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-				cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) + 1 + "");
+				//cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) + 1 + "");
+				//updateCartBubble(1);
 				updateCartTotalLabels();
 			}
 		};
 		return plusEvent;
 	}
-
+	/**
+	 * Update the cart bubble (shopping cart icon) on the user interface.
+	 * 
+	 * @param amount the current number of items in the cart
+	 */
+	private void updateCartBubble(int amount) {
+		if (amount <= 0) cartGroup.setVisible(false);
+		else {
+			cartGroup.setVisible(true);
+			if (amount > 99) {
+				cartPopupAmountLabel.setStyle("-fx-font-size: 7pt;");
+				cartPopupAmountLabel.setText("99+");
+			}
+			else {
+				cartPopupAmountLabel.setText(amount + "");
+				cartPopupAmountLabel.setStyle("-fx-font-size: 9pt;");
+			}
+		}
+	}
+	
+	
 	private void updateCartTotalLabels() {
-
+		updateCartBubble(OrderController.getCartSize());
 		if (OrderController.getCartSize() == 0) {
 			cartSizeLabel.setText("Cart is Empty");
 			totalPriceLabel.setVisible(false);
@@ -538,7 +563,7 @@ public class ViewCatalogController {
 			cartSizeLabel.setText(OrderController.getCartSize() + " Items");// + (OrderController.getTotalPrice() -
 																			// OrderController.getTotalDiscounts()) +
 																			// "₪"
-
+			
 			if (currentSupplyMethod.equals("Delivery") || !OrderController.isActiveSale() || !isMember)
 				totalPriceLabel.setText("Total: " + OrderController.getTotalPrice() + "₪");
 			else {
