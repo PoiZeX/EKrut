@@ -9,6 +9,7 @@ import common.CommonFunctions;
 import common.CustomerStatusEnum;
 import common.DeliveryStatusEnum;
 import common.Message;
+import common.PopupTypeEnum;
 import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
@@ -104,6 +105,7 @@ public class DeliveryManagementController {
 					String msg="Hi!\nOrder number "+de.getOrderId()+ 
 							 " is on the way\nThe estimated arrivel time is "+de.getEstimatedTime();
 					SMSMailHandlerController.SendSMSOrMail("SMS", userToSend, "Delivery", msg);
+					CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 					userToSend=null;
 				}
 			}

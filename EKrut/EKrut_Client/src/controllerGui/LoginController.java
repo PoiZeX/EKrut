@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -231,7 +232,6 @@ public class LoginController {
 			root = FXMLLoader.load(getClass().getResource(path));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setTitle("Login with EKT");
-			primaryStage.show();
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
@@ -240,10 +240,18 @@ public class LoginController {
 					if (EKTPopupController.timerTimeLimit != null)
 						EKTPopupController.timerTimeLimit.cancel();
 					setLoginBtnDisable(false);
-					// chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+					NavigationStoreController.getInstance().getPrimaryStage().show();
 				}
 			});
 			setLoginBtnDisable(true);
+			
+			// freeze current screen until got popup close
+			
+			NavigationStoreController.getInstance().getPrimaryStage().hide();
+//			primaryStage.initModality(Modality.APPLICATION_MODAL);
+//			primaryStage.showAndWait();
+			
+			 primaryStage.show();
 
 		} catch (IOException e) {
 			e.printStackTrace();

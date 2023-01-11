@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import java.util.Timer;
 import java.util.TimerTask;
 import Store.NavigationStoreController;
+import common.CommonFunctions;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -21,11 +22,10 @@ public class EKTPopupController extends LoginController {
 
 	protected static Timer timerSuccess;
 	protected static Timer timerTimeLimit;
-	
+
 	// define username and password to login with
 	private String[] usernamePasswordStub = new String[] { "mbrN", "123456" }; // mbr + [N/S/U]
 
-	
 	/**
 	 * Initialize screen
 	 */
@@ -39,40 +39,32 @@ public class EKTPopupController extends LoginController {
 
 	/**
 	 * Sets a background task; Waiting to subscriber connection via EKT, to validate
-	 * information
+	 * information (works like NFC)
 	 */
 	private void setBackgroundTask() {
+		CommonFunctions.SleepFor(AppConfig.WAIT_BEFORE_SIMULATE_LOGIN, () -> {
+			// simulate: after <APPCONFIG> seconds:
 
-		timerSuccess.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				// simulate: after <APPCONFIG> seconds:
-				Platform.runLater(() -> {
-					if (!loginProccess(usernamePasswordStub))
-						cancelOperation();
-					else {
-						timerTimeLimit.cancel(); // time limit is irrelevant now
-						
-						// login success
-						headlineLabel.setText("Login with EKT success!");
-						Image image = new Image(
-								getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
-						loadingImage.setImage(image); // get information gif
+			if (!loginProccess(usernamePasswordStub))
+				cancelOperation();
+			else {
+				timerTimeLimit.cancel(); // time limit is irrelevant now
 
-						// wait for 2 seconds
-						(new Timer()).schedule(new TimerTask() {
-							@Override
-							public void run() {
-								Platform.runLater(() -> {
-									((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
-								});
-							}
-						}, AppConfig.WAIT_AFTER_VALIDATION_SUCCESS);
-					}
+				// login success
+				headlineLabel.setText("Login with EKT success!");
+				Image image = new Image(getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
+				loadingImage.setImage(image); // get information gif
 
+				// wait for 2 seconds
+				CommonFunctions.SleepFor(AppConfig.WAIT_AFTER_VALIDATION_SUCCESS, () -> {
+					Platform.runLater(() -> {
+						((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+						NavigationStoreController.getInstance().getPrimaryStage().show();
+					});
 				});
 			}
-		}, AppConfig.WAIT_BEFORE_SIMULATE_LOGIN);
+		});
+
 	}
 
 	/**
@@ -116,6 +108,8 @@ public class EKTPopupController extends LoginController {
 		timerTimeLimit.cancel();
 		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
 		s.setLoginBtnDisable(false);
+		NavigationStoreController.getInstance().getPrimaryStage().show();
+
 	}
 
 }
