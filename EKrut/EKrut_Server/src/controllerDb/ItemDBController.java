@@ -12,10 +12,16 @@ import common.TaskType;
 import entity.ItemEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-
+/***
+ * The ItemDBController class is responsible for handling database related operations related to items.
+ * It retrieves images and information of all items from database, and sends it to the client
+ */
 public class ItemDBController {
 	
-	/*send to client item Object */
+/***
+ *This method is responsible for sending images and information of all items to the client
+ *@param client the client that requested to receive the items
+*/
 	public static void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
 		ItemEntity itemEntity;

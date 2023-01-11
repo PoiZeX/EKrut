@@ -18,7 +18,10 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class UsersManagementDBController {
-
+	/**
+	 * This method get all the users from the DB that haven't been approved yet, and sends the list of these users to the client.
+	 * @param client the client object that the result will be sent to.
+	*/
 	public static void getUnapprovedUsersEntity(ConnectionToClient client) {
 		// sql query //
 		ArrayList<UserEntity> res = getUnapprovedUsersFromDB();

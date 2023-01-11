@@ -82,7 +82,11 @@ public class ServerConfigurationController {
 	private TextArea consoleOutput;
 
 	private PrintStream printStream;
-
+	/**
+	 * Connect to database using the details entered in the text fields, IP, Port, Database name, username, and password.
+	 * The connect button will be disabled and disconnect button will be enabled after a successful connection
+	 * @param event a reference to the event that triggered this method call, this parameter is automatically filled by JavaFX
+	*/
 	@FXML
 	void connectToDB(ActionEvent event) {
 		if (CommonFunctions.isNullOrEmpty(txtIP.getText()) || CommonFunctions.isNullOrEmpty(txtPort.getText())
@@ -108,7 +112,11 @@ public class ServerConfigurationController {
 			importUsersBtn.setDisable(false);
 		fileChooser.setInitialDirectory(new File("./src/mysql/"));
 	}
-
+	/**
+	 * Disconnect from the currently connected database, this method will also disable the import button,
+	 * and enable the connect button and set the text fields to be editable
+	 * @param event a reference to the event that triggered this method call, this parameter is automatically filled by JavaFX
+	*/
 	@FXML
 	public void disconnectFromDB(ActionEvent event) {
 		ServerUI.disconnect();
@@ -117,7 +125,10 @@ public class ServerConfigurationController {
 		setDisableTextFieldValues(false);
 		importUsersBtn.setDisable(true);
 	}
-
+	/**
+	 * This method sets up the form elements such as text fields and buttons with their default values and event handlers before the GUI is launched
+	 * @throws Exception if an error occurs while initializing the form elements
+	*/
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
 		txtIP.setText(getIPValue());

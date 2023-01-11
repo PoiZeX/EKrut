@@ -12,8 +12,17 @@ import entity.MachineEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-
+/***
+ * CommonDataDBController contains methods that interact with the database to get data
+ * for different screens.
+ * This class has methods for getting the regions, machines and UserEntity by order id
+ * from the database.
+ */
 public class CommonDataDBController {
+	/**
+	 * This method retrieves all the regions from the database and sends it to the client
+	 * @param client The client that requested the data
+	 */
 	public static void getAllRegionsFromDB(ConnectionToClient client) {
 		// SQL query //
 		ArrayList<String> res = getRegionsListFromDB();
@@ -24,7 +33,10 @@ public class CommonDataDBController {
 		}
 
 	}
-
+	/**
+	 * This method retrieves all regions from the database
+	 * @return ArrayList<String>  regions from the database
+	 */
 	public static ArrayList<String> getRegionsListFromDB() {
 		ArrayList<String> regions = new ArrayList<String>();
 		try {
@@ -41,7 +53,10 @@ public class CommonDataDBController {
 		}
 		return regions;
 	}
-
+	/**
+	 * This method retrieves all the machines from the database and sends it to the client
+	 * @param client The client that requested the data
+	 */
 	public static void getAllMachinesFromDB(ConnectionToClient client) {
 		ArrayList<MachineEntity> res = getMachineListFromDB();
 		try {
@@ -50,7 +65,10 @@ public class CommonDataDBController {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * This method retrieves all machines from the database
+	 * @return ArrayList<MachineEntity> machines from the database
+	 */
 	private static ArrayList<MachineEntity> getMachineListFromDB() {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
 		try {
@@ -67,7 +85,14 @@ public class CommonDataDBController {
 		}
 		return machines;
 	}
-	
+	/**
+	* getUserByOrderId method is used to retrive the user information by providing the order id.
+	* This method performs a SELECT SQL statement on the ekrut.users and ekrut.orders table.
+	* the connection object is getting the connection from MySqlClass class.
+	* @param OrderId an integer representing the id of an order
+	* @param client an object of ConnectionToClient class that is used to communicate with the client
+	* @return UserEntity an object of UserEntity class representing the user.
+	*/
 	public static UserEntity getUserByOrderId(int OrderId, ConnectionToClient client) {
 		UserEntity user = new UserEntity();
 		try {

@@ -13,13 +13,26 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-
+/***
+ * The class PopupWindow is a javafx application that demonstrates how to use a Popup control in javafx.
+ * The application creates a popup window that shows a circle shape.
+ * The user can show and hide the popup window by clicking on the 'Show' and 'Hide' button respectively.
+ * @author User
+ *
+ */
 public class PopupWindow extends Application implements Serializable{
-
+/***
+ * The main method, it launches the application.
+ * @param args command line arguments.
+ */
     public static void main(String[] args) {
         launch(args);
     }
-
+/***
+ * This method is called when the application is launched. It sets the title of the primary stage and creates a Popup object.
+ * It also creates two buttons 'show' and 'hide' to show and hide the Popup respectively.
+ * @param primaryStage the primary stage of the application.
+ */
     @Override
     public void start(final Stage primaryStage) {
         primaryStage.setTitle("Popup Example");
