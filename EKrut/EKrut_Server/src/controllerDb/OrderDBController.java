@@ -165,13 +165,11 @@ public class OrderDBController {
 	 */
 	public static void insertPickupEntity(PickupEntity pickup, ConnectionToClient client) {
 		try {
-			if (con == null)
-				return;
+			Connection con = MySqlClass.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
 			ps.setInt(1, pickup.getOrderId());
-			PickupEntity.Status s = pickup.getStatus();
-			ps.setString(2, s.toString());
+			ps.setString(2, pickup.getStatus().toString());
 			ps.executeUpdate();
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
 		} catch (Exception e) {
