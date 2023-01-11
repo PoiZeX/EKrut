@@ -141,7 +141,11 @@ public class UsersSimulationDBController {
 
 		return false;
 	}
-
+	/**
+	 * This method is used to roll back the recent import of users into the database.
+	 * It accepts an ArrayList of String arrays, where each array represents a user, and deletes all of the users represented by these arrays from the users table in the database.
+	 * @param res an ArrayList of String arrays, where each array represents a user
+	*/
 	public static void rollBackImport(ArrayList<String[]> res) {
 		try {
 			if (MySqlClass.getConnection() == null)

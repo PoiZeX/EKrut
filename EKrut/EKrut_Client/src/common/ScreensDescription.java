@@ -37,8 +37,15 @@ public class ScreensDescription {
 	public static final String DELIVERY_MANAGEMENT_DESCRIPTION = "";
 	public static final String SALES_MANAGEMENT_DESCRIPTION = "";
 	public static final String CREATE_NEW_SALE_DESCRIPTION = "";
-	public static final String SUPPLY_MANAGEMENT_DESCRIPTION = "";
-	public static final String SUPPLY_UPDATE_DESCRIPTION = "";
+	public static final String SUPPLY_MANAGEMENT_DESCRIPTION = "At this page you can be updated with the items stock status \n"
+			+ " for the machines in your region, in the Not Opened Table you can see the items whom needed to open a call for\n "
+			+ "You need to check the items to open calls for, choose a supply worker for the call and send the calls"
+			+ "On the Procceced or Complete table  You can see the prosseced calls and the coompleted\n"
+			+ "in order to remove the copmleted you can press the remove completed button."
+			+ "In addition you can update the machine min amount, you must click save button in order to save the changes.";
+	public static final String SUPPLY_UPDATE_DESCRIPTION = "At this page you can see all the machines that required your restock"
+			+ "\n on the current amount column you can update the current amount after the restock, in order to save, "
+			+ "please press enter after typing\n and in the end press the update button. ";
 	
 	// other
 	public static final String PERSONAL_MESSAGES_DESCRIPTION = "Here you can see all kinds of messages\n"

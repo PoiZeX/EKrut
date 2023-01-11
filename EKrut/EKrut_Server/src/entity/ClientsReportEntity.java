@@ -2,17 +2,34 @@ package entity;
 
 import java.util.LinkedHashMap;
 import common.CommonFunctions;
-
+/**
+ * The ClientsReportEntity class represents a report containing information about clients of a certain region, in a certain month and year.
+ * The report includes descriptions, supply methods, total orders and user status of the clients.
+*/
 public class ClientsReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
 	private String description, supplyMethods, totalOrders, userStatus;
 	private LinkedHashMap<String, Integer> totalSalesArr, supplyMethodsArr, userStatusArr;
+	/**
 
+	Initialize a ClientsReportEntity object with no description.
+	*/
 	public ClientsReportEntity() {
 		super();
 		this.description = "noreport";
 	}
+	/**
 
+	Initialize a ClientsReportEntity object with the given id, description, supply methods, total orders, user status, month, year and region.
+	@param id id of the report
+	@param description description of the report
+	@param supplyMethods supply methods of the report
+	@param totalOrders total orders of the report
+	@param userStatus user status of the report
+	@param month month the report generated
+	@param year year the report generated
+	@param region region the report generated
+	*/
 	public ClientsReportEntity(int id, String description, String supplyMethods, String totalOrders, String userStatus, String month,
 			String year, String region) {
 		super(id, month, year, region);
