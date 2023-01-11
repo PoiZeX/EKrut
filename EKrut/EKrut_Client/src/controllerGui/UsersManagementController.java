@@ -72,7 +72,7 @@ public class UsersManagementController  implements IScreen {
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
 	private static ArrayList<UserEntity> toApprove;
-	private static ClientController chat = HostClientController.chat; // one instance
+	private static ClientController chat = HostClientController.getChat(); // one instance
 	ArrayList<BooleanCheckBox> checkboxCellsList = new ArrayList<>();
 	private boolean allSelected;
 
