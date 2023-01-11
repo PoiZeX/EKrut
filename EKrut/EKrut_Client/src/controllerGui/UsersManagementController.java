@@ -1,6 +1,5 @@
 package controllerGui;
 
-
 import java.util.ArrayList;
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -16,12 +15,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
@@ -68,13 +68,12 @@ public class UsersManagementController  implements IScreen {
 
 	@FXML
 	private Button refreshBtn;
-	
 
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
 	private static ArrayList<UserEntity> toApprove;
-	private static ClientController chat = HostClientController.getChat(); // one instance
-	ArrayList<TableCell<UserEntity, Boolean>> checkboxCellsList = new ArrayList<>();
+	private static ClientController chat = HostClientController.chat; // one instance
+	ArrayList<BooleanCheckBox> checkboxCellsList = new ArrayList<>();
 	private boolean allSelected;
 
 	@Override
@@ -103,27 +102,25 @@ public class UsersManagementController  implements IScreen {
 		String SMSMsg = "Congratulations your request has been approved!\nSee Mail for full details";
 		String emailMsg;
 		// send sms to user
-		for(UserEntity user : toApprove) {
+		for (UserEntity user : toApprove) {
 			emailMsg = "Congratulations your request has been approved!\nYour login info:\n";
-			emailMsg += "Username: " + user.getUsername() +"\nPassword: "+user.getPassword();
-			if(user.getRole_type().equals(RolesEnum.member))
-				emailMsg +="\nAs a member you get the following benefits:\n"
+			emailMsg += "Username: " + user.getUsername() + "\nPassword: " + user.getPassword();
+			if (user.getRole_type().equals(RolesEnum.member))
+				emailMsg += "\nAs a member you get the following benefits:\n"
 						+ "*From time to time there are special sales on some regions.\n"
 						+ "*Discount of 20% on your first purchase\n"
 						+ "*A quick login using EKT app. Here is a link for download: www.ekt.ekrut.com";
-			
+
 			// SMS sending msg & popup
 			SMSMailHandlerController.SendSMSOrMail("SMS", user, "Request Approved", SMSMsg);
 			CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
-			
+
 			// Mail sending msg & popup
 			SMSMailHandlerController.SendSMSOrMail("Mail", user, "Request Approved", emailMsg);
 			CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
-			
-		
+
 		}
-		CommonFunctions.SleepFor(1000, () -> 
-		{
+		CommonFunctions.SleepFor(1000, () -> {
 			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.UsersManagement);
 		});
 	}
@@ -135,20 +132,19 @@ public class UsersManagementController  implements IScreen {
 
 	@FXML
 	private void selectAll(ActionEvent event) {
-		for (TableCell<UserEntity, Boolean> cell : checkboxCellsList)
-			if ((CheckBox) cell.getGraphic() != null) {
-				CheckBox checkBox = (CheckBox) cell.getGraphic();
-				UserEntity user = (UserEntity) cell.getTableRow().getItem();
+		for (BooleanCheckBox cell : checkboxCellsList) {
+			UserEntity user = (UserEntity) cell.getTableRow().getItem();
+			if (user != null)
 				if (!allSelected) {
-					checkBox.setSelected(true);
+					cell.updateItem(true, false);
 					if (!toApprove.contains(user))
 						toApprove.add(user);
 				} else {
-					checkBox.setSelected(false);
+					cell.updateItem(false, false);
 					if (toApprove.contains(user))
 						toApprove.remove(user);
 				}
-			}
+		}
 		allSelected = !allSelected;
 	}
 
@@ -172,31 +168,52 @@ public class UsersManagementController  implements IScreen {
 		emailCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity, String>("email"));
 		creditCardNumberCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity, String>("cc_num"));
 		subscriberIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity, Integer>("id"));
-		approveCol.setCellFactory(column -> {
-			TableCell<UserEntity, Boolean> cell = new CheckBoxTableCell<>();
-			checkboxCellsList.add(cell); // save the checkbox
-
-			cell.setOnMouseClicked(event -> {
-				if (event.getClickCount() > 0) {
-					CheckBox checkBox = (CheckBox) cell.getGraphic();
-					UserEntity user = (UserEntity) cell.getTableRow().getItem();
-					if (checkBox != null) {
-						if (checkBox.isSelected()) {
-							checkBox.setSelected(false);
-							toApprove.remove(user);
-							if (allSelected)
-								allSelected = false;
-
-						} else {
-							checkBox.setSelected(true);
-							toApprove.add(user);
-						}
-					}
-				}
-			});
-			return cell;
-		});
+		Callback<TableColumn<UserEntity, Boolean>, TableCell<UserEntity, Boolean>> booleanCellFactory = new Callback<TableColumn<UserEntity, Boolean>, TableCell<UserEntity, Boolean>>() {
+			@Override
+			public TableCell<UserEntity, Boolean> call(TableColumn<UserEntity, Boolean> p) {
+				return new BooleanCheckBox();
+			}
+		};
+		approveCol.setCellFactory(booleanCellFactory);
 		return;
+	}
+
+	private class BooleanCheckBox extends TableCell<UserEntity, Boolean> {
+		private CheckBox checkBox;
+
+		public BooleanCheckBox() {
+			checkBox = new CheckBox();
+			checkBox.setOnAction((evt) -> {
+				if (checkBox.isSelected()) {
+					toApprove.add(getTableView().getItems().get(getIndex()));
+					if (allSelected)
+						allSelected = false;
+				} else {
+					toApprove.remove(getTableView().getItems().get(getIndex()));
+				}
+				System.out.println(toApprove);
+			});
+			checkBox.setId("myCb");
+			this.setGraphic(checkBox);
+			this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			this.setEditable(true);
+			checkboxCellsList.add(this);
+		}
+
+		@Override
+		public void updateItem(Boolean item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+				setGraphic(null);
+			} else {
+				if (item != null) {
+					checkBox.setAlignment(Pos.CENTER);
+					checkBox.setSelected(item);
+				}
+				setAlignment(Pos.CENTER);
+				setGraphic(checkBox);
+			}
+		}
 	}
 
 }

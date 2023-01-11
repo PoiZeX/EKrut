@@ -463,7 +463,6 @@ public class SupplyManagementController  implements IScreen {
 					toUpdate.add(getTableView().getItems().get(getIndex()));
 				else
 					toUpdate.remove(getTableView().getItems().get(getIndex()));
-				System.out.println(toUpdate);
 			});
 			checkBox.setId("myCb");
 			this.setGraphic(checkBox);
