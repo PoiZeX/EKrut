@@ -466,7 +466,8 @@ public class SupplyManagementDBController {
 
 			stmt = MySqlClass.getConnection().createStatement();
 			for(ItemInMachineEntity itemToIncrease : itemsInMachine ) {
-				restockSingleItemAmount(itemToIncrease,itemToIncrease.getCurrentAmount());
+				increaseSingleItemAmount(itemToIncrease,itemToIncrease.getCurrentAmount());
+				updateCallStatus(itemToIncrease);
 			}
 
 		} catch (SQLException e) {
@@ -478,16 +479,15 @@ public class SupplyManagementDBController {
 	 * @param item
 	 * @param amountToIncrease
 	 */
-	private static void restockSingleItemAmount(ItemInMachineEntity item, int amountToIncrease ) {
+	private static void updateCallStatus(ItemInMachineEntity item ) {
 		try {
 			PreparedStatement ps = con.prepareStatement(
-					"UPDATE ekrut.item_in_machine SET current_amount=current_amount+? , call_status=?, "
-							+ "worker_id=? WHERE  machine_id=? AND item_id=?;");
-			ps.setInt(1,amountToIncrease);
-			ps.setString(2, item.getCallStatus().toString());
-			ps.setInt(3, item.getWorkerId());
-			ps.setInt(4, item.getMachineId());
-			ps.setInt(5, item.getId());
+					"UPDATE ekrut.item_in_machine SET call_status=?, "
+							+ " WHERE worker_id=? AND machine_id=? AND item_id=?;");
+			ps.setString(1, item.getCallStatus().toString());
+			ps.setInt(2, item.getWorkerId());
+			ps.setInt(3, item.getMachineId());
+			ps.setInt(4, item.getId());
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

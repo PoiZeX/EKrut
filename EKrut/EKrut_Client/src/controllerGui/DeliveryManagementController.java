@@ -67,8 +67,8 @@ public class DeliveryManagementController  implements IScreen {
 	private static UserEntity userToSend=null;
 	private static final int loadingTime=2; //constant for the delivery loading time
 	private static final int distance=2; //constant for distance of the destination in km
-	private static final int fourAm=4;  //constant for the start time of the delivery activity
-	private static final int sixPM=18; //constant for the end time of the delivery activity
+	private  final int fourAm=4;  //constant for the start time of the delivery activity
+	private  final int eightPm=20; //constant for the end time of the delivery activity
 	
 	@FXML
 	/**Setup screen before launching view*/
@@ -103,7 +103,7 @@ public class DeliveryManagementController  implements IScreen {
 		if (changedDeliveryItems.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries, changedDeliveryItems));
 			for(DeliveryEntity de:changedDeliveryItems) {
-				if(de.getDeliveryStatus().equals(DeliveryStatusEnum.pendingApproval)) {
+				if(de.getDeliveryStatus().equals(DeliveryStatusEnum.outForDelivery)) {
 					chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer,de.getOrderId()));
 					waitToAnswer();
 					String msg="Hi!\nOrder number "+de.getOrderId()+ 
@@ -213,21 +213,24 @@ public class DeliveryManagementController  implements IScreen {
 
 	/**
 	 * calculae the estimated delivery time according to the current time:
-	 *  Between 4:00 to 18:00 the estimated is within loadingTime+distance hours. 
+	 *  Between 4:00 to 20:00 the estimated is within loadingTime+distance hours. 
 	 *  Between 00:00 to 04:00 the estimated is within 5+loadingTime+distance hours .
-	 *  Between 18:00 to 00:00 the estimated is in the next day at current hour+loadingTime+distance hours.
+	 *  Between 20:00 to 00:00 the estimated is in the next day at current hour+loadingTime+distance hours.
 	 */
 
-	@SuppressWarnings("unused")
+	
 	private String calculateEstimatedTime() {
 		Calendar estimated = Calendar.getInstance(); //gets now time
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-		if (Calendar.HOUR_OF_DAY<fourAm) {
-			estimated.add(Calendar.DATE, 1);
-		
-		} else if (Calendar.HOUR_OF_DAY>sixPM) {
+		if (estimated.get(Calendar.HOUR_OF_DAY) < fourAm) {
+			
 			estimated.add(Calendar.HOUR, 5);
+			
+		
+		} else if (estimated.get(Calendar.HOUR_OF_DAY) > eightPm) {
+			estimated.add(Calendar.DATE, 1);
+			estimated.add(Calendar.HOUR, -12);
 		}	
 		
 		estimated.add(Calendar.HOUR, loadingTime+distance);
