@@ -13,7 +13,9 @@ import java.sql.Statement;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import common.CommonFunctions;
 import common.Message;
@@ -119,7 +121,8 @@ public class SupplyManagementDBController {
 				else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
-							res.getString(7), 0, "");
+							res.getString(7), 0.00, "");
+					item.setWorkerId(res.getInt(6));
 				}
 
 				itemsInMachine.add(item);
@@ -130,20 +133,6 @@ public class SupplyManagementDBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		String LocalfilePath= "../EKrut_Server/src/styles/products/"+itemEntity.getItemImg().getImgName();
-//		  try{
-//			  	  
-//			      File newFile = new File (LocalfilePath);	
-//			      byte [] mybytearray  = new byte [(int)newFile.length()];
-//			      FileInputStream fis = new FileInputStream(newFile);
-//			      BufferedInputStream bis = new BufferedInputStream(fis);
-//			      itemEntity.getItemImg().initArray(mybytearray.length);
-//			      itemEntity.getItemImg().setSize(mybytearray.length);
-//			      bis.read(itemEntity.getItemImg().getMybytearray(),0,mybytearray.length);
-//			      client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntity)); // finally send the entity
-//			    } 
-//			catch (Exception e) {System.out.println("Error send item to Client");}
-//	 }
 	}
 
 	/**
@@ -184,7 +173,7 @@ public class SupplyManagementDBController {
 
 			PreparedStatement ps = conn.prepareStatement("SELECT  item_in_machine.*, items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
-					+ " WHERE item_in_machine.machine_id=(?) AND  item_in_machine.call_status=(?) AND item_in_machine.item_id=items.item_id AND item_in_machine.worker_id=(?)  ;");
+					+ " WHERE item_in_machine.machine_id=? AND  item_in_machine.call_status=? AND item_in_machine.worker_id=? AND  item_in_machine.item_id=items.item_id   ;");
 			ps.setInt(1, machineId);
 			ps.setString(2, ItemInMachineEntity.Call_Status.Processed.toString());
 			ps.setInt(3, userId);
@@ -272,12 +261,6 @@ public class SupplyManagementDBController {
 	 */
 	private static Connection con = MySqlClass.getConnection();
 
-	/**
-	 * Update items in machine with roll back option if update failed
-	 * 
-	 * @param itemsInMachine
-	 * @param client
-	 */
 	public static void updateItemsInMachine(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
 		try {
 			ItemInMachineEntity[] itemsArray = new ItemInMachineEntity[itemsInMachine.size()];
@@ -469,7 +452,53 @@ public class SupplyManagementDBController {
 	}
 
 	/**
+	 * Restock items in machine for supply upddate
 	 * 
+	 * @param itemsInMachine
+	 * @param client
+	 */
+	public static void restockItemsInMachine(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
+		Statement stmt;
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+
+			stmt = MySqlClass.getConnection().createStatement();
+			for(ItemInMachineEntity itemToIncrease : itemsInMachine ) {
+				restockSingleItemAmount(itemToIncrease,itemToIncrease.getCurrentAmount());
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * increase amount for single items
+	 * @param item
+	 * @param amountToIncrease
+	 */
+	private static void restockSingleItemAmount(ItemInMachineEntity item, int amountToIncrease ) {
+		try {
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE ekrut.item_in_machine SET current_amount=current_amount+? , call_status=?, "
+							+ "worker_id=? WHERE  machine_id=? AND item_id=?;");
+			ps.setInt(1,amountToIncrease);
+			ps.setString(2, item.getCallStatus().toString());
+			ps.setInt(3, item.getWorkerId());
+			ps.setInt(4, item.getMachineId());
+			ps.setInt(5, item.getId());
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 *  get machines for user by there need 
+	 *  for exemple :
+	 *  region manager - gets by region 
 	 * @param arr
 	 * @param client
 	 */
