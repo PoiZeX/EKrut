@@ -52,8 +52,8 @@
         <columnConstraints>
           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="172.6666717529297" />
             <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="73.0" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="186.0" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.3333435058594" minWidth="10.0" prefWidth="451.0" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="175.00003662109376" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.3333435058594" minWidth="10.0" prefWidth="460.59996337890624" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints fillHeight="false" maxHeight="106.0" minHeight="7.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -65,7 +65,7 @@
                   <Insets left="25.0" />
                </GridPane.margin>
             </ComboBox>
-            <GridPane prefHeight="382.0" prefWidth="419.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <GridPane prefHeight="382.0" prefWidth="450.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -82,10 +82,10 @@
                <children>
                   <TableView fx:id="supplyMangmentTbl" editable="true" prefHeight="310.0" prefWidth="267.0" styleClass="column-header" GridPane.halignment="CENTER">
                     <columns>
-                        <TableColumn fx:id="machineIdCol" text="machine id" />
+                        <TableColumn fx:id="machineIdCol" prefWidth="85.0" text="machine id" />
                       <TableColumn fx:id="itemIdCol" text="item id" />
                         <TableColumn fx:id="itemNameCol" prefWidth="160.0" text="item name" />
-                        <TableColumn fx:id="currentAmountCol" prefWidth="94.33334350585938" text="current amount" />
+                        <TableColumn fx:id="currentAmountCol" prefWidth="100.0" text="current amount" />
                     </columns>
                      <GridPane.margin>
                         <Insets />

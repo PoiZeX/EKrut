@@ -226,7 +226,10 @@ public class ViewCatalogController {
 	 */
 	@FXML
 	void cancelOrder(ActionEvent event) {
-		OrderController.refreshOrderToHomePage();
+		CommonFunctions.createPopup(PopupTypeEnum.Decision, "You about to cancel the current order.\nAll data will lost.\n\nTo cancel click 'YES', 'NO' otherwise");
+		if((boolean)PopupController.isOkPressed) {
+			OrderController.refreshOrderToHomePage();
+		}
 	}
 
 	/**

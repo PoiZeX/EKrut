@@ -110,6 +110,7 @@ public class PopupController {
 	@FXML
 	void cancelAction(ActionEvent event) {
 		isOkPressed = false;
+		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
 
 	@FXML
