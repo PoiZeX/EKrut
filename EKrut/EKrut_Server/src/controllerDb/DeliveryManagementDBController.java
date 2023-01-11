@@ -4,22 +4,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
 import common.CustomerStatusEnum;
 import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
-import entity.SaleEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class DeliveryManagementDBController {
 	
-	/**update estimates delivery time, delivery status and customer status*/
+	/**update estimates delivery time, delivery status and customer status in DB*/
 	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		
 		try {
@@ -42,7 +38,7 @@ public class DeliveryManagementDBController {
 		return;
 	}
 	/**
-	 * insert new delivery 
+	 * insert new delivery to DB
 	 * @param deliveryEntity
 	 * @param client
 	 */
@@ -75,11 +71,10 @@ public class DeliveryManagementDBController {
 	}
 	
 	/**
-	 * get deliveries
+	 * get deliveries from DB
 	 * @param client
 	 */
 	public static void getTable(String region, ConnectionToClient client) {
-		Statement stmt;
 		DeliveryEntity deliveryEntity;
 		ArrayList<DeliveryEntity> deliveries=new ArrayList<DeliveryEntity>();
 		try {
@@ -102,6 +97,7 @@ public class DeliveryManagementDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * get specific delivery by customer id and order id
 	 * @param details
