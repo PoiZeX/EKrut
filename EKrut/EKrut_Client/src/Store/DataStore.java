@@ -8,7 +8,6 @@ import common.TaskType;
 import controller.OrderController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
-import entity.UserEntity;
 import utils.AppConfig;
 
 public class DataStore {

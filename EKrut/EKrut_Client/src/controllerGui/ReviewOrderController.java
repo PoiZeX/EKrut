@@ -607,14 +607,14 @@ public class ReviewOrderController  implements IScreen {
 		GridPane.setRowSpan(imageView, 3);
 
 		// price after discount
-		if (OrderController.isActiveSale() && user.getRole_type().equals(RolesEnum.member)) {
+		if ((OrderController.isActiveSale() || firstPurchase) && user.getRole_type().equals(RolesEnum.member) ) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
 			
-			if(OrderController.isPercentageSaleExit()) {
+			if(OrderController.isPercentageSaleExit() || firstPurchase) {
 				price.getStyleClass().remove("Label-list");
 				price.getStyleClass().add("LableOldPrice");
 				priceAfterDiscount.setVisible(true);
@@ -633,7 +633,7 @@ public class ReviewOrderController  implements IScreen {
 			
 			
 			// set total price for item * quantity
-			tempSum = OrderController.isPercentageSaleExit() ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
+			tempSum = (OrderController.isPercentageSaleExit() || firstPurchase) ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
 
 			// set total discounts for labels
 			totalDiscounts += totalDiscountForRowInNIS - tempSum;
