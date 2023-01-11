@@ -99,44 +99,47 @@ public class HomePageController {
 				if (currentUser.getRole_type() == RolesEnum.regionManager)
 					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
-			}
-			else
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-			
+
 			break;
 
 		case customerServiceWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Open New Account", "Open new registered / subscribed account",
 						ScreensNamesEnum.RegistrationForm);
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+			}
+
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case deliveryOperator:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Handle Delivery", "See details and change status of current delivery",
 						ScreensNamesEnum.DeliveryManagement);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 
 			break;
 
 		case marketingWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case marketingManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern",
-						ScreensNamesEnum.CreateNewSale);
+				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern", ScreensNamesEnum.CreateNewSale);
 				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			} else
@@ -146,9 +149,10 @@ public class HomePageController {
 			break;
 
 		case supplyWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
@@ -180,6 +184,8 @@ public class HomePageController {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
+		if (currentRole.equals(RolesEnum.supplyWorker))
+			roleImg.setFitWidth(175.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
 
