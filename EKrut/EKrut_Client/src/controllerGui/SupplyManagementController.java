@@ -220,16 +220,25 @@ public class SupplyManagementController  implements IScreen {
 		String strNum = minAmountTxtField.getText();
 
 		if (strNum.isEmpty())
-			errorMsg = " you can't leave me empty!";
+			errorMsg = "You can't leave me empty!";
 
 		int oldMinAmount = machine.getMinamount();
 		int newMinAmount = machine.getMinamount();
 		try {
 			newMinAmount = Integer.parseInt(strNum);
 		} catch (NumberFormatException nfe) {
-			errorMsg = "you have to fill in numbers only";
+			errorMsg = "Numbers only";
+			errorInputLbl.setText(errorMsg);
+			return;
 		}
-
+		errorInputLbl.setText(errorMsg);
+		filterUpdateCallStatus(oldMinAmount, newMinAmount);
+		removeCompleted(null);
+		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount, machine));
+		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
+				+ "If you want to see an updated the items list press the refresh button");
+	}
+	void filterUpdateCallStatus(int oldMinAmount, int newMinAmount ) {
 		if (oldMinAmount != newMinAmount) {
 			machine.setMinamount(newMinAmount);
 			for (MachineEntity m : machineLst) {
@@ -249,12 +258,7 @@ public class SupplyManagementController  implements IScreen {
 				}
 			}
 		}
-		removeCompleted(null);
-		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount, machine));
-		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
-				+ "If you want to see an updated the items list press the refresh button");
 	}
-
 	/***
 	 * remove the completed actions from the table and request update from server
 	 * 
@@ -452,7 +456,12 @@ public class SupplyManagementController  implements IScreen {
 		recievedData = true;
 
 	}
-
+	
+	/***
+	 * checkbox class that handles the checkbox field on the table cell 
+	 * @author User
+	 *
+	 */
 	private class BooleanCheckBox extends TableCell<ItemInMachineEntity, Boolean> {
 		private CheckBox checkBox;
 
@@ -486,76 +495,3 @@ public class SupplyManagementController  implements IScreen {
 		}
 	}
 }
-//refillcol.setCellFactory(column -> {
-//TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-//
-//return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
-//
-//
-//
-//};
-//});
-//@Override
-//public void updateItem(Boolean item, boolean empty) {
-//super.updateItem(item, empty);
-//TableRow<ItemInMachineEntity> currentRow = getTableRow();
-//ItemInMachineEntity currentItem = currentRow.getItem();
-//
-//CheckBox checkBox = (CheckBox) this.getGraphic();
-//
-//if (currentRow != null && !empty ) {
-//	
-//	if(this.selectedProperty().get())
-//		toUpdate.add(currentItem);
-//	if(!this.selectedProperty().get())
-//		toUpdate.add(currentItem);
-//}
-//
-//}		
-//
-//refillcol.setCellFactory(column -> {
-//TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-//cell.setOnMouseClicked(event -> {
-//	if (event.getClickCount() > 0) {
-//		CheckBox checkBox = (CheckBox) cell.getGraphic();
-//		ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
-//		if (checkBox != null) {
-//			if (checkBox.isSelected()) {
-//				checkBox.setSelected(false);
-//				toUpdate.remove(item);
-//		
-//
-//			} else {
-//				checkBox.setSelected(true);
-//				toUpdate.add(item);
-//			}
-//		}
-//	}
-//});
-//return cell;
-//});
-//return;
-//
-//refillcol.setCellFactory(column -> {
-//return new CheckBoxTableCell<ItemInMachineEntity, Boolean>() {
-//    @Override
-//    public void updateItem(Boolean item, boolean empty) {
-//        super.updateItem(item, empty);
-//        if (item == null || empty ) {
-//            setVisible(false);
-//        } else {
-//        	ItemInMachineEntity obj = getTableView().getItems().get(getIndex());
-//        	if(obj.isCallOpen())
-//        		setVisible(false);
-//        	else {
-//        		setVisible(true);
-//        	
-//        	}
-//        }
-//    }
-//
-//
-//    
-//};
-//
-//});
