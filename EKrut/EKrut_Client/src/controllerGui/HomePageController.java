@@ -135,9 +135,9 @@ public class HomePageController {
 
 		case marketingManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern",
+				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern",
 						ScreensNamesEnum.CreateNewSale);
-				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
+				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
@@ -207,9 +207,13 @@ public class HomePageController {
 				switch (scName) {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-						CommonFunctions.createShipmentPopup();
+						CommonFunctions.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml","Shipment Method");
 					else
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
+					break;
+				case SalesManagement:
+					if(currentUser.getRole_type().equals(RolesEnum.marketingManager))
+						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml","Select region");
 					break;
 				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);
