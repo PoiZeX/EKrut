@@ -106,6 +106,7 @@ public class SalesManagementController  implements IScreen {
 			CommonFunctions.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
 		}
     }
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setupTable() {
 		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingWorker))
 			salesTable.setEditable(true); // make table editable

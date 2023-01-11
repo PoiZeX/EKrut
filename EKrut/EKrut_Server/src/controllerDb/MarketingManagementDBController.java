@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -61,13 +60,11 @@ public class MarketingManagementDBController {
 	 * @param client The ConnectionToClient object, represent the connection between the server and the client.
 	*/
 	public static void updateSaleEntities(ArrayList<SaleEntity> saleLst, ConnectionToClient client) {
-		Statement stmt;
+		
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-
-			stmt = MySqlClass.getConnection().createStatement();
 			for (SaleEntity saleEntity : saleLst) {
 				PreparedStatement ps=con.prepareStatement("UPDATE ekrut.sales SET sale_status=? WHERE id=?;");
 				ps.setString(1, saleEntity.getSaleStatus().toString());
@@ -115,7 +112,6 @@ public class MarketingManagementDBController {
 	 */
 	public static Boolean isSaleExist(SaleEntity saleEntity) {
 	
-		SaleStatus saleStatus;
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)

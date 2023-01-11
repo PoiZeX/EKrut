@@ -1,41 +1,27 @@
 package controllerGui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
 import common.TaskType;
 import entity.MachineEntity;
 import entity.SupplyReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
+
 
 public class SupplyReportController implements IScreen  {
 

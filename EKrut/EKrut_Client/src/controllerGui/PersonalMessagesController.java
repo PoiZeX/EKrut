@@ -3,10 +3,8 @@ package controllerGui;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
-import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
-import controller.SMSMailHandlerController;
 import entity.PersonalMessageEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
