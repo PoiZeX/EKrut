@@ -11,7 +11,7 @@ import entity.PersonalMessageEntity;
 import entity.UserEntity;
 
 public class SMSMailHandlerController {
-	private static ClientController chat = HostClientController.chat;
+	private static ClientController chat = HostClientController.getChat();
 
 	
 	/**

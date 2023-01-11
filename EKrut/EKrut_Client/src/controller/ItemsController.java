@@ -16,7 +16,7 @@ import utils.AppConfig;
 public class ItemsController {
 
 	public static ArrayList<ItemEntity> allItems = new ArrayList<>();
-	private static ClientController chat = HostClientController.chat; // define the chat for the controller
+	private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
 	
 	/* request the DB to load the items */
 	public static void requestItemsFromServer() {
