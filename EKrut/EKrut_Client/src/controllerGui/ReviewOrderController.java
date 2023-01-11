@@ -495,9 +495,9 @@ public class ReviewOrderController {
 		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText()))
 			errMsg.append("Apartment number can contain number and '/' only in length of 1-5\n");
 
-		address.append("Street: " + streetTxtField.getText());
-		address.append("Apartment: " + aptTxtField.getText());
-		address.append("City: " + cityTxtField.getText());
+		address.append(streetTxtField.getText());
+		address.append(" "+aptTxtField.getText());
+		address.append(" "+cityTxtField.getText());
 
 		return errMsg.toString();
 	}

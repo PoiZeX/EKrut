@@ -18,8 +18,8 @@ import java.util.logging.SimpleFormatter;
 
 import javax.net.ssl.SSLEngineResult.Status;
 
-import common.CustomerStatus;
-import common.DeliveryStatus;
+import common.CustomerStatusEnum;
+import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
 import entity.DeliveryEntity;
