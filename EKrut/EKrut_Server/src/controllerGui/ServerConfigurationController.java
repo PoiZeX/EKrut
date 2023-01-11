@@ -134,9 +134,10 @@ public class ServerConfigurationController {
 			public void handle(final ActionEvent e) {
 				Stage stage = (Stage) importUsersBtn.getScene().getWindow();
 				File file = fileChooser.showOpenDialog(stage);
-				if (file != null) {
+				if (file != null && file.getName().endsWith(".csv") ) {
 					parseFile(file);
-				}
+				} else System.out.println("Import failed: Can't open file");
+
 			}
 		});
 
@@ -210,7 +211,7 @@ public class ServerConfigurationController {
 				});
 				
 				// normalization form
-				if (fields.size() != num_of_fields || fields.contains("")) {
+				if (fields.size() != num_of_fields || fields.contains("") ) {
 					System.out.println(String.format("Error in line %d", cnt));
 					System.out.println("Tuples rules reminder:\n"
 					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
@@ -219,6 +220,7 @@ public class ServerConfigurationController {
 				res.add(fields.toArray(new String[fields.size()]));
 				// System.out.println(Arrays.toString(fields));
 			}
+			System.out.println("Attempting to insert all valid tuples.");
 			UsersSimulationDBController.insertTuples(res);
 			System.out.println("Import success");
 		} catch (IOException e) {
@@ -226,6 +228,7 @@ public class ServerConfigurationController {
 		} catch (SQLException e) {
 			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1] + "Tuples rules reminder:\n"
 					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
+
 		}
 
 	}

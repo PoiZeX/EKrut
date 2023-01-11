@@ -19,8 +19,11 @@ public class ScreensDescription {
 	public static final String CLEINTS_REPORT_DESCRIPTION = "";
 	
 	// order
-	public static final String VIEW_CATALOG_DESCRIPTION = "";
-	public static final String VIEW_CART_DESCRIPTION = "";
+	public static final String VIEW_CATALOG_DESCRIPTION = "In this screen you can see all the available items in store\n"
+			+ "You can search products by Name, And view your cart at any moment\n"
+			+ "You can add as many items as you like, and see the current cart price at any moment.\n\n"
+			+ "You can also hover to get more information about products/options\n"
+			+ "When you feel like you're done you can choose to procceed to review and payment, or cancel at any moment, Enjoy!";
 	public static final String REVIEW_ORDER_DESCRIPTION = "You just one step from happiness!\nAt the left side you can see you order review.\n"
 			+ "If some discount were applied, you can hover with the mouse on the red label 'discount' to see full description.\n"
 			+ "If you select a shippment, please enter your details at the right side\nWe are exciting for you!";

@@ -1,6 +1,7 @@
 package utils;
 
 import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 // Creates a new tooltip window
 public class TooltipSetter {
 	private String text;
@@ -15,6 +16,7 @@ public class TooltipSetter {
 		    + "-fx-font-size: 10pt;"
 		    + "-fx-text-fill: #1E3D58;"
 		);
+		tooltip.setShowDelay(Duration.seconds(0.35));
 	}
 	
 	public Tooltip getTooltip() {
