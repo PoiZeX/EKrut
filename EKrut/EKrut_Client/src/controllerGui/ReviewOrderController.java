@@ -569,7 +569,7 @@ public class ReviewOrderController {
 		productName.setTooltip(new TooltipSetter(item.getName()).getTooltip());
 		
 		// price
-		price.setText(String.format("%.2f₪", String.valueOf(item.getPrice())));
+		price.setText(String.format("%.2f₪", item.getPrice()));
 		price.setPrefSize(262, 18);
 		price.getStyleClass().add("Label-list");
 		GridPane.setHalignment(price, HPos.LEFT);
@@ -589,16 +589,6 @@ public class ReviewOrderController {
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
 
-//		// line
-//		line.setStartX(-72);
-//		line.setStartY(0.7216961979866028);
-//		line.setEndX(260);
-//		line.setEndY(0.7214934229850769);
-//		line.setFill(Paint.valueOf("#908e8e"));
-//		GridPane.setValignment(line, VPos.BOTTOM);
-//		// GridPane.setHalignment(line, HPos.LEFT);
-//		GridPane.setColumnSpan(line, 5);
-
 		GridPane.setRowSpan(imageView, 3);
 
 		// price after discount
@@ -608,13 +598,14 @@ public class ReviewOrderController {
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
+			if(OrderController.isPercentageSaleExit()) {
+				price.getStyleClass().remove("Label-list");
+				price.getStyleClass().add("LableOldPrice");
+				priceAfterDiscount.setVisible(true);
+				gridpane.add(priceAfterDiscount, 1, 2);
 
-			price.getStyleClass().remove("Label-list");
-			price.getStyleClass().add("LableOldPrice");
-			priceAfterDiscount.setVisible(true);
+			}
 			gridpane.add(price, 1, 1);
-			gridpane.add(priceAfterDiscount, 1, 2);
-
 
 			if (OrderController.isOnePlusOneSaleExist()) {
 				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
@@ -622,11 +613,6 @@ public class ReviewOrderController {
 				if (cart.get(item) % 2 == 1)
 					tempSum += item.getPrice();
 				
-				if(!OrderController.isPercentageSaleExit())
-				{
-					// do not show the single item discount 
-					priceAfterDiscount.setVisible(false);
-				}
 			}
 			
 			

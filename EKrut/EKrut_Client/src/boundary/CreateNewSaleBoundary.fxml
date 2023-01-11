@@ -30,7 +30,6 @@
    <right>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="12.0" prefHeight="39.0" prefWidth="277.0" styleClass="LabelTitle" text="create new sale" underline="true" />
             <GridPane alignment="CENTER" prefHeight="353.0" prefWidth="535.0" styleClass="GridPane">
               <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="244.66665649414062" minWidth="10.0" prefWidth="241.0" />
