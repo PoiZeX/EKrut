@@ -100,45 +100,51 @@ public class HomePageController  implements IScreen {
 				if (currentUser.getRole_type() == RolesEnum.regionManager)
 					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
-			}
-			else
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-			
+
 			break;
 
 		case customerServiceWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Open New Account", "Open new registered / subscribed account",
 						ScreensNamesEnum.RegistrationForm);
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+			}
+
 			else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case deliveryOperator:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Handle Delivery", "See details and change status of current delivery",
 						ScreensNamesEnum.DeliveryManagement);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 
 			break;
 
 		case marketingWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
 
 		case marketingManager:
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				setBtn(topBtn, "Activate New Sale", "Activate global sale by pattern",
+
+				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern",
 						ScreensNamesEnum.CreateNewSale);
-				setBtn(middleBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
+				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
+
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
@@ -147,9 +153,10 @@ public class HomePageController  implements IScreen {
 			break;
 
 		case supplyWorker:
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(middleBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-			else
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else
 				CommonFunctions.createPopup(PopupTypeEnum.Warning,
 						"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
 			break;
@@ -181,6 +188,8 @@ public class HomePageController  implements IScreen {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
+		if (currentRole.equals(RolesEnum.supplyWorker)||currentRole.equals(RolesEnum.deliveryOperator))
+			roleImg.setFitWidth(175.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
 
@@ -208,9 +217,13 @@ public class HomePageController  implements IScreen {
 				switch (scName) {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-						CommonFunctions.createShipmentPopup();
+						CommonFunctions.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml","Shipment Method");
 					else
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
+					break;
+				case SalesManagement:
+					if(currentUser.getRole_type().equals(RolesEnum.marketingManager))
+						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml","Select region");
 					break;
 				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);

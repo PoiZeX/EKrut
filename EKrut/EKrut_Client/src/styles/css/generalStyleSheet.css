@@ -418,3 +418,22 @@
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 } */
+
+#myCb .box {
+
+-fx-background-color: white;
+-fx-border-color:grey;
+-fx-border-radius:3px; 
+
+}
+
+#myCb:selected .mark {
+
+-fx-background-color: white;
+
+}
+
+#myCb:selected .box {
+
+-fx-background-color: #28a3f4;
+}

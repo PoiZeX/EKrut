@@ -1,21 +1,17 @@
 package controllerGui;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatusEnum;
-import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
 import common.SaleType;
 import common.ScreensNamesEnum;
 import common.TaskType;
-import entity.DeliveryEntity;
 import entity.SaleEntity;
 import entity.SaleEntity.SaleStatus;
 import javafx.collections.FXCollections;
@@ -29,7 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import utils.TooltipSetter;
 
@@ -62,6 +58,10 @@ public class SalesManagementController  implements IScreen {
     
     @FXML
     private Button saveBtn;
+    
+    @FXML
+    private GridPane btnGridPane;
+
 
     private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
    	private ArrayList<SaleEntity> salesToUpdate = new ArrayList<>();
@@ -77,8 +77,12 @@ public class SalesManagementController  implements IScreen {
     		sales.clear();
     	String region =NavigationStoreController.connectedUser.getRegion();
 		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, region));
-		
 		setupTable(); // setup columns connection
+		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingManager)) {
+			saveBtn.setVisible(false);
+			GridPane.setColumnSpan(refreshBtn, 2);
+		}
+			
 		tooltip = new TooltipSetter("Save changes");
 		saveBtn.setTooltip(tooltip.getTooltip());
 		tooltip = new TooltipSetter("Refresh");
@@ -135,7 +139,6 @@ public class SalesManagementController  implements IScreen {
 			
 		});
 	}
-	/* adding the saleEntity to sales list */
 	public static void getSalesEntityFromServer(ArrayList<SaleEntity> saleArr) {
 		sales.addAll(saleArr);
 	}

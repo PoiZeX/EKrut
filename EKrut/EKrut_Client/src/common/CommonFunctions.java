@@ -77,13 +77,6 @@ public class CommonFunctions {
 			// set properties
 			stage.setTitle(type.toString());
 			stage.setResizable(false);
-//			if (type.equals(PopupTypeEnum.Information)) {
-//				stage.setWidth(550);
-//				stage.setHeight(500);
-//			} else {
-//				stage.setWidth(400);
-//				stage.setHeight(350);
-//			}
 
 			// freeze current screen until got popup close
 			stage.initModality(Modality.APPLICATION_MODAL);
@@ -104,9 +97,9 @@ public class CommonFunctions {
 		return latestScene;
 	}
 
-	public static void createShipmentPopup() {
+	public static void createSelectPopup(String path, String title) {
 		FXMLLoader loader;
-		loader = new FXMLLoader(CommonFunctions.class.getResource("/boundary/ShipmentMethodPopupBoundary.fxml"));
+		loader = new FXMLLoader(CommonFunctions.class.getResource(path));
 		Parent root;
 		try {
 			root = loader.load();
@@ -115,7 +108,7 @@ public class CommonFunctions {
 			stage.setScene(new Scene(root));
 
 			// set properties
-			stage.setTitle("Shipment Method");
+			stage.setTitle(title);
 			stage.setResizable(false);
 
 			// freeze current screen until got popup close

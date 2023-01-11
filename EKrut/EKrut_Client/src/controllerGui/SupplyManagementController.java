@@ -1,9 +1,6 @@
 package controllerGui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -11,40 +8,26 @@ import common.Message;
 import common.PopupTypeEnum;
 import common.ScreensNamesEnum;
 import common.TaskType;
-
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.UserEntity;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -89,7 +72,8 @@ public class SupplyManagementController  implements IScreen {
 	@FXML
 	private TableColumn<ItemInMachineEntity, String> itemNameCol;
 
-	@FXML ComboBox<MachineEntity> machineCmb;
+	@FXML
+	ComboBox<MachineEntity> machineCmb;
 
 	@FXML
 	private Label machineNameLbl;
@@ -201,11 +185,12 @@ public class SupplyManagementController  implements IScreen {
 	}
 
 //----------------------------------------------------------------------------   buttons
-/***
- * press refresh button to refresh table and item displayed ask from data base
- * to load updated table
- * @param event
- */
+	/***
+	 * press refresh button to refresh table and item displayed ask from data base
+	 * to load updated table
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void refresh(ActionEvent event) {
 		MachineEntity tempMachine = machineCmb.getValue();
@@ -333,7 +318,7 @@ public class SupplyManagementController  implements IScreen {
 		setFactoryColsForNotOpened();
 		supplyMangmentTbl.setItems(notOpendCalls);
 		colorTableRows(supplyMangmentTbl);
-		
+
 		opencallsTbl.setEditable(true);
 		setFactoryColsForOpened();
 		opencallsTbl.setItems(openedcalls);
@@ -341,10 +326,13 @@ public class SupplyManagementController  implements IScreen {
 		return;
 
 	}
+
 	@SuppressWarnings("unchecked")
-	private void setFactoryCols(TableColumn<ItemInMachineEntity,Integer> idCol,TableColumn<ItemInMachineEntity,String> nameCol,
-			TableColumn<ItemInMachineEntity,Integer> currentAmountCol,TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> stsCol ) {
-	
+	private void setFactoryCols(TableColumn<ItemInMachineEntity, Integer> idCol,
+			TableColumn<ItemInMachineEntity, String> nameCol,
+			TableColumn<ItemInMachineEntity, Integer> currentAmountCol,
+			TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> stsCol) {
+
 		idCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("itemId"));
 		nameCol.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, String>("name"));
 		currentAmountCol.setCellValueFactory(
@@ -353,59 +341,36 @@ public class SupplyManagementController  implements IScreen {
 				(Callback) new PropertyValueFactory<ItemInMachineEntity, ItemInMachineEntity.Call_Status>(
 						"callStatus"));
 	}
+
 	/***
 	 * set columns for table for the opened calls table
 	 */
 	@SuppressWarnings("unchecked")
 	private void setFactoryColsForOpened() {
-		setFactoryCols(itemIdCol1,itemNameCol1,currentAmountCol1,callStatusCol1);
+		setFactoryCols(itemIdCol1, itemNameCol1, currentAmountCol1, callStatusCol1);
 		workerCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("workerId"));
 	}
 
 	/***
 	 * set columns for table the not opened calls table
 	 */
-	@SuppressWarnings("unchecked")
 	private void setFactoryColsForNotOpened() {
-		checkboxCellsList = new ArrayList<>();
 		// factory
-		setFactoryCols(itemIdCol,itemNameCol,currentAmountCol,callStatusCol);
-		refillcol.setCellFactory(column -> {
-			TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
-			checkboxCellsList.add(cell); // save the checkbox
-		//	cell.getGraphic()
-
-			cell.setOnMouseClicked(event -> {
-			//	if (event.getClickCount() > 0) {
-					CheckBox checkBox = (CheckBox) cell.getGraphic();
-	
-					ItemInMachineEntity item = (ItemInMachineEntity) cell.getTableRow().getItem();
-					if (checkBox != null) {
-						
-						if (checkBox.isSelected()) {
-							if(checkBox.selectedProperty().getValue()) {
-							checkBox.setSelected(true);
-								toUpdate.add(item);
-							}
-
-							else {
-								checkBox.setSelected(false);
-								toUpdate.remove(item);
-
-						} 
-						}
-					}
-			//	}
-			});
-			return cell;
-		});
+		setFactoryCols(itemIdCol, itemNameCol, currentAmountCol, callStatusCol);
+		Callback<TableColumn<ItemInMachineEntity, Boolean>, TableCell<ItemInMachineEntity, Boolean>> booleanCellFactory = new Callback<TableColumn<ItemInMachineEntity, Boolean>, TableCell<ItemInMachineEntity, Boolean>>() {
+			@Override
+			public TableCell<ItemInMachineEntity, Boolean> call(TableColumn<ItemInMachineEntity, Boolean> p) {
+				return new BooleanCheckBox();
+			}
+		};
+		refillcol.setCellFactory(booleanCellFactory);
 
 	}
 
 	/***
 	 * color tables rows by the cuurent amount and the status
 	 */
-	private void colorTableRows(TableView<ItemInMachineEntity>  table) {
+	private void colorTableRows(TableView<ItemInMachineEntity> table) {
 		table.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
 			@Override
 			protected void updateItem(ItemInMachineEntity item, boolean empty) {
@@ -488,6 +453,39 @@ public class SupplyManagementController  implements IScreen {
 
 	}
 
+	private class BooleanCheckBox extends TableCell<ItemInMachineEntity, Boolean> {
+		private CheckBox checkBox;
+
+		public BooleanCheckBox() {
+			checkBox = new CheckBox();
+			checkBox.setOnAction((evt) -> {
+				if (checkBox.isSelected())
+					toUpdate.add(getTableView().getItems().get(getIndex()));
+				else
+					toUpdate.remove(getTableView().getItems().get(getIndex()));
+				System.out.println(toUpdate);
+			});
+			checkBox.setId("myCb");
+			this.setGraphic(checkBox);
+			this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			this.setEditable(true);
+		}
+
+		@Override
+		public void updateItem(Boolean item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+				setGraphic(null);
+			} else {
+				if (item != null) {
+					checkBox.setAlignment(Pos.CENTER);
+					checkBox.setSelected(item);
+				}
+				setAlignment(Pos.CENTER);
+				setGraphic(checkBox);
+			}
+		}
+	}
 }
 //refillcol.setCellFactory(column -> {
 //TableCell<ItemInMachineEntity, Boolean> cell = new CheckBoxTableCell<>();
