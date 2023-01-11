@@ -569,7 +569,7 @@ public class ReviewOrderController {
 		productName.setTooltip(new TooltipSetter(item.getName()).getTooltip());
 		
 		// price
-		price.setText(String.valueOf(item.getPrice()) + "₪");
+		price.setText(String.format("%.2f₪", String.valueOf(item.getPrice())));
 		price.setPrefSize(262, 18);
 		price.getStyleClass().add("Label-list");
 		GridPane.setHalignment(price, HPos.LEFT);
@@ -584,7 +584,7 @@ public class ReviewOrderController {
 		// sum
 		tempSum *= cart.get(item);
 		totalDiscountForRowInNIS = tempSum;
-		sum.setText(String.valueOf(tempSum) + "₪");
+		sum.setText(String.format("%.2f₪", tempSum));
 		sum.setPrefSize(62, 18);
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
@@ -605,7 +605,7 @@ public class ReviewOrderController {
 		if (OrderController.isActiveSale() && user.getRole_type().equals(RolesEnum.member)) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
-			priceAfterDiscount.setText(String.valueOf(priceAfterDis) + "₪");
+			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
 
@@ -636,7 +636,7 @@ public class ReviewOrderController {
 			// set total discounts for labels
 			totalDiscounts += totalDiscountForRowInNIS - tempSum;
 			
-			sumAfterDiscount.setText(String.valueOf(tempSum) + "₪");
+			sumAfterDiscount.setText(String.format("%.2f₪", tempSum));
 			sumAfterDiscount.setPrefSize(62, 18);
 			sumAfterDiscount.getStyleClass().add("Label-list-red");
 

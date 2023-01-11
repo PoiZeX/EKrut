@@ -8,6 +8,10 @@ import Store.NavigationStoreController;
 import controllerGui.HostClientController;
 import controllerGui.LoginController;
 
+/**
+ * The start class of application
+ *
+ */
 public class ClientUI extends Application {
 
 	public static void main(String[] args) throws Exception {
@@ -34,10 +38,9 @@ public class ClientUI extends Application {
 			{
 				// default
 				AppConfig.SYSTEM_CONFIGURATION = "OL";  // and machine id doesn't matter
-			}
-				
+			}	
 		}
-			
+		// if args were not inserted - use default
 		launch(args);
 	}
 
