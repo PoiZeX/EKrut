@@ -3,7 +3,6 @@ package controllerGui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -11,6 +10,7 @@ import common.CustomerStatusEnum;
 import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
+import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
@@ -64,10 +64,13 @@ public class DeliveryManagementController {
 	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
 	private TooltipSetter tooltip;
 	private static UserEntity userToSend=null;
-	private String msg="Hi!\nyour delivery is on the way,\nthe estimated arrivel time is ";
-
+	private static final int loadingTime=2; //constant for the delivery loading time
+	private static final int distance=2; //constant for distance of the destination in km
+	private static final int fourAm=4;  //constant for the start time of the delivery activity
+	private static final int sixPM=18; //constant for the end time of the delivery activity
+	
 	@FXML
-	// Setup screen before launching view
+	/**Setup screen before launching view*/
 	public void initialize() throws Exception {
 		refresh(null);
 		setupTable(); // setup columns connection
@@ -85,18 +88,45 @@ public class DeliveryManagementController {
 		chat.acceptObj(new Message(TaskType.RequestDeliveriesFromServer,NavigationStoreController.connectedUser.getRegion())); // get all entities to ArrayList from
 																					// DB
 	}
-
+	/**
+	 * Send to server the deliveries for update
+	 * Send massege (SMS) to the relevent customers with the astimated arrivel time
+	 * @param event
+	 */
 	@FXML
 	private void save(ActionEvent event) {
 		if (changedDeliveryItems.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries, changedDeliveryItems));
-			//if(userToSend!=null)
-				//SMSMailHandlerController.SendSMSOrMail(SMS, userToSend, "Delivery", msg);
+			for(DeliveryEntity de:changedDeliveryItems) {
+				if(de.getDeliveryStatus().equals(DeliveryStatusEnum.pendingApproval)) {
+					chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer,de.getOrderId()));
+					waitToAnswer();
+					String msg="Hi!\nOrder number "+de.getOrderId()+ 
+							 " is on the way\nThe estimated arrivel time is "+de.getEstimatedTime();
+					SMSMailHandlerController.SendSMSOrMail("SMS", userToSend, "Delivery", msg);
+					userToSend=null;
+				}
+			}
 			changedDeliveryItems.clear();
 		}
 
 	}
-
+	/**
+	 * Waiting to receive the UserEntity from the server
+	 */
+	private void waitToAnswer() {
+		while (userToSend == null) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * setUp the delivery table according to the region
+	 */
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
 		deliveryTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -129,6 +159,7 @@ public class DeliveryManagementController {
 						deliveryEntity.getEstimatedTime(),deliveryEntity.getDeliveryStatus(),deliveryEntity.getCustomerStatus());
 				DeliveryStatusEnum oldStatus=deliveryEntity.getDeliveryStatus();
 				DeliveryStatusEnum newStatus=event.getNewValue();
+			
 				if(!oldStatus.equals(newStatus)) {
 					switch (newStatus){
 					case pendingApproval:
@@ -144,10 +175,6 @@ public class DeliveryManagementController {
 							deliveryEntityUpdate.setEstimatedTime(calculateEstimatedTime());
 							deliveryEntityUpdate.setDeliveryStatus(newStatus);
 							errorLbl.setText("");
-							msg+=calculateEstimatedTime();
-							//chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer,deliveryEntity.getOrderId()));
-						//	SMSMailHandlerController.SendSMSOrMail(SMS, UserEntity to, "Delivery", msg);
-							//TODO add: send message to the costumer with the estimated Time
 						}
 						else {
 						errorLbl.setText("Can't change from done status to outForDelivery status ");}
@@ -164,50 +191,36 @@ public class DeliveryManagementController {
 						else {
 						errorLbl.setText("Can't change from pendingApproval status to done status ");}
 						break;
-					default:
-						
-						break;
-					}
-					
+					}	
 				}
 				//for save the last update
 				if (changedDeliveryItems.contains(deliveryEntityUpdate))
 					changedDeliveryItems.remove(deliveryEntityUpdate);
 				changedDeliveryItems.add(deliveryEntityUpdate);
 			}
-
 		});
-
 	}
 
 	/**
-	 * calculae the estimated delivery time Between 6:00 to 16:00 the estimated
-	 * arrival time is within 4 hours. Between 00:00 to 06:00 the estimated arrival
-	 * time is within 12 hours. Between 16:00 to 00:00 the estimated arrival time is
-	 * in the next day (about 18 hours).
+	 * calculae the estimated delivery time according to the current time:
+	 *  Between 4:00 to 18:00 the estimated is within loadingTime+distance hours. 
+	 *  Between 00:00 to 04:00 the estimated is within 5+loadingTime+distance hours .
+	 *  Between 18:00 to 00:00 the estimated is in the next day at current hour+loadingTime+distance hours.
 	 */
 
+	@SuppressWarnings("unused")
 	private String calculateEstimatedTime() {
-		Calendar estimated = Calendar.getInstance();
+		Calendar estimated = Calendar.getInstance(); //gets now time
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-		Calendar fourPM = Calendar.getInstance();
-		fourPM.set(Calendar.HOUR_OF_DAY, 16);
-		fourPM.set(Calendar.MINUTE, 0);
-
-		Calendar sixAM = Calendar.getInstance();
-		sixAM.set(Calendar.HOUR_OF_DAY, 6);
-		sixAM.set(Calendar.MINUTE, 0);
-
-		if (estimated.after(fourPM)) {
+		if (Calendar.HOUR_OF_DAY<fourAm) {
 			estimated.add(Calendar.DATE, 1);
-			estimated.add(Calendar.HOUR, -6);
-		} else if (estimated.before(sixAM)) {
-			estimated.add(Calendar.HOUR, 12);
-		} else {
-			estimated.add(Calendar.HOUR, 4);
-		}
-
+		
+		} else if (Calendar.HOUR_OF_DAY>sixPM) {
+			estimated.add(Calendar.HOUR, 5);
+		}	
+		
+		estimated.add(Calendar.HOUR, loadingTime+distance);
 		return formatter.format(estimated.getTime());
 	}
 
@@ -215,7 +228,7 @@ public class DeliveryManagementController {
 	public static void getDeliveryEntityFromServer(ArrayList<DeliveryEntity> deliveriesArr) {
 			deliveries.addAll(deliveriesArr);
 	}
-	
+	/** gets the userEntity for send him message */
 	public static void getUserEntityFromServer(UserEntity userEntity) {
 		userToSend=userEntity;
 }
