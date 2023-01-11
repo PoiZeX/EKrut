@@ -5,11 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 import entity.ClientsReportEntity;
+import entity.OrderEntity;
 import entity.OrderReportEntity;
 import entity.SupplyReportEntity;
 import mysql.MySqlClass;
@@ -166,4 +168,26 @@ public class ReportsDBController {
 		return report;
 
 	}
+
+	public static boolean isReportExist(String reportType, String month, String year, String region) {
+
+		try {
+			if (MySqlClass.getConnection() == null)
+				return false;
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement ps = conn
+					.prepareStatement(String.format("SELECT * FROM %s_report WHERE month=? AND year=? AND region=?;", reportType));
+			ps.setString(1, CommonFunctions.getNumericMonth(month));
+			ps.setString(2, year);
+			ps.setString(3, region);
+			ResultSet res = ps.executeQuery();
+			if (res.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

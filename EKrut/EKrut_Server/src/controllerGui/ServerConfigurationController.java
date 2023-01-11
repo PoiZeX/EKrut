@@ -10,11 +10,16 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Inet4Address;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -89,7 +94,7 @@ public class ServerConfigurationController {
 		}
 		ServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
 				this.txtDBPassword.getText());
-		
+
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
 		setDisableTextFieldValues(true);
@@ -143,6 +148,12 @@ public class ServerConfigurationController {
 
 	}
 
+	/**
+	 * Get current computer IP
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	private String getIPValue() throws Exception {
 		String ip = null;
 		try {
@@ -153,6 +164,11 @@ public class ServerConfigurationController {
 		return ip;
 	}
 
+	/**
+	 * Disable all text fields
+	 * 
+	 * @param b
+	 */
 	private void setDisableTextFieldValues(boolean b) {
 		txtDBName.setDisable(b);
 		txtIP.setDisable(b);
@@ -205,16 +221,16 @@ public class ServerConfigurationController {
 					continue; // skip empty lines
 				ArrayList<String> fields = new ArrayList<>(Arrays.asList(line.split(cvsSplitBy)));
 				cnt++;
-				
+
 				fields.forEach(item -> {
 					fields.set(fields.indexOf(item), item.trim());
 				});
-				
+
 				// normalization form
 				if (fields.size() != num_of_fields || fields.contains("") ) {
 					System.out.println(String.format("Error in line %d", cnt));
 					System.out.println("Tuples rules reminder:\n"
-					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
+							+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
 					continue;
 				}
 				res.add(fields.toArray(new String[fields.size()]));
@@ -232,4 +248,7 @@ public class ServerConfigurationController {
 		}
 
 	}
+
+
+
 }
