@@ -127,7 +127,7 @@ public class ReviewOrderController {
 	private GridPane productsGrid;
 	private static Object data;
 	private static boolean isDataRecived = false;
-
+	private static Boolean firstPurchase=false;
 	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
@@ -143,7 +143,8 @@ public class ReviewOrderController {
 
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
-
+			isFirstpurchase();
+			
 			// build graphical side
 			buildReviewOrder();
 
@@ -193,27 +194,37 @@ public class ReviewOrderController {
 				sb.append("* " + discount + "\n");
 			}
 		}
+			
+			if(firstPurchase)
+				sb.append("* 20% for first purchase as a member!\n");
+			//	totalDiscounts+=(OrderController.getTotalPrice()*0.2);
+				// show a relevant label / tooltip
 
+			
+
+			// show special label or something
+			
+			totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
+			totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
+		
+		if (!totulDiscountSumLbl.getText().equals("0.00₪")) {
+			// set tooltip text and apply to label (will be with an image)
+			totulDiscountSumLbl.setTooltip((new TooltipSetter(sb.toString()).getTooltip()));
+		}
+
+	}
+	
+	private void isFirstpurchase() throws Exception {
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)
 				&& !OrderController.isFirstPurchaseDiscountApplied) {
 			waitOn(new Message(TaskType.isMemberFirstPurchase, NavigationStoreController.connectedUser));
 			if ((boolean) data) {
 				// give discount just one time
 				OrderController.addMemberFirstPurchaseDiscount();
-				sb.append("* 20% for first purchase as a member!\n");
-				// show a relevant label / tooltip
-
+				firstPurchase=true;
+				
 			}
-
-			// show special label or something
-			totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
-			totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
 		}
-		if (!totulDiscountSumLbl.getText().equals("0.00₪")) {
-			// set tooltip text and apply to label (will be with an image)
-			totulDiscountSumLbl.setTooltip((new TooltipSetter(sb.toString()).getTooltip()));
-		}
-
 	}
 
 	/**
@@ -602,6 +613,7 @@ public class ReviewOrderController {
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
+			
 			if(OrderController.isPercentageSaleExit()) {
 				price.getStyleClass().remove("Label-list");
 				price.getStyleClass().add("LableOldPrice");

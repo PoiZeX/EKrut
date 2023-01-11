@@ -236,6 +236,8 @@ public class OrderController {
 				return true;
 			}
 		}
+		if(currentOrder != null && isFirstPurchaseDiscountApplied)
+			return true;
 		return false;
 	}
 

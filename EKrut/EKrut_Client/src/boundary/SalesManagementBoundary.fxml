@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SalesManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SalesManagementController">
    <bottom>
       <GridPane prefHeight="70.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -37,9 +36,6 @@
          <rowConstraints>
             <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
-         <children>
-            <Label alignment="CENTER" lineSpacing="12.0" prefHeight="61.0" prefWidth="260.0" styleClass="LabelTitle" text="Active sales" underline="true" />
-         </children>
       </GridPane>
    </top>
    <center>
@@ -61,7 +57,7 @@
                   </TableView>
                </children>
             </Pane>
-            <GridPane alignment="CENTER" prefHeight="74.0" prefWidth="225.0" styleClass="GridPaneChild">
+            <GridPane fx:id="btnGridPane" alignment="CENTER" prefHeight="74.0" prefWidth="225.0" styleClass="GridPaneChild">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="167.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="167.0" />
@@ -87,7 +83,7 @@
                         <Font name="Calibri" size="12.0" />
                      </font>
                      <graphic>
-                        <ImageView fitHeight="53.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
+                        <ImageView fitHeight="53.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true" styleClass="Button-NoBG">
                            <image>
                               <Image url="@../styles/icons/043-sync.png" />
                            </image>
