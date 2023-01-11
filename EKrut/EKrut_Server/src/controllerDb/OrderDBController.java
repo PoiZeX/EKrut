@@ -216,7 +216,6 @@ public class OrderDBController {
 		try {
 			if(takeMoneyOnOrders(year, month));
 			updatePaymentStatus(year, month);
-
 		} catch (Exception e) {
 
 		}

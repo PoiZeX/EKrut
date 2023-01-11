@@ -41,7 +41,7 @@ public class UsersManagementDBController {
 			if (MySqlClass.getConnection() == null)
 				return unapprovedUsersList;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number!=null;");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number is not null;");
 			ps.setInt(1, 1);
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
@@ -171,7 +171,11 @@ public class UsersManagementDBController {
 		
 	}
 	
-	
+	/**
+	 * return the user entity for given ID, or null if not found+
+	 * @param userId
+	 * @return
+	 */
 	public static UserEntity getUserByID(int userId) {
 		UserEntity user = new UserEntity();
 		try {
