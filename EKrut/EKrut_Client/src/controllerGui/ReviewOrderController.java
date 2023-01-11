@@ -316,7 +316,7 @@ public class ReviewOrderController {
 			waitOn(new Message(TaskType.AddNewDelivery, deliveryEntity));
 
 			successMsg += "Order #" + orderId
-					+ " placed successfuly\n\nYou will receive an SMS once \nthe delivery approved!";
+					+ " placed successfuly\n\nYou will receive an SMS once the delivery approved!";
 			break;
 
 		// ---- Pickup / On-site ----
@@ -458,7 +458,11 @@ public class ReviewOrderController {
 			UserEntity regionManager = (UserEntity) data;
 			if (regionManager != null) {
 				SMSMailHandlerController.SendSMSOrMail("SMS", regionManager, "Minimum amount Alert", sb.toString());
+				CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+
 				SMSMailHandlerController.SendSMSOrMail("Mail", regionManager, "Minimum amount Alert", sb.toString());
+				CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+
 			}
 		}
 
