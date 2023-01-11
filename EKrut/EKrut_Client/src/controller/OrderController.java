@@ -77,6 +77,7 @@ public class OrderController {
 	 */
 	public static void addMemberFirstPurchaseDiscount() {
 		OrderController.addDiscount(20); // members get 20% on first order
+		percentageSaleExit=true;
 		OrderController.isFirstPurchaseDiscountApplied = true;
 	}
 

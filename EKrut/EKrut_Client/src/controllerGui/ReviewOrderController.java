@@ -201,11 +201,13 @@ public class ReviewOrderController {
 				// give discount just one time
 				OrderController.addMemberFirstPurchaseDiscount();
 				sb.append("* 20% for first purchase as a member!\n");
+				totalDiscounts+=(OrderController.getTotalPrice()*0.2);
 				// show a relevant label / tooltip
 
 			}
 
 			// show special label or something
+			
 			totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
 			totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
 		}
