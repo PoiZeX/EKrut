@@ -125,7 +125,11 @@ public class DeliveryManagementController {
 	}
 	
 	/**
-	 * setUp the delivery table according to the region
+	 *  setUp the delivery table according to the region
+	 *  Handle delivery status edit:
+		 * can change from "pendingApproval" to "outForDelivery"
+		 * or from "outForDelivery" to "done".
+		 * in other cases, the changes aren't saved
 	 */
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
@@ -147,7 +151,7 @@ public class DeliveryManagementController {
 		statusLst.addAll(DeliveryStatusEnum.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
 		
-		/** Handle delivery status edit:
+		/* Handle delivery status edit:
 		 * can change from "pendingApproval" to "outForDelivery"
 		 * or from "outForDelivery" to "done".
 		 * in other cases, the changes aren't saved*/
