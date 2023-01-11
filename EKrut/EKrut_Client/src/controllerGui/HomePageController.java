@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
-public class HomePageController {
+public class HomePageController  implements IScreen {
 
 ////--------------------------------
 
@@ -59,6 +59,7 @@ public class HomePageController {
 	@FXML
 	private VBox rigthVbox;
 
+	@Override
 	public void initialize() {
 
 		// set hidden as default

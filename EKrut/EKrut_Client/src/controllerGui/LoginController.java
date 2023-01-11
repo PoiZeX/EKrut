@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
 
-public class LoginController {
+public class LoginController  implements IScreen {
 
 	protected static ClientController chat;
 	private static String username, password;
@@ -48,8 +48,13 @@ public class LoginController {
 	@FXML
 	private Button EKTLoginBtn;
 
+	@Override
+	public void initialize() {
+		
+	}
+	
 	public LoginController() {
-		chat = HostClientController.chat; // one instance
+		chat = HostClientController.getChat(); // one instance
 	}
 
 	/**
@@ -264,5 +269,6 @@ public class LoginController {
 		loginBtn.setDisable(disable);
 		EKTLoginBtn.setDisable(disable);
 	}
+
 
 }

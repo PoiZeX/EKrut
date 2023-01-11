@@ -41,7 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 
-public class SupplyUpdateController {
+public class SupplyUpdateController  implements IScreen {
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;
@@ -86,7 +86,7 @@ public class SupplyUpdateController {
 	private Button updatedBtn;
 
 	private static MachineEntity machine;
-	private static ClientController chat = HostClientController.chat; // define the chat for t
+	private static ClientController chat = HostClientController.getChat(); // define the chat for t
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	public static ObservableList<ItemInMachineEntity> itemsInMachineLst = FXCollections.observableArrayList();
 	private static LinkedHashMap<Integer, ItemInMachineEntity> itemsOg = new LinkedHashMap<Integer, ItemInMachineEntity>();
@@ -99,9 +99,8 @@ public class SupplyUpdateController {
 	/***
 	 * initialize the screen
 	 * 
-	 * @throws Exception
 	 */
-	@FXML
+	@Override
 	public void initialize() {
 		arrStr[0] = "1";
 		arrStr[1] = NavigationStoreController.connectedUser.getId() + "";

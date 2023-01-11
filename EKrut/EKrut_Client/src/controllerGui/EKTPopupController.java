@@ -29,6 +29,7 @@ public class EKTPopupController extends LoginController {
 	/**
 	 * Initialize screen
 	 */
+	@Override
 	public void initialize() {
 		headlineLabel.setText("Waiting for EKT connection");
 		timerSuccess = new Timer();

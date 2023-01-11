@@ -16,7 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class PersonalMessagesController {
+public class PersonalMessagesController  implements IScreen {
 	@FXML
 	private TableView<PersonalMessageEntity> messageTable;
 	@FXML
@@ -33,6 +33,7 @@ public class PersonalMessagesController {
 
 	public static ObservableList<PersonalMessageEntity> msgsList = FXCollections.observableArrayList();
 
+	@Override
 	public void initialize() {
 		requestPersonalMessages();
 		setupTable();
@@ -75,7 +76,7 @@ public class PersonalMessagesController {
 	 */
 	private void requestPersonalMessages() {
 		Message message = new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser);
-		HostClientController.chat.acceptObj(message);
+		HostClientController.getChat().acceptObj(message);
 	}
 
 	/**

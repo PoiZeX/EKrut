@@ -19,7 +19,7 @@ import common.PopupTypeEnum;
 import common.TaskType;
 import common.ScreensNamesEnum;
 
-public class HostClientController {
+public class HostClientController  implements IScreen {
 
 	@FXML
 	private BorderPane borderPane;
@@ -41,10 +41,10 @@ public class HostClientController {
 
 	@FXML
 	private Label headLine;
-	public static ClientController chat; // only one instance
+	private static ClientController chat = null; // only one instance
 
 	@FXML
-	void SendPort(ActionEvent event) {
+	private void SendPort(ActionEvent event) {
 		String host = hostTxt.getText(), port = portTxt.getText();
 
 		// Validate
@@ -78,6 +78,15 @@ public class HostClientController {
 		if(AppConfig.MACHINE_ID <= 0)
 			CommonFunctions.createPopup(PopupTypeEnum.Warning, "You must provide a machine id\nThe syntax should be:\n\n"
 					+"java -jar EKrut_Client.jar arg <machine_id>");
+	}
+
+	@Override
+	public void initialize() {
+		
+	}
+	
+	public static ClientController getChat() {
+		return chat;
 	}
 
 }

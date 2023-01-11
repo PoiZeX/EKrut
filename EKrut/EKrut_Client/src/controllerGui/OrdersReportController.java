@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class OrdersReportController {
+public class OrdersReportController  implements IScreen {
 
 	@FXML
 	private PieChart pieChartOrders;
@@ -43,6 +43,7 @@ public class OrdersReportController {
 	protected static OrderReportEntity reportDetails;
 	protected static boolean RecievedData = false;
 
+	@Override
 	public void initialize() {
 
 		reportDetailsLabel.setText(String.format("%s - %s/%s", reportDetails.getRegion(), reportDetails.getMonth(),

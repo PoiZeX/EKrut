@@ -18,7 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 
-public class ReportSelectionController {
+public class ReportSelectionController  implements IScreen {
 	private String selectedReport = "";
 
 	@FXML
@@ -51,7 +51,7 @@ public class ReportSelectionController {
 	@FXML
 	private Label regionLabel;
 
-	ClientController chat = HostClientController.chat; // define the chat for the controller
+	ClientController chat = HostClientController.getChat(); // define the chat for the controller
 	
 	private String year, month, region;
 
@@ -111,7 +111,7 @@ public class ReportSelectionController {
 
 		}
 	}
-
+	@Override
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
 		for (int i = 2016; i <= 2023; i++) {

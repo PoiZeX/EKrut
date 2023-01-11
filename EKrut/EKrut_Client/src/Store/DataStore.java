@@ -12,7 +12,7 @@ import entity.UserEntity;
 import utils.AppConfig;
 
 public class DataStore {
-	private static ClientController chat = HostClientController.chat; // one instance
+	private static ClientController chat = HostClientController.getChat(); // one instance
 	private static ArrayList<String> allRegions;
 	private static ArrayList<MachineEntity> allMachines;
 	private static MachineEntity currentMachine;

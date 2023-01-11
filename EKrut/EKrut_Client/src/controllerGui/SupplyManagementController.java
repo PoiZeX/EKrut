@@ -32,7 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-public class SupplyManagementController {
+public class SupplyManagementController  implements IScreen {
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
 
@@ -105,7 +105,7 @@ public class SupplyManagementController {
 	@FXML
 	private ComboBox<UserEntity> workerCmb;
 
-	private static ClientController chat = HostClientController.chat; // define the chat for th
+	private static ClientController chat = HostClientController.getChat(); // define the chat for th
 
 	public static ObservableList<MachineEntity> machineLst = FXCollections.observableArrayList();
 	public static ObservableList<UserEntity> supplyWorkers = FXCollections.observableArrayList();
@@ -121,20 +121,25 @@ public class SupplyManagementController {
 	private static String region;
 	public static boolean recievedData = false;
 
-	@FXML
-	public void initialize() throws Exception {
-		region = NavigationStoreController.connectedUser.getRegion();
-		arrStr[0] = "0";
-		arrStr[1] = region;
-		recievedData = false;
-		chat.acceptObj(new Message(TaskType.InitMachinesInRegions, arrStr));
-		while (!recievedData)
-			Thread.sleep(100);
-		setUpMachineComboBox();
-		chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
-		while (!recievedData)
-			Thread.sleep(100);
-		setUpSupplyWorkersComboBox();
+	@Override
+	public void initialize()  {
+		try {
+			
+			region = NavigationStoreController.connectedUser.getRegion();
+			arrStr[0] = "0";
+			arrStr[1] = region;
+			recievedData = false;
+			chat.acceptObj(new Message(TaskType.InitMachinesInRegions, arrStr));
+			while (!recievedData)
+				Thread.sleep(100);
+			setUpMachineComboBox();
+			chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
+			while (!recievedData)
+				Thread.sleep(100);
+			setUpSupplyWorkersComboBox();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 //----------------------------------------------------------------------------   Combobox setup

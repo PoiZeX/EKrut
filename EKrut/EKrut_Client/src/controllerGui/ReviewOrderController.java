@@ -68,8 +68,8 @@ import javafx.stage.WindowEvent;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
-public class ReviewOrderController {
-	private static ClientController chat = HostClientController.chat;
+public class ReviewOrderController  implements IScreen {
+	private static ClientController chat = HostClientController.getChat();
 	private TooltipSetter tooltip;
 
 	@FXML

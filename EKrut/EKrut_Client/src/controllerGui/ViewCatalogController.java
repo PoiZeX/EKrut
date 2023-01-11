@@ -62,7 +62,7 @@ import utils.TooltipSetter;
 /**
  * Controller class for the view catalog screen.
  */
-public class ViewCatalogController {
+public class ViewCatalogController implements IScreen {
 
 	@FXML
 	private BorderPane viewCatalogBorderpane;
@@ -124,18 +124,15 @@ public class ViewCatalogController {
 	private int machineId = AppConfig.MACHINE_ID;
 	private ObservableList<Node> allCatalogItems;
 	private String currentSupplyMethod;
-	private static ClientController chat = HostClientController.chat; // define the chat for th
+	private static ClientController chat = HostClientController.getChat(); // define the chat for th
 	private static boolean recievedData = false;
 
 	/**
 	 * Initialize the view catalog screen.
-	 * 
-	 * @throws InterruptedException if the thread is interrupted while waiting for
-	 *                              data to be received
-	 * @throws ExecutionException   if there was an error executing the task to
-	 *                              request items from the machine
 	 */
-	public void initialize() throws InterruptedException, ExecutionException {
+	@Override
+	public void initialize() {
+		try {
 		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
 		
 		checkRequestType();
@@ -160,8 +157,10 @@ public class ViewCatalogController {
 		shipmentMethodLabel.setMouseTransparent(true);
 		setTooltips();
 		recievedData = false;
-
-		
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

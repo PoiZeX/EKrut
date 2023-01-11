@@ -12,7 +12,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 
-public class ClientsReportController {
+public class ClientsReportController  implements IScreen {
 
 	@FXML
 	private BarChart<String, Integer> activityBarChart;
@@ -30,6 +30,7 @@ public class ClientsReportController {
 	protected static ClientsReportEntity reportDetails;
 	protected static boolean RecievedData = false;
 
+	@Override
 	public void initialize() {
 		titleLabel.setText("Clients Report : " + reportDetails.getRegion());
 		initCharts();

@@ -31,7 +31,7 @@ import javafx.scene.layout.GridPane;
 import utils.AppConfig;
 import utils.TooltipSetter;
 
-public class RegistrationFormController{
+public class RegistrationFormController implements IScreen {
 	private ArrayList<TextField> dataArray;
 
     @FXML
@@ -97,12 +97,13 @@ public class RegistrationFormController{
     @FXML
     private ComboBox<String> regionComboBox;
 
-    ClientController chat = HostClientController.chat;
+    ClientController chat = HostClientController.getChat();
 	protected static Object recivedData;
 	protected static boolean isDataRecived = false;
 	private String roleType;
 	private boolean creditCardChecker = false;
     
+	@Override
     public void initialize() {
     	dataArray = new ArrayList<>();
     	dataArray.add(firstnameTxtField);

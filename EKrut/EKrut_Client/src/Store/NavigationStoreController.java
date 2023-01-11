@@ -443,7 +443,7 @@ public class NavigationStoreController {
 	private void logoutFromTimeout() {
 		if (connectedUser != null && connectedUser.isLogged_in()) {
 			connectedUser.setLogged_in(false); // logout user
-			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+			HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			connectedUser = null;
 			NavigationStoreController.getInstance().clearAll();
 			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
@@ -464,10 +464,10 @@ public class NavigationStoreController {
 
 			if (connectedUser.isLogged_in()) {
 				connectedUser.setLogged_in(false); // logout the user
-				HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			}
-			if (HostClientController.chat != null)
-				HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
+			if (HostClientController.getChat() != null)
+				HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
 
 			connectedUser = null;
 			if (!closeAllScreens) { // reset all and refresh

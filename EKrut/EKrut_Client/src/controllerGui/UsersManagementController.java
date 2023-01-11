@@ -25,7 +25,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
-public class UsersManagementController {
+public class UsersManagementController  implements IScreen {
 
 	@FXML
 	private Button returnBtn;
@@ -73,10 +73,11 @@ public class UsersManagementController {
 	private static boolean recievedData = false;
 	private static ArrayList<UserEntity> unapprovedUsers;
 	private static ArrayList<UserEntity> toApprove;
-	private static ClientController chat = HostClientController.chat; // one instance
+	private static ClientController chat = HostClientController.getChat(); // one instance
 	ArrayList<TableCell<UserEntity, Boolean>> checkboxCellsList = new ArrayList<>();
 	private boolean allSelected;
 
+	@Override
 	public void initialize() {
 		chat.acceptObj(new Message(TaskType.RequestUnapprovedUsers, null));
 		while (!recievedData) {

@@ -29,7 +29,7 @@ import javafx.util.Callback;
 import utils.TooltipSetter;
 import javafx.scene.control.Label;
 
-public class DeliveryManagementController {
+public class DeliveryManagementController  implements IScreen {
 
 
     @FXML
@@ -60,7 +60,7 @@ public class DeliveryManagementController {
     private Label errorLbl;
     
 
-   private static ClientController chat = HostClientController.chat; // define the chat for the controller
+   private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
 	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
 	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
 	private TooltipSetter tooltip;
@@ -72,14 +72,18 @@ public class DeliveryManagementController {
 	
 	@FXML
 	/**Setup screen before launching view*/
-	public void initialize() throws Exception {
+	@Override
+	public void initialize(){
+		try {
 		refresh(null);
 		setupTable(); // setup columns connection
 		tooltip = new TooltipSetter("Save changes");
 		saveBtn.setTooltip(tooltip.getTooltip());
 		tooltip = new TooltipSetter("Refresh");
 		refreshBtn.setTooltip(tooltip.getTooltip()); 
-		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML

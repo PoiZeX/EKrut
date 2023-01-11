@@ -29,7 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import utils.TooltipSetter;
 
-public class SalesManagementController {
+public class SalesManagementController  implements IScreen {
 
 
     @FXML
@@ -63,14 +63,16 @@ public class SalesManagementController {
     private GridPane btnGridPane;
 
 
-    private static ClientController chat = HostClientController.chat; // define the chat for the controller
+    private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
    	private ArrayList<SaleEntity> salesToUpdate = new ArrayList<>();
    	public static ObservableList<SaleEntity> sales=FXCollections.observableArrayList();
    	private TooltipSetter tooltip;
    	
    	@FXML
 	// Setup screen before launching view
-	public void initialize() throws Exception {
+   	@Override
+	public void initialize()  {
+   		try {
     	if (sales != null)
     		sales.clear();
     	String region =NavigationStoreController.connectedUser.getRegion();
@@ -85,6 +87,9 @@ public class SalesManagementController {
 		saveBtn.setTooltip(tooltip.getTooltip());
 		tooltip = new TooltipSetter("Refresh");
 		refreshBtn.setTooltip(tooltip.getTooltip()); 
+   		}catch(Exception e) {
+   			e.printStackTrace();
+   		}
 		
 	}
     @FXML
