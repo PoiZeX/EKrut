@@ -329,8 +329,8 @@ public class OrderController {
 	}
 
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
-		if (activeSales == null)
-			return itemPrice;
+//		if (activeSales == null )
+//			return itemPrice;
 		return itemPrice * discounts;
 
 	}
