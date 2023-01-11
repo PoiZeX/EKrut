@@ -354,7 +354,7 @@ public class SupplyManagementController  implements IScreen {
 						"callStatus"));
 	}
 	/***
-	 * set columns for table
+	 * set columns for table for the opened calls table
 	 */
 	@SuppressWarnings("unchecked")
 	private void setFactoryColsForOpened() {
@@ -363,7 +363,7 @@ public class SupplyManagementController  implements IScreen {
 	}
 
 	/***
-	 * set columns for table
+	 * set columns for table the not opened calls table
 	 */
 	@SuppressWarnings("unchecked")
 	private void setFactoryColsForNotOpened() {

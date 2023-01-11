@@ -10,9 +10,19 @@ import common.TaskType;
 import controllerDb.*;
 import entity.*;
 import ocsf.server.ConnectionToClient;
-
+/**
+ * The {@code MessageHandler} class is responsible for handling messages received from clients.
+ * It uses the {@link common.TaskType} value of the {@link common.Message} object to determine
+ * the appropriate action to take, and then calls the appropriate method in the appropriate controller.
+*/
 public class MessageHandler {
-
+	/**
+	 * Handles the given message and client.
+	 * 
+	 * @param msg the message to handle
+	 * @param client the client associated with the message
+	 * @throws IOException if an I/O error occurs
+	 */
 	@SuppressWarnings("unchecked")
 	public static void Handle(Message msg, ConnectionToClient client) throws IOException {
 		TaskType task = msg.getTask();

@@ -79,7 +79,10 @@ public class LoginDBController {
 		return user;
 
 	}
-
+	/**
+	 * The method setUserLoggedIn sets the user's logged_in status in the database based on the provided UserEntity
+	 * @param user an instance of UserEntity class that holds the user information and the updated status of the user
+	*/
 	public static void setUserLoggedIn(UserEntity user) {
 		try {
 			if (MySqlClass.getConnection() == null)
