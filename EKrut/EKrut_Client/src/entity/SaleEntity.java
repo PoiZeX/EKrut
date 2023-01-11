@@ -1,17 +1,16 @@
 package entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
-import common.SaleType;
+
 
 
 public class SaleEntity implements Serializable {
 	//enum for sale status
 	public enum SaleStatus{Active, NotActive;
 	} ;
-	private SaleType saletype;
+
 	private static final long serialVersionUID = 1L;
 	private int SaleID;
 	private String saleType, region, days ;
@@ -81,5 +80,6 @@ public class SaleEntity implements Serializable {
 	public void setDays(String days) {
 		this.days = days;
 	}
+
 
 }

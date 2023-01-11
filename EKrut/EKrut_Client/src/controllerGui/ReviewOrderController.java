@@ -1,30 +1,15 @@
 package controllerGui;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-
 import java.util.LinkedHashMap;
-import java.util.Map;
-
-import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
-
-import javax.management.relation.Role;
-
-import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.CalendarConversion;
-
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
-import common.ScreensNamesEnum;
 import common.TaskType;
 import controller.OrderController;
 import controller.SMSMailHandlerController;
@@ -34,43 +19,30 @@ import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.PickupEntity;
 import entity.UserEntity;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class ReviewOrderController  implements IScreen {
 	private static ClientController chat = HostClientController.getChat();
-	private TooltipSetter tooltip;
 
 	@FXML
 	private Label ReviewOrderTitleLbl;
