@@ -18,7 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class ShipmentMethodPopupController {
+public class ShipmentMethodPopupController  implements IScreen {
 
 	@FXML
 	private GridPane gridPane;

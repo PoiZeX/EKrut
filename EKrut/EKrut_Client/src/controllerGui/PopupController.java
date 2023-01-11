@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class PopupController {
+public class PopupController  implements IScreen {
 
 	@FXML
 	private Button NoCancelBtn;
@@ -39,6 +39,7 @@ public class PopupController {
 	/**
 	 * initialize the screen
 	 */
+	@Override
 	public void initialize() {
 		// set hidden as default
 		yesOkBtn.setVisible(false);

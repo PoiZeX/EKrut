@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import utils.TooltipSetter;
 
-public class CreateNewSaleController {
+public class CreateNewSaleController implements IScreen  {
 
     @FXML
     private Button createBtn;
@@ -70,7 +70,7 @@ public class CreateNewSaleController {
     private TooltipSetter tooltip;
     private static Boolean valid = null;
     ArrayList<String> daysArr=new ArrayList<>();
-    ClientController chat = HostClientController.chat; // define the chat for the controller
+    ClientController chat = HostClientController.getChat(); // define the chat for the controller
     
     
     /** send new sale entity to the server*/
@@ -112,8 +112,9 @@ public class CreateNewSaleController {
     
    
 	/** Setup screen before launching view */
-    @FXML
-	public void initialize() throws Exception {
+    @Override
+	public void initialize() {
+    	try {
     	initTimeCmb();
     	 initDays();
     	//initDatePickers();
@@ -155,6 +156,11 @@ public class CreateNewSaleController {
 				saleType=typeCmb.getValue();
 			}
 		});	
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
 	}
     
     /**Validation:

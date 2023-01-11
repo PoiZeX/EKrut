@@ -37,7 +37,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
-public class SupplyReportController {
+public class SupplyReportController implements IScreen  {
 
 	@FXML
 	private BarChart<String, Integer> supplySBC;
@@ -60,7 +60,7 @@ public class SupplyReportController {
 	@FXML
 	private Label textConclusionsLbl;
 
-	protected static ClientController chat = HostClientController.chat;
+	protected static ClientController chat = HostClientController.getChat();
 	protected static SupplyReportEntity reportDetails;
 	protected static boolean RecievedData = false;
 	private static ArrayList<MachineEntity> allMachines;
@@ -68,6 +68,7 @@ public class SupplyReportController {
 	private String machineName;
 	private int machineID;
 
+	@Override
 	public void initialize() {
 		titleLabel.setText("Supply Report : " + reportRegion);
 		supplySBC.setAnimated(false);

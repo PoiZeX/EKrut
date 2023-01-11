@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class PaymentPopupController {
+public class PaymentPopupController  implements IScreen {
 
 	@FXML
 	private Label headlineLabel;
@@ -21,6 +21,7 @@ public class PaymentPopupController {
 	/**
 	 * Initialize screen
 	 */
+    @Override
 	public void initialize() {
 		headlineLabel.setText("External payment");
 		simulatePayment();
