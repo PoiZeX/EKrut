@@ -25,11 +25,6 @@ public class ReportsGenerator {
 		}
 	}
 
-	private static boolean isReportExist(String reportType, String month, String year, String region) {
-		return ReportsDBController.isReportExist(reportType, month, year, region);
-
-	}
-
 	private static void generateClientsReport(String month, String year) {
 		HashMap<String, HashMap<String, String>> regionDetails = new HashMap<>();
 		generateSupplyTotal(regionDetails, month, year);

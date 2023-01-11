@@ -41,7 +41,7 @@ public class UsersManagementDBController {
 			if (MySqlClass.getConnection() == null)
 				return unapprovedUsersList;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number!=null;");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number is not null;");
 			ps.setInt(1, 1);
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
@@ -132,7 +132,14 @@ public class UsersManagementDBController {
 		}
 		return user;
 	}
-	public static UserEntity getUserByIDFromDB(String[] details, ConnectionToClient client) {
+	
+	/**
+	 * Get a user by id number
+	 * @param details
+	 * @param client
+	 * @return
+	 */
+	public static UserEntity getUserByIDNumberFromDB(String[] details, ConnectionToClient client) {
 		String id_number = details[0];
 		UserEntity user = new UserEntity();
 		try {
@@ -144,7 +151,7 @@ public class UsersManagementDBController {
 			ps.setString(1, id_number);
 			ResultSet res = ps.executeQuery();
 			// create the entity
-			while (res.next()) {
+			if (res.next()) {
 				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
 						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
 						res.getString(11), res.getBoolean(12), res.getBoolean(13));
@@ -162,6 +169,37 @@ public class UsersManagementDBController {
 		}
 		return user;
 		
+	}
+	
+	/**
+	 * return the user entity for given ID, or null if not found+
+	 * @param userId
+	 * @return
+	 */
+	public static UserEntity getUserByID(int userId) {
+		UserEntity user = new UserEntity();
+		try {
+			if (MySqlClass.getConnection() == null)
+				return null;
+			
+			Connection conn = MySqlClass.getConnection();
+			String query = "SELECT * FROM ekrut.users WHERE id=?;";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setInt(1, userId);
+			ResultSet res = ps.executeQuery();
+			
+			// create the entity
+			if (res.next()) {
+				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
+						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
+						res.getString(11), res.getBoolean(12), res.getBoolean(13));
+				user.setId(res.getInt(1));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 	
 	
@@ -193,7 +231,7 @@ public class UsersManagementDBController {
 		}
 		try {
 			
-			UserEntity userToReturn = getUserByIDFromDB(details, null);  // will return a single user
+			UserEntity userToReturn = getUserByIDNumberFromDB(details, null);  // will return a single user
 			client.sendToClient(new Message(TaskType.ReceiveUserUpdateInDB, userToReturn));
 		} catch (IOException e) {
 			e.printStackTrace();

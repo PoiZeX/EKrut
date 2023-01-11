@@ -164,8 +164,8 @@ public class OrderController {
 	 * 
 	 * @return totalPrice;
 	 */
-	public static int getTotalPrice() {
-		int totalPrice = 0;
+	public static double getTotalPrice() {
+		double totalPrice = 0;
 		for (ItemInMachineEntity item : itemsInCartList.keySet())
 			totalPrice += (getAmount(item) * item.getPrice());
 		return totalPrice;
