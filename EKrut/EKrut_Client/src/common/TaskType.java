@@ -102,7 +102,7 @@ public enum TaskType {
 	ValidPickupAnswer, 
 	updatePickupStatus,
 	InsertNewPickup,  
-	
+	 
 	//-------------------------------------Reports
 	// Requests From Server //
 	RequestSupplyReport,

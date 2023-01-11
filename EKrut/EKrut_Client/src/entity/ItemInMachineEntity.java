@@ -11,7 +11,7 @@ public class ItemInMachineEntity extends ItemEntity {
 
 		public String getName() {
 			return name;
-		}
+		} 
 
 		private final String name;
 	};
@@ -30,7 +30,7 @@ public class ItemInMachineEntity extends ItemEntity {
 	}
 
 	// machine_id, item_id, current_amount, call_status,
-	// times_under_min, calls_amount, name, item_img_name
+	// times_under_min, workerId, name, item_img_name
 	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin,
 			int workerId, String name, double price, String item_img_nam) {
 		super(item_id, name, price, item_img_nam);

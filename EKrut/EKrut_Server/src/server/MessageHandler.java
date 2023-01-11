@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import common.Message;
@@ -99,6 +100,9 @@ public class MessageHandler {
 			break;
 		case RequestItemsInMachineUpdateFromServer:
 			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
+			break;
+		case RequestItemsInMachineRestockFromServer:
+			SupplyManagementDBController.restockItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestUpdateSales:
 			MarketingManagementDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
