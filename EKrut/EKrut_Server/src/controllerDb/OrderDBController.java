@@ -31,7 +31,6 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class OrderDBController {
-	private static Connection con;
 
 	/**
 	 * Checks and sends an answer if this is the first purchase of a member
@@ -166,6 +165,8 @@ public class OrderDBController {
 	public static void insertPickupEntity(PickupEntity pickup, ConnectionToClient client) {
 		try {
 			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
 			PreparedStatement ps = con
 					.prepareStatement("INSERT INTO ekrut.pickups (order_id, pickup_status) VALUES (?, ?);");
 			ps.setInt(1, pickup.getOrderId());
@@ -207,12 +208,14 @@ public class OrderDBController {
 
 	/**
 	 * Manage the task of taking money from members of specific month and year
+	 * 
 	 * @param year
 	 * @param month
 	 */
 	public static void takeMonthlyMoneyScheduledManager(String year, String month) {
 		try {
-			if(takeMoneyOnOrders(year, month));
+			if (takeMoneyOnOrders(year, month))
+				;
 			updatePaymentStatus(year, month);
 		} catch (Exception e) {
 
@@ -228,6 +231,9 @@ public class OrderDBController {
 	 */
 	private static boolean takeMoneyOnOrders(String year, String month) throws SQLException {
 		boolean isAtLeastOneFound = false;
+		Connection con = MySqlClass.getConnection();
+		if (con == null)
+			return false;
 		PreparedStatement ps = con.prepareStatement("SELECT *, SUM(t.total_sum) AS final_sum FROM("
 				+ "SELECT orders.* from orders "
 				+ "join users ON users.id=orders.user_id where orders.payment_status='later' AND "
@@ -269,12 +275,15 @@ public class OrderDBController {
 
 	/**
 	 * Update payment status to 'later' for orders in time range of whole month
+	 * 
 	 * @param year
 	 * @param month
 	 * @return
 	 */
-	private static void updatePaymentStatus(String year, String month) throws SQLException
-	{
+	private static void updatePaymentStatus(String year, String month) throws SQLException {
+		Connection con = MySqlClass.getConnection();
+		if (con == null)
+			return;
 		// get all orders
 		PreparedStatement ps = con.prepareStatement("SELECT * from orders  where orders.payment_status='later' AND "
 				+ "STR_TO_DATE(orders.buytime, '%d/%m/%Y %H:%i') BETWEEN '?-?-01 00:00:00' AND '?-?-31 23:59:59';");
@@ -283,10 +292,9 @@ public class OrderDBController {
 		ps.setString(3, year);
 		ps.setString(4, month);
 		ResultSet rs = ps.executeQuery();
-		
+
 		// update each order
-		while(rs.next())
-		{
+		while (rs.next()) {
 			ps = con.prepareStatement("UPDATE orders SET payment_status='paid' WHERE id=?");
 			ps.setInt(1, rs.getInt(1));
 			ps.executeUpdate();
@@ -294,5 +302,5 @@ public class OrderDBController {
 		}
 
 	}
-	
+
 }
