@@ -137,6 +137,7 @@ public class DeliveryManagementController  implements IScreen {
 		 * or from "outForDelivery" to "done".
 		 * in other cases, the changes aren't saved
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
 		deliveryTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);

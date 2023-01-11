@@ -7,24 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.logging.SimpleFormatter;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
-import common.CustomerStatusEnum;
-import common.DeliveryStatusEnum;
 import common.Message;
 import common.TaskType;
-import entity.DeliveryEntity;
 import entity.OrderEntity;
-import entity.PersonalMessageEntity;
 import entity.PickupEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -39,7 +27,6 @@ public class OrderDBController {
 	 * @param client
 	 */
 	public static void isMemberFirstPurchase(UserEntity member, ConnectionToClient client) {
-		UserEntity user = new UserEntity();
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
