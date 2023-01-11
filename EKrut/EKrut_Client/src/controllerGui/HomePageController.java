@@ -187,7 +187,7 @@ public class HomePageController {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
-		if (currentRole.equals(RolesEnum.supplyWorker))
+		if (currentRole.equals(RolesEnum.supplyWorker)||currentRole.equals(RolesEnum.deliveryOperator))
 			roleImg.setFitWidth(175.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
