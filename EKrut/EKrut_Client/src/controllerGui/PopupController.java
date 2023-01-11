@@ -73,15 +73,14 @@ public class PopupController {
 			break;
 
 		case Information:
-			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
-			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
-			
-			break;
+		case Simulation:
 		case Sale:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
-			onePlusOneImg.setVisible(true);
 			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
+			if(type.equals(PopupTypeEnum.Sale))
+				onePlusOneImg.setVisible(true);
 			break;
+
 		case Decision:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/decision.png"));
 			titleLabel.setStyle("-fx-text-fill: " + DECISION_COLOR);
