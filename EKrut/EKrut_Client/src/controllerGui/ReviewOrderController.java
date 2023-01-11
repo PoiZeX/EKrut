@@ -569,7 +569,7 @@ public class ReviewOrderController {
 		productName.setTooltip(new TooltipSetter(item.getName()).getTooltip());
 		
 		// price
-		price.setText(String.format("%.2f₪", String.valueOf(item.getPrice())));
+		price.setText(String.format("%.2f₪", item.getPrice()));
 		price.setPrefSize(262, 18);
 		price.getStyleClass().add("Label-list");
 		GridPane.setHalignment(price, HPos.LEFT);

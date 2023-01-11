@@ -40,7 +40,6 @@ public class DataStore {
 		for (MachineEntity m : allMachines)
 			if (m.getId() == AppConfig.MACHINE_ID) {
 				setCurrentMachine(m);
-	
 				OrderController.setCurrentMachine(m);
 			}
 		return;

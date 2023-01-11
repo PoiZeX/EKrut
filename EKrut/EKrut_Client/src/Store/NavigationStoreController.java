@@ -153,7 +153,7 @@ public class NavigationStoreController {
 		if (history.size() >= 1) {
 			history.pop(); // throw the current
 			for (ScreensNamesEnum key : screenScenes.keySet()) {
-				if (screenScenes.get(key).equals(history.peek())) {
+				if (screenScenes.get(key) != null && screenScenes.get(key).equals(history.peek())) {
 					primaryStage.setTitle(key.toString());
 					break;
 				}
@@ -178,7 +178,9 @@ public class NavigationStoreController {
 		// checks if the screen already in the stack and remove
 		// avoid circles (usually when going backwards)
 		while (history.size() > 0 && history.contains(screenEntity))
-			history.pop();
+		{
+			screenScenes.replace(history.pop().getSc(), null); 
+		}
 
 		primaryStage.setScene(history.push(screenEntity).getScene());
 		setTopBarLabels(screenEntity);
