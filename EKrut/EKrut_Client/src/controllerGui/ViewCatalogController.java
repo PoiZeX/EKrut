@@ -205,7 +205,7 @@ public class ViewCatalogController implements IScreen {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Generate all items in the catalog by creating new ItemInMachineEntity objects
 	 * and adding them to the order.
@@ -224,7 +224,7 @@ public class ViewCatalogController implements IScreen {
 	 * @param event the action event triggered by the button press
 	 */
 	@FXML
-	void cancelOrder(ActionEvent event) {
+	public void cancelOrder(ActionEvent event) {
 		CommonFunctions.createPopup(PopupTypeEnum.Decision, "You about to cancel the current order.\nAll data will lost.\n\nTo cancel click 'YES', 'NO' otherwise");
 		if((boolean)PopupController.isOkPressed) {
 			OrderController.refreshOrderToHomePage();

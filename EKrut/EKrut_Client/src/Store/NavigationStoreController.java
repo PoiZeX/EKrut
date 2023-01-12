@@ -11,6 +11,7 @@ import common.PopupTypeEnum;
 import common.TaskType;
 import common.ScreensNamesEnum;
 import controllerGui.HostClientController;
+import controllerGui.ViewCatalogController;
 import entity.MachineEntity;
 import entity.ScreenEntity;
 import entity.UserEntity;
@@ -135,24 +136,24 @@ public class NavigationStoreController {
 	 */
 	private void setWindowTitle(ScreensNamesEnum scName) {
 		try {
-		String configuration = "";
-		if (!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
-			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				configuration = " Online";
-			} else {
-				MachineEntity machine;
-				do {
-					Thread.sleep(100);
-					machine = DataStore.getCurrentMachine();
-				} while (machine == null);
-				String machineName = machine.getMachineName();
-				configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
+			String configuration = "";
+			if (!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
+				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+					configuration = " Online";
+				} else {
+					MachineEntity machine;
+					do {
+						Thread.sleep(100);
+						machine = DataStore.getCurrentMachine();
+					} while (machine == null);
+					String machineName = machine.getMachineName();
+					configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
 
-			}
+				}
 
-		// Set title
-		primaryStage.setTitle("EKrut" + configuration);
-		} catch(Exception e) {
+			// Set title
+			primaryStage.setTitle("EKrut" + configuration);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,6 +166,7 @@ public class NavigationStoreController {
 		// show the last stage
 		// history will never be null, you can't go back to login page (and even before)
 		if (history.size() >= 1) {
+
 			history.pop(); // throw the current
 			for (ScreensNamesEnum key : screenScenes.keySet()) {
 				if (screenScenes.get(key) != null && screenScenes.get(key).equals(history.peek())) {
@@ -303,7 +305,11 @@ public class NavigationStoreController {
 		returnBtn.setTooltip(new TooltipSetter("Return to the previous screen").getTooltip());
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae) {
-				NavigationStoreController.getInstance().goBack();
+				
+				if (se.getSc().equals(ScreensNamesEnum.ViewCatalog))
+					((ViewCatalogController) NavigationStoreController.getInstance().getController()).cancelOrder(null);
+				else {NavigationStoreController.getInstance().goBack();}
+				
 			}
 		});
 
