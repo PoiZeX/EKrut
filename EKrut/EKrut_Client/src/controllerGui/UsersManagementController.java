@@ -191,7 +191,7 @@ public class UsersManagementController  implements IScreen {
 				} else {
 					toApprove.remove(getTableView().getItems().get(getIndex()));
 				}
-				System.out.println(toApprove);
+
 			});
 			checkBox.setId("myCb");
 			this.setGraphic(checkBox);

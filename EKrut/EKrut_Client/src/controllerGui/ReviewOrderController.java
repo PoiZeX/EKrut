@@ -170,7 +170,6 @@ public class ReviewOrderController  implements IScreen {
 			
 			if(firstPurchase)
 				sb.append("* 20% for first purchase as a member!\n");
-			//	totalDiscounts+=(OrderController.getTotalPrice()*0.2);
 				// show a relevant label / tooltip
 
 			
@@ -205,13 +204,14 @@ public class ReviewOrderController  implements IScreen {
 	 */
 	private void rightGridHandle() {
 		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
-			rightGridPane.setVisible(false);
-//		rightGridPane.getChildren().clear();
-//		Image image = new Image();
-//		ImageView imageView = new ImageView(image);
-//		rightGridPane.add(imageView, 0, 2);
-//		GridPane.setColumnSpan(imageView, 2);
-//		GridPane.setRowSpan(imageView, 2);
+			rightGridPane.getChildren().clear();
+			Image image = new Image(getClass().getResourceAsStream("../styles/images/vending-machineNOBG.png"));
+			ImageView imageView = new ImageView(image);
+			imageView.setFitHeight(350);
+			imageView.setFitWidth(300);
+			rightGridPane.add(imageView, 0, 2);
+			GridPane.setColumnSpan(imageView, 2);
+			GridPane.setRowSpan(imageView, 2);
 		}
 
 	}

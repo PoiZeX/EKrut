@@ -246,6 +246,7 @@ public class HomePageController  implements IScreen {
 	private void logOutAction(ActionEvent event) {
 		OrderController.clearAll();
 		NavigationStoreController.ExitHandler(false);
+		logOutBtn.setMouseTransparent(true);
 	}
 
 }

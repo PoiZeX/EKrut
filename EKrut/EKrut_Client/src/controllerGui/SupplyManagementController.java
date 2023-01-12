@@ -32,7 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-public class SupplyManagementController  implements ICmbANDTableSetUp {
+public class SupplyManagementController implements ICmbANDTableSetUp {
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
 
@@ -122,9 +122,9 @@ public class SupplyManagementController  implements ICmbANDTableSetUp {
 	public static boolean recievedData = false;
 
 	@Override
-	public void initialize()  {
+	public void initialize() {
 		try {
-			
+
 			region = NavigationStoreController.connectedUser.getRegion();
 			arrStr[0] = "0";
 			arrStr[1] = region;
@@ -137,7 +137,7 @@ public class SupplyManagementController  implements ICmbANDTableSetUp {
 			while (!recievedData)
 				Thread.sleep(100);
 			setUpSupplyWorkersComboBox();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -238,12 +238,15 @@ public class SupplyManagementController  implements ICmbANDTableSetUp {
 		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
 				+ "If you want to see an updated the items list press the refresh button");
 	}
+
 	/***
-	 * get the old minimum amount and the new one and classify the items by the suitable status call
+	 * get the old minimum amount and the new one and classify the items by the
+	 * suitable status call
+	 * 
 	 * @param oldMinAmount
 	 * @param newMinAmount
 	 */
-	void filterUpdateCallStatus(int oldMinAmount, int newMinAmount ) {
+	void filterUpdateCallStatus(int oldMinAmount, int newMinAmount) {
 		if (oldMinAmount != newMinAmount) {
 			machine.setMinamount(newMinAmount);
 			for (MachineEntity m : machineLst) {
@@ -264,6 +267,7 @@ public class SupplyManagementController  implements ICmbANDTableSetUp {
 			}
 		}
 	}
+
 	/***
 	 * remove the completed actions from the table and request update from server
 	 * 
@@ -461,9 +465,10 @@ public class SupplyManagementController  implements ICmbANDTableSetUp {
 		recievedData = true;
 
 	}
-	
+
 	/***
-	 * checkbox class that handles the checkbox field on the table cell 
+	 * checkbox class that handles the checkbox field on the table cell
+	 * 
 	 * @author User
 	 *
 	 */
