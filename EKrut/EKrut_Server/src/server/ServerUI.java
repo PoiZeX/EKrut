@@ -69,9 +69,9 @@ public class ServerUI extends Application {
 			Thread.sleep(2000); // enough time to update the clients table. More flexible way is to use
 								// semaphore...
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		if (EchoServer == null) {
 			EchoServer.stopListening();
 		} else {

@@ -53,12 +53,7 @@ public class MessageHandler {
 		// ---- Messages ---- //
 		switch (task) {
 		case ServerDisconnect:
-			try {
-				thisClient.sendToServer(new Message(TaskType.ClientDisconnect));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
+			NavigationStoreController.ExitHandler(true);
 			break;
 //-----------------------------------DATA_STORE
 		case InitRegions:

@@ -79,7 +79,6 @@ public class LoginController  implements IScreen {
 
 		// call login proccess
 		loginProccess(new String[] { username, password });
-
 	}
 
 	/**

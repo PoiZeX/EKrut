@@ -56,6 +56,8 @@ public class NavigationStoreController {
 	private ScreensNamesEnum[] isSkipped = { ScreensNamesEnum.HostClient, ScreensNamesEnum.HomePage,
 			ScreensNamesEnum.Login };
 	public static UserEntity connectedUser; // hold the current connected user
+	public static PauseTransition transition;
+	public static boolean isFirstTime = true;
 
 	/**
 	 * Constructor, creates the new instances
@@ -305,11 +307,13 @@ public class NavigationStoreController {
 		returnBtn.setTooltip(new TooltipSetter("Return to the previous screen").getTooltip());
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae) {
-				
+
 				if (se.getSc().equals(ScreensNamesEnum.ViewCatalog))
 					((ViewCatalogController) NavigationStoreController.getInstance().getController()).cancelOrder(null);
-				else {NavigationStoreController.getInstance().goBack();}
-				
+				else {
+					NavigationStoreController.getInstance().goBack();
+				}
+
 			}
 		});
 
@@ -429,9 +433,9 @@ public class NavigationStoreController {
 	public void clearAll() {
 		screenScenes.clear();
 		history.clear();
+		isFirstTime = true;
 	}
 
-	public static PauseTransition transition;
 
 	/**
 	 * setup timeout
@@ -464,23 +468,29 @@ public class NavigationStoreController {
 	 * @param closeAllScreens
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		if (connectedUser != null) {
-//			ItemsController.deleteAllItemsInDir();
+		CommonFunctions.SleepFor(1000, () -> {
+			if (connectedUser != null) {
+//				ItemsController.deleteAllItemsInDir();
 
-			if (connectedUser.isLogged_in()) {
-				connectedUser.setLogged_in(false); // logout the user
-				HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				if (connectedUser.isLogged_in()) {
+					connectedUser.setLogged_in(false); // logout the user
+					HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				}
+				connectedUser = null;
 			}
-			if (HostClientController.getChat() != null)
-				HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+			if (isFirstTime) {
+				isFirstTime = false;
+				if (HostClientController.getChat() != null)
+					HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
 
-			connectedUser = null;
-			if (!closeAllScreens) { // reset all and refresh
-				NavigationStoreController.getInstance().clearAll();
-				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
-			} else
-				closeAllScreens();
-		}
+				if (!closeAllScreens) { // reset all and refresh
+					NavigationStoreController.getInstance().clearAll();
+					NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+					
+				} else
+					closeAllScreens();
+			}
+		});
 
 	}
 
