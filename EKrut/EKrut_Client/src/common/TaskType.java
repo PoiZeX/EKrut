@@ -74,7 +74,7 @@ public enum TaskType {
 	RequestItemsInMachineUpdateFromServer,
 	RequestItemsInMachineRestockFromServer,
 	UpdateItemsUnderMin,
-	
+	RequestItemsInMachineCallStatusUpdate,  
 	//-------------------------------------Deliveries
 	// Requests From Server //
 	RequestDeliveriesFromServer,
@@ -112,7 +112,7 @@ public enum TaskType {
 	ReceiveManagerInfoFromServerDB,
 	ReceiveOrderReport,
 	ReceiveSupplyReport,
-	ReceiveClientsReport,  
+	ReceiveClientsReport, 
 	// Update Database//
 	
 }

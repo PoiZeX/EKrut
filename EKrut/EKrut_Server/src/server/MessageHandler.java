@@ -10,16 +10,18 @@ import common.TaskType;
 import controllerDb.*;
 import entity.*;
 import ocsf.server.ConnectionToClient;
+
 /**
- * The {@code MessageHandler} class is responsible for handling messages received from clients.
- * It uses the {@link common.TaskType} value of the {@link common.Message} object to determine
- * the appropriate action to take, and then calls the appropriate method in the appropriate controller.
-*/
+ * The {@code MessageHandler} class is responsible for handling messages
+ * received from clients. It uses the {@link common.TaskType} value of the
+ * {@link common.Message} object to determine the appropriate action to take,
+ * and then calls the appropriate method in the appropriate controller.
+ */
 public class MessageHandler {
 	/**
 	 * Handles the given message and client.
 	 * 
-	 * @param msg the message to handle
+	 * @param msg    the message to handle
 	 * @param client the client associated with the message
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -35,6 +37,7 @@ public class MessageHandler {
 		case ClientDisconnect:
 			EchoServer.updateClientList(client, "Disconnect");
 			break;
+//---------------------------------------LOGIN--------------------------------------------------------
 		case SetUserLoggedIn:
 			LoginDBController.setUserLoggedIn((UserEntity) obj);
 			break;
@@ -45,7 +48,14 @@ public class MessageHandler {
 		case RequestUserFromServerDB:
 			LoginDBController.getUserEntity((String[]) obj, client);
 			break;
-		// Registartion Form //
+//------------------------------------PERSONAL_MESSAGEES------------------------------------------------------
+		case RequestPersonalMessages:
+			PersonalMessagesDBController.getAllPersonalMessages((UserEntity) obj, client);
+			break;
+		case SendPersonalMessage:
+			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);
+			break;
+//---------------------------------------REGISTRATION--------------------------------------------------------
 		case RequestUserInfoFromServerDB:
 			UsersManagementDBController.getUserByUsernameOrIDFromDB((String[]) obj, client);
 			break;
@@ -59,40 +69,49 @@ public class MessageHandler {
 		case RequestUnapprovedUsers:
 			UsersManagementDBController.getUnapprovedUsersEntity(client);
 			break;
-		case RequestItemsFromServer:
-			ItemDBController.sendImgToClient(client);
-			break;
-		case RequestDeliveriesFromServer:
-			DeliveryManagementDBController.getTable((String)obj, client);
-			break;
-		case RequestDeliveryFromServer:
-			DeliveryManagementDBController.getDelivery((String[])obj, client);
-			break;
-		case RequestUpdateDeliveries:
-			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
-			break;
 		case RequestUsersApproval:
 			UsersManagementDBController.setUnapprovedUsersEntity((ArrayList<UserEntity>) obj, client);
 			break;
-
+//-------------------------------------------COMMON_DATA--------------------------------------------------
 		case InitRegions:
 			CommonDataDBController.getAllRegionsFromDB(client);
-			break;
-
-		case RequestPersonalMessages:
-			PersonalMessagesDBController.getAllPersonalMessages((UserEntity) obj, client);
-			break;
-		case InitMachinesInRegions:
-		case InitMachinesSupplyUpdate:
-			SupplyManagementDBController.getMachinesFromDB((String[]) obj, client);
 			break;
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
-		case SendPersonalMessage:
-			PersonalMessagesDBController.setPersonalMessagesInDB((PersonalMessageEntity) obj);
+//----------------------------------------DELIVERY---------------------------------------------------------
+		case RequestDeliveriesFromServer:
+			DeliveryManagementDBController.getTable((String) obj, client);
+			break;
+		case RequestDeliveryFromServer:
+			DeliveryManagementDBController.getDelivery((String[]) obj, client);
+			break;
+		case RequestUpdateDeliveries:
+			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
+			break;
+		case RequestItemsFromServer:
+			ItemDBController.sendImgToClient(client);
 			break;
 
+//-------------------------------------------------SALES--------------------------------------------------------
+		case RequestUpdateSales:
+			MarketingManagementDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
+			break;
+		case RequestInsertNewSale:
+			MarketingManagementDBController.insertSaleEntities((SaleEntity) obj, client);
+			break;
+		case RequestSalesFromServer:
+			MarketingManagementDBController.getSales((String) obj, client);
+			break;
+		case RequestActiveSales:
+			MarketingManagementDBController.getActiveSalesByRegion((String) obj, client);
+			break;
+
+//----------------------------------------SUPPLY--------------------------------------------------------
+		case InitMachinesInRegions:
+		case InitMachinesSupplyUpdate:
+			MachineDBController.getMachinesFromDB((String[]) obj, client);
+			break;
 		case RequestItemsInMachine:
 			SupplyManagementDBController.getMachineItems((int) obj, client);
 			break;
@@ -102,65 +121,54 @@ public class MessageHandler {
 		case RequestProssecedItemsInMachine:
 			SupplyManagementDBController.getProcessedMachineItems((int[]) obj, client);
 			break;
-		case RequestInsertNewSale:
-			MarketingManagementDBController.insertSaleEntities((SaleEntity) obj, client);
-			break;
 		case RequestUpdateMachineMinAmount:
-			SupplyManagementDBController.updateMachineMinAmount((MachineEntity) obj, client);
+			MachineDBController.updateMachineMinAmount((MachineEntity) obj, client);
+			break;
+		case RequestItemsInMachineCallStatusUpdate:
+			SupplyManagementDBController.updateCallsStatus((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestItemsInMachineUpdateFromServer:
-			SupplyManagementDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
+			ItemInMachineDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
 		case RequestItemsInMachineRestockFromServer:
 			SupplyManagementDBController.restockItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
-		case RequestUpdateSales:
-			MarketingManagementDBController.updateSaleEntities((ArrayList<SaleEntity>) obj, client);
-			break;
-		case RequestSalesFromServer:
-			MarketingManagementDBController.getSales((String)obj,client);
-			break;
 		case RequestSupplyWorkers:
-			SupplyManagementDBController.getSupplyWorkers(client);
+			UsersManagementDBController.getSupplyWorkers(client);
 			break;
-			
+//-------------------------------------------ORDERES-------------------------------------------------------			
 		case isMemberFirstPurchase:
-			OrderDBController.isMemberFirstPurchase((UserEntity)obj, client);
+			OrderDBController.isMemberFirstPurchase((UserEntity) obj, client);
 			break;
 		case UpdateItemsWithAnswer:
-			SupplyManagementDBController.decreaseItemsAmountInMachine((Map<ItemInMachineEntity, Integer>) obj, client);
+			ItemInMachineDBController.decreaseItemsAmountInMachine((Map<ItemInMachineEntity, Integer>) obj, client);
 			break;
 		case NewOrderCreation:
-			OrderDBController.insertOrderEntity((OrderEntity)obj, client);
+			OrderDBController.insertOrderEntity((OrderEntity) obj, client);
 			break;
-			
+		case updatePickupStatus:
+			OrderDBController.updatePickupStatus((int) obj, client);
+			break;
+		case RequestPickupFromServer:
+			OrderDBController.isPickupValid((String[]) obj, client);
+			break;
+		case UpdateItemsUnderMin:
+			ItemInMachineDBController.increaseItemsUnderMin((ArrayList<int[]>) obj, client);
+			break;
+		case RequestUserByOrderIdFromServer:
+			CommonDataDBController.getUserByOrderId((int) obj, client);
+			break;
+		case InsertNewPickup:
+			OrderDBController.insertPickupEntity((PickupEntity) obj, client);
+			break;
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
 			break;
 
-		case RequestActiveSales:
-			MarketingManagementDBController.getActiveSalesByRegion((String)obj, client);
-			break;
-
-		case updatePickupStatus:
-			OrderDBController.updatePickupStatus((int)obj, client);
-			break;
-		case  RequestPickupFromServer:
-			OrderDBController.isPickupValid((String[])obj, client);
-			break;
-		case UpdateItemsUnderMin:
-			SupplyManagementDBController.increaseItemsUnderMin((ArrayList<int[]>)obj, client);
-			break;
-		case RequestUserByOrderIdFromServer:
-			CommonDataDBController.getUserByOrderId((int)obj, client);
-			break;
-		case InsertNewPickup:
-			OrderDBController.insertPickupEntity((PickupEntity)obj, client);
-			break;
 		default:
 			System.out.println("Cannot execute task: " + task.toString());
 			break;
 		}
 	}
-	
+
 }

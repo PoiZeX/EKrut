@@ -41,7 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 
-public class SupplyUpdateController  implements IScreen {
+public class SupplyUpdateController  implements ICmbANDTableSetUp {
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;
@@ -114,14 +114,14 @@ public class SupplyUpdateController  implements IScreen {
 				e.printStackTrace();
 			}
 		}
-		setUpMachineComboBox();
+		setUpComboBox();
 
 	}
 
 	/***
 	 * set the combobox and handle the choice of a machine
 	 */
-	public void setUpMachineComboBox() {
+	public void setUpComboBox() {
 		machineCmb.setItems(machineLst);
 		if (machineCmb.getItems().isEmpty()) {
 			setDisableItems();
@@ -162,7 +162,7 @@ public class SupplyUpdateController  implements IScreen {
 	 * @param machineId
 	 * @throws InterruptedException
 	 */
-	private void setupTable(int machineId) {
+	public void setupTable(int machineId) {
 		arr[0] = machineId;
 		arr[1] = NavigationStoreController.connectedUser.getId();
 		recievedData = false;
@@ -256,7 +256,7 @@ public class SupplyUpdateController  implements IScreen {
 				CommonFunctions.SleepFor(500, () -> {
 					SupplyUpdateController sc = (SupplyUpdateController) NavigationStoreController.getInstance()
 							.getController();
-					sc.setUpMachineComboBox();
+					sc.setUpComboBox();
 					if (!sc.machineLst.isEmpty()) {
 						for (MachineEntity m : sc.machineLst) {
 							if (m.machineId == tempMachine.machineId)
@@ -273,22 +273,23 @@ public class SupplyUpdateController  implements IScreen {
 			}
 		});
 	}
+
+	
 	/**
 	* Update the item stock for the selected machine
 	* @param event The event that triggers the update
 	*/
 	@FXML
 	void update(ActionEvent event) {
-
+		int itemId;
+		int ogCurAmount;
 		for (ItemInMachineEntity i : toUpdate) {
-			int itemId = i.getId();
-			int ogCurAmount = itemsOg.get(itemId).getCurrentAmount();
-			if (i.getCurrentAmount() + ogCurAmount > machine.getMinamount())
+			 itemId = i.getId();
+			 ogCurAmount = itemsOg.get(itemId).getCurrentAmount();
+			 if ( ogCurAmount >= machine.getMinamount())
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 		}
-
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineRestockFromServer, toUpdate));
-
 		CommonFunctions.createPopup(PopupTypeEnum.Success, "Update success!");
 		toUpdate.clear();
 		refresh(null);
@@ -330,5 +331,4 @@ public class SupplyUpdateController  implements IScreen {
 		}
 		recievedData = true;
 	}
-
 }

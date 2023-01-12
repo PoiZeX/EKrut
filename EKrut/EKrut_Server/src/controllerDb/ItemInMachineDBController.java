@@ -112,7 +112,6 @@ public class ItemInMachineDBController {
 			ps.setInt(4, item.getTimeUnderMin());
 			ps.setInt(5, item.getMachineId());
 			ps.setInt(6, item.getId());
-
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

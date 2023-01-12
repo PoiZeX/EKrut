@@ -32,7 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-public class SupplyManagementController  implements IScreen {
+public class SupplyManagementController  implements ICmbANDTableSetUp {
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
 
@@ -132,7 +132,7 @@ public class SupplyManagementController  implements IScreen {
 			chat.acceptObj(new Message(TaskType.InitMachinesInRegions, arrStr));
 			while (!recievedData)
 				Thread.sleep(100);
-			setUpMachineComboBox();
+			setUpComboBox();
 			chat.acceptObj(new Message(TaskType.RequestSupplyWorkers));
 			while (!recievedData)
 				Thread.sleep(100);
@@ -146,7 +146,7 @@ public class SupplyManagementController  implements IScreen {
 	/***
 	 * Insert machines list to Combo box handles the choos
 	 */
-	public void setUpMachineComboBox() {
+	public void setUpComboBox() {
 		machineCmb.setItems(machineLst);
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
@@ -238,6 +238,11 @@ public class SupplyManagementController  implements IScreen {
 		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
 				+ "If you want to see an updated the items list press the refresh button");
 	}
+	/***
+	 * get the old minimum amount and the new one and classify the items by the suitable status call
+	 * @param oldMinAmount
+	 * @param newMinAmount
+	 */
 	void filterUpdateCallStatus(int oldMinAmount, int newMinAmount ) {
 		if (oldMinAmount != newMinAmount) {
 			machine.setMinamount(newMinAmount);
@@ -270,7 +275,7 @@ public class SupplyManagementController  implements IScreen {
 			i.setCallStatus(ItemInMachineEntity.Call_Status.NotOpened);
 			i.setWorkerId(0);
 		}
-		chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, completed));
+		chat.acceptObj(new Message(TaskType.RequestItemsInMachineCallStatusUpdate, completed));
 		completed.clear();
 		refresh(null);
 	}
@@ -292,7 +297,7 @@ public class SupplyManagementController  implements IScreen {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Processed);
 				i.setWorkerId(supplyworker.getId());
 			}
-			chat.acceptObj(new Message(TaskType.RequestItemsInMachineUpdateFromServer, toUpdate));
+			chat.acceptObj(new Message(TaskType.RequestItemsInMachineCallStatusUpdate, toUpdate));
 
 			CommonFunctions.createPopup(PopupTypeEnum.Success, "The calls had been sent for now");
 			toUpdate.clear();
@@ -307,7 +312,7 @@ public class SupplyManagementController  implements IScreen {
 	 * 
 	 * @param machineId
 	 */
-	void setupTable(int machineId) {
+	public void setupTable(int machineId) {
 		recievedData = false;
 		chat.acceptObj(new Message(TaskType.RequestItemsWithMinAmount, machineId));
 		while (!recievedData) {
@@ -494,4 +499,5 @@ public class SupplyManagementController  implements IScreen {
 			}
 		}
 	}
+
 }

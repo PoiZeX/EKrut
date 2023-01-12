@@ -22,33 +22,6 @@ import ocsf.server.ConnectionToClient;
 public class SupplyManagementDBController {
 	private static Connection con = MySqlClass.getConnection();
 
-	/**
-	 * get machine minimum amount
-	 * 
-	 * @param machineId
-	 * @return
-	 */
-	public static int getMachineMinAmount(int machineId) {
-		int minAmount = -1;
-
-		try {
-			if (con == null)
-				return minAmount;
-			PreparedStatement ps1 = con.prepareStatement(
-					"SELECT ekrut.machines.min_amount FROM ekrut.machines WHERE machines.machine_id=(?);");
-			ps1.setInt(1, machineId);
-			ResultSet res1;
-
-			res1 = ps1.executeQuery();
-
-			if (res1.next())
-				minAmount = (res1.getInt(1));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return minAmount;
-	}
-
 	/*----------------------------------GETDATA----------------------------*/
 
 	/**
@@ -60,7 +33,7 @@ public class SupplyManagementDBController {
 	public static void getMachineItemsWithMinAmount(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
 		try {
-			int minAmount = getMachineMinAmount(machineId);
+			int minAmount = MachineDBController.getMachineMinAmount(machineId);
 			ps = con.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
 					+ " WHERE item_in_machine.machine_id=? AND (item_in_machine.current_amount < ? OR  item_in_machine.call_status!=?) AND item_in_machine.item_id=items.item_id ;");
@@ -97,7 +70,7 @@ public class SupplyManagementDBController {
 	}
 
 	/**
-	 * get items which call status = processed
+	 * get items which call status = processed and they are opened for the user
 	 * 
 	 * @param arr
 	 * @param client
@@ -108,7 +81,7 @@ public class SupplyManagementDBController {
 		int minAmount = -1;
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
-			minAmount = getMachineMinAmount(machineId);
+			minAmount = MachineDBController.getMachineMinAmount(machineId);
 
 			PreparedStatement ps = con.prepareStatement("SELECT  item_in_machine.*, items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
@@ -173,39 +146,6 @@ public class SupplyManagementDBController {
 	}
 
 	/*-----------------------------------UPDATE--------------------------------*/
-	/**
-	 * Update minimum amount
-	 * 
-	 * @param obj
-	 * @param client
-	 */
-	public static void updateMachineMinAmount(MachineEntity obj, ConnectionToClient client) {
-		try {
-			if (con == null)
-				return;
-			MachineEntity machine = obj;
-			PreparedStatement ps = con
-					.prepareStatement("UPDATE ekrut.machines SET min_amount=(?) WHERE machine_id=(?);");
-			{
-				ps.setInt(1, machine.getMinamount());
-				ps.setInt(2, machine.machineId);
-				ps.executeUpdate();
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	/**
-	 * updateItemsInMachineUpdate method : input - array list of ItemInMachineEntity
-	 * can update the fields of : int currentAmount,Call_Status callStatus,int
-	 * timeUnderMin
-	 * 
-	 * @param itemsInMachine
-	 * @param client
-	 */
 
 	/**
 	 * Restock items in machine for supply upddate
@@ -223,15 +163,33 @@ public class SupplyManagementDBController {
 	}
 
 	/**
-	 * increase amount for single items
-	 * 
-	 * @param item
-	 * @param amountToIncrease
+	 * @param itemsInMachine ArrayList of ItemInMachineEntity which needs to be
+	 *                       updated
+	 * @param client         an instance of ConnectionToClient used to connect to
+	 *                       the database The method updateCallsStatus updates the
+	 *                       call status and worker_id of the items in the machine
+	 *                       table in the database. It iterates through the list of
+	 *                       itemsInMachine and updates the status of each item by
+	 *                       calling the updateCallStatus method.
+	 */
+	public static void updateCallsStatus(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
+		for (ItemInMachineEntity item : itemsInMachine)
+			updateCallStatus(item);
+
+	}
+
+	/**
+	 *
+	 * @param item an instance of ItemInMachineEntity which needs to be updated
+	 *
+	 *             The method updateCallStatus updates the call status and worker_id
+	 *             of the item in the machine table in the database. It uses a
+	 *             prepared statement to update the values in the database.
 	 */
 	private static void updateCallStatus(ItemInMachineEntity item) {
 		try {
 			PreparedStatement ps = con.prepareStatement("UPDATE ekrut.item_in_machine SET call_status=?, "
-					+ " WHERE worker_id=? AND machine_id=? AND item_id=?;");
+					+ "worker_id=? WHERE machine_id=? AND item_id=?;");
 			ps.setString(1, item.getCallStatus().toString());
 			ps.setInt(2, item.getWorkerId());
 			ps.setInt(3, item.getMachineId());
@@ -242,85 +200,4 @@ public class SupplyManagementDBController {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * get machines for user by there need for exemple : region manager - gets by
-	 * region
-	 * 
-	 * @param arr
-	 * @param client
-	 */
-	public static void getMachinesFromDB(String[] arr, ConnectionToClient client) {
-		try {
-			ArrayList<MachineEntity> res = new ArrayList<>();
-
-			if (arr[0].equals("0")) {
-				res = getMachineListForSupplyRegionMFromDB(arr[1]);
-				client.sendToClient(new Message(TaskType.InitMachinesInRegions, res));
-			} else {
-				res = getMachineListForSupplyUpdateFromDB(Integer.parseInt(arr[1]));
-				client.sendToClient(new Message(TaskType.InitMachinesSupplyUpdate, res));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * get machines list for worker where therse a call open for him
-	 * 
-	 * @param workerId
-	 * @return
-	 */
-	private static ArrayList<MachineEntity> getMachineListForSupplyUpdateFromDB(int workerId) {
-		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
-		try {
-			if (MySqlClass.getConnection() == null)
-				return machines;
-			Connection conn = MySqlClass.getConnection();
-
-			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.machines.* "
-					+ "FROM ekrut.machines, ekrut.item_in_machine "
-					+ "WHERE item_in_machine.call_status=(?) AND worker_id=(?) AND machines.machine_id=item_in_machine.machine_id "
-					+ " GROUP BY machine_id;");
-			ps.setString(1, ItemInMachineEntity.Call_Status.Processed.toString());
-			ps.setInt(2, workerId);
-			ResultSet res = ps.executeQuery();
-			while (res.next()) {
-				machines.add(new MachineEntity(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
-						res.getInt(5)));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return machines;
-	}
-
-	/**
-	 * get machines list for worker where there is a call open for him
-	 * 
-	 * @param regionName
-	 * @return
-	 */
-	private static ArrayList<MachineEntity> getMachineListForSupplyRegionMFromDB(String regionName) {
-		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
-		try {
-			if (MySqlClass.getConnection() == null)
-				return machines;
-			Connection conn = MySqlClass.getConnection();
-
-			PreparedStatement ps = conn.prepareStatement(
-					"SELECT  ekrut.machines.* " + "FROM ekrut.machines " + "WHERE machines.region_name=(?) ;");
-			ps.setString(1, regionName);
-			ResultSet res = ps.executeQuery();
-			while (res.next()) {
-				machines.add(new MachineEntity(res.getInt(1), res.getString(2), res.getInt(3), res.getString(4),
-						res.getInt(5)));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return machines;
-	}
-
 }
