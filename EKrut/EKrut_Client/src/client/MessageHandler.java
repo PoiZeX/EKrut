@@ -41,6 +41,7 @@ public class MessageHandler {
 
 	/**
 	 * Handle the messages from server and navigates them to right methods
+	 * 
 	 * @param thisClient
 	 * @param msg
 	 */
@@ -59,13 +60,22 @@ public class MessageHandler {
 			}
 			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
 			break;
+//-----------------------------------DATA_STORE
 		case InitRegions:
 			DataStore.recieveRegions((ArrayList<String>) obj);
 			break;
+		case InitMachines:
+			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
+			break;
+//-----------------------------USERS	
 		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
-		// Registration Form
+		case ReceiveUnapprovedUsers:
+			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
+			break;
+
+// ----------------------------------------Registration Form
 		case ReceiveUserInfoFromServerDB:
 		case ReceiveUserUpdateInDB:
 			RegistrationFormController.receiveDataFromServer(obj);
@@ -74,7 +84,10 @@ public class MessageHandler {
 			ReviewOrderController.getDataFromServer(obj);
 			RegistrationFormController.receiveDataFromServer(obj);
 			break;
-		//
+		case ReceivePersonalMessages:
+			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
+			break;
+//------------------------------------REPORT
 		case ReceiveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 			break;
@@ -84,30 +97,24 @@ public class MessageHandler {
 		case ReceiveSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
-		case ReceiveUnapprovedUsers:
-			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
-			break;
-		case ReceiveItemsFromServer:
-			ItemsController.getItemsFromServer((ItemEntity) obj);
-			break;
+//-------------------------------DELIVERIES---------------------------
 		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((ArrayList<DeliveryEntity>) obj);
 			break;
 		case ReceiveDeliveryFromServer:
 			ConfirmOnlineOrderController.getDeliveryEntityFromServer((DeliveryEntity) obj);
 			break;
-		case ReceivePersonalMessages:
-			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
+		case ReceiveUserByOrderIdFromServerDB:
+			DeliveryManagementController.getUserEntityFromServer((UserEntity) obj);
 			break;
-		case InitMachines:
-			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
-			break;
-		case ReceiveItemsInMachine:
-			navigateItems((ArrayList<ItemInMachineEntity>) obj);
-			break;
+//--------------------------------------SALES
 		case ReceiveSalesFromServer:
 			SalesManagementController.getSalesEntityFromServer((ArrayList<SaleEntity>) obj);
 			break;
+		case InsertSaleAnswer:
+			CreateNewSaleController.isSaleExist((Boolean) obj);
+			break;
+//--------------------------------SUPPLY----------------------------------------------	
 		case ReceiveSupplyWorkersFromServer:
 			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
 			break;
@@ -117,21 +124,22 @@ public class MessageHandler {
 		case InitMachinesInRegions:
 			SupplyManagementController.getMachinesInRegion((ArrayList<MachineEntity>) obj);
 			break;
+
+		case ReceiveItemsInMachine:
+			navigateItems((ArrayList<ItemInMachineEntity>) obj);
+			break;
+//--------------------------------ORDER-----------------------------------------------
+		case ReceiveItemsFromServer:
+			ItemsController.getItemsFromServer((ItemEntity) obj);
+			break;
 		case ReviewOrderServerAnswer:
 			ReviewOrderController.getDataFromServer(obj);
 			break;
-
 		case ReceiveActiveSales:
 			OrderController.setActiveSales((ArrayList<SaleEntity>) obj);
 			break;
 		case ValidPickupAnswer:
-			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity)obj);
-			break;
-		case ReceiveUserByOrderIdFromServerDB:
-			DeliveryManagementController.getUserEntityFromServer((UserEntity)obj);
-			break;
-		case InsertSaleAnswer:
-			CreateNewSaleController.isSaleExist((Boolean)obj);
+			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity) obj);
 			break;
 		default:
 			break;
@@ -140,7 +148,7 @@ public class MessageHandler {
 
 	private static void navigateItems(ArrayList<ItemInMachineEntity> obj) {
 		Object currentController = NavigationStoreController.getInstance().getController();
-		if (currentController instanceof SupplyManagementController) 
+		if (currentController instanceof SupplyManagementController)
 			SupplyManagementController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
 		else if (currentController instanceof SupplyUpdateController)
 			SupplyUpdateController.recevieItemsInMachine((ArrayList<ItemInMachineEntity>) obj);
