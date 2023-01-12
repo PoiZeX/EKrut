@@ -294,9 +294,9 @@ public class OrderController {
 	}
 
 	/**
-	 * Get total discount in NIS
+	 * Get total discount in NIS 
 	 * 
-	 * @return //price 100 discounts 0.3 : give 30
+	 * @return 
 	 */
 	public static double getTotalDiscounts() {
 		return getTotalPrice() * (1 - discounts);
@@ -329,8 +329,6 @@ public class OrderController {
 	}
 
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
-//		if (activeSales == null )
-//			return itemPrice;
 		return itemPrice * discounts;
 
 	}
