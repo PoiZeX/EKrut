@@ -43,7 +43,7 @@ public class ItemInMachineDBController {
 					return;
 				}
 			}
-			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, ""));  // empty string = success
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -130,26 +130,28 @@ public class ItemInMachineDBController {
 	public static void decreaseItemsAmountInMachine(Map<ItemInMachineEntity, Integer> itemsInMachine,
 			ConnectionToClient client) throws IOException {
 		try {
+			// Setup
+			String missingItems = "";
 			ArrayList<ItemInMachineEntity> rollBackItems = new ArrayList<ItemInMachineEntity>();
 
+			// iterate over requested items to decrease
 			for (ItemInMachineEntity item : itemsInMachine.keySet()) {
-				ItemInMachineEntity updatedItem = null;
+				ItemInMachineEntity updatedItem = null;  // set to null every iteration
 				updatedItem = decreaseSingleItemAmount(item, itemsInMachine.get(item));
-				if (updatedItem != null) { // has error
+				
+				// if the returned item wasn't null, there is an error
+				if (updatedItem != null) { 
+					missingItems += String.format("%s -> your order: %d, current amount: %d\n", updatedItem.getName(), itemsInMachine.get(item), item.getCurrentAmount());
 					increaseRollBack(itemsInMachine, rollBackItems);
-					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
+					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, missingItems));
 					return;
 				}
+				// successful update, save it for roll back
 				rollBackItems.add(item);
-
 			}
-
-			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
-
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, missingItems));
 		} catch (Exception e) {
-			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
-
-			e.printStackTrace();
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, e.getStackTrace()));			
 		}
 	}
 
@@ -164,14 +166,17 @@ public class ItemInMachineDBController {
 
 		try {
 			PreparedStatement ps = con.prepareStatement(
-					"UPDATE item_in_machine SET current_amount=current_amount-? WHERE machine_id=? AND item_id=?;");
+					"UPDATE item_in_machine SET current_amount=current_amount-? WHERE machine_id=? AND item_id=? AND ? <= current_amount;");
 			ps.setInt(1, amountToDecrease);
 			ps.setInt(2, item.getMachineId());
 			ps.setInt(3, item.getId());
+			ps.setInt(4, amountToDecrease);
 
-			ps.executeUpdate();
-
+			if(ps.executeUpdate() == 0)  // update failed
+				throw new SQLException();
+			
 		} catch (SQLException e) {
+			item.setCurrentAmount(getItemInMachineQuantity(item)); // get the most updated amount
 			return item;
 		}
 		return null;
