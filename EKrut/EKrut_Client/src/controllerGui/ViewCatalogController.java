@@ -379,6 +379,11 @@ public class ViewCatalogController implements IScreen {
 			} else {
 				priceLabel.setText(item.getPrice() + "₪");
 			}
+			if( currentSupplyMethod != "Delivery"  && item.getCurrentAmount()<=0 ) {
+				newItem.setDisable(true);
+				image.setOpacity(0.5);
+				
+			}
 
 			// Prepare the gridpanes for the items in the cart
 			GridPane newItemInCart = createSingleCartItem();
