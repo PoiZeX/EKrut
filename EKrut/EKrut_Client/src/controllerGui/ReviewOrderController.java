@@ -112,9 +112,10 @@ public class ReviewOrderController  implements IScreen {
 			/*
 			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
-
+			
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
+			firstPurchase=false;
 			isFirstpurchase();
 			
 			// build graphical side
@@ -575,11 +576,10 @@ public class ReviewOrderController  implements IScreen {
 		sum.setPrefSize(62, 18);
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
-
 		GridPane.setRowSpan(imageView, 3);
 
 		// price after discount
-		if ((OrderController.isActiveSale() || firstPurchase) && user.getRole_type().equals(RolesEnum.member) ) {
+		if (OrderController.isActiveSale() || firstPurchase) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
@@ -591,7 +591,6 @@ public class ReviewOrderController  implements IScreen {
 				price.getStyleClass().add("LableOldPrice");
 				priceAfterDiscount.setVisible(true);
 				gridpane.add(priceAfterDiscount, 1, 2);
-
 			}
 			gridpane.add(price, 1, 1);
 

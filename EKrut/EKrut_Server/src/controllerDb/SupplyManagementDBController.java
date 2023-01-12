@@ -132,7 +132,7 @@ public class SupplyManagementDBController {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(7), 0.00, "");
-					item.setWorkerId(res.getInt(6));
+					//item.setWorkerId(res.getInt(6));
 				}
 
 				itemsInMachine.add(item);

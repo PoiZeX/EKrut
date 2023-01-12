@@ -204,7 +204,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 				ItemInMachineEntity item = (ItemInMachineEntity) event.getRowValue();
 
 				ItemInMachineEntity itemUpdate = new ItemInMachineEntity(item.getMachineId(), item.getItemId(),
-						item.getCurrentAmount(), ItemInMachineEntity.Call_Status.Processed, 0, 0, item.getName(), 0.0,
+						item.getCurrentAmount(), ItemInMachineEntity.Call_Status.Processed, 0, item.getWorkerId(), item.getName(), 0.0,
 						"");
 				itemUpdate.setWorkerId(NavigationStoreController.connectedUser.getId());
 				int oldValue = event.getOldValue();

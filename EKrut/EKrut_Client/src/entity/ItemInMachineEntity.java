@@ -42,6 +42,7 @@ public class ItemInMachineEntity extends ItemEntity {
 		else
 			this.isCallOpen = true;
 		this.timeUnderMin = timeUnderMin;
+		this.workerId=workerId;
 	}
 
 	@Override
