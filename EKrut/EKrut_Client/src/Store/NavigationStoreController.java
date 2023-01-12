@@ -459,7 +459,7 @@ public class NavigationStoreController {
 	}
 
 	/**
-	 * exit handler which can target from different places
+	 * exit handler which can be targeted from different places
 	 * 
 	 * @param closeAllScreens
 	 */

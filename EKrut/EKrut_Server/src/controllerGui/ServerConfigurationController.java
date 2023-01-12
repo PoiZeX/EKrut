@@ -200,11 +200,6 @@ public class ServerConfigurationController {
 		Status.setCellValueFactory((Callback) new PropertyValueFactory<ConnectedClientEntity, String>("status"));
 	}
 
-	@FXML
-	public void importUsersFromDB(ActionEvent event) {
-		// nothing to do here now
-	}
-
 	final FileChooser fileChooser = new FileChooser();
 
 	/**

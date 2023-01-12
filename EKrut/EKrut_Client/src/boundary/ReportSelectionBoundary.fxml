@@ -15,11 +15,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane alignment="CENTER" prefHeight="376.0" prefWidth="470.0" styleClass="GridPane">
+            <GridPane alignment="CENTER" prefHeight="376.0" prefWidth="510.0" styleClass="GridPane">
               <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="244.66665649414062" minWidth="10.0" prefWidth="221.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="249.66665649414062" minWidth="10.0" prefWidth="219.0" />
@@ -58,7 +58,7 @@
                   </Label>
                   <ToolBar fx:id="reportsToolBar" prefHeight="140.0" prefWidth="450.0" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
                      <items>
-                        <Button fx:id="clientReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Clients report">
+                        <Button fx:id="clientReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Clients report" textAlignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
                                  <image>
@@ -73,7 +73,7 @@
                               <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="supplyReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Supply report">
+                        <Button fx:id="supplyReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Supply report" textAlignment="CENTER" translateX="35.0">
                            <graphic>
                               <ImageView fitHeight="83.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -88,7 +88,7 @@
                               <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="ordersReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="158.0" text="Orders report">
+                        <Button fx:id="ordersReportBtn" alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="120.0" text="Orders report" textAlignment="CENTER" translateX="80.0">
                            <graphic>
                               <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
                                  <image>
@@ -128,7 +128,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </GridPane>
-            <GridPane alignment="CENTER" prefHeight="75.0" prefWidth="475.0" styleClass="GridPane">
+            <GridPane alignment="CENTER" prefHeight="75.0" prefWidth="510.0" styleClass="GridPane">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints />

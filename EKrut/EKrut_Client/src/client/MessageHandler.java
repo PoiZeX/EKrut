@@ -53,21 +53,16 @@ public class MessageHandler {
 		// ---- Messages ---- //
 		switch (task) {
 		case ServerDisconnect:
-			try {
-				thisClient.sendToServer(new Message(TaskType.ClientDisconnect));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			NavigationStoreController.closeAllScreens(); // force closing since server is disconnected
+			NavigationStoreController.ExitHandler(true); // force closing since server is disconnected
 			break;
-//-----------------------------------DATA_STORE
+//--------------------------------DATA_STORE--------------------------------
 		case InitRegions:
 			DataStore.recieveRegions((ArrayList<String>) obj);
 			break;
 		case InitMachines:
 			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
 			break;
-//-----------------------------USERS	
+//--------------------------------USERS--------------------------------
 		case ReceiveUserFromServerDB:
 			LoginController.validUserFromServer((UserEntity) obj);
 			break;
@@ -75,7 +70,7 @@ public class MessageHandler {
 			UsersManagementController.recieveUnapprovedUsers((ArrayList<UserEntity>) obj);
 			break;
 
-// ----------------------------------------Registration Form
+//--------------------------------Registration Form--------------------------------
 		case ReceiveUserInfoFromServerDB:
 		case ReceiveUserUpdateInDB:
 			RegistrationFormController.receiveDataFromServer(obj);
@@ -87,7 +82,7 @@ public class MessageHandler {
 		case ReceivePersonalMessages:
 			PersonalMessagesController.getAllMessagesFromServer((ArrayList<PersonalMessageEntity>) obj);
 			break;
-//------------------------------------REPORT
+//--------------------------------REPORT--------------------------------
 		case ReceiveOrderReport:
 			OrdersReportController.recieveDataFromServer((OrderReportEntity) obj);
 			break;
@@ -97,7 +92,7 @@ public class MessageHandler {
 		case ReceiveSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
-//-------------------------------DELIVERIES---------------------------
+//--------------------------------DELIVERIES---------------------------------
 		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((ArrayList<DeliveryEntity>) obj);
 			break;
@@ -107,14 +102,14 @@ public class MessageHandler {
 		case ReceiveUserByOrderIdFromServerDB:
 			DeliveryManagementController.getUserEntityFromServer((UserEntity) obj);
 			break;
-//--------------------------------------SALES
+//--------------------------------SALES--------------------------------
 		case ReceiveSalesFromServer:
 			SalesManagementController.getSalesEntityFromServer((ArrayList<SaleEntity>) obj);
 			break;
 		case InsertSaleAnswer:
 			CreateNewSaleController.isSaleExist((Boolean) obj);
 			break;
-//--------------------------------SUPPLY----------------------------------------------	
+//--------------------------------SUPPLY--------------------------------
 		case ReceiveSupplyWorkersFromServer:
 			SupplyManagementController.recevieSupplyWorkers((ArrayList<UserEntity>) obj);
 			break;
@@ -128,7 +123,7 @@ public class MessageHandler {
 		case ReceiveItemsInMachine:
 			navigateItems((ArrayList<ItemInMachineEntity>) obj);
 			break;
-//--------------------------------ORDER-----------------------------------------------
+//--------------------------------ORDER--------------------------------
 		case ReceiveItemsFromServer:
 			ItemsController.getItemsFromServer((ItemEntity) obj);
 			break;
