@@ -113,10 +113,9 @@ public class ReportsDBController {
 	protected static ClientsReportEntity getClientsReportFromDB() {
 		ClientsReportEntity report = new ClientsReportEntity();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return report;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn
+			PreparedStatement ps = con
 					.prepareStatement("SELECT * FROM ekrut.clients_report WHERE month=? AND year=? AND region=?;");
 			ps.setString(1, CommonFunctions.getNumericMonth(month));
 			ps.setString(2, year);
@@ -141,13 +140,12 @@ public class ReportsDBController {
 	protected static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return report;
-			Connection conn = MySqlClass.getConnection();
 			String query = "SELECT * FROM ekrut.supply_report "
 					+ "JOIN machines ON supply_report.machine_id = machines.machine_id "
 					+ "WHERE year=? AND month=? AND region=? AND machines.machine_id=?";
-			PreparedStatement ps = conn.prepareStatement(query);
+			PreparedStatement ps = con.prepareStatement(query);
 			ps.setString(1, year);
 			ps.setString(2, CommonFunctions.getNumericMonth(month));
 			ps.setString(3, region);
@@ -167,13 +165,19 @@ public class ReportsDBController {
 
 	}
 
+	/**
+	 * return if there is any report exist by type, year, month, region
+	 * @param reportType
+	 * @param month
+	 * @param year
+	 * @param region
+	 * @return
+	 */
 	public static boolean isReportExist(String reportType, String month, String year, String region) {
-
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return false;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn
+			PreparedStatement ps = con
 					.prepareStatement(String.format("SELECT * FROM %s_report WHERE month=? AND year=? AND region=?;", reportType));
 			ps.setString(1, CommonFunctions.getNumericMonth(month));
 			ps.setString(2, year);
