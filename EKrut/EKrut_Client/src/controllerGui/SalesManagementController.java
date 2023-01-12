@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -61,6 +62,9 @@ public class SalesManagementController  implements IScreen {
     
     @FXML
     private GridPane btnGridPane;
+    
+    @FXML
+    private Label regionLbl;
 
 
     private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
@@ -76,6 +80,7 @@ public class SalesManagementController  implements IScreen {
     	if (sales != null)
     		sales.clear();
     	String region =NavigationStoreController.connectedUser.getRegion();
+    	regionLbl.setText(region);
 		chat.acceptObj(new Message(TaskType.RequestSalesFromServer, region));
 		setupTable(); // setup columns connection
 		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingManager)) {
@@ -106,7 +111,7 @@ public class SalesManagementController  implements IScreen {
 			CommonFunctions.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
 		}
     }
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	private void setupTable() {
 		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingWorker))
 			salesTable.setEditable(true); // make table editable

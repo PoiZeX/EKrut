@@ -222,9 +222,11 @@ public class HomePageController  implements IScreen {
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
 				case SalesManagement:
-					if(currentUser.getRole_type().equals(RolesEnum.marketingManager))
+					if(currentUser.getRole_type().equals(RolesEnum.marketingManager)) {
 						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml","Select region");
-					break;
+						break;
+					}
+					
 				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
