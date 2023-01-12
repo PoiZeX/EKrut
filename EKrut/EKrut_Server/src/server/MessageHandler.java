@@ -147,10 +147,10 @@ public class MessageHandler {
 			OrderDBController.insertOrderEntity((OrderEntity) obj, client);
 			break;
 		case updatePickupStatus:
-			OrderDBController.updatePickupStatus((int) obj, client);
+			PickupDBController.updatePickupStatus((int) obj, client);
 			break;
 		case RequestPickupFromServer:
-			OrderDBController.isPickupValid((String[]) obj, client);
+			PickupDBController.isPickupValid((String[]) obj, client);
 			break;
 		case UpdateItemsUnderMin:
 			ItemInMachineDBController.increaseItemsUnderMin((ArrayList<int[]>) obj, client);
@@ -159,7 +159,7 @@ public class MessageHandler {
 			CommonDataDBController.getUserByOrderId((int) obj, client);
 			break;
 		case InsertNewPickup:
-			OrderDBController.insertPickupEntity((PickupEntity) obj, client);
+			PickupDBController.insertPickupEntity((PickupEntity) obj, client);
 			break;
 		case AddNewDelivery:
 			DeliveryManagementDBController.insertDeliveryEntity((DeliveryEntity) obj, client);
