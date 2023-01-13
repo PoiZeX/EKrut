@@ -4,10 +4,6 @@
 
 package controllerGui;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
@@ -20,10 +16,6 @@ import controller.ItemsController;
 import controller.OrderController;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,26 +30,24 @@ import utils.TooltipSetter;
 
 public class HomePageController implements IScreen {
 
-////--------------------------------
-
 	private TooltipSetter tooltip;
 	private UserEntity currentUser = NavigationStoreController.connectedUser;
-
-	//// --------------------------------
+	private Image image;
+	
 	@FXML
 	private VBox vbox;
 
-    @FXML
-    private Label lastMessageDateTimeLabel;
-    
-    @FXML
-    private GridPane memberEmployeeGridBox;
+	@FXML
+	private Label lastMessageDateTimeLabel;
 
-    @FXML
-    private Button memberMenuBtn;
+	@FXML
+	private GridPane memberEmployeeGridBox;
 
-    @FXML
-    private Button employeeMenuBtn;
+	@FXML
+	private Button memberMenuBtn;
+
+	@FXML
+	private Button employeeMenuBtn;
 
 	@FXML
 	private Button bottomBtn;
@@ -67,9 +57,9 @@ public class HomePageController implements IScreen {
 
 	@FXML
 	private Button middleBtn;
-	
-    @FXML
-    private Label lastMsgLabel;
+
+	@FXML
+	private Label lastMsgLabel;
 
 	@FXML
 	private Button topBtn;
@@ -83,51 +73,43 @@ public class HomePageController implements IScreen {
 	@FXML
 	private Label roleLabel;
 
-	@FXML 
+	@FXML
 	private VBox rigthVbox;
 
 	@Override
 	public void initialize() {
-		// Set up last message view
-		Message message = new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser);
-		PersonalMessagesController.setPersonalMessages(message);
-		if (!PersonalMessagesController.getMsgList().isEmpty()) {
-			// Get the last message as a whole
-			String lastMessageLong = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList().toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage();
-			tooltip = new TooltipSetter(lastMessageLong); // Set a tooltip for the label inorder to view the whole message
-			// Get the date of the last message
-			String dateTime = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList().toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getDate();
-			lastMessageDateTimeLabel.setText(dateTime); // Set date label
-			// Get the first short part of the last message
-			String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList().toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage().split("\n")[0];
-			lastMsgLabel.setText(lastMessageShort); // Set up short message label
-			lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
-		}
-		else {
-			// No messages to display
-			lastMsgLabel.setText("No Messages");
-			lastMessageDateTimeLabel.setText("");
-		}
-			
-		
-//		// Set date and time in the menu
-//		AnimationTimer timer = new AnimationTimer() {
-//		    @Override
-//		    public void handle(long now) {
-//		    	lastMessageDateTimeLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-//		    }
-//		};
-//		timer.start();
+
+		// Get the role type of the current connected user
+		RolesEnum currentRole = currentUser.getRole_type();
+
 		// set hidden as default
-		memberEmployeeGridBox.setVisible(false);
-		topBtn.setVisible(false); 
-		middleBtn.setVisible(false);
-		bottomBtn.setVisible(false);
-		mailBtn.setVisible(false);
-		RolesEnum currentRole = currentUser.getRole_type(); // Get the role type of the current connected user
+		initializeBtnAndLbl();
+		
+		// display the main menu
 		displayUserMenuByRoleType(currentRole);
-		DataStore.initData(); // initialize all common data's from DB.
-		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!"); // Set up welcome label
+
+		// Set up last message view
+		initializePersonalMessages();
+
+
+		// initialize all common data's from DB.
+		DataStore.initData();
+
+		// activate timeout
+		NavigationStoreController.transition.play();
+	}
+
+	/**
+	 * Initialize the buttons visibility default to false. Initialize the header
+	 * also
+	 */
+	private void initializeBtnAndLbl() {
+		memberEmployeeGridBox.setVisible(false);
+		toggleBtnsVisible(new Button[] { mailBtn, topBtn, middleBtn, bottomBtn }, false);
+
+		// Set up welcome label
+		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
+
 		// Build the role label string
 		String[] splitString = currentUser.getRole_type().toString()
 				.split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
@@ -139,107 +121,159 @@ public class HomePageController implements IScreen {
 		else
 			role = splitString[0];
 		roleLabel.setText(role); // Set up the role label
-		// activate timeout
-		NavigationStoreController.transition.play();
-
 	}
-	
+
+	/**
+	 * Initialize the personal messages if needed
+	 */
+	private void initializePersonalMessages() {
+		PersonalMessagesController.setPersonalMessages(
+				new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser));
+		if (!PersonalMessagesController.getMsgList().isEmpty()) {
+
+			// Get the last message as a whole
+			String lastMessageLong = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage();
+			tooltip = new TooltipSetter(lastMessageLong); // Set a tooltip for the label inorder to view the whole
+															// message
+
+			// Get the date of the last message
+			String dateTime = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getDate();
+			lastMessageDateTimeLabel.setText(dateTime); // Set date label
+
+			// Get the first short part of the last message
+			String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage()
+							.split("\n")[0];
+			lastMsgLabel.setText(lastMessageShort); // Set up short message label
+			lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
+		} else {
+			// No messages to display
+			lastMsgLabel.setText("No Messages");
+			lastMessageDateTimeLabel.setText("");
+		}
+	}
+
+	/**
+	 * Manager for menu displaying
+	 * 
+	 * @param currentRole
+	 */
 	private void displayUserMenuByRoleType(RolesEnum currentRole) {
-		Image image = null;
 		// switch case by role
 		switch (currentRole) {
-			case registered:
-			case member:
-				 displayMemberMenu(image, currentRole); // Display the member menu
-			case CEO: // CEO case will use the regionalManager case, i.e. no break;
-			case regionManager:
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					if (currentRole.equals(RolesEnum.regionManager)) {
-						setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNamesEnum.UsersManagement);
-						setBtn(bottomBtn, "Supply Management", "Manage the available supply",
-								ScreensNamesEnum.SupplyManagement);
-					}
-					setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
-					if (currentUser.getRole_type() == RolesEnum.regionManager)
-						setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
-					image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
-				} else
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
-			case customerServiceWorker:
-				mailBtn.setVisible(false);
-				bottomBtn.setVisible(false);
-				middleBtn.setVisible(false);
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
-							ScreensNamesEnum.RegistrationForm);
-					image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
+		case registered:
+		case member:
+			displayMemberMenu(currentRole);
+			break;
+		case CEO: // CEO case will use the regionalManager case, i.e. no break;
+		case regionManager:
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				// if OL and Region manager -> show the
+				if (currentRole.equals(RolesEnum.regionManager)) {
+					setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNamesEnum.UsersManagement);
+					setBtn(bottomBtn, "Supply Management", "Manage the available supply",
+							ScreensNamesEnum.SupplyManagement);
 				}
-				else
+				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
+				if (currentUser.getRole_type() == RolesEnum.regionManager)
+					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
+				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
+				checkEmployeeMemberStatus(currentUser, currentRole);
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
-			case deliveryOperator:
-				mailBtn.setVisible(false);
-				bottomBtn.setVisible(false);
-				middleBtn.setVisible(false);
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
-							ScreensNamesEnum.DeliveryManagement);
-					image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
-				} else
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
-			case marketingWorker:
-				mailBtn.setVisible(false);
-				bottomBtn.setVisible(false);
-				middleBtn.setVisible(false);
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
-					image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
-				} else
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
-			case marketingManager:
-				mailBtn.setVisible(false);
-				bottomBtn.setVisible(false);
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					setBtn(topBtn, "Create New Sale", "Activate region sale by pattern",
-							ScreensNamesEnum.CreateNewSale);
-					setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
 
-					image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
-				} else
+		case customerServiceWorker:
+			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
+						ScreensNamesEnum.RegistrationForm);
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+				checkEmployeeMemberStatus(currentUser, currentRole);
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
-			case supplyWorker:
-				mailBtn.setVisible(false);
-				bottomBtn.setVisible(false);
-				middleBtn.setVisible(false);
-				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-					setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-					image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
-					checkEmployeeMemberStatus(currentUser, currentRole);
-				} else
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\nOr login in 'OL' configuration");
-				break;
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
 
-			default:
-				// TODO: add label to inform the user he needs to contact customer support
-				// show the screen anyway because the login succeed
-				CommonFunctions.createPopup(PopupTypeEnum.Warning,
-						"No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
-				break;
+		case deliveryOperator:
+			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				checkEmployeeMemberStatus(currentUser, currentRole);
+				setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
+						ScreensNamesEnum.DeliveryManagement);
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
+
+		case marketingWorker:
+			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				checkEmployeeMemberStatus(currentUser, currentRole);
+				setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
+				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
+
+		case marketingManager:
+
+			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn }, false);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
+				checkEmployeeMemberStatus(currentUser, currentRole);
+				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern", ScreensNamesEnum.CreateNewSale);
+				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
+
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
+
+		case supplyWorker:
+			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
+			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+				checkEmployeeMemberStatus(currentUser, currentRole);
+				setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+			} else {
+				// is on 'EK'
+				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+							"You have nothing to see here\nIf you want to order please register in customer service\n"
+									+ "Or login in 'OL' configuration");
+			}
+			break;
+
+		default:
+			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					"No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
+			break;
 		}
 		ImageView roleImg = new ImageView();
 		if (image != null) {
@@ -247,53 +281,79 @@ public class HomePageController implements IScreen {
 			roleImg.setImage(image);
 			roleImg.setFitHeight(350.0);
 			roleImg.setFitWidth(350.0);
-		if (currentRole.equals(RolesEnum.supplyWorker)||currentRole.equals(RolesEnum.deliveryOperator))
-			roleImg.setFitWidth(175.0);
+			if (currentRole.equals(RolesEnum.supplyWorker) || currentRole.equals(RolesEnum.deliveryOperator))
+				roleImg.setFitWidth(175.0);
 			rigthVbox.getChildren().addAll(roleImg);
 		}
 	}
-	
+
+	/**
+	 * Change all buttons visibility at once
+	 * 
+	 * @param btns
+	 * @param setToVisible
+	 */
+	private void toggleBtnsVisible(Button[] btns, boolean setToVisible) {
+		for (Button btn : btns)
+			btn.setVisible(setToVisible);
+	}
+
+	/**
+	 * Manager for employee which is a member
+	 * 
+	 * @param currentUser
+	 * @param currentRole
+	 * @return
+	 */
 	private boolean checkEmployeeMemberStatus(UserEntity currentUser, RolesEnum currentRole) {
-		Image image = null;
 		if (!CommonFunctions.isNullOrEmpty(currentUser.getCc_num())) {
 			memberEmployeeGridBox.setVisible(true);
-			tooltip = new TooltipSetter("Display the employee menu");
+
+			employeeMenuBtn.setTooltip(new TooltipSetter("Display the employee menu").getTooltip());
+			memberMenuBtn.setTooltip(new TooltipSetter("Display the member menu").getTooltip());
+
 			employeeMenuBtn.setDisable(true);
-			employeeMenuBtn.setTooltip(tooltip.getTooltip());
-			tooltip = new TooltipSetter("Display the member menu");
 			memberMenuBtn.setDisable(false);
-			memberMenuBtn.setTooltip(tooltip.getTooltip());
+
+			// member action setter
 			memberMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override
-	            public void handle(ActionEvent event) {
-	            	memberMenuBtn.setDisable(true);
-	            	employeeMenuBtn.setDisable(false);
-	            	displayMemberMenu(image, currentRole);
-	            }
-		    });
+				@Override
+				public void handle(ActionEvent event) {
+					memberMenuBtn.setDisable(true);
+					employeeMenuBtn.setDisable(false);
+					displayMemberMenu(currentRole);
+				}
+			});
+
+			// employee action setter
 			employeeMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override
-	            public void handle(ActionEvent event) {
-	            	
-	            	memberMenuBtn.setDisable(false);
-	            	employeeMenuBtn.setDisable(true);
-	            	displayUserMenuByRoleType(currentRole);
-	            }
-		    });
+				@Override
+				public void handle(ActionEvent event) {
+					memberMenuBtn.setDisable(false);
+					employeeMenuBtn.setDisable(true);
+					displayUserMenuByRoleType(currentRole);
+				}
+			});
 			return true;
 		}
 		return false;
 	}
-	
-	private void displayMemberMenu(Image image, RolesEnum currentRole) {
+
+	/**
+	 * Member menu manager
+	 * 
+	 * @param image
+	 * @param currentRole
+	 */
+	private void displayMemberMenu(RolesEnum currentRole) {
 		setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNamesEnum.ViewCatalog);
+
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
 			setBtn(topBtn, "Collect An Order", "Collect any orders that are ready",
 					ScreensNamesEnum.ConfirmOnlineOrder); // need
 		else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 			setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
 		if (currentUser.getRole_type() == RolesEnum.member) {
-			mailBtn.setVisible(true);
 			setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 		}
 
@@ -301,7 +361,7 @@ public class HomePageController implements IScreen {
 		ItemsController.requestItemsFromServer();
 		OrderController.getActiveSalesFromDB();
 	}
-	
+
 	/**
 	 * Generic method to handle buttons setup according to button text, tooltip and
 	 * the screen to go to
@@ -321,16 +381,17 @@ public class HomePageController implements IScreen {
 				switch (scName) {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-						CommonFunctions.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml","Shipment Method");
+						CommonFunctions.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml",
+								"Shipment Method");
 					else
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
 				case SalesManagement:
-					if(currentUser.getRole_type().equals(RolesEnum.marketingManager)) {
-						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml","Select region");
+					if (currentUser.getRole_type().equals(RolesEnum.marketingManager)) {
+						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml", "Select region");
 						break;
 					}
-					
+
 				default:
 					NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
