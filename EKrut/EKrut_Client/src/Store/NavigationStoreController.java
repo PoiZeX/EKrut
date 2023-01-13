@@ -436,7 +436,6 @@ public class NavigationStoreController {
 		isFirstTime = true;
 	}
 
-
 	/**
 	 * setup timeout
 	 */
@@ -468,29 +467,29 @@ public class NavigationStoreController {
 	 * @param closeAllScreens
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		CommonFunctions.SleepFor(1000, () -> {
-			if (connectedUser != null) {
+		// CommonFunctions.SleepFor(1000, () -> {
+		if (connectedUser != null) {
 //				ItemsController.deleteAllItemsInDir();
 
-				if (connectedUser.isLogged_in()) {
-					connectedUser.setLogged_in(false); // logout the user
-					HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
-				}
-				connectedUser = null;
+			if (connectedUser.isLogged_in()) {
+				connectedUser.setLogged_in(false); // logout the user
+				HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			}
-			if (isFirstTime) {
-				isFirstTime = false;
-				if (HostClientController.getChat() != null)
-					HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+			connectedUser = null;
+		}
+		if (isFirstTime) {
+			isFirstTime = false;
+			if (HostClientController.getChat() != null)
+				HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
 
-				if (!closeAllScreens) { // reset all and refresh
-					NavigationStoreController.getInstance().clearAll();
-					NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
-					
-				} else
-					closeAllScreens();
-			}
-		});
+			if (!closeAllScreens) { // reset all and refresh
+				NavigationStoreController.getInstance().clearAll();
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+
+			} else
+				closeAllScreens();
+		}
+		// });
 
 	}
 
