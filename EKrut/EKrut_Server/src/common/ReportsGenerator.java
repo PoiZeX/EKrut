@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.function.LongSupplier;
 
 import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
+import controllerDb.CommonDataDBController;
 import controllerDb.ReportsDBController;
+import entity.SupplyReportEntity;
 import mysql.MySqlClass;
 
 public class ReportsGenerator {
@@ -29,40 +32,97 @@ public class ReportsGenerator {
 		}
 	}
 
-	private static void generateClientsReport(String month, String year) {
-
-		HashMap<String, HashMap<String, String>> regionDetails = new HashMap<>();
-		generateSupplyTotal(regionDetails, month, year);
-		generateDescription(regionDetails, month, year);
-		generateUserStatus(regionDetails, month, year);
+	private static void generateSupplyReport(String month, String year) {
 		try {
-			Connection con = MySqlClass.getConnection();
-			if (con == null)
-				return;
-			for (String region : regionDetails.keySet()) {
-				String description = regionDetails.get(region).get("description");
-				String supply_methods = regionDetails.get(region).get("supply_methods");
-				String total_sales = regionDetails.get(region).get("total_sales");
-				String user_status = regionDetails.get(region).get("user_status");
-				PreparedStatement psInsert = con.prepareStatement(
-						"insert into clients_report(description,supplymethods,totalorders,user_status,year,month,region) "
-								+ "values(?,?,?,?,?,?,?)");
-				psInsert.setString(1, description);
-				psInsert.setString(2, supply_methods);
-				psInsert.setString(3, total_sales);
-				psInsert.setString(4, user_status);
-				psInsert.setString(5, year);
-psInsert.setString(6, month);
-				psInsert.setString(7, region);
-				psInsert.executeUpdate();
+			// iterate on regions
+			ArrayList<String> allRegion = CommonDataDBController.getRegionsListFromDB();
+			for (String region : allRegion) {
+				ArrayList<singleSupplyReportInfo> supplyReportsForOneRegion = new ArrayList<>();
+				ArrayList<ArrayList<singleSupplyReportInfo>> reportsForMachineID = new ArrayList<>();
+
+				int machine_id, current_amount, times_under_min, min_amount;
+				String name;
+				// get all machines in region
+				String query = "SELECT i.machine_id, i.item_id, i.current_amount, i.times_under_min, machines.min_amount, items.name "
+						+ "FROM machines " + "JOIN item_in_machine as i ON " + "region_name='?' " + "JOIN items ON "
+						+ "items.item_id = i.item_id " + "ORDER BY i.machine_id;";
+
+				// the query will return a list of ALL machines in the desired region, and the
+				// selected fields
+				Connection con = MySqlClass.getConnection();
+				if (con == null)
+					return;
+				PreparedStatement psGet = con.prepareStatement(query);
+				psGet.setString(1, region);
+				// psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+				ResultSet res = psGet.executeQuery();
+				int prev_machine_id = -1;
+				
+				// for each tuple
+				while (res.next()) {
+					machine_id = res.getInt(1);
+					// item_id = res.getInt(2);  // remove later ?
+					current_amount = res.getInt(3);
+					times_under_min = res.getInt(4);
+					min_amount = res.getInt(5);
+					name = res.getString(6);
+
+					// if this is not the first time (-1) and other machine detected 
+					// -> insert all previous 
+					if (prev_machine_id != -1 && prev_machine_id != machine_id) {
+						reportsForMachineID.put(region, supplyReportsForOneRegion);
+						supplyReportsForOneRegion.clear();
+					}
+					
+					prev_machine_id = machine_id; // set for next time
+					singleSupplyReportInfo report = new singleSupplyReportInfo(machine_id, name, current_amount,
+							times_under_min, min_amount);
+
+					// add the report details we know
+					supplyReportsForOneRegion.add(report);
+
+				}
+				
+				// got here means we finish to get ALL data we need for single region, now process it
+				
+				
+
+				// TODO: !!!!! reset times_under_min !!!!!
+
 			}
-		} catch (Exception e) {
 
-		}
+		} catch (Exception e) {	}
 
-		// iterate insert to db
 	}
 
+	
+	private String processData() {
+		
+	}
+	
+	private static class singleSupplyReportInfo {
+		int machine_id, item_id, current_amount, times_under_min, min_amount;
+		String name;
+
+		public singleSupplyReportInfo(int machine_id, String name, int current_amount, int times_under_min,
+				int min_amount) {
+			super();
+			this.machine_id = machine_id;
+			this.item_id = item_id;
+			this.current_amount = current_amount;
+			this.times_under_min = times_under_min;
+			this.name = name;
+			this.min_amount = min_amount;
+		}
+
+	}
+
+	/**
+	 * orders report Manager, generate and insert
+	 * 
+	 * @param month
+	 * @param year
+	 */
 	private static void generateOrdersReport(String month, String year) {
 		HashMap<String, String> regionDescription = new HashMap<>();
 		String query = "SELECT machines.machine_id, machines.machine_name, regions.region_name, orders.buytime, SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders "
@@ -105,7 +165,55 @@ psInsert.setString(6, month);
 		}
 	}
 
-// Helper Functions
+	/**
+	 * clients report Manager, generate and insert
+	 * 
+	 * @param month
+	 * @param year
+	 */
+	private static void generateClientsReport(String month, String year) {
+
+		HashMap<String, HashMap<String, String>> regionDetails = new HashMap<>();
+		// Prepare
+		generateSupplyTotal(regionDetails, month, year);
+		generateDescription(regionDetails, month, year);
+		generateUserStatus(regionDetails, month, year);
+
+		// insert to DB
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			for (String region : regionDetails.keySet()) {
+				String description = regionDetails.get(region).get("description");
+				String supply_methods = regionDetails.get(region).get("supply_methods");
+				String total_sales = regionDetails.get(region).get("total_sales");
+				String user_status = regionDetails.get(region).get("user_status");
+				PreparedStatement psInsert = con.prepareStatement(
+						"insert into clients_report(description,supplymethods,totalorders,user_status,year,month,region) "
+								+ "values(?,?,?,?,?,?,?)");
+				psInsert.setString(1, description);
+				psInsert.setString(2, supply_methods);
+				psInsert.setString(3, total_sales);
+				psInsert.setString(4, user_status);
+				psInsert.setString(5, year);
+				psInsert.setString(6, month);
+				psInsert.setString(7, region);
+				psInsert.executeUpdate();
+			}
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	/**
+	 * generate the user status for clients-report
+	 * 
+	 * @param regionDetails
+	 * @param month
+	 * @param year
+	 */
 	private static void generateUserStatus(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
 		HashMap<String, ArrayList<? super Object>> allQueries = new HashMap<>();
@@ -152,6 +260,13 @@ psInsert.setString(6, month);
 		}
 	}
 
+	/**
+	 * generate the supply total column for clients-report
+	 * 
+	 * @param regionDetails
+	 * @param month
+	 * @param year
+	 */
 	private static void generateSupplyTotal(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
 		HashMap<String, ArrayList<? super Object>> allQueries = new HashMap<>();
@@ -199,6 +314,13 @@ psInsert.setString(6, month);
 		}
 	}
 
+	/**
+	 * Generate the description column for clients-report
+	 * 
+	 * @param regionDetails
+	 * @param month
+	 * @param year
+	 */
 	private static void generateDescription(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
 		HashMap<String, ArrayList<Integer>> allQueries = new HashMap<>();
@@ -276,7 +398,7 @@ psInsert.setString(6, month);
 		// 0-3,5 , 3-10,3 , 10-12,4 , 12-15,1, // Actual
 	}
 
-	// inner class represents a pair for report
+	// inner class represents a pair for orders report
 	protected static class Pair implements Comparable<Pair> {
 		int ordersAmount, usersAmount;
 

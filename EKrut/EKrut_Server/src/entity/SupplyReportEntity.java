@@ -16,6 +16,40 @@ public class SupplyReportEntity extends ReportEntity {
 		super();
 	}
 
+	/**
+	 * for generate new entity
+	 * 
+	 * @param machine_id
+	 * @param item_name
+	 * @param min_stock
+	 * @param start_stock
+	 * @param cur_stock
+	 * @param missing_sev
+	 * @param month
+	 * @param year
+	 * @param region
+	 */
+	public SupplyReportEntity(int machine_id, String item_name, String min_stock, String cur_stock, String missing_sev) {
+		this(-1, machine_id, item_name, min_stock, "0", cur_stock, missing_sev, "", "", "");
+		// id is -1 because it doesn't matter when inserting
+		// start stock is 0 because we need to set it separate
+		// same for year, month and region
+	}
+
+	/**
+	 * for getting an entity
+	 * 
+	 * @param id
+	 * @param machine_id
+	 * @param item_name
+	 * @param min_stock
+	 * @param start_stock
+	 * @param cur_stock
+	 * @param missing_sev
+	 * @param month
+	 * @param year
+	 * @param region
+	 */
 	public SupplyReportEntity(int id, int machine_id, String item_name, String min_stock, String start_stock,
 			String cur_stock, String missing_sev, String month, String year, String region) {
 		super(id, month, year, region);
