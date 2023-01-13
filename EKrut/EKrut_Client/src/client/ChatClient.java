@@ -25,6 +25,10 @@ public class ChatClient extends AbstractClient {
 	}
 
 
+	/**
+	 * Handle a message from server, type Object.
+	 * Navigate using MessageHandler
+	 */
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		if (msg instanceof String) {
@@ -38,6 +42,11 @@ public class ChatClient extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Handle a simple message, type String
+	 * @param message
+	 * @return
+	 */
 	public boolean handleMessageFromClientUI(String message) {
 		try {
 			openConnection();// in order to send more than one message
@@ -61,6 +70,11 @@ public class ChatClient extends AbstractClient {
 	}
 
 
+	/**
+	 * Handle sending an object from client to server
+	 * @param message
+	 * @return
+	 */
 	public boolean handleMessageFromClient(Object message) {
 		try {
 			openConnection(); // in order to send more than one message

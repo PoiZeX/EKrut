@@ -87,7 +87,7 @@ public class ReportsDBController {
 	 * 
 	 * @return
 	 */
-	protected static OrderReportEntity getOrderReportFromDB() {
+	public static OrderReportEntity getOrderReportFromDB() {
 		OrderReportEntity report = new OrderReportEntity();
 		try {
 			if (con == null)
@@ -110,7 +110,7 @@ public class ReportsDBController {
 
 	}
 
-	protected static ClientsReportEntity getClientsReportFromDB() {
+	public static ClientsReportEntity getClientsReportFromDB() {
 		ClientsReportEntity report = new ClientsReportEntity();
 		try {
 			if (con == null)
@@ -137,7 +137,7 @@ public class ReportsDBController {
 	 * 
 	 * @return
 	 */
-	protected static SupplyReportEntity getSupplyReportFromDB() {
+	public static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
 		try {
 			if (con == null)
