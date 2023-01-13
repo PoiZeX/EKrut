@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
+
+import client.ChatClient;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
@@ -460,33 +462,45 @@ public class NavigationStoreController {
 	 * exit handler which can be targeted from different places
 	 * 
 	 * @param closeAllScreens
+	 * @throws InterruptedException
 	 */
 	public static void ExitHandler(boolean closeAllScreens) {
-		// CommonFunctions.SleepFor(1000, () -> {
-		if (connectedUser != null) {
-//				ItemsController.deleteAllItemsInDir();
+		try {
+			// CommonFunctions.SleepFor(1000, () -> {
+			if (connectedUser != null) {
 
-			if (connectedUser.isLogged_in()) {
-				connectedUser.setLogged_in(false); // logout the user
-				HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				if (connectedUser.isLogged_in()) {
+					connectedUser.setLogged_in(false); // logout the user
+					CommonFunctions.SleepFor(150, () -> {
+						ChatClient.awaitResponse = false;
+					});
+					HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				}
+
+				connectedUser = null;
 			}
-			connectedUser = null;
-		}
-		if (HostClientController.getChat() != null)
-			HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+			if (isFirstTime) {
+				isFirstTime = false;
 
-		if (isFirstTime) {
-			isFirstTime = false;
-			
-			if (!closeAllScreens) { // reset all and refresh
-				NavigationStoreController.getInstance().clearAll();
-				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+				if (HostClientController.getChat() != null) {
+					CommonFunctions.SleepFor(150, () -> {
+						ChatClient.awaitResponse = false;
+					});
+					HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+				}
 
-			} 
-			else
-				closeAllScreens();
+				if (!closeAllScreens) { // reset all and refresh
+					NavigationStoreController.getInstance().clearAll();
+					NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+
+				} else {
+					closeAllScreens();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	//	});
+		// });
 	}
 
 	/**
@@ -494,7 +508,7 @@ public class NavigationStoreController {
 	 */
 	public static void closeAllScreens() {
 		Platform.exit(); // exit JavaFx
-		System.exit(1); // force the system to exit
+		System.exit(0); // force the system to exit
 		// exit
 		// function)
 
