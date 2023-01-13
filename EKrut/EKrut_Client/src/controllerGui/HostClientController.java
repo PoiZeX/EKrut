@@ -41,7 +41,7 @@ public class HostClientController  implements IScreen {
 
 	@FXML
 	private Label headLine;
-	private static ClientController chat = null; // only one instance
+	private static ClientController chat = null; // only one instance 
 
 	@FXML
 	private void SendPort(ActionEvent event) {

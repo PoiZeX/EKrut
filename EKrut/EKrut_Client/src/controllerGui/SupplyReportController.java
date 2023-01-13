@@ -71,7 +71,7 @@ public class SupplyReportController implements IScreen  {
 		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			machineName = machineIdComboBox.getValue();
 			for (MachineEntity machine : allMachines) {
-				if (machine.getMachineName().equals(machineName))
+				if (machine.getMachineName().equals(machineName)) 
 					machineID = machine.getId();
 			}
 			initBarChart(machineID);
@@ -160,7 +160,6 @@ public class SupplyReportController implements IScreen  {
 		supplySBC.getData().addAll(series1, series2);
 		
 		// set pieChart
-		
 		pieChart.setData(list);
 		
 		// set textual conclusions

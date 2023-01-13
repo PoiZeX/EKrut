@@ -34,7 +34,7 @@ public class PersonalMessageEntity implements Serializable {
 		this.date = date;
 	}
 
-	public String getTitle() {
+	public String getTitle() { 
 		return title;
 	}
 
@@ -43,7 +43,7 @@ public class PersonalMessageEntity implements Serializable {
 	}
 
 	public String getMessage() {
-		return message;
+		return message; 
 	}
 
 	public void setMessage(String message) {
