@@ -118,6 +118,7 @@ public class HomePageController implements IScreen {
 //		    }
 //		};
 //		timer.start();
+		
 		// set hidden as default
 		memberEmployeeGridBox.setVisible(false);
 		topBtn.setVisible(false); 

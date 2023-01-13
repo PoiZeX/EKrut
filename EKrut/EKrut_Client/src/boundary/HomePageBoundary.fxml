@@ -70,7 +70,7 @@
       </VBox>
    </right>
    <center>
-      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="450.0" prefWidth="375.0" spacing="20.0" styleClass="GridPane" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="440.0" prefWidth="410.0" spacing="20.0" styleClass="GridPane" BorderPane.alignment="CENTER">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
