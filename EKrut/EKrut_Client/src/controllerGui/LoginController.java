@@ -8,6 +8,7 @@ import common.CommonFunctions;
 import common.TaskType;
 import common.Message;
 import common.PopupTypeEnum;
+import common.RolesEnum;
 import common.ScreensNamesEnum;
 import entity.UserEntity;
 import javafx.event.ActionEvent;
@@ -19,17 +20,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
 
-public class LoginController  implements IScreen {
+public class LoginController implements IScreen {
 
 	protected static ClientController chat;
 	private static String username, password;
 	// those fields for server response
 	private static Boolean isValidDetails = null;
-	private static String returnedMsg = "";
+	protected static String returnedMsg = "";
 	private boolean isServiceEnable = false;
 	private static StringBuilder errorMsg;
 
@@ -45,11 +47,12 @@ public class LoginController  implements IScreen {
 	@FXML
 	private Button EKTLoginBtn;
 
+	private static boolean isEKTpressed = false;
 	@Override
 	public void initialize() {
-		
+
 	}
-	
+
 	public LoginController() {
 		chat = HostClientController.getChat(); // one instance
 	}
@@ -71,14 +74,18 @@ public class LoginController  implements IScreen {
 	 */
 	@FXML
 	void loginBtnAction(ActionEvent event) {
+		isEKTpressed = false;
 		username = usernameTxtField.getText();
 		password = passwordTxtField.getText();
 		// validate
 		if (!validateUsernamePasswordSyntax())
 			return; // something more
 
-		// call login proccess
-		loginProccess(new String[] { username, password });
+		// call login process
+		if (loginProccess(new String[] { username, password }))
+			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HomePage);
+		else
+			showErrorMsg();
 	}
 
 	/**
@@ -102,15 +109,17 @@ public class LoginController  implements IScreen {
 
 		if (isValidDetails) {
 			if (!isServiceEnable)
-				// Go to next screen (controller creates the screen)
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HomePage);
-		}
-
-		else {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, returnedMsg);
-
+//				if (EKTLoginBtn.isDisable()) {
+//					// So EKT function was activated, lets check if he is a member or not
+//					UserEntity user = NavigationStoreController.connectedUser;
+//					
+//						return false;
+//					}
+//				return true;
+//				}
+				return true; // Go to next screen (controller creates the screen)
+		} else
 			return false;
-		}
 		return true;
 	}
 
@@ -205,6 +214,12 @@ public class LoginController  implements IScreen {
 //			return;
 //		}
 //		
+		// this condition needs to be checked just if the user tried to connect via EKT
+		if (isEKTpressed && !isUserAuthorizedToUseEKT(user)) {
+			isValidDetails = false;
+			returnedMsg = "You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)";
+			return;
+		}
 		// got here - everything was good
 		isValidDetails = true;
 		returnedMsg = "Success";
@@ -225,7 +240,7 @@ public class LoginController  implements IScreen {
 	@FXML
 	void ektLoginAction(ActionEvent event) {
 		Stage primaryStage = new Stage();
-
+		isEKTpressed = true;
 		Parent root;
 		try {
 
@@ -245,14 +260,14 @@ public class LoginController  implements IScreen {
 				}
 			});
 			setLoginBtnDisable(true);
-			
+
 			// freeze current screen until got popup close
-			
-			NavigationStoreController.getInstance().getPrimaryStage().hide();
+
+			// NavigationStoreController.getInstance().getPrimaryStage().hide();
 //			primaryStage.initModality(Modality.APPLICATION_MODAL);
 //			primaryStage.showAndWait();
-			
-			 primaryStage.show();
+
+			primaryStage.show();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -261,10 +276,39 @@ public class LoginController  implements IScreen {
 
 	}
 
+	/**
+	 * Sets login btn disable while connect with EKT
+	 * 
+	 * @param disable
+	 */
 	protected void setLoginBtnDisable(boolean disable) {
+		usernameTxtField.setDisable(disable);
+		passwordTxtField.setDisable(disable);
 		loginBtn.setDisable(disable);
 		EKTLoginBtn.setDisable(disable);
 	}
 
+	/**
+	 * return true if the user is a member or valid employee
+	 * 
+	 * @return
+	 */
+	private static boolean isUserAuthorizedToUseEKT(UserEntity user) {
+		if (user.getRole_type().equals(RolesEnum.user) || user.getRole_type().equals(RolesEnum.registered))
+			return false;
+
+		// here check for employee (member as well)
+		// every registered employee is a member (Our choice because we love our
+		// workers)
+		// detect it if the worker has credit card number
+		if (CommonFunctions.isNullOrEmpty(user.getCc_num()))
+			return false;
+		return true;
+	}
+
+	public void showErrorMsg() {
+		CommonFunctions.createPopup(PopupTypeEnum.Error, returnedMsg);
+
+	}
 
 }

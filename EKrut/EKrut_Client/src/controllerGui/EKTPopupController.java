@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
+import common.PopupTypeEnum;
+import common.ScreensNamesEnum;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -43,28 +45,36 @@ public class EKTPopupController extends LoginController {
 	 * information (works like NFC)
 	 */
 	private void setBackgroundTask() {
-		CommonFunctions.SleepFor(AppConfig.WAIT_BEFORE_SIMULATE_LOGIN, () -> {
-			// simulate: after <APPCONFIG> seconds:
+		timerSuccess.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> {
+					// simulate: after <APPCONFIG> seconds:
 
-			if (!loginProccess(usernamePasswordStub))
-				cancelOperation();
-			else {
-				timerTimeLimit.cancel(); // time limit is irrelevant now
+					if (!loginProccess(usernamePasswordStub))
+						cancelOperation();
+					else {
+						timerTimeLimit.cancel(); // time limit is irrelevant now
 
-				// login success
-				headlineLabel.setText("Login with EKT success!");
-				Image image = new Image(getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
-				loadingImage.setImage(image); // get information gif
+						// login success
+						headlineLabel.setText("Login with EKT success!");
+						Image image = new Image(
+								getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
+						loadingImage.setImage(image); // get information gif
 
-				// wait for 2 seconds
-				CommonFunctions.SleepFor(AppConfig.WAIT_AFTER_VALIDATION_SUCCESS, () -> {
-					Platform.runLater(() -> {
-						((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
-						NavigationStoreController.getInstance().getPrimaryStage().show();
-					});
+						// wait for 2 seconds
+						CommonFunctions.SleepFor(AppConfig.WAIT_AFTER_VALIDATION_SUCCESS, () -> {
+							Platform.runLater(() -> {
+								((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+								// NavigationStoreController.getInstance().getPrimaryStage().show();
+								NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HomePage);
+							});
+						});
+					}
 				});
 			}
-		});
+
+		}, AppConfig.WAIT_BEFORE_SIMULATE_LOGIN);
 
 	}
 
@@ -104,12 +114,14 @@ public class EKTPopupController extends LoginController {
 	 * enable the regular login btn
 	 */
 	protected void cancelOperation() {
-		((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
 		timerSuccess.cancel();
 		timerTimeLimit.cancel();
 		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
 		s.setLoginBtnDisable(false);
-		NavigationStoreController.getInstance().getPrimaryStage().show();
+		// NavigationStoreController.getInstance().getPrimaryStage().show();
+		((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
+
+		s.showErrorMsg();
 
 	}
 
