@@ -205,11 +205,6 @@ public class NavigationStoreController {
 		return true;
 	}
 
-	public boolean stackCircleHandler(ScreenEntity screenEntity) {
-
-		return true;
-	}
-
 	/**
 	 * Sets a new ScreenEntity in the dictionary
 	 * 
@@ -477,20 +472,21 @@ public class NavigationStoreController {
 			}
 			connectedUser = null;
 		}
+		if (HostClientController.getChat() != null)
+			HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+
 		if (isFirstTime) {
 			isFirstTime = false;
-			if (HostClientController.getChat() != null)
-				HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
-
+			
 			if (!closeAllScreens) { // reset all and refresh
 				NavigationStoreController.getInstance().clearAll();
 				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
 
-			} else
+			} 
+			else
 				closeAllScreens();
 		}
-		// });
-
+	//	});
 	}
 
 	/**
@@ -498,7 +494,7 @@ public class NavigationStoreController {
 	 */
 	public static void closeAllScreens() {
 		Platform.exit(); // exit JavaFx
-		System.exit(0); // force the system to exit
+		System.exit(1); // force the system to exit
 		// exit
 		// function)
 
