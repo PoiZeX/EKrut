@@ -9,6 +9,7 @@ import common.CustomerStatusEnum;
 import common.DeliveryStatusEnum;
 import common.Message;
 import common.PopupTypeEnum;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import entity.DeliveryEntity;
 import entity.PickupEntity;
@@ -82,8 +83,10 @@ public class ConfirmOnlineOrderController implements IScreen {
 		}
 		errMsgLbl.setText(errorMsg);
 		errMsgLbl.setDisable(false);
-		if (isValidOrder)
+		if (isValidOrder) {
 			CommonFunctions.createPopup(PopupTypeEnum.Success, popUpTxt);
+			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.HomePage);
+		}
 	}
 
 	/**

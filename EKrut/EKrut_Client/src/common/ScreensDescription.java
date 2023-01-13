@@ -34,15 +34,30 @@ public class ScreensDescription {
 			+ "To do this, select a user from ths list and click on the right column\nA combo box will appear.\n"
 			+ "Do not forget to save!";
 
-	public static final String DELIVERY_MANAGEMENT_DESCRIPTION = "";
-	public static final String SALES_MANAGEMENT_DESCRIPTION = "";
-	public static final String CREATE_NEW_SALE_DESCRIPTION = "";
+	public static final String DELIVERY_MANAGEMENT_DESCRIPTION = "At this page as a manager you can change delivery status.\n"
+			+ "To do this, select delivery from the list and click on the right column\nA combo box will appear.\n"
+			+ "You can change from 'pendingApproval' to 'outForDelivery' and from 'outForDelivery' to 'done' after customer approval.\n "
+			+ "Do not forget to save!";
+	
+	public static final String SALES_MANAGEMENT_DESCRIPTION = "This page is used by the marketing manager and the regional marketing employees.\n"
+			+ "Manager - by selecting a region in advance can view all the sales in that region. (active or inactive)\n"
+			+ "Regional employee - can activate or inactivate a sale.\n"
+			+ "To do this, select sale from the list and click on the right column\nA combo box will appear.";
+	
+	public static final String CREATE_NEW_SALE_DESCRIPTION = "On this page, the marketing manager can create a new sale by selecting a region, days, hours, and a sale template.\r\n"
+			+ "The start and end times are for each day.\n"
+			+ "The start time must be before the end time.\n"
+			+ "The same discount cannot be applied more than once.\n"
+			+ "It is possible to multiply different discounts.\n"
+			+ "To save the sale, please click the 'Create' button.";
+	
 	public static final String SUPPLY_MANAGEMENT_DESCRIPTION = "At this page you can be updated with the items stock status \n"
 			+ " for the machines in your region, in the Not Opened Table you can see the items whom needed to open a call for\n "
 			+ "You need to check the items to open calls for, choose a supply worker for the call and send the calls"
 			+ "On the Procceced or Complete table  You can see the prosseced calls and the coompleted\n"
 			+ "in order to remove the copmleted you can press the remove completed button."
 			+ "In addition you can update the machine min amount, you must click save button in order to save the changes.";
+	
 	public static final String SUPPLY_UPDATE_DESCRIPTION = "At this page you can see all the machines that required your restock"
 			+ "\n on the current amount column you can update the current amount after the restock, in order to save, "
 			+ "please press enter after typing\n and in the end press the update button. ";
@@ -51,7 +66,10 @@ public class ScreensDescription {
 	public static final String PERSONAL_MESSAGES_DESCRIPTION = "Here you can see all kinds of messages\n"
 			+ "System message from time-to-time, or SIMULATION of SMS/Mail were send for you";
 	public static final String REGISTRATION_FORM_DESCRIPTION = "";
-	public static final String CONFIRM_ONLINE_ORDER_DESCRIPTION = "";
+	public static final String CONFIRM_ONLINE_ORDER_DESCRIPTION = "On this page, you can confirm receipt of delivery or pickup an order from the machine.\n"
+			+ "Enter an order number.\n"
+			+ "Click 'Confirm'/'Collect' button.\n\n"
+			+ "Bon appetite!";
 
 
 }
