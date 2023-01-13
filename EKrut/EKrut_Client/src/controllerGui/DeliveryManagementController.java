@@ -158,10 +158,7 @@ public class DeliveryManagementController  implements IScreen {
 		statusLst.addAll(DeliveryStatusEnum.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
 		
-		/* Handle delivery status edit:
-		 * can change from "pendingApproval" to "outForDelivery"
-		 * or from "outForDelivery" to "done".
-		 * in other cases, the changes aren't saved*/
+		// Handle delivery status edit
 		deliveryStatusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatusEnum>>() {
 			@Override
 			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatusEnum> event) {
@@ -218,8 +215,6 @@ public class DeliveryManagementController  implements IScreen {
 	 *  Between 00:00 to 04:00 the estimated is within 5+loadingTime+distance hours .
 	 *  Between 20:00 to 00:00 the estimated is in the next day at current hour+loadingTime+distance hours.
 	 */
-
-	
 	private String calculateEstimatedTime() {
 		Calendar estimated = Calendar.getInstance(); //gets now time
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");

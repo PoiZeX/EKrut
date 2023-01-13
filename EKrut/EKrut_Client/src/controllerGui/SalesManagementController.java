@@ -72,8 +72,10 @@ public class SalesManagementController  implements IScreen {
    	public static ObservableList<SaleEntity> sales=FXCollections.observableArrayList();
    	private TooltipSetter tooltip;
    	
-   	@FXML
-	// Setup screen before launching view
+   	
+	/**
+	 *  Setup screen before launching view
+	 */
    	@Override
 	public void initialize()  {
    		try {
@@ -97,12 +99,19 @@ public class SalesManagementController  implements IScreen {
    		}
 		
 	}
+   	
+   	/**
+   	 * refresh this page
+   	 * @param event
+   	 */
     @FXML
     void refresh(ActionEvent event) {
-
     	NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SalesManagement);
     }
-
+    /**
+	 * Send to server the sales for update
+	 * @param event
+	 */
     @FXML
     void save(ActionEvent event) {
     	if (salesToUpdate.size() > 0) {
@@ -111,7 +120,13 @@ public class SalesManagementController  implements IScreen {
 			CommonFunctions.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
 		}
     }
-	
+    /**
+    * Sets up the table of sales data and makes it editable based on the user's role.
+    * Connects the columns of the table to the appropriate fields of a SaleEntity object.
+    * Sets up an event handler for when the user commits an edit on the status column of the table,
+    * updates the SaleStatus of the SaleEntity object and adds it to a list of sales that need to be updated.
+    */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setupTable() {
 		if(NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.marketingWorker))
 			salesTable.setEditable(true); // make table editable
@@ -125,7 +140,7 @@ public class SalesManagementController  implements IScreen {
 		statusCol.setCellValueFactory((Callback) new PropertyValueFactory<SaleEntity, SaleStatus>("saleStatus"));
 		
 		
-		// define the editable cells- delivery status
+		// define the editable cells- sale status
 		ObservableList<SaleStatus> statusLst = FXCollections.observableArrayList();
 		statusLst.addAll(SaleEntity.SaleStatus.values());
 		statusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
@@ -145,6 +160,8 @@ public class SalesManagementController  implements IScreen {
 			
 		});
 	}
+	
+	/** gets all the sales by region  */
 	public static void getSalesEntityFromServer(ArrayList<SaleEntity> saleArr) {
 		sales.addAll(saleArr);
 	}
