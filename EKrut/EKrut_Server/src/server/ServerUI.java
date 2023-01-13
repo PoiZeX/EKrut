@@ -13,6 +13,7 @@ import mysql.MySqlClass;
 import java.io.IOException;
 import java.net.BindException;
 
+import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 
@@ -65,9 +66,12 @@ public class ServerUI extends Application {
 
 	public static void disconnect() {
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
+		int attempts = 5; // waiting maximum 2.5 sec (for not getting stuck in loop)
 		try {
-			Thread.sleep(2000); // enough time to update the clients table. More flexible way is to use
-								// semaphore...
+			while(!EchoServer.isAllClientsDisconnected() && attempts > 0) {
+				Thread.sleep(500); 
+				attempts--;
+				}
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -83,5 +87,8 @@ public class ServerUI extends Application {
 		}
 		System.out.println("Server Disconnected");
 	}
+	
+	
+	
 
 }

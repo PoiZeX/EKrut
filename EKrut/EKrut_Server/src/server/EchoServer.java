@@ -110,4 +110,16 @@ public class EchoServer extends AbstractServer {
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
 	}
+	
+	
+	/**
+	 * Return true if all clients disconnected
+	 * @return
+	 */
+	public boolean isAllClientsDisconnected() {
+		for(ConnectedClientEntity client : clientList)
+			if(client.getStatus().equals("Connect"))
+				return false;
+		return true;
+	}
 }
