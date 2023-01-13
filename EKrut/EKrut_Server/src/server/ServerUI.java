@@ -62,6 +62,8 @@ public class ServerUI extends Application {
 			e.printStackTrace();
 			System.out.println("ERROR - Could not listen for clients!");
 		}
+		
+		EchoServer.getClientList().clear();
 	}
 
 	public static void disconnect() {
