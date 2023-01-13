@@ -35,7 +35,7 @@ public class PersonalMessagesController  implements IScreen {
 	public void initialize() {
 		requestPersonalMessages();
 		setupTable();
-		messageLabel.setWrapText(true);
+		messageLabel.setWrapText(true); 
 	}
 
 	/**
@@ -76,6 +76,10 @@ public class PersonalMessagesController  implements IScreen {
 		Message message = new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser);
 		HostClientController.getChat().acceptObj(message);
 	}
+	
+	public static void setPersonalMessages(Object message) {
+		HostClientController.getChat().acceptObj(message);
+	}
 
 	/**
 	 * Handle the receive information back from server
@@ -83,6 +87,10 @@ public class PersonalMessagesController  implements IScreen {
 	public static void getAllMessagesFromServer(ArrayList<PersonalMessageEntity> obj) {
 		msgsList.clear(); // if not empty before
 		msgsList.addAll(obj);
+	}
+	
+	public static ObservableList<PersonalMessageEntity> getMsgList() {
+		return msgsList;
 	}
 
 }

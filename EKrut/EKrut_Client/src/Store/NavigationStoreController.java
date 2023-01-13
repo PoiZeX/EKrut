@@ -63,7 +63,7 @@ public class NavigationStoreController {
 
 	/**
 	 * Constructor, creates the new instances
-	 */
+	 */ 
 	private NavigationStoreController() {
 		// create objects
 		screenScenes = new HashMap<>();
