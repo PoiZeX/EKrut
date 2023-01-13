@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import controllerDb.ReportsDBController;
 import mysql.MySqlClass;
@@ -26,10 +30,35 @@ public class ReportsGenerator {
 	}
 
 	private static void generateClientsReport(String month, String year) {
+
 		HashMap<String, HashMap<String, String>> regionDetails = new HashMap<>();
 		generateSupplyTotal(regionDetails, month, year);
 		generateDescription(regionDetails, month, year);
 		generateUserStatus(regionDetails, month, year);
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			for (String region : regionDetails.keySet()) {
+				String description = regionDetails.get(region).get("description");
+				String supply_methods = regionDetails.get(region).get("supply_methods");
+				String total_sales = regionDetails.get(region).get("total_sales");
+				String user_status = regionDetails.get(region).get("user_status");
+				PreparedStatement psInsert = con.prepareStatement(
+						"insert into clients_report(description,supplymethods,totalorders,user_status,year,month,region) "
+								+ "values(?,?,?,?,?,?,?)");
+				psInsert.setString(1, description);
+				psInsert.setString(2, supply_methods);
+				psInsert.setString(3, total_sales);
+				psInsert.setString(4, user_status);
+				psInsert.setString(5, year);
+psInsert.setString(6, month);
+				psInsert.setString(7, region);
+				psInsert.executeUpdate();
+			}
+		} catch (Exception e) {
+
+		}
 
 		// iterate insert to db
 	}
@@ -39,7 +68,7 @@ public class ReportsGenerator {
 		String query = "SELECT machines.machine_id, machines.machine_name, regions.region_name, orders.buytime, SUM(orders.total_sum) as total_sum, COUNT(*) as num_orders "
 				+ "FROM orders " + "JOIN machines ON orders.machine_id = machines.machine_id "
 				+ "JOIN regions ON machines.region_id = regions.region_id "
-				+ "WHERE orders.is_delivery = 0 AND STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
+				+ "WHERE orders.supply_method != 'Delivery' AND STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
 				+ "GROUP BY machines.machine_name";
 		try {
 			if (MySqlClass.getConnection() == null)
@@ -173,32 +202,103 @@ public class ReportsGenerator {
 	private static void generateDescription(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
 		HashMap<String, ArrayList<Integer>> allQueries = new HashMap<>();
-		String query = "SELECT o.supply_method, COUNT(*) as num_orders, m.region_name " + "FROM orders o "
-				+ "JOIN machines m ON o.machine_id = m.machine_id "
-				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
-				+ "GROUP BY o.supply_method, m.region_name";
+		String query = "SELECT t.totalUserMachine as orders,  COUNT(*) as user_amount,  m.region_name " + "FROM (  "
+				+ " SELECT machine_id, user_id, COUNT(*) AS totalUserMachine " + "FROM orders "
+				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? " + "GROUP BY user_id, machine_id "
+				+ ") t" + " JOIN machines m ON t.machine_id = m.machine_id "
+				+ "GROUP BY t.totalUserMachine, m.region_name " + "ORDER BY region_name;";
 		try {
-			if (MySqlClass.getConnection() == null)
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
 				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement psGet = conn.prepareStatement(query);
+			PreparedStatement psGet = con.prepareStatement(query);
 			psGet.setString(1, String.format("%s-%s-01 00:00:00", year, month));
 			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
 			ResultSet res = psGet.executeQuery();
+
+			// orders, amount of users, region -> for ex.: 1, 1, North (1 user made 1 order
+			// during the last month in North region)
+			// the columns: orders, user_amount, region
 			while (res.next()) {
 				String region = res.getString(3);
 
+				// This query is dynamic for future change in regions
 				if (!allQueries.containsKey(region)) {
 					allQueries.put(region, new ArrayList<>());
 				}
+
 				allQueries.get(region).add(res.getInt(1));
 				allQueries.get(region).add(res.getInt(2));
 			}
 			for (String region : allQueries.keySet()) {
-
+				String stringForRegion = buildStringForRegion(allQueries, region);
+				regionDetails.get(region).put("description", String.format("%s", stringForRegion));
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Build the string array for given region
+	 * 
+	 * @param region
+	 * @return
+	 */
+	private static String buildStringForRegion(HashMap<String, ArrayList<Integer>> allQueries, String region) {
+		ArrayList<Integer> numbersToProcess = allQueries.get(region);
+		ArrayList<Pair> listOfPairs = new ArrayList<>();
+
+		for (int i = 0; i < numbersToProcess.size() - 1; i += 2) {
+			listOfPairs.add(new Pair(numbersToProcess.get(i), numbersToProcess.get(i + 1)));
+			// sb.append(String.format("%s,%s", String.valueOf(numbersToProcess.get(i)),
+			// numbersToProcess.get(i+1)));
+		}
+		// Sort by ordersAmount
+		listOfPairs.sort((o1, o2) -> o1.compareTo(o2));
+
+		String finalRes = "";
+		String lastOrderLimit = "0";
+		for (Pair p : listOfPairs) {
+			finalRes += lastOrderLimit + "-" + p.toString() + ",";
+			lastOrderLimit = p.ordersAmountStr();
+		}
+
+		finalRes = finalRes.substring(0, finalRes.length() - 1); // remove the last ","
+		return finalRes;
+		// North -> <5,7,100,10
+		// 10,3,12,4,15,1,3,5 // got it
+		// 10 12 15 3 // separate
+		// 3 10 12 15 // sort
+		// 3,5 , 10,3 , 12,4 , 15, 1 // sort with values
+		// 0-3,5,3-10,3, 12-15,5 // wanted
+		// 0-3,5 , 3-10,3 , 10-12,4 , 12-15,1, // Actual
+	}
+
+	// inner class represents a pair for report
+	protected static class Pair implements Comparable<Pair> {
+		int ordersAmount, usersAmount;
+
+		public Pair(int ordersAmount, int usersAmount) {
+			this.ordersAmount = ordersAmount;
+			this.usersAmount = usersAmount;
+		}
+
+		@Override
+		public String toString() {
+			return this.ordersAmount + "," + this.usersAmount;
+		}
+
+		@Override
+		public int compareTo(Pair o) {
+			return ordersAmount > o.ordersAmount ? 1 : ordersAmount == 0 ? 0 : -1;
+		}
+
+		public String ordersAmountStr() {
+			return String.valueOf(ordersAmount);
+		}
+
+	}
+
 }
