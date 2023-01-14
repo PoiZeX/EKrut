@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.RegistrationFormController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.RegistrationFormController">
    <top>
       <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="84.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -70,9 +70,9 @@
                   <TextField fx:id="emailTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="Email" styleClass="TextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="idnumberTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="ID Number" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <TextField fx:id="creditcardTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="Credit Card Number" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="1">
+                  <ImageView fitHeight="25.0" fitWidth="30.0" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../styles/icons/006-user.png" />
+                        <Image url="@../styles/icons/id-badge.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0">
@@ -80,7 +80,7 @@
                         <Image url="@../styles/icons/006-user.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="2">
+                  <ImageView fitHeight="21.0" fitWidth="30.0" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../styles/icons/030-mail.png" />
                      </image>
@@ -112,9 +112,9 @@
                   <RadioButton fx:id="radioNoMember" mnemonicParsing="false" prefHeight="20.0" prefWidth="57.0" styleClass="Label" text="No" toggleGroup="$membershipRadioToggleGroup" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                   <TextField fx:id="usernameTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="Username" styleClass="TextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="passwordTxtField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="Password" styleClass="TextField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.rowIndex="3">
+                  <ImageView fitHeight="28.0" fitWidth="30.0" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../styles/icons/006-user.png" />
+                        <Image url="@../styles/icons/id-card.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="30.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
@@ -135,7 +135,7 @@
                   <ComboBox fx:id="regionComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="Region" styleClass="ComboBox" visibleRowCount="3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
                      <image>
-                        <Image url="@../styles/icons/003-location.png" />
+                        <Image url="@../styles/icons/017-location.png" />
                      </image>
                   </ImageView>
                </children>
@@ -185,11 +185,14 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="userSearchTxtField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="140.0" promptText="ID or Username" styleClass="TextField" stylesheets="@../styles/css/generalizedCss.css" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                  <TextField fx:id="userSearchTxtField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="161.0" promptText="ID or Username" styleClass="TextField" stylesheets="@../styles/css/generalizedCss.css" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../styles/icons/012-search.png" />
                      </image>
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
                   </ImageView>
                   <Label fx:id="userSearchMsgLabel" textFill="RED" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                   <Button fx:id="userSeatchBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#searchUserAction" prefHeight="39.0" prefWidth="150.0" styleClass="Button-newSale" text="Search User" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="3">
