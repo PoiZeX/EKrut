@@ -8,6 +8,7 @@ import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
 import common.PopupTypeEnum;
+import common.ScreensNamesEnum;
 import common.TaskType;
 import entity.MachineEntity;
 import entity.SupplyReportEntity;
@@ -42,13 +43,13 @@ public class SupplyReportController implements IScreen {
 	private Button nextPageBtn;
 
 	@FXML
+	private Button helpBtn;
+
+	@FXML
 	private Button fullViewBtn;
 
 	@FXML
 	private Button splitViewBtn;
-
-	@FXML
-	private Label titleLabel;
 
 	@FXML
 	private ComboBox<String> machineIdComboBox;
@@ -68,13 +69,12 @@ public class SupplyReportController implements IScreen {
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
 	private int machineID;
-	private ArrayList<String[]> itemsArray;
-	private ArrayList<String> itemsNames, startAmount;
+	private ArrayList<String[]> itemsArray = new ArrayList<>();
+	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
 
 	@Override
 	public void initialize() {
-		titleLabel.setText("Supply Report : " + reportRegion);
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
 		allMachines = DataStore.getMachines();
@@ -87,6 +87,7 @@ public class SupplyReportController implements IScreen {
 		}
 		machineIdComboBox.setItems(machines);
 		machineIdComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			clearAllData();
 			machineName = machineIdComboBox.getValue();
 			for (MachineEntity machine : allMachines) {
 				if (machine.getMachineName().equals(machineName))
@@ -164,11 +165,12 @@ public class SupplyReportController implements IScreen {
 			}
 		}
 		currentReport = reportDetails;
-		itemsArray = reportDetails.getReportsList();
-		if (itemsArray == null) {
+
+		if (reportDetails.getReportsList() == null) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
 		}
+		itemsArray = reportDetails.getReportsList();
 		itemsNames = getItemsNamesByID(itemsArray);
 		startAmount = intersectItems(machineID);
 
@@ -293,6 +295,8 @@ public class SupplyReportController implements IScreen {
 	}
 
 	private void setupFullBarChart() {
+		if (itemsArray == null)
+			return;
 		supplySBC.getData().clear();
 		XYChart.Series<String, Integer> monthStart = new XYChart.Series<>();
 		XYChart.Series<String, Integer> monthEnd = new XYChart.Series<>();
@@ -350,14 +354,18 @@ public class SupplyReportController implements IScreen {
 
 	@FXML
 	void barChartFullView(ActionEvent event) {
+		if (itemsArray == null)
+			return;
 		setupFullBarChart();
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
-		
+
 	}
 
 	@FXML
 	void barChartSplitView(ActionEvent event) {
+		if (itemsArray == null)
+			return;
 		start = 0;
 		end = 5;
 		setupBarChart(start, end);
@@ -365,4 +373,18 @@ public class SupplyReportController implements IScreen {
 		nextPageBtn.setVisible(true);
 	}
 
+	@FXML
+	void showDescription(ActionEvent event) {
+		CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.SupplyReport.getDescription());
+	}
+
+	
+	/**
+	 * Clear all data from previous reports upon combobox changes 
+	 */
+	private void clearAllData() {
+		itemsArray.clear();
+		itemsNames.clear();
+		startAmount.clear();
+	}
 }

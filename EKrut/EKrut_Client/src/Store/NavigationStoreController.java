@@ -330,7 +330,7 @@ public class NavigationStoreController {
 
 		else if (((BorderPane) stage).getTop() instanceof GridPane) {
 			GridPane top = (GridPane) ((BorderPane) stage).getTop();
-			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport)) // ignore top on view catalog
+			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport) && !se.getSc().equals(ScreensNamesEnum.SupplyReport)) // ignore top on view catalog
 				top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
 		}
 
