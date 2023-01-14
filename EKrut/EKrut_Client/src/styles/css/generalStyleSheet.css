@@ -377,8 +377,7 @@
     -fx-cell-size: 30px;
 }
 .table-view {
-    -fx-background-color: white;
-    -fx-background-radius: 15px;
+    -fx-background-color: transparent;
     -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
 }
 .table-view .column-header-background .filler {
@@ -410,7 +409,7 @@
     -fx-alignment: CENTER;
 }
 .table-view .table-cell{
-    -fx-border-color: white;
+    -fx-border-color: transparent;
 }
 .table-row {
     -fx-border-color: #64c6ff;
