@@ -21,9 +21,10 @@ public class ReportsGenerator {
 
 	/**
 	 * Manager for report generator for given type, month and year
+	 * 
 	 * @param reportType clients / orders / supply
-	 * @param month string format 'MM'
-	 * @param year string format 'yyyy' 
+	 * @param month      string format 'MM'
+	 * @param year       string format 'yyyy'
 	 */
 	public static void generateReportsDB(String reportType, String month, String year) {
 		switch (reportType) {
@@ -90,6 +91,8 @@ public class ReportsGenerator {
 								month, year)));
 			}
 		}
+
+		// after generate all - reset the column for all rows
 		resetTimesUnderMin();
 
 	}
@@ -106,12 +109,14 @@ public class ReportsGenerator {
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.executeUpdate();
 
-		} catch (SQLException e) {	}
+		} catch (SQLException e) {
+		}
 
 	}
 
 	/**
 	 * return the items end amount from previous report
+	 * 
 	 * @param current_report
 	 * @return
 	 */
@@ -149,8 +154,6 @@ public class ReportsGenerator {
 
 		return res.substring(0, res.length() - 1); // return the string without ','
 	}
-
-
 
 	/**
 	 * orders report Manager, generate and insert
@@ -426,8 +429,6 @@ public class ReportsGenerator {
 		return finalRes;
 	}
 
-	
-	
 	/**
 	 * inner class represents a pair for orders report
 	 *
@@ -455,8 +456,7 @@ public class ReportsGenerator {
 		}
 
 	}
-	
-	
+
 	/**
 	 * A private class to keep a single entity of info-report
 	 *
