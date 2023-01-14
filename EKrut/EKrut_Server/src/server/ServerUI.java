@@ -67,7 +67,6 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
-		System.out.println(EchoServer.isAllClientsDisconnected());
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		int attempts = 5; // waiting maximum 2.5 sec (for not getting stuck in loop)
 		try {
@@ -75,7 +74,6 @@ public class ServerUI extends Application {
 				Thread.sleep(500); 
 				attempts--;
 				}
-			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

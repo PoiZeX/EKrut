@@ -481,19 +481,17 @@ public class NavigationStoreController {
 			}
 			if (isFirstTime) {
 				isFirstTime = false;
-
-				if (HostClientController.getChat() != null) {
-					CommonFunctions.SleepFor(150, () -> {
-						ChatClient.awaitResponse = false;
-					});
-					HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
-				}
-
 				if (!closeAllScreens) { // reset all and refresh
 					NavigationStoreController.getInstance().clearAll();
 					NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
 
 				} else {
+					if (HostClientController.getChat() != null) {
+						CommonFunctions.SleepFor(150, () -> {
+							ChatClient.awaitResponse = false;
+						});
+						HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+					}
 					closeAllScreens();
 				}
 			}
