@@ -64,7 +64,6 @@ public class ReportSelectionController  implements IScreen {
 			region = regionCmb.getSelectionModel().getSelectedItem();
 			switch (getSelectedReport()) {
 			case "supplyReport":
-//				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
 				SupplyReportController.setReport(year, month, region);
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.SupplyReport);
 				break;
@@ -95,8 +94,6 @@ public class ReportSelectionController  implements IScreen {
 				errorMsgLabel.setText("No Report Found");
 			else
 				NavigationStoreController.getInstance().setCurrentScreen(screen);
-			break;
-		case SupplyReport:
 			break;
 		case ClientsReport:
 			if (ClientsReportController.reportDetails.getDescription().equals("noreport")

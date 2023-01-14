@@ -106,8 +106,8 @@ public class ClientsReportEntity extends ReportEntity {
 			description = "noreport";
 			return;
 		}
-		supplyMethodsArr.put("On-site", Integer.parseInt(supplyMethodsSplit[0]));
-		supplyMethodsArr.put("Pickup", Integer.parseInt(supplyMethodsSplit[1]));
+		supplyMethodsArr.put("Pickup", Integer.parseInt(supplyMethodsSplit[0]));
+		supplyMethodsArr.put("EKrut-Machine", Integer.parseInt(supplyMethodsSplit[1]));
 	}
 
 

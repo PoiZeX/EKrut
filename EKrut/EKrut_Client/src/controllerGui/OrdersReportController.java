@@ -2,6 +2,9 @@ package controllerGui;
 
 import java.util.Map;
 
+import common.CommonFunctions;
+import common.PopupTypeEnum;
+import common.ScreensNamesEnum;
 import entity.OrderReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import utils.TooltipSetter;
 
 public class OrdersReportController  implements IScreen {
 
@@ -37,6 +41,9 @@ public class OrdersReportController  implements IScreen {
 	@FXML
 	private VBox profitVBox;
 
+    @FXML
+    private Button helpBtn;
+
 	@FXML
 	private VBox quantityVBox;
 
@@ -45,11 +52,12 @@ public class OrdersReportController  implements IScreen {
 
 	@Override
 	public void initialize() {
-
+		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
 		reportDetailsLabel.setText(String.format("%s - %s/%s", reportDetails.getRegion(), reportDetails.getMonth(),
 				reportDetails.getYear()));
 		initCharts();
 		quantityVBox.setVisible(false);
+		displayTypeBtn.toFront();
 		return;
 	}
 
@@ -82,4 +90,8 @@ public class OrdersReportController  implements IScreen {
 		displayTypeBtn.setText(txt);
 	}
 
+    @FXML
+    void showDescription(ActionEvent event) {
+    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.OrdersReport.getDescription());	
+    }
 }
