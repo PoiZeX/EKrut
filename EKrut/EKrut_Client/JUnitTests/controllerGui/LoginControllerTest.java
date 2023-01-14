@@ -19,8 +19,6 @@ import entity.UserEntity;
 
 
 class LoginControllerTest {
-
-	
 	private ClientController chat;
 	private LoginController loginController;
 	private UserEntity user;
@@ -44,7 +42,6 @@ class LoginControllerTest {
 	    errorMsgField = LoginController.class.getDeclaredField("errorMsg");
 		validateSyntaxMethod.setAccessible(true);	
 	    errorMsgField.setAccessible(true);
-
 	}
 
 	@Test
