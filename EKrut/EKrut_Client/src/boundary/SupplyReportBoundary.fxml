@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyReportController">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
@@ -41,7 +41,7 @@
                               <Insets />
                            </GridPane.margin>
                         </ComboBox>
-                      <Button fx:id="fullViewBtn" mnemonicParsing="false" onAction="#barChartFullView" prefHeight="24.0" prefWidth="79.0" text="Full View" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                      <Button fx:id="fullViewBtn" mnemonicParsing="false" onAction="#barChartFullView" prefHeight="24.0" prefWidth="79.0" styleClass="Button-newSale" text="Full View" GridPane.columnIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets left="20.0" top="5.0" />
                            </GridPane.margin>
@@ -73,15 +73,15 @@
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
                               </BarChart>
-                              <Button fx:id="prevPageBtn" layoutX="3.0" layoutY="179.0" mnemonicParsing="false" onAction="#prevPageView" text="L" />
-                              <Button fx:id="nextPageBtn" layoutX="617.0" layoutY="179.0" mnemonicParsing="false" onAction="#nextPageView" text="R" />
+                              <Button fx:id="prevPageBtn" layoutX="3.0" layoutY="179.0" mnemonicParsing="false" onAction="#prevPageView" styleClass="Button-newSale" text="⬅" />
+                              <Button fx:id="nextPageBtn" layoutX="622.0" layoutY="179.0" mnemonicParsing="false" onAction="#nextPageView" prefHeight="27.0" prefWidth="30.0" styleClass="Button-newSale" text="➡" />
                               <ButtonBar layoutX="210.0" layoutY="-6.0" prefHeight="40.0" prefWidth="200.0" />
                            </children>
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Pane>
-                        <Button fx:id="splitViewBtn" mnemonicParsing="false" onAction="#barChartSplitView" prefHeight="18.0" prefWidth="82.0" text="Split View" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                        <Button fx:id="splitViewBtn" mnemonicParsing="false" onAction="#barChartSplitView" prefHeight="18.0" prefWidth="82.0" styleClass="Button-newSale" text="Split View" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets right="30.0" top="5.0" />
                            </GridPane.margin>
@@ -94,13 +94,14 @@
       </VBox>
    </center>
    <top>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="69.2000030517578" minHeight="10.0" prefHeight="36.39999694824219" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="28.4" minHeight="3.599996948242193" prefHeight="25.20000305175781" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label fx:id="titleLabel" styleClass="LabelTitle" text="..." GridPane.columnSpan="2" GridPane.halignment="CENTER" />
@@ -110,4 +111,15 @@
          </BorderPane.margin>
       </GridPane>
    </top>
+   <bottom>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </bottom>
 </BorderPane>
