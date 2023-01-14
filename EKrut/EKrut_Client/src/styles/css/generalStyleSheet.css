@@ -7,7 +7,7 @@
     -fx-background-repeat: no-repeat;  
     -fx-background-size: 500 500; 
     -fx-background-position: center center;
-    -fx-background-image: url("/styles/images/BG.jpg");
+    -fx-background-image: url("/styles/images/BG.png");
     -fx-background-size: cover;
 }
 
