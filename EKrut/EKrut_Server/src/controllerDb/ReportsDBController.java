@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import common.CommonFunctions;
 import common.Message;
@@ -21,6 +22,7 @@ public class ReportsDBController {
 	private static String reportType, month, year, region;
 	private static int machineID;
 	private static Connection con = MySqlClass.getConnection();
+
 	/**
 	 * Parse the string array into reportType region month and year
 	 * 
@@ -92,8 +94,12 @@ public class ReportsDBController {
 		try {
 			if (con == null)
 				return report;
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM ekrut.orders_report WHERE month=? AND year=? AND region=?;");
-			ps.setString(1, CommonFunctions.getNumericMonth(month));
+			PreparedStatement ps = con
+					.prepareStatement("SELECT * FROM ekrut.orders_report WHERE month=? AND year=? AND region=?;");
+			Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+			if (!pattern.matcher(month).matches())
+				month = CommonFunctions.getNumericMonth(month);
+			ps.setString(1, month);
 			ps.setString(2, year);
 			ps.setString(3, region);
 			ResultSet res = ps.executeQuery();
@@ -117,7 +123,10 @@ public class ReportsDBController {
 				return report;
 			PreparedStatement ps = con
 					.prepareStatement("SELECT * FROM ekrut.clients_report WHERE month=? AND year=? AND region=?;");
-			ps.setString(1, CommonFunctions.getNumericMonth(month));
+			Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+			if (!pattern.matcher(month).matches())
+				month = CommonFunctions.getNumericMonth(month);
+			ps.setString(1, month);
 			ps.setString(2, year);
 			ps.setString(3, region);
 			ResultSet res = ps.executeQuery();
@@ -167,6 +176,7 @@ public class ReportsDBController {
 
 	/**
 	 * return if there is any report exist by type, year, month, region
+	 * 
 	 * @param reportType
 	 * @param month
 	 * @param year
@@ -177,8 +187,8 @@ public class ReportsDBController {
 		try {
 			if (con == null)
 				return false;
-			PreparedStatement ps = con
-					.prepareStatement(String.format("SELECT * FROM %s_report WHERE month=? AND year=? AND region=?;", reportType));
+			PreparedStatement ps = con.prepareStatement(
+					String.format("SELECT * FROM %s_report WHERE month=? AND year=? AND region=?;", reportType));
 			ps.setString(1, CommonFunctions.getNumericMonth(month));
 			ps.setString(2, year);
 			ps.setString(3, region);

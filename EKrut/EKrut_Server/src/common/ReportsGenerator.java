@@ -5,16 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.function.LongSupplier;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-
 import controllerDb.CommonDataDBController;
 import controllerDb.ReportsDBController;
-import entity.SupplyReportEntity;
+import entity.ClientsReportEntity;
+import entity.OrderReportEntity;
 import mysql.MySqlClass;
 
 public class ReportsGenerator {
@@ -57,23 +52,23 @@ public class ReportsGenerator {
 				// psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
 				ResultSet res = psGet.executeQuery();
 				int prev_machine_id = -1;
-				
+
 				// for each tuple
 				while (res.next()) {
 					machine_id = res.getInt(1);
-					// item_id = res.getInt(2);  // remove later ?
+					// item_id = res.getInt(2); // remove later ?
 					current_amount = res.getInt(3);
 					times_under_min = res.getInt(4);
 					min_amount = res.getInt(5);
 					name = res.getString(6);
 
-					// if this is not the first time (-1) and other machine detected 
-					// -> insert all previous 
+					// if this is not the first time (-1) and other machine detected
+					// -> insert all previous
 					if (prev_machine_id != -1 && prev_machine_id != machine_id) {
-						reportsForMachineID.put(region, supplyReportsForOneRegion);
+//						reportsForMachineID.add(region, supplyReportsForOneRegion);
 						supplyReportsForOneRegion.clear();
 					}
-					
+
 					prev_machine_id = machine_id; // set for next time
 					singleSupplyReportInfo report = new singleSupplyReportInfo(machine_id, name, current_amount,
 							times_under_min, min_amount);
@@ -82,24 +77,23 @@ public class ReportsGenerator {
 					supplyReportsForOneRegion.add(report);
 
 				}
-				
-				// got here means we finish to get ALL data we need for single region, now process it
-				
-				
+
+				// got here means we finish to get ALL data we need for single region, now
+				// process it
 
 				// TODO: !!!!! reset times_under_min !!!!!
 
 			}
 
-		} catch (Exception e) {	}
+		} catch (Exception e) {
+		}
 
 	}
 
-	
-	private String processData() {
-		
-	}
-	
+//	private String processData() {
+//		
+//	}
+
 	private static class singleSupplyReportInfo {
 		int machine_id, item_id, current_amount, times_under_min, min_amount;
 		String name;
@@ -139,25 +133,31 @@ public class ReportsGenerator {
 			psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
 			ResultSet res = psGet.executeQuery();
 			while (res.next()) {
-				if (regionDescription.get(res.getString(3)) == null) {
-					regionDescription.put(res.getString(3), "");
+				String region = res.getString(3);
+				String machine_name = res.getString(2);
+				String num_orders = res.getString(6);
+				String total_sum = res.getString(5);
+				if (regionDescription.get(region) == null) {
+					regionDescription.put(region, "");
 				}
-				String description = regionDescription.get(res.getString(3));
-				String toAdd = String.format("%s,%s,%s", res.getString(2), res.getString(6), res.getString(5));
-				if (regionDescription.get(res.getString(3)).equals("")) {
+				String description = regionDescription.get(region);
+				String toAdd = String.format("%s,%s,%s", machine_name, num_orders, total_sum);
+				if (regionDescription.get(region).equals("")) {
 					description = toAdd;
 				} else {
 					description = description + "," + toAdd;
 				}
-				regionDescription.put(res.getString(3), description);
+				regionDescription.put(region, description);
 			}
-			for (String reportKey : regionDescription.keySet()) {
+			for (String region : regionDescription.keySet()) {
+				if (isReportExist("orders", region, month, year))
+					continue;
 				PreparedStatement psInsert = conn.prepareStatement(
 						"insert into orders_report(description,month,year,region) " + "values(?,?,?,?)");
-				psInsert.setString(1, regionDescription.get(reportKey));
+				psInsert.setString(1, regionDescription.get(region));
 				psInsert.setString(2, month);
 				psInsert.setString(3, year);
-				psInsert.setString(4, reportKey);
+				psInsert.setString(4, region);
 				psInsert.executeUpdate();
 			}
 		} catch (SQLException e) {
@@ -172,7 +172,6 @@ public class ReportsGenerator {
 	 * @param year
 	 */
 	private static void generateClientsReport(String month, String year) {
-
 		HashMap<String, HashMap<String, String>> regionDetails = new HashMap<>();
 		// Prepare
 		generateSupplyTotal(regionDetails, month, year);
@@ -185,6 +184,8 @@ public class ReportsGenerator {
 			if (con == null)
 				return;
 			for (String region : regionDetails.keySet()) {
+				if (isReportExist("clients", region, month, year))
+					continue;
 				String description = regionDetails.get(region).get("description");
 				String supply_methods = regionDetails.get(region).get("supply_methods");
 				String total_sales = regionDetails.get(region).get("total_sales");
@@ -219,7 +220,7 @@ public class ReportsGenerator {
 		HashMap<String, ArrayList<? super Object>> allQueries = new HashMap<>();
 		String query = "SELECT m.region_name, u.role_type, COUNT(*) as amount " + "FROM orders o "
 				+ "JOIN users u ON o.user_id = u.id " + "JOIN machines m ON m.machine_id = o.machine_id "
-				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? AND (u.role_type = 'registered' OR u.role_type = 'member') "
+				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
 				+ "GROUP BY u.role_type, m.region_name";
 		try {
 			if (MySqlClass.getConnection() == null)
@@ -237,22 +238,17 @@ public class ReportsGenerator {
 				allQueries.get(region).add(res.getString(2));
 				allQueries.get(region).add(res.getInt(3));
 			}
-			String userStatus = "0,0";
+			int member = 0, registered = 0;
 			for (String region : allQueries.keySet()) {
-				while (allQueries.get(region).size() < 4)
-					allQueries.get(region).add(0);
-				switch ((String) allQueries.get(region).get(0)) {
-				case "member":
-					userStatus = String.format("%d,%d", (int) allQueries.get(region).get(1),
-							(int) allQueries.get(region).get(3));
-					break;
-				case "registered":
-					userStatus = String.format("%d,%d", (int) allQueries.get(region).get(3),
-							(int) allQueries.get(region).get(1));
-					break;
-				default:
-					break;
+				ArrayList<Object> currentRegionStatus = allQueries.get(region);
+				for (int i = 0; i < currentRegionStatus.size(); i += 2) {
+					if (currentRegionStatus.get(i).equals("registered"))
+						registered += (int) currentRegionStatus.get(i + 1);
+					else {
+						member += (int) currentRegionStatus.get(i + 1);
+					}
 				}
+				String userStatus = String.format("%d,%d", member, registered);
 				regionDetails.get(region).put("user_status", userStatus);
 			}
 		} catch (SQLException e) {
@@ -396,6 +392,27 @@ public class ReportsGenerator {
 		// 3,5 , 10,3 , 12,4 , 15, 1 // sort with values
 		// 0-3,5,3-10,3, 12-15,5 // wanted
 		// 0-3,5 , 3-10,3 , 10-12,4 , 12-15,1, // Actual
+	}
+
+	private static boolean isReportExist(String reportType, String region, String month, String year) {
+		switch (reportType) {
+		case "clients":
+			ReportsDBController.setReport(new String[] { reportType, region, month, year });
+			ClientsReportEntity clientsRes = ReportsDBController.getClientsReportFromDB();
+			if (clientsRes.getDescription().equals("noreport") || clientsRes.getTotalSalesArr() == null
+					|| clientsRes.getSupplyMethodsArr() == null)
+				return false;
+			return true;
+		case "orders":
+			ReportsDBController.setReport(new String[] { reportType, region, month, year });
+			OrderReportEntity ordersRes = ReportsDBController.getOrderReportFromDB();
+			if (ordersRes.getDescription().equals("noreport") || ordersRes.getReportsList() == null)
+				return false;
+			return true;
+		case "supply":
+			break;
+		}
+		return true;
 	}
 
 	// inner class represents a pair for orders report

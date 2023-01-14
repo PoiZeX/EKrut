@@ -997,8 +997,7 @@ public class ViewCatalogController implements IScreen {
 	
     @FXML
     void showDescription(ActionEvent event) {
-    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());
-    	
+    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());	
     }
 	
 }

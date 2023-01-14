@@ -327,7 +327,7 @@ public class NavigationStoreController {
 
 		else if (((BorderPane) stage).getTop() instanceof GridPane) {
 			GridPane top = (GridPane) ((BorderPane) stage).getTop();
-			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog)) // ignore top on view catalog
+			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport)) // ignore top on view catalog
 				top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
 		}
 
@@ -350,9 +350,9 @@ public class NavigationStoreController {
 		// grid pane setup
 		gridPane.setId("headerBar");
 		gridPane.getColumnConstraints()
-				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.SOMETIMES, HPos.LEFT, true));
-		gridPane.getRowConstraints().add(new RowConstraints(10.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
-		gridPane.getRowConstraints().add(new RowConstraints(10.0, 37.0, 45.0, Priority.NEVER, VPos.CENTER, true));
+				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.NEVER, HPos.LEFT, true));
+		gridPane.getRowConstraints().add(new RowConstraints(20.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
+		gridPane.getRowConstraints().add(new RowConstraints(30.0, 30.0, 30.0, Priority.NEVER, VPos.CENTER, true));
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
 		// gridPane.setMouseTransparent(true);
 
@@ -360,12 +360,12 @@ public class NavigationStoreController {
 		headlineLabel.setId("headlineLabel");
 		headlineLabel.setAlignment(Pos.CENTER);
 		headlineLabel.setTextAlignment(TextAlignment.CENTER);
-		headlineLabel.setPrefSize(900, 35);
+		headlineLabel.setPrefSize(900, 30);
 		headlineLabel.getStyleClass().add("LabelTitle");
 
 		// sub-label setup
 		pathLbl.setId("pathLbl");
-		pathLbl.setPrefSize(600, 40);
+		pathLbl.setPrefSize(600, 20);
 		pathLbl.getStyleClass().add("LabelLocations");
 
 		// "help" button
