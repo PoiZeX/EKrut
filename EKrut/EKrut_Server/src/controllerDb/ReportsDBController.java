@@ -153,18 +153,22 @@ public class ReportsDBController {
 				return report;
 			String query = "SELECT * FROM ekrut.supply_report "
 					+ "JOIN machines ON supply_report.machine_id = machines.machine_id "
-					+ "WHERE year=? AND month=? AND region=? AND machines.machine_id=?";
+					+ "WHERE year=? AND month=? AND region_name=? AND machines.machine_id=?";
 			PreparedStatement ps = con.prepareStatement(query);
+			Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+			if (!pattern.matcher(month).matches())
+				month = CommonFunctions.getNumericMonth(month);
 			ps.setString(1, year);
-			ps.setString(2, CommonFunctions.getNumericMonth(month));
+			ps.setString(2, month);
 			ps.setString(3, region);
 			ps.setInt(4, machineID);
 
 			ResultSet res = ps.executeQuery();
-
+//			int id, int machine_id, int min_stock ,String item_name, String end_stock,
+//			String times_under_min, String month, String year, String region
 			if (res.next()) {
-				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(4), res.getInt(3),
-						res.getString(6), res.getString(5), res.getString(7), res.getString(8), res.getString(9));
+				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(4), 
+						res.getString(5),res.getString(6), res.getString(7), res.getString(8), res.getString(9));
 						//res.getString(10));
 			}
 		} catch (SQLException e) {

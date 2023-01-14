@@ -13,12 +13,14 @@ import entity.MachineEntity;
 import entity.SupplyReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
@@ -32,6 +34,18 @@ public class SupplyReportController implements IScreen {
 
 	@FXML
 	private NumberAxis yAxisSBC;
+
+	@FXML
+	private Button prevPageBtn;
+
+	@FXML
+	private Button nextPageBtn;
+
+	@FXML
+	private Button fullViewBtn;
+
+	@FXML
+	private Button splitViewBtn;
 
 	@FXML
 	private Label titleLabel;
@@ -54,6 +68,9 @@ public class SupplyReportController implements IScreen {
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
 	private int machineID;
+	private ArrayList<String[]> itemsArray;
+	private ArrayList<String> itemsNames, startAmount;
+	private int start = 0, end = 5;
 
 	@Override
 	public void initialize() {
@@ -75,9 +92,12 @@ public class SupplyReportController implements IScreen {
 				if (machine.getMachineName().equals(machineName))
 					machineID = machine.getId();
 			}
-			initBarChart(machineID);
+			initDetails(machineID);
+			setupFullBarChart();
 
 		});
+		prevPageBtn.setVisible(false);
+		nextPageBtn.setVisible(false);
 	}
 
 	public static void setReport(String year, String month, String region) {
@@ -92,13 +112,12 @@ public class SupplyReportController implements IScreen {
 		RecievedData = true;
 		return;
 	}
-	
+
 	public static void getAnswerFromServer(Object obj) {
 		answerFromServer = obj;
 		RecievedData = true;
 		return;
 	}
-	
 
 //	public void checkCurAmount() {
 //		supplyMachineTbl.setRowFactory(row -> new TableRow<SupplyReportEntity>(){
@@ -124,15 +143,11 @@ public class SupplyReportController implements IScreen {
 	/**
 	 * @param machineID
 	 */
-	private void initBarChart(int machineID) {
-		XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
-		XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
-		ObservableList<javafx.scene.chart.PieChart.Data> list = FXCollections.observableArrayList();
-		// yAxisSBC.setAutoRanging(false);
-		yAxisSBC.setLowerBound(15);
-		
-		RecievedData = false; 			// reset each operation
-		supplySBC.getData().clear(); 	// clear previous if exists
+	private void initDetails(int machineID) {
+
+		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+
+		RecievedData = false; // reset each operation
 		pieChart.getData().clear();
 		textConclusionsLbl.setText("");
 
@@ -149,26 +164,19 @@ public class SupplyReportController implements IScreen {
 			}
 		}
 		currentReport = reportDetails;
-		ArrayList<String[]> itemsArray = reportDetails.getReportsList();
-		// [name,min,cur,start,severity]
+		itemsArray = reportDetails.getReportsList();
 		if (itemsArray == null) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
 		}
+		itemsNames = getItemsNamesByID(itemsArray);
+		startAmount = intersectItems(machineID);
 
-		ArrayList<String> itemsNames = getItemsNamesByID(itemsArray.get(0));
-		
-		ArrayList<String> startAmount = intersectItems(machineID);
 		int i = 0;
 		for (String[] item : itemsArray) {
-			series1.getData().add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(startAmount.get(i))));
-			series2.getData().add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(item[3])));
-			list.add(new PieChart.Data(item[0], Integer.parseInt(item[4])));
+			list.add(new PieChart.Data(itemsNames.get(i), Integer.parseInt(item[2])));
 			i++;
 		}
-		series1.setName("Month Start Amount");
-		series2.setName("Month End Amount");
-		supplySBC.getData().addAll(series1, series2);
 
 		// set pieChart
 		pieChart.setData(list);
@@ -178,10 +186,11 @@ public class SupplyReportController implements IScreen {
 		String itemsAmount = "";
 		list = list.sorted(new Comparator<PieChart.Data>() {
 			@Override
-			public int compare(javafx.scene.chart.PieChart.Data o1, javafx.scene.chart.PieChart.Data o2) {
+			public int compare(PieChart.Data o1, PieChart.Data o2) {
 				return ((Double) o1.getPieValue()).compareTo(o2.getPieValue());
 			}
 		});
+
 		itemsAmount += list.size() >= 1
 				? list.get(list.size() - 1).getName() + " : " + list.get(list.size() - 1).getPieValue() + "\n"
 				: "";
@@ -197,25 +206,29 @@ public class SupplyReportController implements IScreen {
 				: list.get(list.size() - 1).getPieValue() >= 5 ? "medium" : "low";
 		textConclusionsLbl.setText(conclusions);
 		textConclusionsLbl.setVisible(true);
+
 	}
 
 	/**
 	 * Handle sending list of itemsID and getting their names
+	 * 
 	 * @param itemsID
 	 * @return
 	 */
-	private ArrayList<String> getItemsNamesByID(String[] itemsID){
+	private ArrayList<String> getItemsNamesByID(ArrayList<String[]> itemsID) {
 		// change itemsID from array of string to list of int
 		ArrayList<Integer> listToSend = new ArrayList<>();
-		for(String item : itemsID) listToSend.add(Integer.parseInt(item));
-		
+		for (String[] item : itemsID)
+			listToSend.add(Integer.parseInt(item[0]));
+
 		RecievedData = false;
 		chat.acceptObj(new Message(TaskType.RequestAllItemsNameById, listToSend));
-		return (ArrayList<String>)answerFromServer;
+		return (ArrayList<String>) answerFromServer;
 	}
-	
+
 	/**
 	 * match between previous report and current
+	 * 
 	 * @param machineID
 	 * @return
 	 */
@@ -225,18 +238,18 @@ public class SupplyReportController implements IScreen {
 		SupplyReportEntity prevSupplyReport = getPrevSupplyReportForMachine(machineID);
 		if (prevSupplyReport.getReportsList() == null)
 			return startAmounts; // what to do here?
+		ArrayList<String[]> itemsList = currentReport.getReportsList();
+		ArrayList<String[]> prevItemsList = prevSupplyReport.getReportsList();
 		int j = 0;
-		for (String itemID : currentReport.getReportsList().get(0)) // iterate over the current items_id
+		for (String[] currentItem : itemsList) // iterate over the current items_id
 		{
 			// search this itemID in the previous report
-			for (String prevReportItemID : prevSupplyReport.getReportsList().get(0)) {
-				if (itemID.equals(prevReportItemID)) {
+			for (String[] prevItem : prevItemsList) {
+				if (currentItem[0].equals(prevItem[0])) {
 					// match! now get the end amount of this id and add to arraylist
-					startAmounts.add(prevSupplyReport.getReportsList().get(2)[j]);
-					j++;
+					startAmounts.add(prevItem[1]);
 					break;
 				}
-				j++;
 			}
 		}
 
@@ -246,6 +259,7 @@ public class SupplyReportController implements IScreen {
 
 	/**
 	 * return the previous report
+	 * 
 	 * @param machineID
 	 * @return
 	 */
@@ -276,6 +290,79 @@ public class SupplyReportController implements IScreen {
 
 		return reportDetails;
 
+	}
+
+	private void setupFullBarChart() {
+		supplySBC.getData().clear();
+		XYChart.Series<String, Integer> monthStart = new XYChart.Series<>();
+		XYChart.Series<String, Integer> monthEnd = new XYChart.Series<>();
+		int i = 0;
+		for (String[] item : itemsArray) {
+			monthStart.getData()
+					.add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(startAmount.get(i))));
+			monthEnd.getData().add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(item[1])));
+			i++;
+		}
+		monthStart.setName("Month Start Amount");
+		monthEnd.setName("Month End Amount");
+		supplySBC.getData().addAll(monthStart, monthEnd);
+	}
+
+	private void setupBarChart(int start, int end) {
+		supplySBC.getData().clear();
+		XYChart.Series<String, Integer> monthStart = new XYChart.Series<>();
+		XYChart.Series<String, Integer> monthEnd = new XYChart.Series<>();
+		for (int i = start; i < end; i++) {
+			String[] item = itemsArray.get(i);
+			monthStart.getData()
+					.add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(startAmount.get(i))));
+			monthEnd.getData().add(new XYChart.Data<String, Integer>(itemsNames.get(i), Integer.parseInt(item[1])));
+		}
+		monthStart.setName("Month Start Amount");
+		monthEnd.setName("Month End Amount");
+		supplySBC.getData().addAll(monthStart, monthEnd);
+	}
+
+	@FXML
+	void nextPageView(ActionEvent event) {
+		if (end + 5 > itemsArray.size()) {
+			end = itemsArray.size();
+			start = end - 5;
+		} else {
+			start += 5;
+			end += 5;
+		}
+		setupBarChart(start, end);
+	}
+
+	@FXML
+	void prevPageView(ActionEvent event) {
+		if (start - 5 < 0) {
+			start = 0;
+			end = 5;
+		} else {
+			start -= 5;
+			end -= 5;
+		}
+
+		setupBarChart(start, end);
+	}
+
+	@FXML
+	void barChartFullView(ActionEvent event) {
+		setupFullBarChart();
+		prevPageBtn.setVisible(false);
+		nextPageBtn.setVisible(false);
+		
+	}
+
+	@FXML
+	void barChartSplitView(ActionEvent event) {
+		start = 0;
+		end = 5;
+		setupBarChart(start, end);
+		prevPageBtn.setVisible(true);
+		nextPageBtn.setVisible(true);
 	}
 
 }

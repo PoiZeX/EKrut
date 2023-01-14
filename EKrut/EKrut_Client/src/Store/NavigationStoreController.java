@@ -260,9 +260,9 @@ public class NavigationStoreController {
 				scene = new Scene(root);
 			scene.setUserData(loader.getController());
 			se.setScene(scene); // set scene in entity
-			scene.getStylesheets().add(getClass().getResource("/styles/css/generalStyleSheet.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("/styles/css/loginStyleSheet.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("/styles/css/generalizedCss.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalStyleSheet.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/loginStyleSheet.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalizedCss.css").toExternalForm());
 //			scene.getStylesheets().add(getClass().getResource("/styles/css/DateAndTime.css").toExternalForm());
 			// refresh activity
 			if ((connectedUser != null && connectedUser.isLogged_in()))

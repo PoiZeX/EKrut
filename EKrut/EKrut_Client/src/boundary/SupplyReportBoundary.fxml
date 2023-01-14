@@ -5,6 +5,8 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -21,30 +23,35 @@
          <children>
             <Pane styleClass="GridPane">
                <children>
-                  <GridPane prefHeight="400.0" prefWidth="904.0">
+                  <GridPane prefHeight="520.0" prefWidth="900.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="691.0" minWidth="10.0" prefWidth="678.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="418.0" minWidth="10.0" prefWidth="226.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="44.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="118.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="152.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="397.0" minHeight="10.0" prefHeight="170.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="machineIdComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="435.0" promptText="select machine" styleClass="ComboBox" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                        <ComboBox fx:id="machineIdComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="334.0" promptText="Select Machine" styleClass="ComboBox" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <GridPane.margin>
-                              <Insets bottom="25.0" left="25.0" right="170.0" top="40.0" />
+                              <Insets />
                            </GridPane.margin>
                         </ComboBox>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="203.0" styleClass="GridPaneChild" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="4">
+                      <Button fx:id="fullViewBtn" mnemonicParsing="false" onAction="#barChartFullView" prefHeight="24.0" prefWidth="79.0" text="Full View" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="203.0" styleClass="GridPaneChild" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="4">
                            <children>
-                              <PieChart fx:id="pieChart" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="200.0" />
-                              <Label alignment="CENTER" layoutX="-1.0" prefHeight="26.0" prefWidth="214.0" style="-fx-font-size: 13;" styleClass="LabelRoleTitle" text="Severity during the month" textAlignment="CENTER" translateY="15.0" underline="true" />
-                              <Label alignment="CENTER" layoutX="-3.0" layoutY="160.0" prefHeight="32.0" prefWidth="219.0" style="-fx-font-size: 13;" styleClass="LabelRoleTitle" text="Text Conclusions" textAlignment="CENTER" underline="true" />
-                              <Label fx:id="textConclusionsLbl" alignment="TOP_LEFT" layoutX="3.0" layoutY="184.0" prefHeight="161.0" prefWidth="196.0" style="-fx-font-size: 11;" styleClass="LabelSmallArea" text="Conclusions here... E[X]">
+                              <PieChart fx:id="pieChart" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="164.0" prefWidth="205.0" />
+                              <Label alignment="CENTER" layoutY="-14.0" prefHeight="25.0" prefWidth="215.0" style="-fx-font-size: 13;" styleClass="LabelRoleTitle" text="Severity during the month" textAlignment="CENTER" translateY="15.0" underline="true" />
+                              <Label alignment="CENTER" layoutX="-3.0" layoutY="193.0" prefHeight="25.0" prefWidth="220.0" style="-fx-font-size: 13;" styleClass="LabelRoleTitle" text="Text Conclusions" textAlignment="CENTER" underline="true" />
+                              <Label fx:id="textConclusionsLbl" alignment="TOP_LEFT" layoutX="-1.0" layoutY="218.0" prefHeight="180.0" prefWidth="205.0" style="-fx-font-size: 11;" styleClass="LabelSmallArea" text="           Conclusions here... E[X]">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Label>
@@ -53,9 +60,9 @@
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Pane>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="333.0" prefWidth="642.0" styleClass="GridPaneChild" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.valignment="CENTER">
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="445.0" prefWidth="648.0" styleClass="GridPaneChild" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.valignment="CENTER">
                            <children>
-                              <BarChart fx:id="supplySBC" layoutY="10.0" prefHeight="322.0" prefWidth="655.0" translateX="-10.0">
+                              <BarChart fx:id="supplySBC" layoutX="8.0" layoutY="12.0" prefHeight="414.0" prefWidth="653.0" translateX="-10.0">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" fx:id="xAxisSBC" />
                                 </xAxis>
@@ -66,11 +73,19 @@
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
                               </BarChart>
+                              <Button fx:id="prevPageBtn" layoutX="3.0" layoutY="179.0" mnemonicParsing="false" onAction="#prevPageView" text="L" />
+                              <Button fx:id="nextPageBtn" layoutX="617.0" layoutY="179.0" mnemonicParsing="false" onAction="#nextPageView" text="R" />
+                              <ButtonBar layoutX="210.0" layoutY="-6.0" prefHeight="40.0" prefWidth="200.0" />
                            </children>
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Pane>
+                        <Button fx:id="splitViewBtn" mnemonicParsing="false" onAction="#barChartSplitView" prefHeight="18.0" prefWidth="82.0" text="Split View" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets right="30.0" top="5.0" />
+                           </GridPane.margin>
+                        </Button>
                      </children>
                   </GridPane>
                </children>
@@ -79,7 +94,7 @@
       </VBox>
    </center>
    <top>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
