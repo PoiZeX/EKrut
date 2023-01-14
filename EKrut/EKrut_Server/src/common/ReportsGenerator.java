@@ -4,17 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.function.LongSupplier;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-
 import controllerDb.CommonDataDBController;
 import controllerDb.PersonalMessagesDBController;
 import controllerDb.ReportsDBController;
@@ -26,6 +19,13 @@ import mysql.MySqlClass;
 
 public class ReportsGenerator {
 
+	/**
+	 * Manager for report generator for given type, month and year
+	 * 
+	 * @param reportType clients / orders / supply
+	 * @param month      string format 'MM'
+	 * @param year       string format 'yyyy'
+	 */
 	public static void generateReportsDB(String reportType, String month, String year) {
 		switch (reportType) {
 		case "clients":
@@ -41,45 +41,8 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * ArrayList<singleSupplyReportInfo> supplyReportsForOneRegion = new
-	 * ArrayList<>(); ArrayList<ArrayList<singleSupplyReportInfo>>
-	 * reportsForMachineID = new ArrayList<>();
-	 * 
-	 * int machine_id, current_amount, times_under_min, min_amount; String name; //
-	 * get all machines in region String query = "SELECT i.machine_id, i.item_id,
-	 * i.current_amount, i.times_under_min, machines.min_amount, items.name " +
-	 * "FROM machines " + "JOIN item_in_machine as i ON " + "region_name='?' " +
-	 * "JOIN items ON " + "items.item_id = i.item_id " + "ORDER BY i.machine_id;";
-	 * 
-	 * // the query will return a list of ALL machines in the desired region, and
-	 * the // selected fields Connection con = MySqlClass.getConnection(); if (con
-	 * == null) return; PreparedStatement psGet = con.prepareStatement(query);
-	 * psGet.setString(1, region); // psGet.setString(2, String.format("%s-%s-31
-	 * 23:59:59", year, month)); ResultSet res = psGet.executeQuery(); int
-	 * prev_machine_id = -1;
-	 * 
-	 * // for each tuple while (res.next()) { machine_id = res.getInt(1); // item_id
-	 * = res.getInt(2); // remove later ? current_amount = res.getInt(3);
-	 * times_under_min = res.getInt(4); min_amount = res.getInt(5); name =
-	 * res.getString(6);
-	 * 
-	 * // if this is not the first time (-1) and other machine detected // -> insert
-	 * all previous if (prev_machine_id != -1 && prev_machine_id != machine_id) {
-	 * reportsForMachineID.put(region, supplyReportsForOneRegion);
-	 * supplyReportsForOneRegion.clear(); }
-	 * 
-	 * prev_machine_id = machine_id; // set for next time singleSupplyReportInfo
-	 * report = new singleSupplyReportInfo(machine_id, name, current_amount,
-	 * times_under_min, min_amount);
-	 * 
-	 * // add the report details we know supplyReportsForOneRegion.add(report);
-	 */
-
-	/**
 	 * Run a query that generate and insert report for each machine
 	 * 
-	 * @param month
-	 * @param year
 	 */
 	private static void generateSupplyReport() {
 		try {
@@ -102,32 +65,10 @@ public class ReportsGenerator {
 
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.executeUpdate();
-			
-//			for (String region : allRegion) {
 
-			// return the fields: region_id, machine_id, min_amount, item_id, item_name,
-			// start_amount, current_amount, times_under_min, month, year
-
-			// execute the query
-
-//				int isSuccess = 
-
-//				// set the 'start_amount' instead of default
-//				// ReportsDBController.setReport(new String[] { "supply",
-//				// current_report.getRegion(), month, year });
-//				// SupplyReportEntity prev_report = ReportsDBController.getSupplyReportFromDB();
-//			
-//				
-//				SupplyReportEntity currentReport = ReportsDBController.getSupplyReportFromDBByID(generatedKey);
-//				String start_amount = getItemsEndAmountPreviousReport(currentReport);
-//				SupplyReportEntity finalReportToInsert = new SupplyReportEntity();
-//
-//				currentReport.setCur_stock();
-
-//			}
 		} catch (Exception e) {
 			// send message to region manager about failure
-			
+
 			// get current year & month
 			LocalDateTime now = LocalDateTime.now();
 			String month = now.format(DateTimeFormatter.ofPattern("MM"));
@@ -138,7 +79,7 @@ public class ReportsGenerator {
 			} else {
 				month = String.valueOf(Integer.parseInt(month) - 1);
 			}
-			
+
 			// iterate over region
 			ArrayList<String> allRegion = CommonDataDBController.getRegionsListFromDB();
 			for (String region : allRegion) {
@@ -150,10 +91,35 @@ public class ReportsGenerator {
 								month, year)));
 			}
 		}
-		// TODO: !!!!! reset times_under_min !!!!!
+
+		// after generate all - reset the column for all rows
+		resetTimesUnderMin();
 
 	}
 
+	/**
+	 * Resets the times under min for ALL machines
+	 */
+	private static void resetTimesUnderMin() {
+		try {
+			String query = "UPDATE item_in_machine SET times_under_min=0;";
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+		}
+
+	}
+
+	/**
+	 * return the items end amount from previous report
+	 * 
+	 * @param current_report
+	 * @return
+	 */
 	private static String getItemsEndAmountPreviousReport(SupplyReportEntity current_report) {
 		String month, year, res = "";
 
@@ -187,23 +153,6 @@ public class ReportsGenerator {
 		}
 
 		return res.substring(0, res.length() - 1); // return the string without ','
-	}
-
-	private static class singleSupplyReportInfo {
-		int machine_id, item_id, current_amount, times_under_min, min_amount;
-		String name;
-
-		public singleSupplyReportInfo(int machine_id, String name, int current_amount, int times_under_min,
-				int min_amount) {
-			super();
-			this.machine_id = machine_id;
-			this.item_id = item_id;
-			this.current_amount = current_amount;
-			this.times_under_min = times_under_min;
-			this.name = name;
-			this.min_amount = min_amount;
-		}
-
 	}
 
 	/**
@@ -478,16 +427,12 @@ public class ReportsGenerator {
 
 		finalRes = finalRes.substring(0, finalRes.length() - 1); // remove the last ","
 		return finalRes;
-		// North -> <5,7,100,10
-		// 10,3,12,4,15,1,3,5 // got it
-		// 10 12 15 3 // separate
-		// 3 10 12 15 // sort
-		// 3,5 , 10,3 , 12,4 , 15, 1 // sort with values
-		// 0-3,5,3-10,3, 12-15,5 // wanted
-		// 0-3,5 , 3-10,3 , 10-12,4 , 12-15,1, // Actual
 	}
 
-	// inner class represents a pair for orders report
+	/**
+	 * inner class represents a pair for orders report
+	 *
+	 */
 	protected static class Pair implements Comparable<Pair> {
 		int ordersAmount, usersAmount;
 
@@ -508,6 +453,27 @@ public class ReportsGenerator {
 
 		public String ordersAmountStr() {
 			return String.valueOf(ordersAmount);
+		}
+
+	}
+
+	/**
+	 * A private class to keep a single entity of info-report
+	 *
+	 */
+	private static class singleSupplyReportInfo {
+		int machine_id, item_id, current_amount, times_under_min, min_amount;
+		String name;
+
+		public singleSupplyReportInfo(int machine_id, String name, int current_amount, int times_under_min,
+				int min_amount) {
+			super();
+			this.machine_id = machine_id;
+			this.item_id = item_id;
+			this.current_amount = current_amount;
+			this.times_under_min = times_under_min;
+			this.name = name;
+			this.min_amount = min_amount;
 		}
 
 	}

@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -24,6 +25,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import utils.TooltipSetter;
 
 public class SupplyReportController implements IScreen {
 
@@ -142,6 +145,8 @@ public class SupplyReportController implements IScreen {
 //	}
 
 	/**
+	 * Initialize details of table
+	 * 
 	 * @param machineID
 	 */
 	private void initDetails(int machineID) {
@@ -170,13 +175,26 @@ public class SupplyReportController implements IScreen {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
 		}
+
+		// prepare
 		itemsArray = reportDetails.getReportsList();
 		itemsNames = getItemsNamesByID(itemsArray);
 		startAmount = intersectItems(machineID);
-
+		if (startAmount.size() != itemsNames.size()) {
+			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					"Oops... The items start amount for this month may be different from previous month.\n"
+							+ "It might happens when new items were added during the month, or previous report does not exist \n"
+							+ "Continue with '0' on start amount for those items");
+		}
+		// initialize piechart
 		int i = 0;
 		for (String[] item : itemsArray) {
-			list.add(new PieChart.Data(itemsNames.get(i), Integer.parseInt(item[2])));
+			PieChart.Data dataToInsert = new PieChart.Data(itemsNames.get(i), Integer.parseInt(item[2]));
+			list.add(dataToInsert);
+			
+			// setup tool tip
+			Node node = dataToInsert.getNode();
+			Tooltip.install(node, new TooltipSetter(itemsNames.get(i)).getTooltip());
 			i++;
 		}
 
@@ -184,7 +202,6 @@ public class SupplyReportController implements IScreen {
 		pieChart.setData(list);
 
 		// set textual conclusions
-		String conclusions = "";
 		String itemsAmount = "";
 		list = list.sorted(new Comparator<PieChart.Data>() {
 			@Override
@@ -202,6 +219,8 @@ public class SupplyReportController implements IScreen {
 		itemsAmount += list.size() >= 3
 				? list.get(list.size() - 3).getName() + " : " + list.get(list.size() - 3).getPieValue() + "\n"
 				: "";
+		String conclusions = "";
+
 		conclusions = "Top 3 items that were filled \nthe most this month\n\n" + itemsAmount + "\n";
 		conclusions += "The product consumption was\n";
 		conclusions += list.get(list.size() - 1).getPieValue() > 10 ? "high"
@@ -236,24 +255,39 @@ public class SupplyReportController implements IScreen {
 	 */
 	private ArrayList<String> intersectItems(int machineID) {
 		ArrayList<String> startAmounts = new ArrayList<>();
+		ArrayList<String[]> itemsList = currentReport.getReportsList();
+
+		boolean isFound = false, isProblem = false;
 		// prepare
 		SupplyReportEntity prevSupplyReport = getPrevSupplyReportForMachine(machineID);
-		if (prevSupplyReport.getReportsList() == null)
-			return startAmounts; // what to do here?
-		ArrayList<String[]> itemsList = currentReport.getReportsList();
+		if (prevSupplyReport.getReportsList() == null) {
+			for(int i = 0; i<itemsList.size()+1; i++)
+				startAmounts.add("0");
+			return startAmounts; 
+		}
 		ArrayList<String[]> prevItemsList = prevSupplyReport.getReportsList();
 		int j = 0;
 		for (String[] currentItem : itemsList) // iterate over the current items_id
 		{
+			isFound = false;
 			// search this itemID in the previous report
 			for (String[] prevItem : prevItemsList) {
 				if (currentItem[0].equals(prevItem[0])) {
 					// match! now get the end amount of this id and add to arraylist
 					startAmounts.add(prevItem[1]);
+					isFound = true;
 					break;
 				}
 			}
+			if (!isFound) {
+				// got here just if no corresponding item found
+				startAmounts.add("0");
+				isProblem = true;
+			}
+
 		}
+		if (isProblem)
+			startAmounts.add("0"); // mark there was a problem (another 0 wont hurt someone :))
 
 		return startAmounts;
 
@@ -294,6 +328,9 @@ public class SupplyReportController implements IScreen {
 
 	}
 
+	/**
+	 * The main char chart initialization
+	 */
 	private void setupFullBarChart() {
 		if (itemsArray == null)
 			return;
@@ -312,6 +349,12 @@ public class SupplyReportController implements IScreen {
 		supplySBC.getData().addAll(monthStart, monthEnd);
 	}
 
+	/**
+	 * Zoom-in BarChart setup
+	 * 
+	 * @param start
+	 * @param end
+	 */
 	private void setupBarChart(int start, int end) {
 		supplySBC.getData().clear();
 		XYChart.Series<String, Integer> monthStart = new XYChart.Series<>();
@@ -327,6 +370,11 @@ public class SupplyReportController implements IScreen {
 		supplySBC.getData().addAll(monthStart, monthEnd);
 	}
 
+	/**
+	 * Activate when user presses on next page, update start & end
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void nextPageView(ActionEvent event) {
 		if (end + 5 > itemsArray.size()) {
@@ -352,20 +400,34 @@ public class SupplyReportController implements IScreen {
 		setupBarChart(start, end);
 	}
 
+	/**
+	 * Full view button pressed
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void barChartFullView(ActionEvent event) {
-		if (itemsArray == null)
+		if (itemsArray == null || itemsArray.size() == 0) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "No report for this machine");
 			return;
+		}
 		setupFullBarChart();
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
 
 	}
 
+	/**
+	 * Split view button pressed
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void barChartSplitView(ActionEvent event) {
-		if (itemsArray == null)
+		if (itemsArray == null || itemsArray.size() == 0) {
+			CommonFunctions.createPopup(PopupTypeEnum.Error, "No report for this machine");
 			return;
+		}
 		start = 0;
 		end = 5;
 		setupBarChart(start, end);
@@ -373,18 +435,24 @@ public class SupplyReportController implements IScreen {
 		nextPageBtn.setVisible(true);
 	}
 
+	/**
+	 * Show description for the page
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void showDescription(ActionEvent event) {
 		CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.SupplyReport.getDescription());
 	}
 
-	
 	/**
-	 * Clear all data from previous reports upon combobox changes 
+	 * Clear all data from previous reports upon combobox changes
 	 */
 	private void clearAllData() {
 		itemsArray.clear();
 		itemsNames.clear();
 		startAmount.clear();
+		prevPageBtn.setVisible(false);
+		nextPageBtn.setVisible(false);
 	}
 }
