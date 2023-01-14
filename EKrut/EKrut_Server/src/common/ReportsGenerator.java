@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,8 +16,12 @@ import java.util.function.LongSupplier;
 import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import controllerDb.CommonDataDBController;
+import controllerDb.PersonalMessagesDBController;
 import controllerDb.ReportsDBController;
+import controllerDb.UsersManagementDBController;
+import entity.PersonalMessageEntity;
 import entity.SupplyReportEntity;
+import entity.UserEntity;
 import mysql.MySqlClass;
 
 public class ReportsGenerator {
@@ -28,78 +35,160 @@ public class ReportsGenerator {
 			generateOrdersReport(month, year);
 			break;
 		case "supply":
+			generateSupplyReport();
 			break;
 		}
 	}
 
-	private static void generateSupplyReport(String month, String year) {
+	/**
+	 * ArrayList<singleSupplyReportInfo> supplyReportsForOneRegion = new
+	 * ArrayList<>(); ArrayList<ArrayList<singleSupplyReportInfo>>
+	 * reportsForMachineID = new ArrayList<>();
+	 * 
+	 * int machine_id, current_amount, times_under_min, min_amount; String name; //
+	 * get all machines in region String query = "SELECT i.machine_id, i.item_id,
+	 * i.current_amount, i.times_under_min, machines.min_amount, items.name " +
+	 * "FROM machines " + "JOIN item_in_machine as i ON " + "region_name='?' " +
+	 * "JOIN items ON " + "items.item_id = i.item_id " + "ORDER BY i.machine_id;";
+	 * 
+	 * // the query will return a list of ALL machines in the desired region, and
+	 * the // selected fields Connection con = MySqlClass.getConnection(); if (con
+	 * == null) return; PreparedStatement psGet = con.prepareStatement(query);
+	 * psGet.setString(1, region); // psGet.setString(2, String.format("%s-%s-31
+	 * 23:59:59", year, month)); ResultSet res = psGet.executeQuery(); int
+	 * prev_machine_id = -1;
+	 * 
+	 * // for each tuple while (res.next()) { machine_id = res.getInt(1); // item_id
+	 * = res.getInt(2); // remove later ? current_amount = res.getInt(3);
+	 * times_under_min = res.getInt(4); min_amount = res.getInt(5); name =
+	 * res.getString(6);
+	 * 
+	 * // if this is not the first time (-1) and other machine detected // -> insert
+	 * all previous if (prev_machine_id != -1 && prev_machine_id != machine_id) {
+	 * reportsForMachineID.put(region, supplyReportsForOneRegion);
+	 * supplyReportsForOneRegion.clear(); }
+	 * 
+	 * prev_machine_id = machine_id; // set for next time singleSupplyReportInfo
+	 * report = new singleSupplyReportInfo(machine_id, name, current_amount,
+	 * times_under_min, min_amount);
+	 * 
+	 * // add the report details we know supplyReportsForOneRegion.add(report);
+	 */
+
+	/**
+	 * Run a query that generate and insert report for each machine
+	 * 
+	 * @param month
+	 * @param year
+	 */
+	private static void generateSupplyReport() {
 		try {
-			// iterate on regions
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return;
+			String query = "INSERT INTO supply_report (machine_id, machine_min_amount, item_id,  times_under_min, end_stock, year, month, region)  "
+					+ "( " + "	SELECT  " + "		machine_id, min_amount,  "
+					+ "		GROUP_CONCAT(item_id SEPARATOR ',') as item_id,  "
+					+ "     GROUP_CONCAT(times_under_min SEPARATOR ',') as times_under_min,  "
+					+ "		GROUP_CONCAT(current_amount SEPARATOR ',') as current_amount,  "
+					+ "     LPAD(MONTH(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)),2,'0') as month, "
+					+ "		YEAR(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)) as year, "
+					+ "     region_id " + "	FROM ( "
+					+ "		  SELECT machines.min_amount as min_amount, item_in_machine.current_amount as current_amount, item_in_machine.item_id as item_id, machines.region_id as region_id, item_in_machine.times_under_min as times_under_min, item_in_machine.machine_id as machine_id "
+					+ "		  FROM item_in_machine "
+					+ "		  JOIN machines ON machines.machine_id = item_in_machine.machine_id "
+					+ "	) as supply_report " + "GROUP BY region_id, machine_id  "
+					+ "ORDER BY region_id, machine_id, item_id);";
+
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.executeUpdate();
+			
+//			for (String region : allRegion) {
+
+			// return the fields: region_id, machine_id, min_amount, item_id, item_name,
+			// start_amount, current_amount, times_under_min, month, year
+
+			// execute the query
+
+//				int isSuccess = 
+
+//				// set the 'start_amount' instead of default
+//				// ReportsDBController.setReport(new String[] { "supply",
+//				// current_report.getRegion(), month, year });
+//				// SupplyReportEntity prev_report = ReportsDBController.getSupplyReportFromDB();
+//			
+//				
+//				SupplyReportEntity currentReport = ReportsDBController.getSupplyReportFromDBByID(generatedKey);
+//				String start_amount = getItemsEndAmountPreviousReport(currentReport);
+//				SupplyReportEntity finalReportToInsert = new SupplyReportEntity();
+//
+//				currentReport.setCur_stock();
+
+//			}
+		} catch (Exception e) {
+			// send message to region manager about failure
+			
+			// get current year & month
+			LocalDateTime now = LocalDateTime.now();
+			String month = now.format(DateTimeFormatter.ofPattern("MM"));
+			String year = now.format(DateTimeFormatter.ofPattern("yyyy"));
+			if (month.equals("01")) {
+				month = "12";
+				year = String.valueOf(Integer.parseInt(year) - 1);
+			} else {
+				month = String.valueOf(Integer.parseInt(month) - 1);
+			}
+			
+			// iterate over region
 			ArrayList<String> allRegion = CommonDataDBController.getRegionsListFromDB();
 			for (String region : allRegion) {
-				ArrayList<singleSupplyReportInfo> supplyReportsForOneRegion = new ArrayList<>();
-				ArrayList<ArrayList<singleSupplyReportInfo>> reportsForMachineID = new ArrayList<>();
+				UserEntity manager = UsersManagementDBController.getRegionManagerFromDBQuery(region);
 
-				int machine_id, current_amount, times_under_min, min_amount;
-				String name;
-				// get all machines in region
-				String query = "SELECT i.machine_id, i.item_id, i.current_amount, i.times_under_min, machines.min_amount, items.name "
-						+ "FROM machines " + "JOIN item_in_machine as i ON " + "region_name='?' " + "JOIN items ON "
-						+ "items.item_id = i.item_id " + "ORDER BY i.machine_id;";
-
-				// the query will return a list of ALL machines in the desired region, and the
-				// selected fields
-				Connection con = MySqlClass.getConnection();
-				if (con == null)
-					return;
-				PreparedStatement psGet = con.prepareStatement(query);
-				psGet.setString(1, region);
-				// psGet.setString(2, String.format("%s-%s-31 23:59:59", year, month));
-				ResultSet res = psGet.executeQuery();
-				int prev_machine_id = -1;
-				
-				// for each tuple
-				while (res.next()) {
-					machine_id = res.getInt(1);
-					// item_id = res.getInt(2);  // remove later ?
-					current_amount = res.getInt(3);
-					times_under_min = res.getInt(4);
-					min_amount = res.getInt(5);
-					name = res.getString(6);
-
-					// if this is not the first time (-1) and other machine detected 
-					// -> insert all previous 
-					if (prev_machine_id != -1 && prev_machine_id != machine_id) {
-						reportsForMachineID.put(region, supplyReportsForOneRegion);
-						supplyReportsForOneRegion.clear();
-					}
-					
-					prev_machine_id = machine_id; // set for next time
-					singleSupplyReportInfo report = new singleSupplyReportInfo(machine_id, name, current_amount,
-							times_under_min, min_amount);
-
-					// add the report details we know
-					supplyReportsForOneRegion.add(report);
-
-				}
-				
-				// got here means we finish to get ALL data we need for single region, now process it
-				
-				
-
-				// TODO: !!!!! reset times_under_min !!!!!
-
+				PersonalMessagesDBController.setPersonalMessagesInDB(new PersonalMessageEntity(manager.getId(),
+						String.format("01/%s/%s", month, year), "Error creating report!",
+						String.format("Supply report for %s/%s failed. Please contact EKrut team to check whats wrong",
+								month, year)));
 			}
-
-		} catch (Exception e) {	}
+		}
+		// TODO: !!!!! reset times_under_min !!!!!
 
 	}
 
-	
-	private String processData() {
-		
+	private static String getItemsEndAmountPreviousReport(SupplyReportEntity current_report) {
+		String month, year, res = "";
+
+		// initialize dates
+		month = String.valueOf(Integer.parseInt(current_report.getMonth()) - 1); // last month
+		year = current_report.getYear(); // current year
+		if (month.equals("01")) // if the current report is first of the month - change the month & year
+		{
+			year = String.valueOf(Integer.parseInt(year) - 1);
+			month = "12";
+		}
+
+		// check if last report is exist
+		if (!ReportsDBController.isReportExist("supply", month, year, current_report.getRegion()))
+			return "0"; // --------- handle this case more "0,0,0,......" ---------
+
+		// get the report and save the entity
+		ReportsDBController.setReport(new String[] { "supply", current_report.getRegion(), month, year });
+		SupplyReportEntity prev_report = ReportsDBController.getSupplyReportFromDB();
+
+		// iterate over the the current & find the corresponding items
+		// insert to 'res'
+		for (String[] current_arr : current_report.getReportsList()) {
+			String item_to_find = current_arr[0];
+			for (String[] prev_arr : prev_report.getReportsList()) {
+				if (prev_arr[0].equals(item_to_find)) {
+					res += prev_arr[3] + ",";
+					break;
+				}
+			}
+		}
+
+		return res.substring(0, res.length() - 1); // return the string without ','
 	}
-	
+
 	private static class singleSupplyReportInfo {
 		int machine_id, item_id, current_amount, times_under_min, min_amount;
 		String name;

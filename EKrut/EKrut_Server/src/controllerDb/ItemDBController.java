@@ -3,13 +3,18 @@ package controllerDb;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 import entity.ItemEntity;
+import entity.SupplyReportEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 /***
@@ -55,6 +60,32 @@ public class ItemDBController {
 			 }
 			rs.close();
 		} catch (SQLException e) {e.printStackTrace();}
+	}
+	
+	
+	public static ArrayList<String> getAllItemsNameById(ArrayList<Integer> itemsID)
+	{
+		ArrayList<String> itemsNames = new ArrayList<>();
+		try {
+			Connection con = MySqlClass.getConnection();
+			if (con == null)
+				return itemsNames;
+			for(int item_id : itemsID)
+			{
+				String query = "SELECT name FROM items "
+						+ "WHERE item_id = ?";
+				PreparedStatement ps = con.prepareStatement(query);
+				ps.setInt(1, item_id);
+				ResultSet res = ps.executeQuery();
+				if (res.next()) {
+					itemsNames.add(res.getString(1));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return itemsNames;
 	}
 }
 

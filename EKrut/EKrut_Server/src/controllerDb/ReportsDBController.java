@@ -50,7 +50,7 @@ public class ReportsDBController {
 	/**
 	 * Handles getting selected report and sending the entity back to client
 	 * 
-	 * @param usernamePassword
+	 * @param details
 	 * @param client
 	 */
 	public static void getReportEntity(String[] details, ConnectionToClient client) {
@@ -154,9 +154,9 @@ public class ReportsDBController {
 			ResultSet res = ps.executeQuery();
 
 			if (res.next()) {
-				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4),
-						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9),
-						res.getString(10));
+				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(4), res.getInt(3),
+						res.getString(6), res.getString(5), res.getString(7), res.getString(8), res.getString(9));
+						//res.getString(10));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -164,6 +164,27 @@ public class ReportsDBController {
 		return report;
 
 	}
+	
+//	public static SupplyReportEntity getSupplyReportFromDBByID(int id) {
+//		SupplyReportEntity report = null;
+//
+//		try {
+//		String query = "SELECT * FROM ekrut.supply_report "
+//				+ "WHERE id=?";
+//		PreparedStatement ps = con.prepareStatement(query);
+//		ps.setInt(1, id);
+//
+//		ResultSet res = ps.executeQuery();
+//
+//		if (res.next()) {
+//			report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4),
+//					res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9));
+//					//res.getString(10));
+//		}
+//		}catch(Exception ex) {}
+//		return report;
+//	}
+
 
 	/**
 	 * return if there is any report exist by type, year, month, region

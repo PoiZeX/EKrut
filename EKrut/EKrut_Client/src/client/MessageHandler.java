@@ -136,6 +136,10 @@ public class MessageHandler {
 		case ValidPickupAnswer:
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity) obj);
 			break;
+		case ReceiveAllItemsNameById:
+			SupplyReportController.getAnswerFromServer(obj);
+			break;
+		
 		default:
 			break;
 		}

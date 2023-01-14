@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
@@ -17,9 +16,11 @@ import ocsf.server.ConnectionToClient;
 
 public class UsersManagementDBController {
 	/**
-	 * This method get all the users from the DB that haven't been approved yet, and sends the list of these users to the client.
+	 * This method get all the users from the DB that haven't been approved yet, and
+	 * sends the list of these users to the client.
+	 * 
 	 * @param client the client object that the result will be sent to.
-	*/
+	 */
 	public static void getUnapprovedUsersEntity(ConnectionToClient client) {
 		// sql query //
 		ArrayList<UserEntity> res = getUnapprovedUsersFromDB();
@@ -42,7 +43,8 @@ public class UsersManagementDBController {
 			if (MySqlClass.getConnection() == null)
 				return unapprovedUsersList;
 			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number is not null;");
+			PreparedStatement ps = conn
+					.prepareStatement("SELECT * FROM ekrut.users WHERE is_not_approved=? AND cc_number is not null;");
 			ps.setInt(1, 1);
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
@@ -98,22 +100,23 @@ public class UsersManagementDBController {
 		// prepare
 		String idORusername = details[0];
 		UserEntity user = new UserEntity();
-		
+
 		try {
 			if (MySqlClass.getConnection() == null)
 				return new UserEntity();
 			Connection conn = MySqlClass.getConnection();
 			String searchBy = "username";
 			try {
-				Integer.parseInt(idORusername);  // is ID
+				Integer.parseInt(idORusername); // is ID
 				searchBy = "id_number";
-			} catch (Exception e) { }
-			
-			String query = "SELECT * FROM ekrut.users WHERE "+ searchBy + "=? AND cc_number is NULL;";
+			} catch (Exception e) {
+			}
+
+			String query = "SELECT * FROM ekrut.users WHERE " + searchBy + "=? AND cc_number is NULL;";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, idORusername); 
+			ps.setString(1, idORusername);
 			ResultSet res = ps.executeQuery();
-			
+
 			// create the entity
 			while (res.next()) {
 				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
@@ -121,21 +124,22 @@ public class UsersManagementDBController {
 						res.getString(11), res.getBoolean(12), res.getBoolean(13));
 				user.setId(res.getInt(1));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
-			if(client != null)  // will be null for internal use
+			if (client != null) // will be null for internal use
 				client.sendToClient(new Message(TaskType.ReceiveUserInfoFromServerDB, user));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return user;
 	}
-	
+
 	/**
 	 * Get a user by id number
+	 * 
 	 * @param details
 	 * @param client
 	 * @return
@@ -158,22 +162,23 @@ public class UsersManagementDBController {
 						res.getString(11), res.getBoolean(12), res.getBoolean(13));
 				user.setId(res.getInt(1));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
-			if(client != null)  // will be null for internal use
+			if (client != null) // will be null for internal use
 				client.sendToClient(new Message(TaskType.ReceiveUserInfoFromServerDB, user));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return user;
-		
+
 	}
-	
+
 	/**
 	 * return the user entity for given ID, or null if not found+
+	 * 
 	 * @param userId
 	 * @return
 	 */
@@ -182,13 +187,13 @@ public class UsersManagementDBController {
 		try {
 			if (MySqlClass.getConnection() == null)
 				return null;
-			
+
 			Connection conn = MySqlClass.getConnection();
 			String query = "SELECT * FROM ekrut.users WHERE id=?;";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, userId);
 			ResultSet res = ps.executeQuery();
-			
+
 			// create the entity
 			if (res.next()) {
 				user = new UserEntity(res.getString(2), res.getString(3), res.getString(4), res.getString(5),
@@ -196,21 +201,20 @@ public class UsersManagementDBController {
 						res.getString(11), res.getBoolean(12), res.getBoolean(13));
 				user.setId(res.getInt(1));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;
 	}
-	
-	
+
 	/**
 	 * Handles the query of changing the user's role type in DB
 	 * 
 	 * @return user
 	 */
 	public static boolean updateUserInDB(String[] details, ConnectionToClient client) {
-		if(details.length < 1 && CommonFunctions.isNullOrEmpty(details[1])) 
+		if (details.length < 1 && CommonFunctions.isNullOrEmpty(details[1]))
 			return false;
 		String idNumber = details[0];
 		String roleType = details[1];
@@ -231,8 +235,8 @@ public class UsersManagementDBController {
 			e.printStackTrace();
 		}
 		try {
-			
-			UserEntity userToReturn = getUserByIDNumberFromDB(details, null);  // will return a single user
+
+			UserEntity userToReturn = getUserByIDNumberFromDB(details, null); // will return a single user
 			client.sendToClient(new Message(TaskType.ReceiveUserUpdateInDB, userToReturn));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -247,8 +251,20 @@ public class UsersManagementDBController {
 	 */
 
 	public static UserEntity getRegionManagerFromDB(String region, ConnectionToClient client) {
+		UserEntity user = getRegionManagerFromDBQuery(region);
+		try {
+			client.sendToClient(new Message(TaskType.ReceiveManagerInfoFromServerDB, user));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return user;
+
+	}
+
+	public static UserEntity getRegionManagerFromDBQuery(String region) {
 		UserEntity user = new UserEntity();
 		try {
+
 			if (MySqlClass.getConnection() == null)
 				return new UserEntity();
 			Connection conn = MySqlClass.getConnection();
@@ -262,24 +278,21 @@ public class UsersManagementDBController {
 						res.getString(6), res.getString(7), res.getString(8), res.getString(9), res.getString(10),
 						res.getString(11), res.getBoolean(12), res.getBoolean(13));
 				user.setId(res.getInt(1));
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		try {
-			client.sendToClient(new Message(TaskType.ReceiveManagerInfoFromServerDB, user));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return user;
 	}
-	
+
 	/**
 	 * Query executer for getting all supply workers
+	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException{
+	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException {
 		ArrayList<UserEntity> supplyWorkers = new ArrayList<>();
 		UserEntity user = new UserEntity();
 		if (MySqlClass.getConnection() == null)

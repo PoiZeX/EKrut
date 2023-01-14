@@ -113,6 +113,8 @@ public enum TaskType {
 	ReceiveOrderReport,
 	ReceiveSupplyReport,
 	ReceiveClientsReport, 
+	RequestAllItemsNameById,
+	ReceiveAllItemsNameById
 	// Update Database//
 	
 }

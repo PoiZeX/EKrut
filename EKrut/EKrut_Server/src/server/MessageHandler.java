@@ -136,6 +136,9 @@ public class MessageHandler {
 		case RequestSupplyWorkers:
 			UsersManagementDBController.getSupplyWorkers(client);
 			break;
+		case RequestAllItemsNameById:
+			client.sendToClient(new Message(TaskType.ReceiveAllItemsNameById ,ItemDBController.getAllItemsNameById((ArrayList<Integer>)obj)));
+			break;
 //-------------------------------------------ORDERES-------------------------------------------------------			
 		case isMemberFirstPurchase:
 			OrderDBController.isMemberFirstPurchase((UserEntity) obj, client);
