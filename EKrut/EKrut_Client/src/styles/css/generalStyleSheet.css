@@ -18,13 +18,13 @@
 /*first grid */
 .GridPane{
     -fx-background-color:#f6f5f5;
-    -fx-effect: dropshadow( gaussian , #babfc2, 25, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 15;
 }
 /*for grid in grid */
 .GridPaneChild {
     -fx-background-color:#ffffff;
-    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-effect: dropshadow(gaussian , rgba(213, 213, 213, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color:  #e1e1e1;
@@ -32,13 +32,13 @@
 
 .GridPaneShadow {
     -fx-background-color: #E8EEF1;
-    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 0;
 }
 
 .GridPaneShadowTop {
     -fx-background-color: #f6f5f5;
-    -fx-effect: dropshadow(gaussian, #d5d5d5, 25, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 0;
 }
 /*---------------------------------------------------- LABELs-------------------------------------------------- */
@@ -94,7 +94,7 @@
 /* header */
 #headerBar {
     -fx-background-color:#ffffff;
-    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 0 0 15 15;
 }
 
@@ -114,7 +114,7 @@
 /* --------------------------------------catalog------------------------------------------- */
 #catalogScrollpane {
     -fx-background-color: linear-gradient(#f6f5f5 20%, #ffffff 60%);
-    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
 
 }
 /*------------------------------- no BG */
@@ -126,7 +126,7 @@
 /*---------------------------------------buttons--------------------------------------------------- */
 .Button{
 	-fx-background-color:  #50b7f3;
-    -fx-effect: dropshadow( gaussian , #acaaaa , 10, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 13pt;
@@ -147,7 +147,7 @@
 
 .ButtonYesOK {
     -fx-background-color: #2b9800;
-    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 10;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15pt;
@@ -160,7 +160,7 @@
 
 .ButtonNO {
     -fx-background-color: #c60505;
-    -fx-effect: dropshadow( gaussian, #acaaaa, 10, 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-radius: 10;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15pt;
@@ -173,7 +173,7 @@
 /*______________________ LOG OUT \ CANCEL BTNS */
 .ButtonLogOut{
 	-fx-background-color:  #FF9414;
-    -fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
 	-fx-font-size: 15pt;
@@ -298,7 +298,7 @@
 }
 /*____________________ New Sale BTN */
 .Button-newSale{
-	-fx-effect: dropshadow( gaussian , #acaaaa , 10 , 0, 0, 0 );
+	-fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
 	-fx-background-color:  #4093c3;
 	-fx-background-radius: 10;
 	-fx-text-fill:#FFFFFF;
@@ -341,13 +341,13 @@
 }
 
 .combo-box .arrow-button:hover{
-    -fx-background-color:#057DCD;
+    -fx-background-color:#1a94e5;
     -fx-border-style:none;
     -fx-border-radius: 15;
 }
 
 .combo-box:hover{
-    -fx-background-color:#057DCD;
+    -fx-background-color:#1a94e5;
     -fx-border-radius: 15;
 }
 /*------------------------------------------------ CHARTS ---------------------------------------------------------------- */
@@ -369,58 +369,59 @@
 .default-color5.chart-bar { -fx-bar-fill: #FFE45E; }
 
  /*------------------------------------------------ TABLE---------------------------------- */
-.table-view {
-    -fx-background-color: #ffffffc3;
-    -fx-background-radius: 15;
-    -fx-effect: dropshadow(gaussian , #d5d5d5, 25, 0, 0, 0 );
+.table-row-cell {
+    -fx-cell-size: 30px;
 }
-
+.table-view {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
+}
 .table-view .column-header-background .filler {
     -fx-background-color: transparent;
 }
-
 .table-view .corner {
-    -fx-background-color: #babfc2;
-}
-
-.table-view .column-header {
     -fx-background-color: transparent;
 }
-
-
 .table-view .column-header-background{
-    -fx-background-color: #64c6ff;
-    -fx-background-radius: 7px 7px 0px 0px;
-    -fx-padding: 4px;
-    -fx-text-fill: white;
-}
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
+    -fx-background-color: linear-gradient(to bottom, #50b7f3, #64c6ff);
+    -fx-background-radius: 15px 15px 0px 0px;
 
-.table-row-cell:hover {
+}
+.table-view .column-header {
+    -fx-effect: dropshadow( gaussian , rgba(186, 191, 194, 0.500), 25, 0, 0, 0 );
     -fx-background-color: transparent;
-  	-fx-text-background-color: #1E3D58;
+    -fx-alignment: LEFT;
 }
-
-/*
- * 
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:vertical .track,
+.table-view .virtual-flow .scroll-bar:vertical .track-background,
+.table-view .virtual-flow .scroll-bar:horizontal,
+.table-view .virtual-flow .scroll-bar:horizontal .track,
+.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+}
+.table-cell {
+    -fx-alignment: CENTER;
+}
 .table-view .table-cell{
-    -fx-border-color: #ffffff;
+    -fx-border-color: transparent;
 }
-
-
-.table-row-cell:odd {
-    -fx-background-color: #ffffff;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
+.table-row {
+    -fx-border-color: #64c6ff;
+    -fx-text-alignment: CENTER;
 }
-
-.table-row-cell:even{
-    -fx-background-color: #f2f2f2;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
-} */
+.table-row-cell:selected {
+    -fx-background-color: #d0eeff
+}
+.table-row-cell:selected .text {
+    -fx-fill: #000000;
+}
+.table-row-cell:hover {
+    -fx-background-color: #d0eeff
+}
 
 #myCb .box {
-
 -fx-background-color: white;
 -fx-border-color:grey;
 -fx-border-radius:3px; 
