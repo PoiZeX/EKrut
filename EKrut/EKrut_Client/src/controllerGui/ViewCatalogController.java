@@ -134,7 +134,7 @@ public class ViewCatalogController implements IScreen {
 	public void initialize() {
 		try {
 			helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
-
+			
 			checkRequestType();
 			while (!recievedData)
 				Thread.sleep(100);
