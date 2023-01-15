@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -117,22 +118,17 @@ public class SupplyManagementDBController {
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(8), res.getDouble(9), res.getString(10));
 
-					String LocalfilePath = "../EKrut_Server/src/styles/products/" + item.getItemImg().getImgName();
-					File newFile = new File(LocalfilePath);
-					byte[] mybytearray = new byte[(int) newFile.length()];
-					FileInputStream fis = new FileInputStream(newFile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
+					InputStream file = ItemDBController.class.getClass()
+							.getResourceAsStream("/products/" + item.getItemImg().getImgName());
+					byte[] mybytearray = new byte[(int) file.available()];
+					BufferedInputStream bis = new BufferedInputStream(file);
 					item.getItemImg().initArray(mybytearray.length);
 					item.getItemImg().setSize(mybytearray.length);
 					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);
-				}
-				// (machineId, item_id, currentAmount, callStatus, timeUnderMin, workerId, name,
-				// price, item_img_nam)
-				else {
+				} else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(7), 0.00, "");
-					//item.setWorkerId(res.getInt(6));
 				}
 
 				itemsInMachine.add(item);

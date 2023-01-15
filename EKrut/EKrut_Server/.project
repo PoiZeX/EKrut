@@ -20,4 +20,11 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>styles</name>
+			<type>2</type>
+			<location>C:/Users/David/Desktop/EKrut/EKrut/EKrut_Server/src/styles</location>
+		</link>
+	</linkedResources>
 </projectDescription>

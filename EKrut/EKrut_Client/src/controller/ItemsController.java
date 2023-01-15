@@ -24,12 +24,14 @@ public class ItemsController {
 	}
 
 	/* add the item to array list */
-	public static void getItemsFromServer(ItemEntity item) {
-		item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
-		InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
-		Image fileImg = new Image(fis);
-		item.setItemImage(fileImg);
-		allItems.add(item);
+	public static void getItemsFromServer(ArrayList<ItemEntity> items) {
+		for (ItemEntity item : items) {
+			item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
+			InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
+			Image fileImg = new Image(fis);
+			item.setItemImage(fileImg);
+			allItems.add(item);
+		}
 //		convertStreamToImg(item.getItemImg());
 	}
 	
