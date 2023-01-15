@@ -76,7 +76,11 @@ public class ItemDBController {
 			e.printStackTrace();
 		}
 	}
-
+	/***
+	 * get all the items names by their ids 
+	 * @param itemsID
+	 * @return
+	 */
 	public static ArrayList<String> getAllItemsNameById(ArrayList<Integer> itemsID) {
 		ArrayList<String> itemsNames = new ArrayList<>();
 		try {

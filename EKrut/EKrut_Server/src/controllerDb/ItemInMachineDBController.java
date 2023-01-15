@@ -1,6 +1,8 @@
 package controllerDb;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,39 +20,68 @@ public class ItemInMachineDBController {
 	private static Connection con = MySqlClass.getConnection();
 
 	/**
-	 * Update an array of items-in-machine with roll back option
-	 * @param itemsInMachine
+	 * get all machine items by machine id
+	 * 
+	 * @param machineId
 	 * @param client
 	 */
-	public static void updateItemsInMachine(ArrayList<ItemInMachineEntity> itemsInMachine, ConnectionToClient client) {
+	public static void getMachineItems(int machineId, ConnectionToClient client) {
+		PreparedStatement ps;
 		try {
-			ItemInMachineEntity[] itemsArray = new ItemInMachineEntity[itemsInMachine.size()];
-			// ItemInMachineEntity[itemsInMachine.size()]);
-			itemsInMachine.toArray(itemsArray);
+			ps = con.prepareStatement(
+					"SELECT  ekrut.item_in_machine.*, ekrut.items.* " + "FROM  ekrut.item_in_machine, ekrut.items"
+							+ " WHERE item_in_machine.machine_id=?  AND item_in_machine.item_id=items.item_id;");
+			ps.setInt(1, machineId);
+			handleGetItems(ps.executeQuery(), client);
 
-			int[] originalAmount = new int[itemsArray.length]; // amount of items
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-			if (con == null)
-				return;
+	}
+	/**
+	 * handle the process of items and send to client
+	 * 
+	 * @param res
+	 * @param client
+	 */
+	protected static void handleGetItems(ResultSet res, ConnectionToClient client) {
+		ItemInMachineEntity item;
 
-			ItemInMachineEntity item = null;
-			for (int i = 0; i < itemsArray.length; i++) {
-				originalAmount[i] = getItemInMachineQuantity(itemsArray[i]);
-				item = updateSingleItemInMachine(itemsArray[i]);
-				if (item != null || originalAmount[i] == -1) {
-					RollBack(originalAmount, itemsArray, i);
-					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, false));
-					return;
+		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
+		try {
+			while (res.next()) {
+				// 1 2 3 4 5 6 7 8 9 10
+				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id,
+				// item_id, name, price, item_img_name
+
+				if (res.getMetaData().getColumnCount() >= 9) {
+					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
+							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
+							res.getString(8), res.getDouble(9), res.getString(10));
+
+					InputStream file = ItemDBController.class.getClass()
+							.getResourceAsStream("/products/" + item.getItemImg().getImgName());
+					byte[] mybytearray = new byte[(int) file.available()];
+					BufferedInputStream bis = new BufferedInputStream(file);
+					item.getItemImg().initArray(mybytearray.length);
+					item.getItemImg().setSize(mybytearray.length);
+					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);
+				} else {
+					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
+							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
+							res.getString(7), 0.00, "");
 				}
+
+				itemsInMachine.add(item);
 			}
-			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, ""));  // empty string = success
+
+			client.sendToClient(new Message(TaskType.ReceiveItemsInMachine, itemsInMachine)); // finally send the
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * Roll back when update failed
 	 * 
@@ -235,6 +266,27 @@ public class ItemInMachineDBController {
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, true));
 
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 *
+	 * @param item an instance of ItemInMachineEntity which needs to be updated
+	 *
+	 *The method updateCallStatus updates the call status and worker_id of the item in the machine table in the database. 
+	 *It uses a prepared statement to update the values in the database.
+	 */
+	public static void updateCallStatus(ItemInMachineEntity item) {
+		try {
+			PreparedStatement ps = con.prepareStatement("UPDATE ekrut.item_in_machine SET call_status=?, "
+					+ "worker_id=? WHERE machine_id=? AND item_id=?;");
+			ps.setString(1, item.getCallStatus().toString());
+			ps.setInt(2, item.getWorkerId());
+			ps.setInt(3, item.getMachineId());
+			ps.setInt(4, item.getId());
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

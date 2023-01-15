@@ -112,9 +112,6 @@ public class MessageHandler {
 		case InitMachinesSupplyUpdate:
 			MachineDBController.getMachinesFromDB((String[]) obj, client);
 			break;
-		case RequestItemsInMachine:
-			SupplyManagementDBController.getMachineItems((int) obj, client);
-			break;
 		case RequestItemsWithMinAmount:
 			SupplyManagementDBController.getMachineItemsWithMinAmount((int) obj, client);
 			break;
@@ -127,9 +124,6 @@ public class MessageHandler {
 		case RequestItemsInMachineCallStatusUpdate:
 			SupplyManagementDBController.updateCallsStatus((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
-		case RequestItemsInMachineUpdateFromServer:
-			ItemInMachineDBController.updateItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
-			break;
 		case RequestItemsInMachineRestockFromServer:
 			SupplyManagementDBController.restockItemsInMachine((ArrayList<ItemInMachineEntity>) obj, client);
 			break;
@@ -140,6 +134,9 @@ public class MessageHandler {
 			client.sendToClient(new Message(TaskType.ReceiveAllItemsNameById ,ItemDBController.getAllItemsNameById((ArrayList<Integer>)obj)));
 			break;
 //-------------------------------------------ORDERES-------------------------------------------------------			
+		case RequestItemsInMachine:
+			ItemInMachineDBController.getMachineItems((int) obj, client);
+			break;
 		case isMemberFirstPurchase:
 			OrderDBController.isMemberFirstPurchase((UserEntity) obj, client);
 			break;
