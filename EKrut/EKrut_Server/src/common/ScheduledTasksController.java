@@ -82,9 +82,11 @@ public class ScheduledTasksController {
 		String month = now.format(monthYear).split(" ")[0];
 		String year = now.format(monthYear).split(" ")[1];
 
-		// specific case
+		// sets month and year for previous
 		if(month.equals("01"))
 			year = String.valueOf(Integer.parseInt(year) - 1); // for example 01-01-2020, we need to calculate for last year (01-12-2019 -> 31-12-2019)
+		month = String.valueOf(Integer.parseInt(month) - 1);
+		
 		// for every region -> check if there are reports for this date
 		for (String region : CommonDataDBController.getRegionsListFromDB()) {
 			if (!ReportsDBController.isReportExist("orders", month, year, region))

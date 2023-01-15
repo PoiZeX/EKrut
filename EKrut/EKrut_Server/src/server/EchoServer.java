@@ -124,7 +124,7 @@ public class EchoServer extends AbstractServer {
 		}
 		ScheduledTasksController stc = new ScheduledTasksController();
 		stc.tasksMonthlyExecuter(); // run first time to validate we do not miss the first of the month (when crash occured)
-		stc.setupTimer(1000*20);  // setup ONE DAY timer
+		stc.setupTimer(24 * 60 * 60 * 1000);  // setup ONE DAY timer 24 * 60 * 60 * 1000
 	}
 
 	/**

@@ -12,6 +12,7 @@ import controllerDb.CommonDataDBController;
 import controllerDb.PersonalMessagesDBController;
 import controllerDb.ReportsDBController;
 import controllerDb.UsersManagementDBController;
+import entity.MachineEntity;
 import entity.PersonalMessageEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
@@ -35,35 +36,45 @@ public class ReportsGenerator {
 			generateOrdersReport(month, year);
 			break;
 		case "supply":
-			generateSupplyReport();
+			generateSupplyReportsForAllMachines();
 			break;
 		}
 	}
 
 	/**
+	 * Manager for generate all machines supply report
+	 */
+	private static void generateSupplyReportsForAllMachines() {
+		for(MachineEntity machine : CommonDataDBController.getMachineListFromDB())
+		{
+			generateSupplyReportForMachineID(machine.getMachineId());
+		}
+	}
+	
+	/**
 	 * Run a query that generate and insert report for each machine
 	 * 
 	 */
-	private static void generateSupplyReport() {
+	private static void generateSupplyReportForMachineID(int machineId) {
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
-			String query = "INSERT INTO supply_report (machine_id, machine_min_amount, item_id,  times_under_min, end_stock, year, month, region)  "
-					+ "( " + "	SELECT  " + "		machine_id, min_amount,  "
-					+ "		GROUP_CONCAT(item_id SEPARATOR ',') as item_id,  "
-					+ "     GROUP_CONCAT(times_under_min SEPARATOR ',') as times_under_min,  "
-					+ "		GROUP_CONCAT(current_amount SEPARATOR ',') as current_amount,  "
-					+ "     LPAD(MONTH(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)),2,'0') as month, "
-					+ "		YEAR(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)) as year, "
-					+ "     region_id " + "	FROM ( "
-					+ "		  SELECT machines.min_amount as min_amount, item_in_machine.current_amount as current_amount, item_in_machine.item_id as item_id, machines.region_id as region_id, item_in_machine.times_under_min as times_under_min, item_in_machine.machine_id as machine_id "
-					+ "		  FROM item_in_machine "
-					+ "		  JOIN machines ON machines.machine_id = item_in_machine.machine_id "
-					+ "	) as supply_report " + "GROUP BY region_id, machine_id  "
-					+ "ORDER BY region_id, machine_id, item_id);";
+			String query = "INSERT INTO supply_report (machine_id, machine_min_amount, item_id,  times_under_min, end_stock, month, year, region)   "
+					+ "( 	SELECT 		machine_id, min_amount, "
+					+ "	GROUP_CONCAT(item_id SEPARATOR ',') as item_id,  "
+					+ "	GROUP_CONCAT(times_under_min SEPARATOR ',') as times_under_min,   "
+					+ "	GROUP_CONCAT(current_amount SEPARATOR ',') as current_amount,   "
+					+ "	LPAD(MONTH(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)),2,'0') as month,  "
+					+ "	YEAR(DATE_SUB(CONCAT(YEAR(CURDATE()),'-',LPAD(MONTH(CURDATE()),2,'0'),'-01'), INTERVAL 1 MONTH)) as year,  "
+					+ "	region_id 	FROM (  "
+					+ "	SELECT machines.min_amount as min_amount, item_in_machine.current_amount as current_amount, item_in_machine.item_id as item_id, machines.region_id as region_id, item_in_machine.times_under_min as times_under_min, item_in_machine.machine_id as machine_id  "
+					+ "	FROM item_in_machine  "
+					+ "	JOIN machines ON machines.machine_id = item_in_machine.machine_id  AND item_in_machine.machine_id = ? "
+					+ "	) as supply_report);";
 
 			PreparedStatement ps = con.prepareStatement(query);
+			ps.setInt(1, machineId);
 			ps.executeUpdate();
 
 		} catch (Exception e) {
@@ -81,9 +92,9 @@ public class ReportsGenerator {
 			}
 
 			// iterate over region
-			ArrayList<String> allRegion = CommonDataDBController.getRegionsListFromDB();
-			for (String region : allRegion) {
-				UserEntity manager = UsersManagementDBController.getRegionManagerFromDBQuery(region);
+			ArrayList<MachineEntity> allMachines = CommonDataDBController.getMachineListFromDB();
+			for (MachineEntity machine : allMachines) {
+				UserEntity manager = UsersManagementDBController.getRegionManagerFromDBQuery(machine.getRegionName());
 
 				PersonalMessagesDBController.setPersonalMessagesInDB(new PersonalMessageEntity(manager.getId(),
 						String.format("01/%s/%s", month, year), "Error creating report!",
@@ -92,21 +103,22 @@ public class ReportsGenerator {
 			}
 		}
 
-		// after generate all - reset the column for all rows
-		resetTimesUnderMin();
+		// reset the machine id times_under_min
+		resetTimesUnderMinForMachineID(machineId);
 
 	}
 
 	/**
 	 * Resets the times under min for ALL machines
 	 */
-	private static void resetTimesUnderMin() {
+	private static void resetTimesUnderMinForMachineID(int machineId) {
 		try {
-			String query = "UPDATE item_in_machine SET times_under_min=0;";
+			String query = "UPDATE item_in_machine SET times_under_min=0 WHERE machine_id = ?;";
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement ps = con.prepareStatement(query);
+			ps.setInt(1, machineId);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

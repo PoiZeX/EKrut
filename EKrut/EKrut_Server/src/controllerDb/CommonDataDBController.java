@@ -54,6 +54,25 @@ public class CommonDataDBController {
 		}
 		return regions;
 	}
+	
+	/**
+	 * This method retrieves a region by its ID from the database
+	 */
+	public static String getRegionNameByID(int regionID) {
+		try {
+			if (con == null)
+				return "";
+		
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM regions where id = ?;");
+			ps.setInt(1, regionID);
+			ResultSet res = ps.executeQuery();
+			if (res.next()) {
+				return res.getString(1);
+			}
+		} catch (SQLException e) { 	}
+		return "";
+	}
+	
 	/**
 	 * This method retrieves all the machines from the database and sends it to the client
 	 * @param client The client that requested the data
@@ -70,7 +89,7 @@ public class CommonDataDBController {
 	 * This method retrieves all machines from the database
 	 * @return ArrayList<MachineEntity> machines from the database
 	 */
-	private static ArrayList<MachineEntity> getMachineListFromDB() {
+	public static ArrayList<MachineEntity> getMachineListFromDB() {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
 		try {
 			if (con == null)
