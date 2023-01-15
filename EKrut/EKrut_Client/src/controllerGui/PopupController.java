@@ -1,5 +1,6 @@
 package controllerGui;
 
+import common.IScreen;
 import common.PopupTypeEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

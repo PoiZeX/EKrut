@@ -4,6 +4,7 @@ import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.TaskType;
+import common.IScreen;
 import common.Message;
 import common.RolesEnum;
 import common.ScreensNamesEnum;

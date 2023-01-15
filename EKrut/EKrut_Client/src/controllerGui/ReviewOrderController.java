@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
@@ -100,6 +101,7 @@ public class ReviewOrderController implements IScreen {
 	private static Object data;
 	private static boolean isDataRecived = false;
 	private static Boolean firstPurchase = false;
+	private static Boolean isDelivery = false;
 	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
@@ -119,7 +121,8 @@ public class ReviewOrderController implements IScreen {
 			/*
 			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
-
+			isDelivery=OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery");
+			OrderController.isFirstPurchaseDiscountApplied=false;
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
 			firstPurchase = false;
@@ -168,7 +171,7 @@ public class ReviewOrderController implements IScreen {
 	private void checkAndApplyDiscounts() throws Exception {
 		StringBuilder sb = new StringBuilder("You got some discounts:\n");
 
-		if (totalDiscounts != 0) {
+		if (totalDiscounts != 0 && !isDelivery) {
 			String salesDiscounts = OrderController.getActiveSalesTypeAsString();
 			for (String discount : salesDiscounts.split(" ")) {
 				sb.append("* " + discount + "\n");
@@ -208,7 +211,7 @@ public class ReviewOrderController implements IScreen {
 	 * Checks the app. configuration and handle the case it's 'EK'
 	 */
 	private void rightGridHandle() {
-		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
+		if (!isDelivery) {
 			rightGridPane.getChildren().clear();
 			Image image = new Image(getClass().getResourceAsStream("/styles/images/homerVending.gif"));
 			ImageView imageView = new ImageView(image);
@@ -400,18 +403,7 @@ public class ReviewOrderController implements IScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-//				// set actions
-//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					public void handle(WindowEvent we) {
-//						staySleep = false;
-//
-//					}
-//				});
-
-//			while(staySleep)
-
-	} 
+	}
 
 	/**
 	 * Checks if there are items under min amount
@@ -581,11 +573,17 @@ public class ReviewOrderController implements IScreen {
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
 		GridPane.setRowSpan(imageView, 3);
-
+		
 		// price after discount
 		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
-			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
+			double priceAfterDis=item.getPrice();
+			if(firstPurchase)
+				priceAfterDis*=0.8;
+			if(!isDelivery) {
+				priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
+			}
+				
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
@@ -598,18 +596,19 @@ public class ReviewOrderController implements IScreen {
 			}
 			gridpane.add(price, 1, 1);
 
-			if (OrderController.isOnePlusOneSaleExist()) {
+			if (OrderController.isOnePlusOneSaleExist() && !isDelivery ) {
 				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
 				tempSum = quantityToGiveFree * item.getPrice();
 				if (cart.get(item) % 2 == 1)
 					tempSum += item.getPrice();
-
 			}
 
 			// set total price for item * quantity
-			tempSum = (OrderController.isPercentageSaleExit() || firstPurchase)
+			tempSum = (OrderController.isPercentageSaleExit() && !isDelivery)
 					? OrderController.getItemPriceAfterDiscounts((double) tempSum)
 					: tempSum;
+			if(firstPurchase)
+				tempSum*=0.8;
 
 			// set total discounts for labels
 			totalDiscounts += totalDiscountForRowInNIS - tempSum;

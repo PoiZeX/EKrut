@@ -26,6 +26,9 @@ public class ServerUI extends Application {
 		launch(args);
 	}
 
+	/**
+	 * Start of the server GUI
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/boundary/ServerConfigurationBoundary.fxml"));
 		Scene scene = new Scene(root);
@@ -42,6 +45,13 @@ public class ServerUI extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * run the server with mysql connection string
+	 * @param portUI
+	 * @param DBAddress
+	 * @param username
+	 * @param password
+	 */
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
 		try {
@@ -66,6 +76,9 @@ public class ServerUI extends Application {
 		EchoServer.getClientList().clear();
 	}
 
+	/**
+	 * Handle server disconnect 
+	 */
 	public static void disconnect() {
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		int attempts = 5; // waiting maximum 2.5 sec (for not getting stuck in loop)

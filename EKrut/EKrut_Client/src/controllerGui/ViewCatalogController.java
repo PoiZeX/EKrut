@@ -15,6 +15,7 @@ import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
@@ -134,7 +135,7 @@ public class ViewCatalogController implements IScreen {
 	public void initialize() {
 		try {
 			helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
-
+			
 			checkRequestType();
 			while (!recievedData)
 				Thread.sleep(100);
@@ -546,9 +547,6 @@ public class ViewCatalogController implements IScreen {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-				// cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText())
-				// + 1 + "");
-				// updateCartBubble(1);
 				updateCartTotalLabels();
 			}
 		};

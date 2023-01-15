@@ -8,7 +8,7 @@ import common.CommonFunctions;
 public class OrderReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
 	private String description;
-	private Map <String, Double[]> reportsList; // {[Karmiel, Sales:30,Sum:40]}
+	private Map <String, Double[]> reportsList;
 	
 	public OrderReportEntity() {
 		super();
@@ -53,7 +53,7 @@ public class OrderReportEntity extends ReportEntity {
 			String sum = details[i + 1];
 			String sales = details[i + 2];
 			Double[] pair = new Double[] {Double.parseDouble(sum),Double.parseDouble(sales)};
-			reportsList.put(name,pair); // [Karmiel : [20,30], Tel Aviv : [32,15]]
+			reportsList.put(name,pair);
 		}
 	}	
 }

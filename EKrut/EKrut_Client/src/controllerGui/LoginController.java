@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.TaskType;
 import common.Message;
 import common.PopupTypeEnum;
@@ -108,14 +109,6 @@ public class LoginController implements IScreen {
 
 		if (isValidDetails) {
 			if (!isServiceEnable)
-//				if (EKTLoginBtn.isDisable()) {
-//					// So EKT function was activated, lets check if he is a member or not
-//					UserEntity user = NavigationStoreController.connectedUser;
-//					
-//						return false;
-//					}
-//				return true;
-//				}
 				return true; // Go to next screen (controller creates the screen)
 		} else
 			return false;
@@ -206,14 +199,7 @@ public class LoginController implements IScreen {
 			returnedMsg = "User is not approved yet";
 			return;
 		}
-//
-//		if(user.getRole_type().equals(RolesEnum.user))
-//		{
-//			isValidDetails = false;
-//			returnedMsg = "User is not registered yet.\nPlease contact customer service for registreation";
-//			return;
-//		}
-//		
+	
 		// this condition needs to be checked just if the user tried to connect via EKT
 		if (isEKTpressed && !isUserAuthorizedToUseEKT(user)) {
 			isValidDetails = false;
@@ -260,13 +246,6 @@ public class LoginController implements IScreen {
 				}
 			});
 			setLoginBtnDisable(true);
-
-			// freeze current screen until got popup close
-
-			// NavigationStoreController.getInstance().getPrimaryStage().hide();
-//			primaryStage.initModality(Modality.APPLICATION_MODAL);
-//			primaryStage.showAndWait();
-
 			primaryStage.show();
 
 		} catch (IOException e) {

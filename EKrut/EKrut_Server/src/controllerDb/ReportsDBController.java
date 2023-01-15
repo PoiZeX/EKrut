@@ -30,14 +30,15 @@ public class ReportsDBController {
 	 * @return
 	 */
 	public static boolean setReport(String[] details) {
-		switch (details.length) {
-		case 4:
+		switch (details[0]) {
+		case "orders":
+		case "clients":
 			reportType = details[0];
 			region = details[1];
 			month = details[2];
 			year = details[3];
 			return true;
-		case 5:
+		case "supply":
 			reportType = details[0];
 			region = details[1];
 			month = details[2];
@@ -151,25 +152,20 @@ public class ReportsDBController {
 		try {
 			if (con == null)
 				return report;
-			String query = "SELECT * FROM ekrut.supply_report "
-					+ "JOIN machines ON supply_report.machine_id = machines.machine_id "
-					+ "WHERE year=? AND month=? AND region_name=? AND machines.machine_id=?";
+			String query = "SELECT * FROM ekrut.supply_report where month = ? AND year = ? AND machine_id = ?";
+
 			PreparedStatement ps = con.prepareStatement(query);
 			Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 			if (!pattern.matcher(month).matches())
 				month = CommonFunctions.getNumericMonth(month);
-			ps.setString(1, year);
-			ps.setString(2, month);
-			ps.setString(3, region);
-			ps.setInt(4, machineID);
+			ps.setString(1, month);
+			ps.setString(2, year);
+			ps.setInt(3, machineID);
 
 			ResultSet res = ps.executeQuery();
-//			int id, int machine_id, int min_stock ,String item_name, String end_stock,
-//			String times_under_min, String month, String year, String region
 			if (res.next()) {
-				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(4), 
-						res.getString(5),res.getString(6), res.getString(7), res.getString(8), res.getString(9));
-						//res.getString(10));
+				report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(4),
+						res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,27 +173,6 @@ public class ReportsDBController {
 		return report;
 
 	}
-	
-//	public static SupplyReportEntity getSupplyReportFromDBByID(int id) {
-//		SupplyReportEntity report = null;
-//
-//		try {
-//		String query = "SELECT * FROM ekrut.supply_report "
-//				+ "WHERE id=?";
-//		PreparedStatement ps = con.prepareStatement(query);
-//		ps.setInt(1, id);
-//
-//		ResultSet res = ps.executeQuery();
-//
-//		if (res.next()) {
-//			report = new SupplyReportEntity(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4),
-//					res.getString(5), res.getString(6), res.getString(7), res.getString(8), res.getString(9));
-//					//res.getString(10));
-//		}
-//		}catch(Exception ex) {}
-//		return report;
-//	}
-
 
 	/**
 	 * return if there is any report exist by type, year, month, region
@@ -208,23 +183,29 @@ public class ReportsDBController {
 	 * @param region
 	 * @return
 	 */
-	public static boolean isReportExist(String reportType, String month, String year, String region) {
-		try {
-			if (con == null)
+	public static boolean isReportExist(String reportType, String month, String year, String region, int machineId) {
+		if (!setReport(new String[] { reportType, month, year, region, String.valueOf(machineId) }))
+			return false;
+		switch (reportType) {
+		case "clients":
+			ClientsReportEntity clientsRes = getClientsReportFromDB();
+			if (clientsRes.getDescription().equals("noreport")
+					|| clientsRes.getTotalSalesArr() == null
+					|| clientsRes.getSupplyMethodsArr() == null)
 				return false;
-			PreparedStatement ps = con.prepareStatement(
-					String.format("SELECT * FROM %s_report WHERE month=? AND year=? AND region=?;", reportType));
-			ps.setString(1, CommonFunctions.getNumericMonth(month));
-			ps.setString(2, year);
-			ps.setString(3, region);
-			ResultSet res = ps.executeQuery();
-			if (res.next()) {
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			return true;
+		case "orders":
+			OrderReportEntity ordersRes =  getOrderReportFromDB();
+			if (ordersRes.getDescription().equals("noreport")
+					|| ordersRes.getReportsList() == null)
+				return false;
+			return true;
+		case "supply":
+			SupplyReportEntity supplyRes = getSupplyReportFromDB();
+			if (supplyRes.getReportsList() == null) 
+				return false;
+			return true;
 		}
-		return false;
+		return true;
 	}
-
 }
