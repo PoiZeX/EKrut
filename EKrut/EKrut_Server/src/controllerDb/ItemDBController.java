@@ -52,18 +52,21 @@ public class ItemDBController {
 				 * 1 2 3 4 (int item_id, String name, double price, String item_img_name)
 				 */
 				itemEntity = new ItemEntity(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4));
-
-				InputStream file = ItemDBController.class.getClass()
-						.getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
+//
+//				InputStream file = ItemDBController.class.getClass()
+//						.getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
 				URL rsrc = ItemDBController.class.getClass()
 						.getResource("/products/" + itemEntity.getItemImg().getImgName());
 				System.out.println(rsrc.getPath());
-				byte[] mybytearray = new byte[(int) file.available()];
-				BufferedInputStream bis = new BufferedInputStream(file);
+				InputStream imgResource = ItemDBController.class.getClass()
+						.getResource("/products/" + itemEntity.getItemImg().getImgName()).openStream();
+				byte[] mybytearray = new byte[(int) imgResource.available()];
+				BufferedInputStream bis = new BufferedInputStream(imgResource);
 				itemEntity.getItemImg().initArray(mybytearray.length);
 				itemEntity.getItemImg().setSize(mybytearray.length);
 				bis.read(itemEntity.getItemImg().getMybytearray(), 0, mybytearray.length);
 				itemEntitys.add(itemEntity);
+				bis.close();
 			}
 			client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntitys)); // finally send the entity
 			rs.close();
