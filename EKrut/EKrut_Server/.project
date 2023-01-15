@@ -20,13 +20,6 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>RELATIVE_FOLDER</name>
-			<type>2</type>
-			<locationURI>RELATIVE_FOLDER</locationURI>
-		</link>
-	</linkedResources>
 	<variableList>
 		<variable>
 			<name>RELATIVE_FOLDER</name>

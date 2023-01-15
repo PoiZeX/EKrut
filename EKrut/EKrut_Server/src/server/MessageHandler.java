@@ -90,7 +90,8 @@ public class MessageHandler {
 			DeliveryManagementDBController.updateDeliveryEntities((ArrayList<DeliveryEntity>) obj, client);
 			break;
 		case RequestItemsFromServer:
-			ItemDBController.sendImgToClient(client);
+			ItemDBController itemDB = new ItemDBController();
+			itemDB.sendImgToClient(client);
 			break;
 
 //-------------------------------------------------SALES--------------------------------------------------------
