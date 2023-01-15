@@ -14,7 +14,6 @@ import controllerDb.ReportsDBController;
 import controllerDb.UsersManagementDBController;
 import entity.MachineEntity;
 import entity.PersonalMessageEntity;
-import entity.SupplyReportEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 
@@ -429,25 +428,5 @@ public class ReportsGenerator {
 
 	}
 
-	/**
-	 * A private class to keep a single entity of info-report
-	 *
-	 */
-	private static class singleSupplyReportInfo {
-		int machine_id, item_id, current_amount, times_under_min, min_amount;
-		String name;
-
-		public singleSupplyReportInfo(int machine_id, String name, int current_amount, int times_under_min,
-				int min_amount) {
-			super();
-			this.machine_id = machine_id;
-			this.item_id = item_id;
-			this.current_amount = current_amount;
-			this.times_under_min = times_under_min;
-			this.name = name;
-			this.min_amount = min_amount;
-		}
-
-	}
 
 }

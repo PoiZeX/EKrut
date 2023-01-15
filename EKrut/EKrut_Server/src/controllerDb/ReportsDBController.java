@@ -1,18 +1,15 @@
 package controllerDb;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import common.CommonFunctions;
 import common.Message;
 import common.TaskType;
 import entity.ClientsReportEntity;
-import entity.OrderEntity;
 import entity.OrderReportEntity;
 import entity.SupplyReportEntity;
 import mysql.MySqlClass;

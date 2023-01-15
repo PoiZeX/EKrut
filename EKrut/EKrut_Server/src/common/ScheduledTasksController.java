@@ -2,25 +2,16 @@ package common;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import controllerDb.CommonDataDBController;
 import controllerDb.OrderDBController;
-import controllerDb.ReportsDBController;
 import javafx.animation.PauseTransition;
 
 /**
  * The class handles the scheduled tasks which needs to be executed
  * automatically
  * 
- * @author דוד
  *
  */
 public class ScheduledTasksController {
-
-	/**
-	 * TODO: 1. Timer for One Month -> for monthly tasks 2. Timer for 24Hours ->
-	 * checks if we missed the 1st of the month (OR in the initialize) 3. Tasks to
-	 * do every month
-	 */
 
 	public static PauseTransition transitionDay, transitionMonth;
 
@@ -29,8 +20,6 @@ public class ScheduledTasksController {
 	 */
 	public void setupTimer(int interval) {
 		transitionDay = new PauseTransition(new javafx.util.Duration(interval)); // one day timer
-		// transitionMonth = new PauseTransition(new
-		// javafx.util.Duration(31*24*60*60*1000)); // one month timer
 
 		transitionDay.setOnFinished(action -> {
 			if (isFirstDayOfMonth())
@@ -39,20 +28,8 @@ public class ScheduledTasksController {
 			// keep playing anyway
 			transitionDay.playFromStart();
 		});
+		transitionDay.playFromStart();
 
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-//		calendar.set(Calendar.HOUR_OF_DAY, 15);
-//		calendar.set(Calendar.MINUTE, 40);
-//		calendar.set(Calendar.SECOND, 0);
-//		calendar.set(Calendar.MILLISECOND, 0);
-//
-//		Timer time = new Timer(); // Instantiate Timer Object
-
-		// Start running the task on Monday at 15:40:00, period is set to 8 hours
-		// if you want to run the task immediately, set the 2nd parameter to 0
-		// time.schedule(new CustomTask(), calendar.getTime(),
-		// TimeUnit.HOURS.toMillis(8));
 	}
 
 	/**
@@ -60,7 +37,7 @@ public class ScheduledTasksController {
 	 * 
 	 * @return
 	 */
-	private boolean isFirstDayOfMonth() {
+	public static boolean isFirstDayOfMonth() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");
 		LocalDateTime now = LocalDateTime.now();
 		if (dtf.format(now).equals("01")) // the first of the month
@@ -93,7 +70,7 @@ public class ScheduledTasksController {
 			ReportsGenerator.generateReportsDB(reportType, month, year);
 
 		// make payment for all members (as part of the terms)
-		OrderDBController.takeMonthlyMoneyScheduledManager(year, month);
+		OrderDBController.takeMonthlyMoneyScheduledManager(month, year);
 		System.out.println(String.format("Monthly tasks executed for  %s/%s", month, year));
 
 	}

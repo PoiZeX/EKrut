@@ -64,7 +64,8 @@ public class ScreensDescription {
 	// other
 	public static final String PERSONAL_MESSAGES_DESCRIPTION = "Here you can see all kinds of messages\n"
 			+ "System message from time-to-time, or SIMULATION of SMS/Mail were send for you";
-	public static final String REGISTRATION_FORM_DESCRIPTION = "";
+	public static final String REGISTRATION_FORM_DESCRIPTION = "Here you can register users as our clients\nIn order to do this, search a user by his ID number / username\n"
+			+ "If the user exists, you could sign him as a Member (Tell him all the benefits!)\n\nDo not forget to 'Submit'";
 	public static final String CONFIRM_ONLINE_ORDER_DESCRIPTION = "On this page, you can confirm receipt of delivery or pickup an order from the machine.\n"
 			+ "Enter an order number.\n"
 			+ "Click 'Confirm'/'Collect' button.\n\n"

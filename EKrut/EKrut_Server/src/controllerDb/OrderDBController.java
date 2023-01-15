@@ -1,6 +1,5 @@
 package controllerDb;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,15 +10,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import common.Message;
+import common.ScheduledTasksController;
 import common.TaskType;
 import entity.OrderEntity;
-import entity.PickupEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class OrderDBController {
 	private static Connection con = MySqlClass.getConnection();
+
 	/**
 	 * Checks and sends an answer if this is the first purchase of a member
 	 * 
@@ -89,7 +89,6 @@ public class OrderDBController {
 
 	}
 
-
 	/**
 	 * Return all orders of members which not paid yet, in time range
 	 * 
@@ -118,11 +117,11 @@ public class OrderDBController {
 	 * @param year
 	 * @param month
 	 */
-	public static void takeMonthlyMoneyScheduledManager(String year, String month) {
+	public static void takeMonthlyMoneyScheduledManager(String month, String year) {
 		try {
-			if (takeMoneyOnOrders(year, month))
-				;
-			updatePaymentStatus(year, month);
+			if (ScheduledTasksController.isFirstDayOfMonth()) // validate
+				if (takeMoneyOnOrders(month, year))
+					updatePaymentStatus(month, year);
 		} catch (Exception e) {
 
 		}
@@ -135,19 +134,18 @@ public class OrderDBController {
 	 * @param rs
 	 * @throws SQLException
 	 */
-	private static boolean takeMoneyOnOrders(String year, String month) throws SQLException {
+	private static boolean takeMoneyOnOrders( String month, String year) throws SQLException {
 		boolean isAtLeastOneFound = false;
 		if (con == null)
 			return false;
 		PreparedStatement ps = con.prepareStatement("SELECT *, SUM(t.total_sum) AS final_sum FROM("
 				+ "SELECT orders.* from orders "
 				+ "join users ON users.id=orders.user_id where orders.payment_status='later' AND "
-				+ "STR_TO_DATE(orders.buytime, '%d/%m/%Y %H:%i') BETWEEN '?-?-01 00:00:00' AND '?-?-31 23:59:59') t GROUP BY user_id;");
-
-		ps.setString(1, year);
-		ps.setString(2, month);
-		ps.setString(3, year);
-		ps.setString(4, month);
+				+ "STR_TO_DATE(orders.buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ?) t GROUP BY user_id;");
+		
+		ps.setString(1, String.format("%s-%s-01 00:00:00", year, month));
+		ps.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+		
 		ResultSet rs = ps.executeQuery();
 
 		// every tuple is a sum for user id at this range of time
@@ -185,16 +183,17 @@ public class OrderDBController {
 	 * @param month
 	 * @return
 	 */
-	private static void updatePaymentStatus(String year, String month) throws SQLException {
+	private static void updatePaymentStatus(String month, String year) throws SQLException {
 		if (con == null)
 			return;
 		// get all orders
 		PreparedStatement ps = con.prepareStatement("SELECT * from orders  where orders.payment_status='later' AND "
-				+ "STR_TO_DATE(orders.buytime, '%d/%m/%Y %H:%i') BETWEEN '?-?-01 00:00:00' AND '?-?-31 23:59:59';");
-		ps.setString(1, year);
-		ps.setString(2, month);
-		ps.setString(3, year);
-		ps.setString(4, month);
+				+ "STR_TO_DATE(orders.buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ?;");
+		
+		
+		ps.setString(1, String.format("%s-%s-01 00:00:00", year, month));
+		ps.setString(2, String.format("%s-%s-31 23:59:59", year, month));
+
 		ResultSet rs = ps.executeQuery();
 
 		// update each order
