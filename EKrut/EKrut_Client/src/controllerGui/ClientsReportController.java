@@ -2,6 +2,7 @@ package controllerGui;
 
 import java.util.Map;
 
+import common.IScreen;
 import entity.ClientsReportEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

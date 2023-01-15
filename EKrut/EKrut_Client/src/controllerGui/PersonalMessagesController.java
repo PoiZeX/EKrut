@@ -3,6 +3,7 @@ package controllerGui;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
+import common.IScreen;
 import common.Message;
 import common.TaskType;
 import entity.PersonalMessageEntity;

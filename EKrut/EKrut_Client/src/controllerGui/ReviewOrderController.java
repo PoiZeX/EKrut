@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;

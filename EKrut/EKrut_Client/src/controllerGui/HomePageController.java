@@ -7,6 +7,7 @@ package controllerGui;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
