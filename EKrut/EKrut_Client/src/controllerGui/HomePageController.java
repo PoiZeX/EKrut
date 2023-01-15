@@ -33,7 +33,7 @@ public class HomePageController implements IScreen {
 	private TooltipSetter tooltip;
 	private UserEntity currentUser = NavigationStoreController.connectedUser;
 	private Image image;
-	
+
 	@FXML
 	private VBox vbox;
 
@@ -84,13 +84,12 @@ public class HomePageController implements IScreen {
 
 		// set hidden as default
 		initializeBtnAndLbl();
-		
+
 		// display the main menu
 		displayUserMenuByRoleType(currentRole);
 
 		// Set up last message view
 		initializePersonalMessages();
-
 
 		// initialize all common data's from DB.
 		DataStore.initData();
@@ -106,10 +105,8 @@ public class HomePageController implements IScreen {
 	private void initializeBtnAndLbl() {
 		memberEmployeeGridBox.setVisible(false);
 		toggleBtnsVisible(new Button[] { mailBtn, topBtn, middleBtn, bottomBtn }, false);
-
 		// Set up welcome label
 		welcomeLabel.setText("Welcome " + currentUser.fullName() + "!");
-
 		// Build the role label string
 		String[] splitString = currentUser.getRole_type().toString()
 				.split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
@@ -130,22 +127,19 @@ public class HomePageController implements IScreen {
 		PersonalMessagesController.setPersonalMessages(
 				new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser));
 		if (!PersonalMessagesController.getMsgList().isEmpty()) {
-
 			// Get the last message as a whole
 			String lastMessageLong = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
 					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage();
 			tooltip = new TooltipSetter(lastMessageLong); // Set a tooltip for the label inorder to view the whole
 															// message
-
 			// Get the date of the last message
 			String dateTime = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
 					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getDate();
 			lastMessageDateTimeLabel.setText(dateTime); // Set date label
-
 			// Get the first short part of the last message
 			String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
 					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage()
-							.split("\n")[0];
+					.split("\n")[0];
 			lastMsgLabel.setText(lastMessageShort); // Set up short message label
 			lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
 		} else {
@@ -236,17 +230,15 @@ public class HomePageController implements IScreen {
 									+ "Or login in 'OL' configuration");
 			}
 			break;
-
 		case marketingManager:
-
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern", ScreensNamesEnum.CreateNewSale);
 				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
-
-			} else {
+			} 
+			else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,
@@ -260,8 +252,8 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
-			} else {
+				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));} 
+			else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,

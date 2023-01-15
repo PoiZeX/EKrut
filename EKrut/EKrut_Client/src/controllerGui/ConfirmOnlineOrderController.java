@@ -156,7 +156,10 @@ public class ConfirmOnlineOrderController implements IScreen {
 
 		}
 	}
-
+	/***
+	 * get the pickup status from the user after he types the order code for pickup.
+	 * @param pickupEntity
+	 */
 	public static void getPickupAnswer(PickupEntity pickupEntity) {
 
 		if (pickupEntity == null) {

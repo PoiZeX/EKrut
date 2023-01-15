@@ -12,6 +12,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 
+/**
+ * This class is responsible for providing the functionality for the clients report screen in the GUI.
+ * It displays data from a ClientsReportEntity in the form of bar charts and pie charts.
+ * 
+ * @author David
+ * @see ClientsReportEntity
+ * @see IScreen
+ */
 public class ClientsReportController  implements IScreen {
 
 	@FXML
@@ -29,20 +37,27 @@ public class ClientsReportController  implements IScreen {
 
 	protected static ClientsReportEntity reportDetails;
 	protected static boolean RecievedData = false;
-
+    /**
+     * Initializes the charts with data from the ClientsReportEntity.
+     */
 	@Override
 	public void initialize() {
 		titleLabel.setText("Clients Report : " + reportDetails.getRegion());
 		initCharts();
 		return;
 	}
-
+    /**
+     * Accepts data from the server in the form of a ClientsReportEntity.
+     * @param report the ClientsReportEntity containing data to be displayed
+     */
 	public static void recieveDataFromServer(ClientsReportEntity report) {
 		reportDetails = report;
 		RecievedData = true;
 		return;
 	}
-
+	/***
+	 * set the charts with the report data
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initCharts() {
 		Map<String, Integer> supplyMethods = reportDetails.getSupplyMethodsArr();

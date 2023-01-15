@@ -9,7 +9,11 @@ import common.TaskType;
 import controllerGui.HostClientController;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
-
+/**
+ * This class handles sending SMS or mail messages to specific users.
+ * @author Lidor
+ *
+ */
 public class SMSMailHandlerController {
 	private static ClientController chat = HostClientController.getChat();
 
@@ -23,6 +27,14 @@ public class SMSMailHandlerController {
 	 * @return
 	 */
 	public static String lastMsg = "";
+    /**
+     * Handle sending SMS or Mail based on <msgType> to specific user
+     * @param msgType the type of message to send ("SMS" or "Mail")
+     * @param to the recipient user
+     * @param title the title of the message
+     * @param message the content of the message
+     * @return true if the message was sent successfully, false otherwise
+     */
 	public static boolean SendSMSOrMail(String msgType, UserEntity to, String title, String message) {
 		// validate 
 		if(CommonFunctions.isNullOrEmpty(title) || CommonFunctions.isNullOrEmpty(message))

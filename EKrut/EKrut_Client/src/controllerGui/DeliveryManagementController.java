@@ -95,7 +95,7 @@ public class DeliveryManagementController  implements IScreen {
 	}
 	/**
 	 * Send to server the deliveries for update
-	 * Send massege (SMS) to the relevent customers with the astimated arrivel time
+	 * Send massage (SMS) to the relevant customers with the estimated arrival time
 	 * @param event
 	 */
 	@FXML

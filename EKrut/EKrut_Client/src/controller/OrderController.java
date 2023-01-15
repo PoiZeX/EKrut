@@ -33,19 +33,15 @@ public class OrderController {
 	 * 
 	 */
 
-	// private static HashMap<Integer, ItemInMachineEntity> cart = new HashMap<>();
-	// // itemId and itemEntity
 	private static LinkedHashMap<ItemInMachineEntity, Integer> itemsInCartList = new LinkedHashMap<>();
 	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
 	private static MachineEntity currentMachine = DataStore.getCurrentMachine();
-	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); // for images i
-																									// think(???)
+	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); 																		
 	private static ArrayList<SaleEntity> activeSales = null;
-//	private static boolean isSaleActive = false;
 	private static boolean onePlusOneSaleExist = false;
 	private static boolean percentageSaleExit = false;
-	private static ClientController chat = HostClientController.getChat(); // define the chat for th
+	private static ClientController chat = HostClientController.getChat(); 
 	private static boolean isDataReceived = false;
 	public static boolean isFirstPurchaseDiscountApplied = false;
 	private static Object data;
@@ -54,23 +50,23 @@ public class OrderController {
 
 	}
 
-	/**
-	 * local function to handle sending and waiting for answer
-	 * 
-	 * @param msg
-	 * @throws Exception
-	 */
-	private void waitOn(Message msg) throws Exception {
-		isDataReceived = false;
-		chat.acceptObj(msg);
-		while (!isDataReceived)
-			Thread.sleep(100);
-	}
-
-	public static void getDataFromServer(Object dataRecived) {
-		data = dataRecived;
-		isDataReceived = true;
-	}
+//	/**
+//	 * local function to handle sending and waiting for answer
+//	 * 
+//	 * @param msg
+//	 * @throws Exception
+//	 */
+//	private void waitOn(Message msg) throws Exception {
+//		isDataReceived = false;
+//		chat.acceptObj(msg);
+//		while (!isDataReceived)
+//			Thread.sleep(100);
+//	}
+//
+//	public static void getDataFromServer(Object dataRecived) {
+//		data = dataRecived;
+//		isDataReceived = true;
+//	}
 
 	/**
 	 * Add a 20% discount for first purchase of a member
@@ -133,6 +129,8 @@ public class OrderController {
 			currentOrder = new OrderEntity(user_id, supplyMethod);
 	}
 
+
+//------------------------------------------------ cart
 	/**
 	 * return the amount of a specific item in the cart
 	 * 
@@ -143,7 +141,6 @@ public class OrderController {
 		return itemsInCartList.get(item);
 	}
 
-//------------------------------------------------ cart
 	/**
 	 * returns the amount of items in the cart
 	 * 
@@ -172,15 +169,6 @@ public class OrderController {
 		for (ItemInMachineEntity item : itemsInCartList.keySet())
 			totalPrice += (getAmount(item) * item.getPrice());
 		return totalPrice;
-	}
-
-	/**
-	 * return the cart as list of items
-	 * 
-	 * @return
-	 */
-	public static LinkedHashMap<ItemInMachineEntity, Integer> getCart() {
-		return itemsInCartList;
 	}
 
 	/**
@@ -228,8 +216,23 @@ public class OrderController {
 		itemsInCartList.remove(item);
 		return true;
 	}
+	
+	/**
+	 * return the cart as list of items
+	 * 
+	 * @return
+	 */
+	public static LinkedHashMap<ItemInMachineEntity, Integer> getCart() {
+		return itemsInCartList;
+	}
+
 
 //----------------------------------------------------------------------Sales 
+	/***
+	 * returns if there are any active sales, 
+	 * the active sales will not be null only if the user is a member
+	 * @return
+	 */
 	public static boolean isActiveSale() {
 		if (activeSales != null && currentOrder != null) {
 			if (!activeSales.isEmpty() && !(currentOrder.getSupplyMethod().equals("Delivery"))) {
@@ -255,7 +258,9 @@ public class OrderController {
 		activeSales.forEach(sale -> sb.append(sale.getSaleType().toString() + " "));
 		return sb.toString();
 	}
-
+	/***
+	 * request from the data base all the active sales at the moment
+	 */
 	public static void getActiveSalesFromDB() {
 		chat.acceptObj(new Message(TaskType.RequestActiveSales, NavigationStoreController.connectedUser.getRegion()));
 		while (!isDataReceived) {
@@ -266,7 +271,14 @@ public class OrderController {
 			}
 		}
 	}
-
+	/***
+	 * get callers from the message handler when receiving active sales
+	 * sets the following :
+	 * boolean onePlusOneSaleExist, 		
+	 * boolean percentageSaleExit, 
+	 * ArrayList<SaleEntity> activeSales
+	 * @param activesales
+	 */
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
 		onePlusOneSaleExist = false;
 		percentageSaleExit = false;
@@ -292,7 +304,7 @@ public class OrderController {
 	public static boolean isPercentageSaleExit() {
 		return percentageSaleExit;
 	}
-
+//-------------------------------------- discount and price calculation
 	/**
 	 * Get total discount in NIS 
 	 * 

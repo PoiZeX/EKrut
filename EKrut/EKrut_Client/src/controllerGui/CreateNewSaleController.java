@@ -73,7 +73,10 @@ public class CreateNewSaleController implements IScreen  {
     ClientController chat = HostClientController.getChat(); // define the chat for the controller
     
     
-    /** send new sale entity to the server*/
+    /***
+     * send new sale entity to the server
+     * @param event
+     */
     @FXML
     void createSale(ActionEvent event) {
     	String errMsg=validateFields();
@@ -111,7 +114,9 @@ public class CreateNewSaleController implements IScreen  {
     
     
    
-	/** Setup screen before launching view */
+	/***
+	 * Setup screen before launching view
+	 */
     @Override
 	public void initialize() {
     	try {
@@ -200,7 +205,9 @@ public class CreateNewSaleController implements IScreen  {
 		endTimeCmb.setValue(endTime);
 		
     }
-    /** Initialize listView of days*/
+    /***
+     * Initialize listView of days
+     */
     private void initDays() {
     	
 		CustomMenuItem monday = new CustomMenuItem(new CheckBox("Monday")); 

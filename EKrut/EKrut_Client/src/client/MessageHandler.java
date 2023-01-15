@@ -92,6 +92,9 @@ public class MessageHandler {
 		case ReceiveSupplyReport:
 			SupplyReportController.recieveDataFromServer((SupplyReportEntity) obj);
 			break;
+		case ReceiveAllItemsNameById:
+			SupplyReportController.getAnswerFromServer(obj);
+			break;
 //--------------------------------DELIVERIES---------------------------------
 		case ReceiveDeliveriesFromServer:
 			DeliveryManagementController.getDeliveryEntityFromServer((ArrayList<DeliveryEntity>) obj);
@@ -136,9 +139,7 @@ public class MessageHandler {
 		case ValidPickupAnswer:
 			ConfirmOnlineOrderController.getPickupAnswer((PickupEntity) obj);
 			break;
-		case ReceiveAllItemsNameById:
-			SupplyReportController.getAnswerFromServer(obj);
-			break;
+
 		
 		default:
 			break;

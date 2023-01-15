@@ -2,6 +2,8 @@ package common;
 
 /**
  * The enum saves all screens names
+ * and their associate description
+ * the ScreensDescription will appear on each screens question mark icon
  *
  */
 public enum ScreensNamesEnum {

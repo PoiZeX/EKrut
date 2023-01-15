@@ -21,6 +21,11 @@ public enum SaleType {
 	public String getName() {
 		return name;
 	}
+	/***
+	 * check what suitable string will fit the sale type
+	 * @param str
+	 * @return
+	 */
 	public static SaleType getSaleType(String str) {
 		switch (str){
 		case "1+1":

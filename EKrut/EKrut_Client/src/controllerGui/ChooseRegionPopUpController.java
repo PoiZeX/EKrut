@@ -13,7 +13,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+/**
+ * This class is responsible for providing the functionality for the choose region pop-up window in the GUI.
+ * It includes a ComboBox for selecting a region, and buttons for confirming or canceling the selection.
+ * 
+ * @author Vital
+ */
 public class ChooseRegionPopUpController {
 
     @FXML
@@ -30,12 +35,28 @@ public class ChooseRegionPopUpController {
 
     @FXML
     private ComboBox<String> regionCmb;
-
+    /**
+     * Initializes the ComboBox with the available regions from the DataStore.
+     */
+    @FXML
+    public void initialize() {
+    	ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
+    	regionCmb.setItems(regions);
+    }
+   
+    /**
+     * Closes the pop-up window without making any changes.
+     * @param event the event that triggered this method
+     */
     @FXML
     void cancel(ActionEvent event) {
     	((Stage) confirmBtn.getScene().getWindow()).close();
     }
-
+    /**
+     * Confirms the selected region and updates the connected user's region.
+     * Closes the pop-up window and refreshes the sales management screen.
+     * @param event the event that triggered this method
+     */
     @FXML
     void confirm(ActionEvent event) {
     	String region = regionCmb.getValue();
@@ -47,11 +68,6 @@ public class ChooseRegionPopUpController {
     		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SalesManagement);
     	}
     }
-    @FXML
-    public void initialize() {
-    	ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
-    	regionCmb.setItems(regions);
-    }
-   
+
 
 }

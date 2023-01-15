@@ -17,7 +17,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 
-public class ReportSelectionController  implements IScreen {
+/**
+ * Controller for the Orders Report screen. Handles displaying the order data in
+ * a pie chart and a bar chart. Allows switching between displaying the data by
+ * profit or by quantity.
+ *
+ * @author David
+ */
+public class ReportSelectionController implements IScreen {
 	private String selectedReport = "";
 
 	@FXML
@@ -51,9 +58,16 @@ public class ReportSelectionController  implements IScreen {
 	private Label regionLabel;
 
 	ClientController chat = HostClientController.getChat(); // define the chat for the controller
-	
+
 	private String year, month, region;
 
+	/**
+	 * This method is responsible for handling the event of the 'View Report' button
+	 * being clicked. It validates the user input, and based on the selected report
+	 * type, it sets the report data and opens the relevant report screen.
+	 * 
+	 * @param event the event of the 'View Report' button being clicked
+	 */
 	@FXML
 	void viewReport(ActionEvent event) {
 		String error = validateFields();
@@ -68,17 +82,20 @@ public class ReportSelectionController  implements IScreen {
 				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.SupplyReport);
 				break;
 			case "ordersReport":
-				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "orders", region, month, year }));
 				checkReportData(OrdersReportController.RecievedData, ScreensNamesEnum.OrdersReport);
 				break;
-			case "clientsReport": 
-				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"clients", region, month, year }));
+			case "clientsReport":
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "clients", region, month, year }));
 				checkReportData(ClientsReportController.RecievedData, ScreensNamesEnum.ClientsReport);
 				break;
 			}
 		}
 	}
-
+	/**
+	 * This method is used to check if the report data has been recieved from the server and to display the relevant report screen if the data is available.
+	 * @param RecievedData a boolean variable indicating whether the report data has been recieved from the server or not
+	 * 	@param screen the screen that represents the report type that the user selected*/
 	private void checkReportData(boolean RecievedData, ScreensNamesEnum screen) {
 		while (!RecievedData) {
 			try {
@@ -107,6 +124,7 @@ public class ReportSelectionController  implements IScreen {
 
 		}
 	}
+
 	@Override
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
@@ -130,7 +148,10 @@ public class ReportSelectionController  implements IScreen {
 		}
 
 	}
-
+/***
+ * validate fileds on selection for the report 
+ * @return Stirng errorMsg
+ */
 	String validateFields() {
 		String errorMsg = "";
 		monthItemsCmb.setStyle("-fx-border-color: none;");
