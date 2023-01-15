@@ -103,7 +103,12 @@ public class RegistrationFormController implements IScreen {
 	protected static boolean isDataRecived = false;
 	private String roleType;
 	private boolean creditCardChecker = false;
-    
+	/**
+
+	Initializes the fields and sets the options for the ComboBoxes and TextFields.
+	Also adds a listener for the membership RadioToggleGroup to handle the visibility of the membership gridpane box.
+	And adds a listener for the credit card TextField to check the format of the credit card number.
+	*/
 	@Override
     public void initialize() {
     	dataArray = new ArrayList<>();
@@ -111,12 +116,11 @@ public class RegistrationFormController implements IScreen {
     	dataArray.add(lastnameTxtField);
     	dataArray.add(idnumberTxtField);
     	dataArray.add(emailTxtField);
-    	dataArray.add(phonenumberTxtField);
+    	dataArray.add(phonenumberTxtField); 
     	dataArray.add(creditcardTxtField);
     	dataArray.add(usernameTxtField);
     	dataArray.add(passwordTxtField);
     	dataArray.add(userSearchTxtField);
-    	
     	regionComboBox.getItems().addAll("North", "Center", "South");
     	regionComboBox.setStyle("-fx-background-radius: 15px;");
     	roleType = "member";
@@ -157,8 +161,20 @@ public class RegistrationFormController implements IScreen {
 	    	    }
     		}
     	});
-    }
-
+    } 
+	/**
+		This method is the event handler for the submit button in the JavaFX application.
+		When the button is clicked, this method is called and performs several actions:
+		Sets the text color of the "errorMsgLabel" to red.
+		Initializes a variable "missingTextFields" to 0.
+		Loops through a list of "TextField" objects called "dataArray" and checks if any of the fields are empty.
+		If a field is empty and it is not the "userSearchTxtField", the method increments the "missingTextFields" variable,
+		sets the border color of the field to red, and sets the error message text to "There are missing fields!"
+		If the creditCardChecker variable is false, the method sets the error message text to "Invalid Credit Card Number!"
+		and sets the border color of the "creditcardTxtField" to red.
+		If there are no missing text fields, the method calls the "updateUser" method and pass the recivedData as parameter.
+		@param event The action event that triggers this method, when the submit button is clicked.
+	*/
     @FXML
     void submitBtnAction(ActionEvent event) {
     	errorMsgLabel.setStyle("-fx-text-fill: #ff1414");
@@ -191,12 +207,15 @@ public class RegistrationFormController implements IScreen {
     		updateUser((UserEntity)recivedData);
     	}
     }
-
-    
-
     /**
-     * Update the user entity
-     */
+	    This method updates the user's details in the database.
+	    It takes the user's id number, role type, region, and credit card number,
+	    and sends them to the server using the "chat" object's "acceptObj" method, along with a request to update the user in the database.
+	    It then waits for a response from the server, and if the response is successful, it displays a message indicating that the user was updated successfully,
+	    and sends a message to the region manager with the updated region.
+	    If the response is not successful, it displays an error message.
+	    @param user The UserEntity object that contains the user's details.
+    */
     private void updateUser(UserEntity user) {
 		if (!CommonFunctions.isNullOrEmpty(user.getRole_type().toString()) && !user.getRole_type().equals(RolesEnum.user)) 
 			roleType = user.getRole_type().toString();
@@ -225,23 +244,29 @@ public class RegistrationFormController implements IScreen {
 			errorMsgLabel.setText("A problem occured, please try again!");
 		}
     }
-    
     /**
-     * Send a message to region manager
-     * @param region
-     */
+	    This method sends a message to the region manager of the specified region.
+	    It first retrieves the region manager's details using the "getRegionManager" method, passing the region as a parameter.
+	    Then it sends a message to the manager via SMS or mail, using the "SMSMailHandlerController.SendSMSOrMail" method,
+	    with the sender being "System", the recipient being the region manager, the subject being "Need your action" and the message being "New user has been signed up please go to 'Users Approval' to review and approve the request".
+	    @param region The region for which the manager needs to be notified.
+    */
     private void sendMessageToRegionManager(String region) {
 		UserEntity manager = getRegionManager(region);
 		
     	// send user to manager approval
     	SMSMailHandlerController.SendSMSOrMail("System", manager, "Need your action", "New user has been signed up\nplease go to 'Users Approval' to review and approve the request");
     }
-    
     /**
-     * 
-     * @param get the manager of specific region
-     * @return
-     */
+	    This method retrieves the region manager's details for the specified region from the server's database.
+	    It first sets the "isDataRecived" and "recivedData" variables to their initial values.
+	    It then sends a message to the server, using the "chat" object's "acceptObj" method, with the task type being "RequesManagerInfoFromServerDB"
+	    and the region as a parameter.
+	    It then waits for a response from the server, and if the response is a UserEntity object, it returns the UserEntity.
+	    Otherwise, it returns null.
+	    @param region The region for which the manager's details need to be retrieved.
+	    @return UserEntity object containing the manager's details, or null if the response is not valid.
+    */
     private UserEntity getRegionManager(String region) {
     	// reset
     	isDataRecived = false;
@@ -262,7 +287,16 @@ public class RegistrationFormController implements IScreen {
 		}
 		return null;
     }
-    
+    /**
+	    This method is the event handler for the clear button in the JavaFX application.
+	    When the button is clicked, this method is called and performs several actions:
+	    Set the roleType variable to "member"
+	    Reset the prompt text of the regionComboBox and clear the current selection.
+	    Clear the text of the errorMsgLabel and userSearchMsgLabel.
+	    Loops through a list of "TextField" objects called "dataArray" and clear the text in the fields and enable the fields.
+	    And reset the style of the fields to none.
+	    @param event The action event that triggers this method, when the clear button is clicked.
+    */
     @FXML
     void clearBtnAction(ActionEvent event) {
 		roleType = "member";
@@ -290,7 +324,18 @@ public class RegistrationFormController implements IScreen {
 		isDataRecived = true;
 		return;
 	}
-
+	/**
+		This method is the event handler for the search button in the JavaFX application.
+		When the button is clicked, this method is called and performs several actions:
+		Check if the userSearchTxtField is empty, if true set the border color to red and display an error message
+		Else, sends a message to the server, using the "chat" object's "acceptObj" method, with the task type being "RequestUserInfoFromServerDB"
+		and the user id as a parameter.
+		It then waits for a response from the server, and if the response is a UserEntity object, it fills the text fields with the user's details.
+		If the user is not found, it displays an error message.
+		If the user is not a member, it disables the regionComboBox
+		display success message
+		@param event The action event that triggers this method, when the search button is clicked.
+	*/
     @FXML
     void searchUserAction(ActionEvent event) {
     	if (userSearchTxtField.getText().equals("")) {

@@ -127,47 +127,6 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * return the items end amount from previous report
-	 * 
-	 * @param current_report
-	 * @return
-	 */
-	private static String getItemsEndAmountPreviousReport(SupplyReportEntity current_report) {
-		String month, year, res = "";
-
-		// initialize dates
-		month = String.valueOf(Integer.parseInt(current_report.getMonth()) - 1); // last month
-		year = current_report.getYear(); // current year
-		if (month.equals("01")) // if the current report is first of the month - change the month & year
-		{
-			year = String.valueOf(Integer.parseInt(year) - 1);
-			month = "12";
-		}
-
-		// check if last report is exist
-		if (!ReportsDBController.isReportExist("supply", month, year, current_report.getRegion()))
-			return "0"; // --------- handle this case more "0,0,0,......" ---------
-
-		// get the report and save the entity
-		ReportsDBController.setReport(new String[] { "supply", current_report.getRegion(), month, year });
-		SupplyReportEntity prev_report = ReportsDBController.getSupplyReportFromDB();
-
-		// iterate over the the current & find the corresponding items
-		// insert to 'res'
-		for (String[] current_arr : current_report.getReportsList()) {
-			String item_to_find = current_arr[0];
-			for (String[] prev_arr : prev_report.getReportsList()) {
-				if (prev_arr[0].equals(item_to_find)) {
-					res += prev_arr[3] + ",";
-					break;
-				}
-			}
-		}
-
-		return res.substring(0, res.length() - 1); // return the string without ','
-	}
-
-	/**
 	 * orders report Manager, generate and insert
 	 * 
 	 * @param month

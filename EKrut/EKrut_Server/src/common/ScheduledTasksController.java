@@ -2,9 +2,6 @@ package common;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Timer;
-
 import controllerDb.CommonDataDBController;
 import controllerDb.OrderDBController;
 import controllerDb.ReportsDBController;
@@ -82,30 +79,31 @@ public class ScheduledTasksController {
 		String month = now.format(monthYear).split(" ")[0];
 		String year = now.format(monthYear).split(" ")[1];
 
-		// sets month and year for previous
-		if(month.equals("01"))
-			year = String.valueOf(Integer.parseInt(year) - 1); // for example 01-01-2020, we need to calculate for last year (01-12-2019 -> 31-12-2019)
-		month = String.valueOf(Integer.parseInt(month) - 1);
-		
+		// specific case
+		if (month.equals("01")) {
+			year = String.valueOf(Integer.parseInt(year) - 1); // for example 01-01-2020, we need to calculate for last
+			month = "12";								// year (01-12-2019 -> 31-12-2019)
+		}
+		else {
+			month = String.valueOf(Integer.parseInt(month) - 1);
+		}
+																
 		// for every region -> check if there are reports for this date
 		for (String region : CommonDataDBController.getRegionsListFromDB()) {
-			if (!ReportsDBController.isReportExist("orders", month, year, region))
-				 ReportsGenerator.generateReportsDB("orders", month, year); // what about region?
-			
-			if (!ReportsDBController.isReportExist("clients", month, year, region))
-				 ReportsGenerator.generateReportsDB("clients", month, year); // what about region?
+			if (!ReportsDBController.isReportExist("orders", month, year, region, -1))
+				ReportsGenerator.generateReportsDB("orders", month, year); // what about region?
+
+			if (!ReportsDBController.isReportExist("clients", month, year, region, -1))
+				ReportsGenerator.generateReportsDB("clients", month, year); // what about region?
 		}
-		
-		if (!ReportsDBController.isReportExist("supply", month, year))
-			 ReportsGenerator.generateReportsDB("supply", month, year); 
-		
+
+		if (!ReportsDBController.isReportExist("supply", month, year, "", -1))
+			ReportsGenerator.generateReportsDB("supply", month, year);
+
 		// make payment for all members (as part of the terms)
 		OrderDBController.takeMonthlyMoneyScheduledManager(year, month);
-		System.out.println(String.format("Monthly tasks executed for  %s/%s" , month, year));
-		
+		System.out.println(String.format("Monthly tasks executed for  %s/%s", month, year));
+
 	}
-	
-	
-	
 
 }
