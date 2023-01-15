@@ -13,6 +13,7 @@ import common.PopupTypeEnum;
 import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
+import entity.ItemInMachineEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -208,7 +210,27 @@ public class DeliveryManagementController  implements IScreen {
 			}
 		});
 	}
-
+	/***
+	 * color tables rows by the cuurent amount and the status
+	 */
+	private void colorTableRows(TableView<ItemInMachineEntity> table) {
+		table.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
+			@Override
+			protected void updateItem(ItemInMachineEntity item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null)
+					setStyle("");
+				else if (item.getCurrentAmount() <) && item.isCallOpen() == false)
+					setStyle("-fx-background-color: #fa8989;");
+				else if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
+					setStyle("-fx-background-color: #7cf28f;");// TODO to add completed on the quary
+				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == true)
+					setStyle("-fx-background-color: #faeb89;");
+				else
+					setStyle("");
+			}
+		});
+	}
 	/**
 	 * calculae the estimated delivery time according to the current time:
 	 *  Between 4:00 to 20:00 the estimated is within loadingTime+distance hours. 
