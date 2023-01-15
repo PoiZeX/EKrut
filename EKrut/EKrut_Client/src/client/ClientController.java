@@ -1,20 +1,14 @@
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
+
 package client;
 
-import java.io.*;
-
-import Store.DataStore;
 import Store.NavigationStoreController;
-import client.*;
 import common.ChatIF;
 import common.CommonFunctions;
 import common.PopupTypeEnum;
 
 public class ClientController implements ChatIF {
 
-	public static int DEFAULT_PORT = 5555; // TODO: Extract this and other const do other class
+	public static int DEFAULT_PORT = 5555; // Extract this and other const do other class
 
 	ChatClient client;
 
@@ -50,4 +44,3 @@ public class ClientController implements ChatIF {
 	}
 
 }
-//End of ConsoleChat class

@@ -81,9 +81,6 @@ public class CommonFunctions {
 			// freeze current screen until got popup close
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
-
-			// stage.show();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

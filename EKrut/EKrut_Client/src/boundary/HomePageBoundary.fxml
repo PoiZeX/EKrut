@@ -78,19 +78,19 @@
             <Insets left="50.0" />
          </BorderPane.margin>
          <children>
-            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="360.0" styleClass="GridPaneChild" VBox.vgrow="NEVER">
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="360.0" styleClass="GridPaneChild" VBox.vgrow="NEVER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="164.0" minWidth="10.0" prefWidth="103.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="137.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="98.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="91.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="144.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="lastMessageDateTimeLabel" prefHeight="19.0" prefWidth="88.0" styleClass="Label" text="13/01/2023" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                  <Label styleClass="Label" text="Last Message" />
+                  <Label fx:id="lastMessageDateTimeLabel" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="155.0" styleClass="Label" text="23:00 01/01/2023" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.vgrow="ALWAYS" />
+                  <Label fx:id="homePageTopLabel" styleClass="Label" text="Last Message" GridPane.columnSpan="2" />
                   <Label fx:id="lastMsgLabel" styleClass="Label-list" text="Label" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
                <padding>

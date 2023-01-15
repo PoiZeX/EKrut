@@ -17,7 +17,7 @@ public class ItemsController {
 
 	public static ArrayList<ItemEntity> allItems = new ArrayList<>();
 	private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
-	
+
 	/* request the DB to load the items */
 	public static void requestItemsFromServer() {
 		chat.acceptObj(new Message(TaskType.RequestItemsFromServer, null));
@@ -32,36 +32,8 @@ public class ItemsController {
 			item.setItemImage(fileImg);
 			allItems.add(item);
 		}
-//		convertStreamToImg(item.getItemImg());
-	}
-	
-	
-
-	/* convert bytes to image and saves the image */
-	@SuppressWarnings("unused")
-	private static void convertStreamToImg(ImgEntity img) {
-//		int fileSize = img.getSize();
-//		byte[] mybytearray = new byte[fileSize];
-//
-//		try {
-//			String LocalfilePath = AppConfig.PRODUCTS_PATH_CLIENT + img.getImgName();
-//			File newFile = new File(LocalfilePath);
-//
-//			// save in folder
-//			FileOutputStream fos = new FileOutputStream(newFile.getPath());
-//			BufferedOutputStream bos = new BufferedOutputStream(fos);
-//			bos.write(img.mybytearray, 0, mybytearray.length);
-//			
-//
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
-	
-	
 	/**
 	 * Clean products directory
 	 */

@@ -221,7 +221,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 						item.setCurrentAmount(newValue);
 						itemUpdate.setCurrentAmount(newValue - oldValue);
 						if (newValue >= machine.getMinamount()) {
-							// item.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
+
 							itemUpdate.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 
 						} else {
@@ -265,7 +265,6 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 						}
 					} else {
 						setDisableItems();
-						// CommonFunctions.createPopup(PopupTypeEnum.Warning, "No new calls for items");
 					}
 				});
 
@@ -321,7 +320,6 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 	 * @param obj
 	 */
 	public static void recevieItemsInMachine(ArrayList<ItemInMachineEntity> obj) {
-		// TODO Auto-generated method stub
 		if (!itemsInMachineLst.isEmpty()) {
 			itemsInMachineLst.clear();
 			itemsOg.clear();

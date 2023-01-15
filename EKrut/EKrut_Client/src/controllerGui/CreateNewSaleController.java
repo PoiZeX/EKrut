@@ -123,7 +123,6 @@ public class CreateNewSaleController implements IScreen  {
     	try {
     	initTimeCmb();
     	 initDays();
-    	//initDatePickers();
     	ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
 		regionCmb.setItems(regions);
 		ObservableList<String> types = FXCollections.observableArrayList();
