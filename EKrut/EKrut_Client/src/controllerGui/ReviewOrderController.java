@@ -103,6 +103,7 @@ public class ReviewOrderController implements IScreen {
 	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
+	private boolean isMember = OrderController.isMember;
 	private StringBuilder address = new StringBuilder();
 	private double totalDiscounts = 0;
 
@@ -576,7 +577,7 @@ public class ReviewOrderController implements IScreen {
 		GridPane.setRowSpan(imageView, 3);
 
 		// price after discount
-		if (OrderController.isActiveSale() || firstPurchase) {
+		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));

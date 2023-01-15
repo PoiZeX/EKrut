@@ -10,6 +10,7 @@ import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.Message;
+import common.RolesEnum;
 import common.SaleType;
 import common.ScreensNamesEnum;
 import common.TaskType;
@@ -45,6 +46,8 @@ public class OrderController {
 	private static boolean isDataReceived = false;
 	public static boolean isFirstPurchaseDiscountApplied = false;
 	private static Object data;
+	public static boolean  isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true : false;
+
 
 	public OrderController() {
 
