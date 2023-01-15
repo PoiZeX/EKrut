@@ -91,9 +91,9 @@ public class ViewCatalogController implements IScreen {
 	@FXML
 	private GridPane catalogViewGridpane;
 
-    @FXML
-    private ImageView searchImg;
-    
+	@FXML
+	private ImageView searchImg;
+
 	@FXML
 	private Pane viewCartPane;
 
@@ -112,15 +112,15 @@ public class ViewCatalogController implements IScreen {
 	@FXML
 	private GridPane cartViewGridpane;
 
-    @FXML
-    private ScrollPane catalogScrollPane;
-    
+	@FXML
+	private ScrollPane catalogScrollPane;
+
 	@FXML
 	private Button helpBtn;
-	
+
 	private double machineDiscount = 1;
-	boolean isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true : false;
 	private Object lockSync = new Object();
+	private boolean isMember = OrderController.isMember;
 	private int machineId = AppConfig.MACHINE_ID;
 	private ObservableList<Node> allCatalogItems;
 	private String currentSupplyMethod;
@@ -133,44 +133,42 @@ public class ViewCatalogController implements IScreen {
 	@Override
 	public void initialize() {
 		try {
-		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
-		
-		checkRequestType();
-		while (!recievedData)
-			Thread.sleep(100);
-		generateCatalog(OrderController.getItemsList());
-		cartGroup.setVisible(false);
-		viewCartPane.setVisible(false);
-		viewCartPane.setMouseTransparent(true);
-		searchTextLabel.textProperty().addListener((observable, oldValue, newValue) ->
-		{
-			reorderCatalog(newValue);
-		});
+			helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
 
-		if (currentSupplyMethod.equals("Delivery") || !OrderController.isActiveSale() || !isMember) {
-			discountTotalLabel.setVisible(false);
-			GridPane.setRowIndex(totalPriceLabel, 0);
-			GridPane.setRowSpan(totalPriceLabel, 2);
-			GridPane.setFillHeight(totalPriceLabel, true);
+			checkRequestType();
+			while (!recievedData)
+				Thread.sleep(100);
+			generateCatalog(OrderController.getItemsList());
+			cartGroup.setVisible(false);
+			viewCartPane.setVisible(false);
+			viewCartPane.setMouseTransparent(true);
+			searchTextLabel.textProperty().addListener((observable, oldValue, newValue) -> {
+				reorderCatalog(newValue);
+			});
 
-		}
-		shipmentMethodLabel.setMouseTransparent(true);
-		setTooltips();
-		recievedData = false;
-		}
-		catch(Exception e) {
+			if (currentSupplyMethod.equals("Delivery") || !OrderController.isActiveSale() || !isMember) {
+				discountTotalLabel.setVisible(false);
+				GridPane.setRowIndex(totalPriceLabel, 0);
+				GridPane.setRowSpan(totalPriceLabel, 2);
+				GridPane.setFillHeight(totalPriceLabel, true);
+
+			}
+			shipmentMethodLabel.setMouseTransparent(true);
+			setTooltips();
+			recievedData = false;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * set tooltips for all nodes to display information about action. 
+	 * set tooltips for all nodes to display information about action.
 	 */
 	private void setTooltips() {
 		placeOrderBtn.setTooltip(new TooltipSetter("Procceed to Order Review and Payment.").getTooltip());
 		cancelOrderBtn.setTooltip(new TooltipSetter("Cancel Order and return to Home Page.").getTooltip());
 		viewCartBtn.setTooltip(new TooltipSetter("View your shopping cart.").getTooltip());
-		Tooltip.install(searchImg, new TooltipSetter("Search item by name.").getTooltip());		
+		Tooltip.install(searchImg, new TooltipSetter("Search item by name.").getTooltip());
 	}
 
 	/**
@@ -205,7 +203,7 @@ public class ViewCatalogController implements IScreen {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Generate all items in the catalog by creating new ItemInMachineEntity objects
 	 * and adding them to the order.
@@ -225,8 +223,9 @@ public class ViewCatalogController implements IScreen {
 	 */
 	@FXML
 	public void cancelOrder(ActionEvent event) {
-		CommonFunctions.createPopup(PopupTypeEnum.Decision, "You about to cancel the current order.\nAll data will lost.\n\nTo cancel click 'YES', 'NO' otherwise");
-		if((boolean)PopupController.isOkPressed) {
+		CommonFunctions.createPopup(PopupTypeEnum.Decision,
+				"You about to cancel the current order.\nAll data will lost.\n\nTo cancel click 'YES', 'NO' otherwise");
+		if ((boolean) PopupController.isOkPressed) {
 			OrderController.refreshOrderToHomePage();
 		}
 	}
@@ -251,12 +250,6 @@ public class ViewCatalogController implements IScreen {
 	void viewCart(ActionEvent event) {
 		updateCartTotalLabels();
 		viewCartPane.setVisible(!viewCartPane.isVisible());
-	}
-
-	private GridPane createGridPane(String boundaryName) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/boundary/" + boundaryName + ".fxml"));
-		GridPane gridPane = (GridPane) loader.load();
-		return gridPane;
 	}
 
 	/**
@@ -300,10 +293,8 @@ public class ViewCatalogController implements IScreen {
 		// Shutdown the executor
 		executor.shutdown();
 
-//		for (ItemInMachineEntity item : itemsList.values())
-//			generateItem(item, machineDiscount, (i++) % 4, i % 4 == 0 ? j++ : j);
-		//allCatalogItems = FXCollections.observableArrayList(catalogViewGridpane.getChildren());
 		allCatalogItems = FXCollections.observableArrayList();
+
 		for (Node item : catalogViewGridpane.getChildren()) {
 			GridPane gp = (GridPane) item;
 			if (!gp.isDisable())
@@ -314,11 +305,10 @@ public class ViewCatalogController implements IScreen {
 			if (gp.isDisable())
 				allCatalogItems.add(gp);
 		}
-		reorderCatalog("");
-		if (OrderController.isOnePlusOneSaleExist() && OrderController.isActiveSale()) {
 
+		renewCatalog();
+		if (OrderController.isOnePlusOneSaleExist() && OrderController.isActiveSale() && isMember) {
 			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
-
 		}
 	}
 
@@ -379,10 +369,10 @@ public class ViewCatalogController implements IScreen {
 			} else {
 				priceLabel.setText(item.getPrice() + "₪");
 			}
-			if( currentSupplyMethod != "Delivery"  && item.getCurrentAmount()<=0 ) {
+			if (currentSupplyMethod != "Delivery" && item.getCurrentAmount() <= 0) {
 				newItem.setDisable(true);
 				image.setOpacity(0.5);
-				
+
 			}
 
 			// Prepare the gridpanes for the items in the cart
@@ -456,7 +446,7 @@ public class ViewCatalogController implements IScreen {
 			productNameLabel.setTooltip(new TooltipSetter(productNameLabel.getText()).getTooltip());
 			productNameLabel.getTooltip().setShowDelay(Duration.seconds(0.7));
 			Tooltip.install(image, new TooltipSetter(productNameLabel.getText()).getTooltip());
-			
+
 			synchronized (lockSync) {
 				catalogViewGridpane.add(newItem, i, j);
 			}
@@ -468,7 +458,6 @@ public class ViewCatalogController implements IScreen {
 		return true;
 	}
 
-	
 	// Handle removing an item from the cart
 	private EventHandler<MouseEvent> getMinusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
 			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
@@ -529,34 +518,35 @@ public class ViewCatalogController implements IScreen {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-				//cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText()) + 1 + "");
-				//updateCartBubble(1);
+				// cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText())
+				// + 1 + "");
+				// updateCartBubble(1);
 				updateCartTotalLabels();
 			}
 		};
 		return plusEvent;
 	}
+
 	/**
 	 * Update the cart bubble (shopping cart icon) on the user interface.
 	 * 
 	 * @param amount the current number of items in the cart
 	 */
 	private void updateCartBubble(int amount) {
-		if (amount <= 0) cartGroup.setVisible(false);
+		if (amount <= 0)
+			cartGroup.setVisible(false);
 		else {
 			cartGroup.setVisible(true);
 			if (amount > 99) {
 				cartPopupAmountLabel.setStyle("-fx-font-size: 7pt;");
 				cartPopupAmountLabel.setText("99+");
-			}
-			else {
+			} else {
 				cartPopupAmountLabel.setText(amount + "");
 				cartPopupAmountLabel.setStyle("-fx-font-size: 9pt;");
 			}
 		}
 	}
-	
-	
+
 	private void updateCartTotalLabels() {
 		updateCartBubble(OrderController.getCartSize());
 		if (OrderController.getCartSize() == 0) {
@@ -570,7 +560,7 @@ public class ViewCatalogController implements IScreen {
 			cartSizeLabel.setText(OrderController.getCartSize() + " Items");// + (OrderController.getTotalPrice() -
 																			// OrderController.getTotalDiscounts()) +
 																			// "₪"
-			
+
 			if (currentSupplyMethod.equals("Delivery") || !OrderController.isActiveSale() || !isMember)
 				totalPriceLabel.setText("Total: " + OrderController.getTotalPrice() + "₪");
 			else {
@@ -591,16 +581,18 @@ public class ViewCatalogController implements IScreen {
 		}
 
 	}
+
 	/**
-	 * functions to remove all catalog childs and re-add them to re-arrange the catalog - usage in search bar
+	 * functions to remove all catalog childs and re-add them to re-arrange the
+	 * catalog - usage in search bar
 	 */
 	private void reorderCatalog(String newValue) {
-		catalogViewGridpane.getChildren().clear();
 		int i = 0, j = 0;
 		if (newValue.equals("")) {
 			renewCatalog();
 			return;
 		}
+		catalogViewGridpane.getChildren().clear();
 		for (Node item : allCatalogItems) {
 			GridPane itemAsGrid = (GridPane) item;
 			Label productNameLabel = (Label) itemAsGrid.getChildren().get(4);
@@ -612,10 +604,12 @@ public class ViewCatalogController implements IScreen {
 	}
 
 	/**
-	 * functions to remove all catalog childs and re-add them to re-arrange the catalog - usage in search bar
+	 * functions to remove all catalog childs and re-add them to re-arrange the
+	 * catalog - usage in search bar
 	 */
 	private void renewCatalog() {
 		int i = 0, j = 0;
+		catalogViewGridpane.getChildren().clear();
 		for (Node item : allCatalogItems) {
 			catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
 		}
@@ -994,10 +988,10 @@ public class ViewCatalogController implements IScreen {
 		gridPane.setPadding(right10);
 		return gridPane;
 	}
-	
-    @FXML
-    void showDescription(ActionEvent event) {
-    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());	
-    }
-	
+
+	@FXML
+	void showDescription(ActionEvent event) {
+		CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());
+	}
+
 }
