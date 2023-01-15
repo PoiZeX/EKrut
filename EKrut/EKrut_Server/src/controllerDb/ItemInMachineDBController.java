@@ -3,6 +3,7 @@ package controllerDb;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,13 +61,17 @@ public class ItemInMachineDBController {
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(8), res.getDouble(9), res.getString(10));
 
-					InputStream file = ItemDBController.class.getClass()
-							.getResourceAsStream("/products/" + item.getItemImg().getImgName());
-					byte[] mybytearray = new byte[(int) file.available()];
-					BufferedInputStream bis = new BufferedInputStream(file);
+					URL rsrc = ItemDBController.class.getClass()
+							.getResource("/products/" + item.getItemImg().getImgName());
+					System.out.println(rsrc.getPath());
+					InputStream imgResource = ItemDBController.class.getClass()
+							.getResource("/products/" + item.getItemImg().getImgName()).openStream();
+					byte[] mybytearray = new byte[(int) imgResource.available()];
+					BufferedInputStream bis = new BufferedInputStream(imgResource);
 					item.getItemImg().initArray(mybytearray.length);
 					item.getItemImg().setSize(mybytearray.length);
 					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);
+					bis.close();
 				} else {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
