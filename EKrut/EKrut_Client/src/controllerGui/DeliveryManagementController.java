@@ -159,7 +159,7 @@ public class DeliveryManagementController  implements IScreen {
 		ObservableList<DeliveryStatusEnum> statusLst = FXCollections.observableArrayList();
 		statusLst.addAll(DeliveryStatusEnum.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
-		
+		colorTableRows(deliveryTable);
 		// Handle delivery status edit
 		deliveryStatusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatusEnum>>() {
 			@Override
@@ -213,19 +213,15 @@ public class DeliveryManagementController  implements IScreen {
 	/***
 	 * color tables rows by the cuurent amount and the status
 	 */
-	private void colorTableRows(TableView<ItemInMachineEntity> table) {
-		table.setRowFactory(tv -> new TableRow<ItemInMachineEntity>() {
+	private void colorTableRows(TableView<DeliveryEntity> table) {
+		table.setRowFactory(tv -> new TableRow<DeliveryEntity>() {
 			@Override
-			protected void updateItem(ItemInMachineEntity item, boolean empty) {
-				super.updateItem(item, empty);
-				if (item == null)
+			protected void updateItem(DeliveryEntity delivery, boolean empty) {
+				super.updateItem(delivery, empty);
+				if (delivery == null)
 					setStyle("");
-				else if (item.getCurrentAmount() <) && item.isCallOpen() == false)
-					setStyle("-fx-background-color: #fa8989;");
-				else if (item.getCallStatus() == ItemInMachineEntity.Call_Status.Complete)
-					setStyle("-fx-background-color: #7cf28f;");// TODO to add completed on the quary
-				else if (item.getCurrentAmount() < machine.getMinamount() && item.isCallOpen() == true)
-					setStyle("-fx-background-color: #faeb89;");
+				else if (delivery.getCustomerStatus().equals(CustomerStatusEnum.APPROVED))
+					setStyle("-fx-background-color: #7cf28f;");
 				else
 					setStyle("");
 			}
