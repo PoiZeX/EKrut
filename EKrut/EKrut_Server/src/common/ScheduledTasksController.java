@@ -30,8 +30,8 @@ public class ScheduledTasksController {
 	/**
 	 * setup timer
 	 */
-	public void setupTimer() {
-		transitionDay = new PauseTransition(new javafx.util.Duration(24 * 60 * 60 * 1000)); // one day timer
+	public void setupTimer(int interval) {
+		transitionDay = new PauseTransition(new javafx.util.Duration(interval)); // one day timer
 		// transitionMonth = new PauseTransition(new
 		// javafx.util.Duration(31*24*60*60*1000)); // one month timer
 
@@ -76,7 +76,7 @@ public class ScheduledTasksController {
 	 * Handles the tasks need to be executed every month (Reports, 'later' payments
 	 * etc)
 	 */
-	private void tasksMonthlyExecuter() {
+	public void tasksMonthlyExecuter() {
 		DateTimeFormatter monthYear = DateTimeFormatter.ofPattern("MM yyyy");
 		LocalDateTime now = LocalDateTime.now();
 		String month = now.format(monthYear).split(" ")[0];
@@ -90,16 +90,16 @@ public class ScheduledTasksController {
 			if (!ReportsDBController.isReportExist("orders", month, year, region))
 				 ReportsGenerator.generateReportsDB("orders", month, year); // what about region?
 			
-			if (!ReportsDBController.isReportExist("supply", month, year, region))
-				 ReportsGenerator.generateReportsDB("supply", month, year); // what about region?
-			
 			if (!ReportsDBController.isReportExist("clients", month, year, region))
 				 ReportsGenerator.generateReportsDB("clients", month, year); // what about region?
 		}
 		
+		if (!ReportsDBController.isReportExist("supply", month, year))
+			 ReportsGenerator.generateReportsDB("supply", month, year); 
+		
 		// make payment for all members (as part of the terms)
 		OrderDBController.takeMonthlyMoneyScheduledManager(year, month);
-	
+		System.out.println(String.format("Monthly tasks executed for  %s/%s" , month, year));
 		
 	}
 	

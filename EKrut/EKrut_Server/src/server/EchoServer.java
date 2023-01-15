@@ -3,6 +3,7 @@ package server;
 
 import java.io.IOException;
 import common.Message;
+import common.ScheduledTasksController;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
 import javafx.collections.FXCollections;
@@ -119,7 +120,11 @@ public class EchoServer extends AbstractServer {
 					this.databaseEntity.getPassword());
 		} catch (Exception ex) {
 			System.out.println("Error! DataBase Connection Failed");
+			return;
 		}
+		ScheduledTasksController stc = new ScheduledTasksController();
+		stc.tasksMonthlyExecuter(); // run first time to validate we do not miss the first of the month (when crash occured)
+		stc.setupTimer(1000*20);  // setup ONE DAY timer
 	}
 
 	/**

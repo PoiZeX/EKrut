@@ -7,6 +7,7 @@ import client.ClientController;
 import common.CommonFunctions;
 import common.CustomerStatusEnum;
 import common.DeliveryStatusEnum;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.ScreensNamesEnum;

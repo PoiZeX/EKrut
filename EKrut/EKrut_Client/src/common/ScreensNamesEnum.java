@@ -10,16 +10,13 @@ public enum ScreensNamesEnum {
 	HostClient(),
 	Login(),
 	HomePage(ScreensDescription.HOME_PAGE_DESCRIPTION),
-
 	ReportSelection(ScreensDescription.REPORT_SELECTION_DESCRIPTION),
-	//CEOReportSelection(ScreensDescription.HOMEPAGE_DESCRIPTION),
 	OrdersReport(ScreensDescription.ORDERS_REPORT_DESCRIPTION),
 	SupplyReport(ScreensDescription.SUPPLY_REPORT_DESCRIPTION),
 	ClientsReport(ScreensDescription.CLEINTS_REPORT_DESCRIPTION),
 	
 	// order
 	ViewCatalog(ScreensDescription.VIEW_CATALOG_DESCRIPTION),
-//	ViewCart(ScreensDescription.VIEW_CART_DESCRIPTION),
 	ReviewOrder(ScreensDescription.REVIEW_ORDER_DESCRIPTION),
 	
 	// management

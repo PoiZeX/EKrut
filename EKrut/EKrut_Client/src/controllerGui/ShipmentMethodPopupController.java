@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.PopupTypeEnum;
 import common.ScreensNamesEnum;
 import controller.OrderController;
@@ -84,7 +85,6 @@ public class ShipmentMethodPopupController  implements IScreen {
 		((Stage) confirmBtn.getScene().getWindow()).close(); // close the popup window
 	}
 
-// Delivery -> Pickup (V) ` | Delivery -> Delivery (X) | Pickup -> Delivery (V) | Pickup -> Pickup (?) `
 	@FXML
 	void confirmMethod(ActionEvent event) {
 		String prevMethod = "";

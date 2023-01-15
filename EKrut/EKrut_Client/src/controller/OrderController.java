@@ -53,24 +53,6 @@ public class OrderController {
 
 	}
 
-//	/**
-//	 * local function to handle sending and waiting for answer
-//	 * 
-//	 * @param msg
-//	 * @throws Exception
-//	 */
-//	private void waitOn(Message msg) throws Exception {
-//		isDataReceived = false;
-//		chat.acceptObj(msg);
-//		while (!isDataReceived)
-//			Thread.sleep(100);
-//	}
-//
-//	public static void getDataFromServer(Object dataRecived) {
-//		data = dataRecived;
-//		isDataReceived = true;
-//	}
-
 	/**
 	 * Add a 20% discount for first purchase of a member
 	 */
@@ -197,7 +179,7 @@ public class OrderController {
 	public static boolean changeItemQuantity(ItemInMachineEntity item, int newQuantity) {
 		if (item == null)
 			return false;
-		// need to remove?
+
 		if (newQuantity <= 0)
 			return removeItem(item);
 

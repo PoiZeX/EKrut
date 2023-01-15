@@ -4,9 +4,13 @@
 
 package controllerGui;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
@@ -16,6 +20,7 @@ import controller.ItemsController;
 import controller.OrderController;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,6 +41,9 @@ public class HomePageController implements IScreen {
 
 	@FXML
 	private VBox vbox;
+
+    @FXML
+    private Label homePageTopLabel;
 
 	@FXML
 	private Label lastMessageDateTimeLabel;
@@ -89,7 +97,7 @@ public class HomePageController implements IScreen {
 		displayUserMenuByRoleType(currentRole);
 
 		// Set up last message view
-		initializePersonalMessages();
+		initializePersonalMessages(currentRole);
 
 		// initialize all common data's from DB.
 		DataStore.initData();
@@ -123,30 +131,46 @@ public class HomePageController implements IScreen {
 	/**
 	 * Initialize the personal messages if needed
 	 */
-	private void initializePersonalMessages() {
-		PersonalMessagesController.setPersonalMessages(
-				new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser));
-		if (!PersonalMessagesController.getMsgList().isEmpty()) {
-			// Get the last message as a whole
-			String lastMessageLong = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
-					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage();
-			tooltip = new TooltipSetter(lastMessageLong); // Set a tooltip for the label inorder to view the whole
-															// message
-			// Get the date of the last message
-			String dateTime = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
-					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getDate();
-			lastMessageDateTimeLabel.setText(dateTime); // Set date label
-			// Get the first short part of the last message
-			String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
-					.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage()
-					.split("\n")[0];
-			lastMsgLabel.setText(lastMessageShort); // Set up short message label
-			lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
-		} else {
-			// No messages to display
-			lastMsgLabel.setText("No Messages");
-			lastMessageDateTimeLabel.setText("");
+	private void initializePersonalMessages(RolesEnum currentRole) {
+		if (currentRole == RolesEnum.member || currentRole == RolesEnum.registered) {
+			PersonalMessagesController.setPersonalMessages(
+					new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser));
+			if (!PersonalMessagesController.getMsgList().isEmpty()) {
+				// Get the last message as a whole
+				String lastMessageLong = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+						.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage();
+				tooltip = new TooltipSetter(lastMessageLong); // Set a tooltip for the label inorder to view the whole
+																// message
+				// Get the date of the last message
+				String dateTime = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+						.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getDate();
+				lastMessageDateTimeLabel.setText(dateTime); // Set date label
+				// Get the first short part of the last message
+				String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
+						.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage()
+						.split("\n")[0];
+				lastMsgLabel.setText(lastMessageShort); // Set up short message label
+				lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
+			}  
+			else {
+				// No messages to display
+				lastMsgLabel.setText("No Messages");
+				lastMessageDateTimeLabel.setText("");
+			}
 		}
+		else {
+			// If the user doesn't have the option for messages, nicely display the current time and date
+			AnimationTimer timer = new AnimationTimer() {
+			    @Override
+			    public void handle(long now) {
+			    	lastMessageDateTimeLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+			    }
+			};
+			timer.start();
+			lastMsgLabel.setText("");
+			homePageTopLabel.setText("Welcome back!");
+		}
+
 	}
 
 	/**
@@ -166,7 +190,7 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				// if OL and Region manager -> show the
 				if (currentRole.equals(RolesEnum.regionManager)) {
-					setBtn(topBtn, "Approve Users", "View, manage and approve users", ScreensNamesEnum.UsersManagement);
+					setBtn(topBtn, "Approve Users", "View, Manage and Approve users", ScreensNamesEnum.UsersManagement);
 					setBtn(bottomBtn, "Supply Management", "Manage the available supply",
 							ScreensNamesEnum.SupplyManagement);
 				}
@@ -242,7 +266,7 @@ public class HomePageController implements IScreen {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\n"
+							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
 									+ "Or login in 'OL' configuration");
 			}
 			break;
@@ -257,14 +281,14 @@ public class HomePageController implements IScreen {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					CommonFunctions.createPopup(PopupTypeEnum.Warning,
-							"You have nothing to see here\nIf you want to order please register in customer service\n"
-									+ "Or login in 'OL' configuration");
+							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
+									+ "Or login in 'OL' Configuration");
 			}
 			break;
 
 		default:
 			CommonFunctions.createPopup(PopupTypeEnum.Warning,
-					"No role detected!\nPlease Contact customer service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
+					"No role detected!\nPlease contact Customer Service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
 			break;
 		}
 		ImageView roleImg = new ImageView();
@@ -345,9 +369,9 @@ public class HomePageController implements IScreen {
 					ScreensNamesEnum.ConfirmOnlineOrder); // need
 		else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 			setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
-		if (currentUser.getRole_type() == RolesEnum.member) {
-			setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
-		}
+		
+		setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
+		
 
 		image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 		ItemsController.requestItemsFromServer();

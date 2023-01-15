@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Store.DataStore;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.SaleType;
@@ -122,7 +123,6 @@ public class CreateNewSaleController implements IScreen  {
     	try {
     	initTimeCmb();
     	 initDays();
-    	//initDatePickers();
     	ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
 		regionCmb.setItems(regions);
 		ObservableList<String> types = FXCollections.observableArrayList();
