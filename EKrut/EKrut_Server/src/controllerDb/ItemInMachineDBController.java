@@ -62,10 +62,10 @@ public class ItemInMachineDBController {
 							res.getString(8), res.getDouble(9), res.getString(10));
 
 					URL rsrc = ItemDBController.class.getClass()
-							.getResource("/products/" + item.getItemImg().getImgName());
+							.getResource("/styles/products/" + item.getItemImg().getImgName());
 					System.out.println(rsrc.getPath());
 					InputStream imgResource = ItemDBController.class.getClass()
-							.getResource("/products/" + item.getItemImg().getImgName()).openStream();
+							.getResource("/styles/products/" + item.getItemImg().getImgName()).openStream();
 					byte[] mybytearray = new byte[(int) imgResource.available()];
 					BufferedInputStream bis = new BufferedInputStream(imgResource);
 					item.getItemImg().initArray(mybytearray.length);

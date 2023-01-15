@@ -22,9 +22,15 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>styles</name>
+			<name>RELATIVE_FOLDER</name>
 			<type>2</type>
-			<locationURI>PROJECT_LOC/src/styles</locationURI>
+			<locationURI>RELATIVE_FOLDER</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>RELATIVE_FOLDER</name>
+			<value>$%7BPROJECT_LOC%7D/src/styles</value>
+		</variable>
+	</variableList>
 </projectDescription>

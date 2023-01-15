@@ -56,16 +56,15 @@ public class ItemDBController {
 //				InputStream file = ItemDBController.class.getClass()
 //						.getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
 				URL rsrc = ItemDBController.class.getClass()
-						.getResource("/products/" + itemEntity.getItemImg().getImgName());
+						.getResource("/styles/products/" + itemEntity.getItemImg().getImgName());
 				System.out.println(rsrc.getPath());
 				InputStream imgResource = ItemDBController.class.getClass()
-						.getResource("/products/" + itemEntity.getItemImg().getImgName()).openStream();
+						.getResource("/styles/products/" + itemEntity.getItemImg().getImgName()).openStream();
 				byte[] mybytearray = new byte[(int) imgResource.available()];
 				BufferedInputStream bis = new BufferedInputStream(imgResource);
 				itemEntity.getItemImg().initArray(mybytearray.length);
 				itemEntity.getItemImg().setSize(mybytearray.length);
 				bis.read(itemEntity.getItemImg().getMybytearray(), 0, mybytearray.length);
-				itemEntitys.add(itemEntity);
 				bis.close();
 			}
 			client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntitys)); // finally send the entity
