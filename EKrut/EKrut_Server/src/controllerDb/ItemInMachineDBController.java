@@ -48,26 +48,23 @@ public class ItemInMachineDBController {
 	 */
 	protected static void handleGetItems(ResultSet res, ConnectionToClient client) {
 		ItemInMachineEntity item;
-
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
 			while (res.next()) {
 				// 1 2 3 4 5 6 7 8 9 10
 				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id,
 				// item_id, name, price, item_img_name
-
 				if (res.getMetaData().getColumnCount() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(8), res.getDouble(9), res.getString(10));
-
-					URL rsrc = ItemDBController.class.getClass()
-							.getResource("/styles/products/" + item.getItemImg().getImgName());
-					System.out.println(rsrc.getPath());
-					InputStream imgResource = ItemDBController.class.getClass()
-							.getResource("/styles/products/" + item.getItemImg().getImgName()).openStream();
-					byte[] mybytearray = new byte[(int) imgResource.available()];
-					BufferedInputStream bis = new BufferedInputStream(imgResource);
+					InputStream input = null;
+					try {
+						 input = ItemDBController.class.getClass().getResourceAsStream("/styles/products/" + item.getItemImg().getImgName());
+					} catch (Exception e) {}
+					
+					byte[] mybytearray = new byte[(int) input.available()];
+					BufferedInputStream bis = new BufferedInputStream(input);
 					item.getItemImg().initArray(mybytearray.length);
 					item.getItemImg().setSize(mybytearray.length);
 					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);

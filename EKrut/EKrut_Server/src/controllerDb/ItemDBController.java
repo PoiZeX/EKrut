@@ -36,10 +36,9 @@ public class ItemDBController {
 	 * 
 	 * @param client the client that requested to receive the items
 	 */
-	public void sendImgToClient(ConnectionToClient client) {
+	public static void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
 		ItemEntity itemEntity;
-		String jarPath = MySqlClass.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
@@ -48,17 +47,13 @@ public class ItemDBController {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM items;");
 			while (rs.next()) {
 				InputStream input = null;
-
 				/*
 				 * 1 2 3 4 (int item_id, String name, double price, String item_img_name)
 				 */
 				itemEntity = new ItemEntity(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4));
 				try {
-					input = this.getClass().getResourceAsStream("/styles/products/" + itemEntity.getItemImg().getImgName());
+					input = ItemDBController.class.getClass().getResourceAsStream("/styles/products/" + itemEntity.getItemImg().getImgName());
 				} catch (Exception e) {}
-//				String filePath = jarPath + "/styles/products/" + itemEntity.getItemImg().getImgName();
-//				System.out.println(filePath);
-//				FileInputStream imgResource = new FileInputStream(new File(filePath));
 				byte[] mybytearray = new byte[(int) input.available()];
 				BufferedInputStream bis = new BufferedInputStream(input);
 				itemEntity.getItemImg().initArray(mybytearray.length);
