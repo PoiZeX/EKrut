@@ -108,7 +108,7 @@ public class ReviewOrderController implements IScreen {
 
 	public void initialize() {
 		try {
-
+ 
 			/*
 			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
@@ -264,7 +264,7 @@ public class ReviewOrderController implements IScreen {
 		}
 		if (CommonFunctions.isNullOrEmpty(user.getCc_num())) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error,
-					"The credit card number is invalid, please contact customer service");
+					"The credit Card number is invalid, please contact Customer Service");
 			return;
 		}
 		// if member he always pay in the end of the month
