@@ -39,7 +39,7 @@ public class ItemDBController {
 	public static void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
 		ItemEntity itemEntity;
-
+		String jarPath = MySqlClass.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
@@ -52,19 +52,15 @@ public class ItemDBController {
 				 * 1 2 3 4 (int item_id, String name, double price, String item_img_name)
 				 */
 				itemEntity = new ItemEntity(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4));
-//
-//				InputStream file = ItemDBController.class.getClass()
-//						.getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
-				URL rsrc = ItemDBController.class.getClass()
-						.getResource("/styles/products/" + itemEntity.getItemImg().getImgName());
-				System.out.println(rsrc.getPath());
-				InputStream imgResource = ItemDBController.class.getClass()
-						.getResource("/styles/products/" + itemEntity.getItemImg().getImgName()).openStream();
+				String filePath = jarPath + "/styles/products/" + itemEntity.getItemImg().getImgName();
+				System.out.println(filePath);
+				FileInputStream imgResource = new FileInputStream(new File(filePath));
 				byte[] mybytearray = new byte[(int) imgResource.available()];
 				BufferedInputStream bis = new BufferedInputStream(imgResource);
 				itemEntity.getItemImg().initArray(mybytearray.length);
 				itemEntity.getItemImg().setSize(mybytearray.length);
 				bis.read(itemEntity.getItemImg().getMybytearray(), 0, mybytearray.length);
+				itemEntitys.add(itemEntity);
 				bis.close();
 			}
 			client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntitys)); // finally send the entity
@@ -75,8 +71,10 @@ public class ItemDBController {
 			e.printStackTrace();
 		}
 	}
+
 	/***
-	 * get all the items names by their ids 
+	 * get all the items names by their ids
+	 * 
 	 * @param itemsID
 	 * @return
 	 */
