@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
-import common.PopupTypeEnum;
 import common.ScreensNamesEnum;
 import javafx.application.Platform;
 import javafx.scene.control.Label;

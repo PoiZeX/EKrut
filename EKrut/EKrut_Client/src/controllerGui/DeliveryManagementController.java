@@ -14,7 +14,6 @@ import common.PopupTypeEnum;
 import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
-import entity.ItemInMachineEntity;
 import entity.UserEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,7 +87,11 @@ public class DeliveryManagementController  implements IScreen {
 			e.printStackTrace();
 		}
 	}
+	/**
 
+	This method is responsible for refreshing the deliveries table by requesting all deliveries for the current region from the server
+	@param event the event that triggered this method (clicking on the refresh button)
+	*/
 	@FXML
 	private void refresh(ActionEvent event) {
 		if (deliveries != null)
@@ -140,7 +143,6 @@ public class DeliveryManagementController  implements IScreen {
 		 * or from "outForDelivery" to "done".
 		 * in other cases, the changes aren't saved
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
 		deliveryTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);

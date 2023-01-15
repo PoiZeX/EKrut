@@ -1,7 +1,6 @@
 package controllerGui;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import common.CommonFunctions;
 import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
-import common.RolesEnum;
 import common.ScreensNamesEnum;
 import common.TaskType;
 import controller.ItemsController;
@@ -30,7 +28,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -280,7 +277,6 @@ public class ViewCatalogController implements IScreen {
 			machineDiscount = OrderController.getDiscountsPercentage();
 		ExecutorService executor = Executors.newFixedThreadPool(itemsList.size());
 		List<Callable<Boolean>> tasks = new ArrayList<>();
-//		 Add tasks
 		int j = 0;
 		for (int i = 1; i <= itemsList.size(); i++) {
 			int index = i;
@@ -643,7 +639,12 @@ public class ViewCatalogController implements IScreen {
 			catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
 		}
 	}
+	/**
 
+	This method creates a single catalog item for the catalog view. It creates a GridPane and sets its size and style. It also creates column and row constraints for the GridPane.
+	An ImageView and a button bar are created and added to the GridPane.
+	@return A GridPane that represents a single catalog item.
+	*/
 	private GridPane createSingleCatalogItem() {
 		// Create a GridPane
 		GridPane itemViewGridpane = new GridPane();

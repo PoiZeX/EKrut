@@ -184,7 +184,7 @@ public class ReportsDBController {
 	 * @return
 	 */
 	public static boolean isReportExist(String reportType, String month, String year, String region, int machineId) {
-		if (!setReport(new String[] { reportType, month, year, region, String.valueOf(machineId) }))
+		if (!setReport(new String[] { reportType, region, month, year, String.valueOf(machineId) }))
 			return false;
 		switch (reportType) {
 		case "clients":

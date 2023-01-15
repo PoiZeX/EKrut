@@ -21,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
@@ -50,8 +49,9 @@ public class LoginController implements IScreen {
 
 	private static boolean isEKTpressed = false;
 
-	@Override
-	public void initialize() {}
+	public void initialize() {
+		
+	}
 
 	public LoginController() { 
 		chat = HostClientController.getChat(); // one instance
@@ -99,7 +99,7 @@ public class LoginController implements IScreen {
 		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
 
 		// wait for answer
-		while (isValidDetails == null) {
+		while (isValidDetails == null) { 
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -108,7 +108,7 @@ public class LoginController implements IScreen {
 		}
 
 		if (isValidDetails) {
-			if (!isServiceEnable)
+			if (!isServiceEnable) 
 				return true; // Go to next screen (controller creates the screen)
 		} else
 			return false;

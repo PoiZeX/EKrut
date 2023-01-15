@@ -76,7 +76,11 @@ public class UsersManagementController  implements IScreen {
 	private static ClientController chat = HostClientController.getChat(); // one instance
 	ArrayList<BooleanCheckBox> checkboxCellsList = new ArrayList<>();
 	private boolean allSelected;
+	/**
 
+	The initialize method is used to request a list of unapproved users from the chat service and initialize the data table.
+	It sends a TaskType.RequestUnapprovedUsers message to the chat service, and waits for a response before initializing the data table.
+	*/
 	@Override
 	public void initialize() {
 		chat.acceptObj(new Message(TaskType.RequestUnapprovedUsers, null));
