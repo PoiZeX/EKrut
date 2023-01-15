@@ -51,11 +51,11 @@ public class ConfirmOnlineOrderController implements IScreen {
 	public void initialize() {
 		switch (AppConfig.SYSTEM_CONFIGURATION) {
 		case "EK":
-			setBtnAndPicture(submitBtn, "Collect", "Collect your order now", "../styles/images/pickup.png");
+			setBtnAndPicture(submitBtn, "Collect", "Collect your order now", "/styles/images/pickup.png");
 			popUpTxt = "Thank you for collecting your order!\r\nhave fun!";
 			break;
 		case "OL":
-			setBtnAndPicture(submitBtn, "Confirm", "Confirm delivery receipt", "../styles/images/delivery1.png");
+			setBtnAndPicture(submitBtn, "Confirm", "Confirm delivery receipt", "/styles/images/delivery1.png");
 			popUpTxt = "The approval was successfully received,\nbon appetit!";
 			break;
 		default:

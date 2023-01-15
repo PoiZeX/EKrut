@@ -59,7 +59,7 @@ public class EKTPopupController extends LoginController {
 						// login success
 						headlineLabel.setText("Login with EKT success!");
 						Image image = new Image(
-								getClass().getResourceAsStream("../styles/icons/EKTloading_success.gif"));
+								getClass().getResourceAsStream("/styles/icons/EKTloading_success.gif"));
 						loadingImage.setImage(image); // get information gif
 
 						// wait for 2 seconds

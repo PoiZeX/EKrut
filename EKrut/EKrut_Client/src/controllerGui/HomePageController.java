@@ -173,7 +173,7 @@ public class HomePageController implements IScreen {
 				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
 				if (currentUser.getRole_type() == RolesEnum.regionManager)
 					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
-				image = new Image(getClass().getResourceAsStream("../styles/images/manager.png"));
+				image = new Image(getClass().getResourceAsStream("/styles/images/manager.png"));
 				checkEmployeeMemberStatus(currentUser, currentRole);
 			} else {
 				// is on 'EK'
@@ -189,7 +189,7 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
 						ScreensNamesEnum.RegistrationForm);
-				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+				image = new Image(getClass().getResourceAsStream("/styles/images/salesworker.png"));
 				checkEmployeeMemberStatus(currentUser, currentRole);
 			} else {
 				// is on 'EK'
@@ -206,7 +206,7 @@ public class HomePageController implements IScreen {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
 						ScreensNamesEnum.DeliveryManagement);
-				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));
+				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
@@ -221,7 +221,7 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
-				image = new Image(getClass().getResourceAsStream("../styles/images/salesworker.png"));
+				image = new Image(getClass().getResourceAsStream("/styles/images/salesworker.png"));
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
@@ -233,7 +233,7 @@ public class HomePageController implements IScreen {
 		case marketingManager:
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				image = new Image(getClass().getResourceAsStream("../styles/images/marketingManager.png"));
+				image = new Image(getClass().getResourceAsStream("/styles/images/marketingManager.png"));
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern", ScreensNamesEnum.CreateNewSale);
 				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
@@ -252,7 +252,7 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-				image = new Image(getClass().getResourceAsStream("../styles/images/deliveryguy.png"));} 
+				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));} 
 			else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))

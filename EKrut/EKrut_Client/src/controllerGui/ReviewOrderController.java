@@ -41,7 +41,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.TooltipSetter;
 
-public class ReviewOrderController  implements IScreen {
+public class ReviewOrderController implements IScreen {
 	private static ClientController chat = HostClientController.getChat();
 
 	@FXML
@@ -99,25 +99,25 @@ public class ReviewOrderController  implements IScreen {
 	private GridPane productsGrid;
 	private static Object data;
 	private static boolean isDataRecived = false;
-	private static Boolean firstPurchase=false;
+	private static Boolean firstPurchase = false;
 	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
 	private StringBuilder address = new StringBuilder();
 	private double totalDiscounts = 0;
-	
+
 	public void initialize() {
 		try {
 
 			/*
 			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
-			
+
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
-			firstPurchase=false;
+			firstPurchase = false;
 			isFirstpurchase();
-			
+
 			// build graphical side
 			buildReviewOrder();
 
@@ -167,25 +167,23 @@ public class ReviewOrderController  implements IScreen {
 				sb.append("* " + discount + "\n");
 			}
 		}
-			
-			if(firstPurchase)
-				sb.append("* 20% for first purchase as a member!\n");
-				// show a relevant label / tooltip
 
-			
+		if (firstPurchase)
+			sb.append("* 20% for first purchase as a member!\n");
+		// show a relevant label / tooltip
 
-			// show special label or something
-			
-			totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
-			totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
-		
+		// show special label or something
+
+		totulDiscountSumLbl.setText(String.format("%.2f₪", totalDiscounts));
+		totalSumLbl.setText(String.format("%.2f₪", OrderController.getTotalPrice() - totalDiscounts));
+
 		if (!totulDiscountSumLbl.getText().equals("0.00₪")) {
 			// set tooltip text and apply to label (will be with an image)
 			totulDiscountSumLbl.setTooltip((new TooltipSetter(sb.toString()).getTooltip()));
 		}
 
 	}
-	
+
 	private void isFirstpurchase() throws Exception {
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)
 				&& !OrderController.isFirstPurchaseDiscountApplied) {
@@ -193,8 +191,8 @@ public class ReviewOrderController  implements IScreen {
 			if ((boolean) data) {
 				// give discount just one time
 				OrderController.addMemberFirstPurchaseDiscount();
-				firstPurchase=true;
-				
+				firstPurchase = true;
+
 			}
 		}
 	}
@@ -205,7 +203,7 @@ public class ReviewOrderController  implements IScreen {
 	private void rightGridHandle() {
 		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
 			rightGridPane.getChildren().clear();
-			Image image = new Image(getClass().getResourceAsStream("../styles/images/vending-machineNOBG.png"));
+			Image image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 			ImageView imageView = new ImageView(image);
 			imageView.setFitHeight(350);
 			imageView.setFitWidth(300);
@@ -484,8 +482,8 @@ public class ReviewOrderController  implements IScreen {
 			errMsg.append("Apartment number can contain number and '/' only in length of 1-5\n");
 
 		address.append(streetTxtField.getText());
-		address.append(" "+aptTxtField.getText());
-		address.append(" "+cityTxtField.getText());
+		address.append(" " + aptTxtField.getText());
+		address.append(" " + cityTxtField.getText());
 
 		return errMsg.toString();
 	}
@@ -496,7 +494,6 @@ public class ReviewOrderController  implements IScreen {
 	private void RollBack() {
 
 	}
-
 
 	/**
 	 * Build all graphical side for all items
@@ -535,7 +532,7 @@ public class ReviewOrderController  implements IScreen {
 		imageView.setPreserveRatio(true);
 		double tempSum = 0;
 		double totalDiscountForRowInNIS = 0;
-		
+
 		gridpane.setPrefSize(330, 70);
 		gridpane.getColumnConstraints().add(new ColumnConstraints(10, 70, 107, Priority.SOMETIMES, HPos.CENTER, false));
 		gridpane.getColumnConstraints()
@@ -546,16 +543,16 @@ public class ReviewOrderController  implements IScreen {
 		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
 		gridpane.getRowConstraints().add(new RowConstraints(20, 32, 60));
 		gridpane.getStyleClass().add("GridPaneChild");
-		GridPane.setMargin(gridpane, new Insets(5,5,5,5));
+		GridPane.setMargin(gridpane, new Insets(5, 5, 5, 5));
 		gridpane.setStyle("-fx-margin: 15,20,15,20");
-		
+
 		// product
 		productName.setText(item.getName());
 		productName.setPrefSize(229, 18);
 		productName.getStyleClass().add("Label-list");
 		GridPane.setHalignment(productName, HPos.LEFT);
 		productName.setTooltip(new TooltipSetter(item.getName()).getTooltip());
-		
+
 		// price
 		price.setText(String.format("%.2f₪", item.getPrice()));
 		price.setPrefSize(262, 18);
@@ -585,8 +582,8 @@ public class ReviewOrderController  implements IScreen {
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
-			
-			if(OrderController.isPercentageSaleExit() || firstPurchase) {
+
+			if (OrderController.isPercentageSaleExit() || firstPurchase) {
 				price.getStyleClass().remove("Label-list");
 				price.getStyleClass().add("LableOldPrice");
 				priceAfterDiscount.setVisible(true);
@@ -596,19 +593,20 @@ public class ReviewOrderController  implements IScreen {
 
 			if (OrderController.isOnePlusOneSaleExist()) {
 				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
-				tempSum = quantityToGiveFree * item.getPrice();   
+				tempSum = quantityToGiveFree * item.getPrice();
 				if (cart.get(item) % 2 == 1)
 					tempSum += item.getPrice();
-				
+
 			}
-			
-			
+
 			// set total price for item * quantity
-			tempSum = (OrderController.isPercentageSaleExit() || firstPurchase) ? OrderController.getItemPriceAfterDiscounts((double)tempSum) : tempSum;
+			tempSum = (OrderController.isPercentageSaleExit() || firstPurchase)
+					? OrderController.getItemPriceAfterDiscounts((double) tempSum)
+					: tempSum;
 
 			// set total discounts for labels
 			totalDiscounts += totalDiscountForRowInNIS - tempSum;
-			
+
 			sumAfterDiscount.setText(String.format("%.2f₪", tempSum));
 			sumAfterDiscount.setPrefSize(62, 18);
 			sumAfterDiscount.getStyleClass().add("Label-list-red");
@@ -617,7 +615,6 @@ public class ReviewOrderController  implements IScreen {
 			sum.getStyleClass().add("LableOldPrice");
 			gridpane.add(sum, 3, 1);
 			gridpane.add(sumAfterDiscount, 3, 2);
-
 
 		} else {
 			gridpane.add(price, 1, 1);
