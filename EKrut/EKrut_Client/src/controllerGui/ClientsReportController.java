@@ -26,10 +26,13 @@ public class ClientsReportController implements IScreen {
 
 	@FXML
 	private BarChart<String, Integer> activityBarChart;
-	
+
+	@FXML
+	private Label reportDetailsLabel;
+
 	@FXML
 	private PieChart usersStatusPie;
-	
+
 	@FXML
 	private PieChart pieChartMethod;
 
@@ -44,6 +47,8 @@ public class ClientsReportController implements IScreen {
 	 */
 	@Override
 	public void initialize() {
+		reportDetailsLabel.setText(String.format("%s - %s/%s", reportDetails.getRegion(), reportDetails.getYear(),
+				reportDetails.getMonth()));
 		initCharts();
 		return;
 	}

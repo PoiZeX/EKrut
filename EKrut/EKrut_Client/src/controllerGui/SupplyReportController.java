@@ -48,6 +48,9 @@ public class SupplyReportController implements IScreen {
 	private Button nextPageBtn;
 
 	@FXML
+	private Label reportDetailsLabel;
+
+	@FXML
 	private Button helpBtn;
 
 	@FXML
@@ -77,17 +80,23 @@ public class SupplyReportController implements IScreen {
 	private ArrayList<String[]> itemsArray = new ArrayList<>();
 	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
-	/**
 
-	The initialize method is used to set up the machine selection combo box and associated functionality.
-	It sets the supplySBC to not animated, textConclusionsLbl to not visible, and loads all machines from the datastore.
-	It populates the machine selection combo box with machines that match the reportRegion of the current user and sets up a listener to update data when a new machine is selected.
-	It also sets the prevPageBtn and nextPageBtn to not visible.
-	*/
+	/**
+	 * 
+	 * The initialize method is used to set up the machine selection combo box and
+	 * associated functionality. It sets the supplySBC to not animated,
+	 * textConclusionsLbl to not visible, and loads all machines from the datastore.
+	 * It populates the machine selection combo box with machines that match the
+	 * reportRegion of the current user and sets up a listener to update data when a
+	 * new machine is selected. It also sets the prevPageBtn and nextPageBtn to not
+	 * visible.
+	 */
 	@Override
 	public void initialize() {
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
+		reportDetailsLabel.setText(String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth),
+				reportYear));
 		allMachines = DataStore.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -111,34 +120,44 @@ public class SupplyReportController implements IScreen {
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
 	}
-	/**
 
-	The setReport method is used to set the report year, month and region for the current report.
-	@param year the year of the report
-	@param month the month of the report
-	@param region the region of the report
-	*/
+	/**
+	 * 
+	 * The setReport method is used to set the report year, month and region for the
+	 * current report.
+	 * 
+	 * @param year   the year of the report
+	 * @param month  the month of the report
+	 * @param region the region of the report
+	 */
 	public static void setReport(String year, String month, String region) {
 		reportYear = year;
 		reportMonth = month;
 		reportRegion = region;
 		return;
 	}
-	/**
 
-	This method receives data from a server and updates the reportDetails and RecievedData fields.
-	@param report The SupplyReportEntity object containing the report data received from the server.
-	*/
+	/**
+	 * 
+	 * This method receives data from a server and updates the reportDetails and
+	 * RecievedData fields.
+	 * 
+	 * @param report The SupplyReportEntity object containing the report data
+	 *               received from the server.
+	 */
 	public static void recieveDataFromServer(SupplyReportEntity report) {
 		reportDetails = report;
 		RecievedData = true;
 		return;
 	}
-	/**
 
-	This method receives an answer from a server and updates the answerFromServer field and RecievedData fields.
-	@param obj The object containing the answer received from the server.
-	*/
+	/**
+	 * 
+	 * This method receives an answer from a server and updates the answerFromServer
+	 * field and RecievedData fields.
+	 * 
+	 * @param obj The object containing the answer received from the server.
+	 */
 	public static void getAnswerFromServer(Object obj) {
 		answerFromServer = obj;
 		RecievedData = true;
@@ -192,13 +211,13 @@ public class SupplyReportController implements IScreen {
 		for (String[] item : itemsArray) {
 			PieChart.Data dataToInsert = new PieChart.Data(itemsNames.get(i), Integer.parseInt(item[2]));
 			list.add(dataToInsert);
-			
+
 			// setup tool tip
 			Node node = dataToInsert.getNode();
 			Tooltip.install(node, new TooltipSetter(itemsNames.get(i)).getTooltip());
 			i++;
 		}
-	    pieChart.setLegendSide(Side.BOTTOM);
+		pieChart.setLegendSide(Side.BOTTOM);
 
 		// set pieChart
 		pieChart.setData(list);
@@ -263,9 +282,9 @@ public class SupplyReportController implements IScreen {
 		// prepare
 		SupplyReportEntity prevSupplyReport = getPrevSupplyReportForMachine(machineID);
 		if (prevSupplyReport.getReportsList() == null) {
-			for(int i = 0; i<itemsList.size()+1; i++)
+			for (int i = 0; i < itemsList.size() + 1; i++)
 				startAmounts.add("0");
-			return startAmounts; 
+			return startAmounts;
 		}
 		ArrayList<String[]> prevItemsList = prevSupplyReport.getReportsList();
 		int j = 0;
@@ -373,10 +392,13 @@ public class SupplyReportController implements IScreen {
 	}
 
 	/**
-
-	This method is the event handler for the "next page" button. It updates the indices for the portion of the itemsArray to be displayed in the bar chart, and calls the setupBarChart method to update the chart.
-	@param event The ActionEvent object generated when the button is clicked.
-	*/
+	 * 
+	 * This method is the event handler for the "next page" button. It updates the
+	 * indices for the portion of the itemsArray to be displayed in the bar chart,
+	 * and calls the setupBarChart method to update the chart.
+	 * 
+	 * @param event The ActionEvent object generated when the button is clicked.
+	 */
 	@FXML
 	void nextPageView(ActionEvent event) {
 		if (end + 5 > itemsArray.size()) {
@@ -388,11 +410,15 @@ public class SupplyReportController implements IScreen {
 		}
 		setupBarChart(start, end);
 	}
-	/**
 
-	This method is the event handler for the "previous page" button. It updates the indices for the portion of the itemsArray to be displayed in the bar chart, and calls the setupBarChart method to update the chart.
-	@param event The ActionEvent object generated when the button is clicked.
-	*/
+	/**
+	 * 
+	 * This method is the event handler for the "previous page" button. It updates
+	 * the indices for the portion of the itemsArray to be displayed in the bar
+	 * chart, and calls the setupBarChart method to update the chart.
+	 * 
+	 * @param event The ActionEvent object generated when the button is clicked.
+	 */
 	@FXML
 	void prevPageView(ActionEvent event) {
 		if (start - 5 < 0) {
