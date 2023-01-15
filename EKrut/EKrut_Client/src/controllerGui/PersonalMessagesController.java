@@ -3,6 +3,7 @@ package controllerGui;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
+import common.IScreen;
 import common.Message;
 import common.TaskType;
 import entity.PersonalMessageEntity;
@@ -55,15 +56,6 @@ public class PersonalMessagesController  implements IScreen {
 				messageLabel.setText(newSelection.getMessage().toString()); // sets the new message
 				String originalMsg = newSelection.getMessage().toString();
 				String str[] = newSelection.getMessage().toString().split("\n");
-//				if (str.length > 1)
-//					newSelection.setMessage(str[0] + "...");
-//				else {
-//					if (originalMsg.length() > 256)
-//						newSelection.setMessage(originalMsg.substring(0, 256));
-//					else
-//						newSelection.setMessage(str[0]);
-//				}
-				// messageTable.getSelectionModel().clearSelection();
 			}
 		});
 

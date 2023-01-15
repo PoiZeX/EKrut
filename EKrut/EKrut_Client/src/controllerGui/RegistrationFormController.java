@@ -7,6 +7,7 @@ import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.RolesEnum;
 import common.TaskType;

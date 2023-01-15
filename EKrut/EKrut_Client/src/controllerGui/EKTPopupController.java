@@ -118,7 +118,6 @@ public class EKTPopupController extends LoginController {
 		timerTimeLimit.cancel();
 		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
 		s.setLoginBtnDisable(false);
-		// NavigationStoreController.getInstance().getPrimaryStage().show();
 		((Stage) headlineLabel.getScene().getWindow()).close(); // close the popup window
 
 		s.showErrorMsg();

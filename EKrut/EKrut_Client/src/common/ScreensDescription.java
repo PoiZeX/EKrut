@@ -13,7 +13,6 @@ public class ScreensDescription {
 	// reports
 	public static final String REPORT_SELECTION_DESCRIPTION = "Here you need you select a valid date and report type.\n"
 			+ "Region managers has an access to their region only. CEO has access for all regions";
-	//public static final String CEOReportSelection_DESCRIPTION = "";
 	public static final String ORDERS_REPORT_DESCRIPTION = "";
 	public static final String SUPPLY_REPORT_DESCRIPTION = "";
 	public static final String CLEINTS_REPORT_DESCRIPTION = "";

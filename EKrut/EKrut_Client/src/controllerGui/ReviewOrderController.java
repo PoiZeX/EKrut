@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
+import common.IScreen;
 import common.Message;
 import common.PopupTypeEnum;
 import common.RolesEnum;
@@ -394,17 +395,6 @@ public class ReviewOrderController implements IScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-//				// set actions
-//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					public void handle(WindowEvent we) {
-//						staySleep = false;
-//
-//					}
-//				});
-
-//			while(staySleep)
-
 	}
 
 	/**
