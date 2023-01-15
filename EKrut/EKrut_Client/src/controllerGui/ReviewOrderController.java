@@ -103,6 +103,7 @@ public class ReviewOrderController implements IScreen {
 	private LinkedHashMap<ItemInMachineEntity, Integer> cart;
 	private OrderEntity orderEntity = OrderController.getCurrentOrder();
 	private UserEntity user = NavigationStoreController.connectedUser;
+	private boolean isMember = OrderController.isMember;
 	private StringBuilder address = new StringBuilder();
 	private double totalDiscounts = 0;
 
@@ -203,13 +204,13 @@ public class ReviewOrderController implements IScreen {
 	private void rightGridHandle() {
 		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
 			rightGridPane.getChildren().clear();
-			Image image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
+			Image image = new Image(getClass().getResourceAsStream("/styles/images/homerVending.gif"));
 			ImageView imageView = new ImageView(image);
 			imageView.setFitHeight(350);
 			imageView.setFitWidth(300);
 			rightGridPane.add(imageView, 0, 2);
 			GridPane.setColumnSpan(imageView, 2);
-			GridPane.setRowSpan(imageView, 2);
+			GridPane.setRowSpan(imageView, 3);
 		}
 
 	}
@@ -576,7 +577,7 @@ public class ReviewOrderController implements IScreen {
 		GridPane.setRowSpan(imageView, 3);
 
 		// price after discount
-		if (OrderController.isActiveSale() || firstPurchase) {
+		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
 			double priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
