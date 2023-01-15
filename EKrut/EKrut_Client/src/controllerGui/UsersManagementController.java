@@ -90,13 +90,27 @@ public class UsersManagementController  implements IScreen {
 		toApprove = new ArrayList<UserEntity>();
 		initTable();
 	}
+	/**
 
+	This method is used to receive a list of unapproved users from another class.
+	It updates the 'unapprovedUsers' variable and sets the 'recievedData' variable to true.
+	@param obj The list of unapproved users to be stored
+	*/
 	public static void recieveUnapprovedUsers(ArrayList<UserEntity> obj) {
 		unapprovedUsers = obj;
 		recievedData = true;
 		return;
 	}
-
+	
+	/**
+	This method is used to approve the selected users. It sends a message to the chat object to accept the user
+	objects passed in the 'toApprove' variable. It then sends an SMS and email to each user, containing information
+	about their approved request and login credentials. A simulation pop-up is also displayed for both the SMS and email
+	messages. After sending the messages, the method sleeps for one second and then refreshes the stage of the UsersManagement
+	screen.
+	@param event The action event that triggered this method
+	@throws InterruptedException If the thread is interrupted while sleeping
+	*/
 	@FXML
 	public void approveSelected(ActionEvent event) throws InterruptedException {
 		chat.acceptObj(new Message(TaskType.RequestUsersApproval, toApprove));
@@ -108,9 +122,9 @@ public class UsersManagementController  implements IScreen {
 			emailMsg += "Username: " + user.getUsername() + "\nPassword: " + user.getPassword();
 			if (user.getRole_type().equals(RolesEnum.member))
 				emailMsg += "\nAs a member you get the following benefits:\n"
-						+ "*From time to time there are special sales on some regions.\n"
-						+ "*Discount of 20% on your first purchase\n"
-						+ "*A quick login using EKT app. Here is a link for download: www.ekt.ekrut.com";
+						+ "* From time to time there are special sales in some regions\n"
+						+ "* 20% Discount on your first purchase\n"
+						+ "* A quick login using EKT app. Download link: www.ekt.ekrut.com";
 
 			// SMS sending msg & popup
 			SMSMailHandlerController.SendSMSOrMail("SMS", user, "Request Approved", SMSMsg);
@@ -125,7 +139,11 @@ public class UsersManagementController  implements IScreen {
 			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.UsersManagement);
 		});
 	}
+	/**
 
+	This method is used to refresh the stage of the UsersManagement screen.
+	@param event The action event that triggered this method
+	*/
 	@FXML
 	void refresh(ActionEvent event) {
 		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.UsersManagement);
@@ -148,7 +166,13 @@ public class UsersManagementController  implements IScreen {
 		}
 		allSelected = !allSelected;
 	}
+	/**
 
+	This method is used to initialize the users table with data from 'unapprovedUsers' variable.
+	It first checks if the 'unapprovedUsers' variable is null or empty, and if it is, the method returns.
+	Otherwise, it sets the factory columns for the table and creates an observable list from the 'unapprovedUsers' variable.
+	Finally, it sets the items of the table to the created observable list.
+	*/
 	private void initTable() {
 		if (unapprovedUsers == null || unapprovedUsers.isEmpty())
 			return;
@@ -158,7 +182,12 @@ public class UsersManagementController  implements IScreen {
 
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+
+	This method is used to set the factory columns for the table.
+	It sets the cell value factory for each column using the appropriate field from the UserEntity class,
+	and sets a custom cell factory for the 'approveCol' column to use a BooleanCheckBox.
+	*/
 	private void setFactoryCols() {
 		// recieving arraylist of userentitys need to setup table.
 		customerIdCol.setCellValueFactory((Callback) new PropertyValueFactory<UserEntity, Integer>("id"));
@@ -178,7 +207,13 @@ public class UsersManagementController  implements IScreen {
 		approveCol.setCellFactory(booleanCellFactory);
 		return;
 	}
+	/**
 
+	This is a private class that extends the TableCell class, it is used to create a CheckBox in each cell of the approveCol column.
+	The class have a constructor that creates a checkbox and sets on action event to add or remove user to the list of users to approve.
+	Also the checkbox is added to the list checkboxCellsList.
+	The updateItem method updates the checkbox with the value of the cell and aligns it center.
+	*/
 	private class BooleanCheckBox extends TableCell<UserEntity, Boolean> {
 		private CheckBox checkBox;
 

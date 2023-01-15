@@ -51,11 +51,9 @@ public class LoginController implements IScreen {
 	private static boolean isEKTpressed = false;
 
 	@Override
-	public void initialize() {
+	public void initialize() {}
 
-	}
-
-	public LoginController() {
+	public LoginController() { 
 		chat = HostClientController.getChat(); // one instance
 	}
 

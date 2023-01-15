@@ -124,7 +124,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 
 	@Override
 	public void initialize() {
-		try {
+		try { 
 
 			region = NavigationStoreController.connectedUser.getRegion();
 			arrStr[0] = "0";

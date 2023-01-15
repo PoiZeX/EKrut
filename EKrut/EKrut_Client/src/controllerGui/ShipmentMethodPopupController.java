@@ -40,7 +40,12 @@ public class ShipmentMethodPopupController  implements IScreen {
 	private static String selectedShipmentMethod;
 	private static ArrayList<MachineEntity> allMachines;
 	public static ObservableList<String> shipmentMethod;
-
+	/**
+	This method is used to initialize the shipment method and machine comboboxes.
+	It sets the shipment method combobox with the options "Delivery" and "Pickup" and sets the machines combobox with the machines that are in the region of the connected user.
+	It also adds listeners to the comboboxes that listen to the selected item, if the shipment method is "Pickup" it will show the machines combobox otherwise, it will hide it.
+	It also sets the selectedShipmentMethod and selectedMachine variables to null.
+	*/
 	public void initialize() {
 		shipmentMethod = FXCollections.observableArrayList(new String[] { "Delivery", "Pickup" });
 		ObservableList<MachineEntity> machines = FXCollections.observableArrayList();
@@ -77,7 +82,12 @@ public class ShipmentMethodPopupController  implements IScreen {
 		selectedMachine = null;
 		selectedShipmentMethod = null;
 	}
-
+	
+	/**
+	This method is used to cancel an order by setting the 'selectedShipmentMethod' and 'selectedMachine' variables to null.
+	It also closes the current window, which is assumed to be a pop-up window.
+	@param event The action event that triggered this method
+	*/
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		selectedShipmentMethod = null;
@@ -85,6 +95,17 @@ public class ShipmentMethodPopupController  implements IScreen {
 		((Stage) confirmBtn.getScene().getWindow()).close(); // close the popup window
 	}
 
+	/**
+	This method is used to confirm the selected shipment method and machine (if the method is "Pickup").
+	It first checks if the shipment method is not null, if not it will show an error message.
+	If the shipment method is "Pickup" and the selected machine is null, it will also show an error message.
+	If the current order is null, it will create a new screen.
+	If the selected shipment method is different from the previous method, it will also create a new screen.
+	If the previous method is "Pickup" and the selected machine is different from the previous machine,
+	it will also create a new screen.
+	If all conditions are met, it will close the current window and navigate to the ViewCatalog screen.
+	@param event The action event that triggered this method
+	*/
 	@FXML
 	void confirmMethod(ActionEvent event) {
 		String prevMethod = "";
@@ -114,7 +135,13 @@ public class ShipmentMethodPopupController  implements IScreen {
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.ViewCatalog);
 		}
 	}
-
+	/**
+	This method is used to create a new screen depending on the selected shipment method and machine.
+	It first clears the current order and machine, then it checks the selected shipment method.
+	If the method is "Pickup", it sets the current order and machine with the selected machine.
+	If the method is "Delivery", it sets the current order without machine.
+	It also closes the current window and navigates to the ViewCatalog screen.
+	*/
 	private void createNewScreen() {
 		OrderController.clearAll();
 		switch (selectedShipmentMethod) {
