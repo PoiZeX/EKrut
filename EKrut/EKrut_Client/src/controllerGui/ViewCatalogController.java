@@ -518,9 +518,6 @@ public class ViewCatalogController implements IScreen {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-				// cartPopupAmountLabel.setText(Integer.parseInt(cartPopupAmountLabel.getText())
-				// + 1 + "");
-				// updateCartBubble(1);
 				updateCartTotalLabels();
 			}
 		};

@@ -394,17 +394,6 @@ public class ReviewOrderController implements IScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-//				// set actions
-//				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					public void handle(WindowEvent we) {
-//						staySleep = false;
-//
-//					}
-//				});
-
-//			while(staySleep)
-
 	}
 
 	/**

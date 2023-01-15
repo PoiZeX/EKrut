@@ -124,27 +124,6 @@ public class SupplyReportController implements IScreen {
 		return;
 	}
 
-//	public void checkCurAmount() {
-//		supplyMachineTbl.setRowFactory(row -> new TableRow<SupplyReportEntity>(){
-//		    @Override
-//		    public void updateItem(SupplyReportEntity report, boolean empty){
-//		        super.updateItem(report, empty);
-//
-//		        if (report == null || empty) {
-//		            setStyle("");
-//		        } else {
-//		            if (report.getCur_stock() <= report.getMin_stock()) {
-//		                //We apply now the changes in all the cells of the row
-//		                for(int i=0; i<getChildren().size();i++){
-//		                    ((Labeled) getChildren().get(i)).setTextFill(Color.RED);
-//		                    //((Labeled) getChildren().get(i)).setStyle("-fx-background-color: yellow");
-//		                }                        
-//		            }
-//		        }
-//		    }
-//		});
-//	}
-
 	/**
 	 * Initialize details of table
 	 * 

@@ -11,7 +11,7 @@ public class ItemInMachineEntity extends ItemEntity {
 
 		public String getName() {
 			return name;
-		} 
+		}
 
 		private final String name;
 	};
@@ -29,8 +29,6 @@ public class ItemInMachineEntity extends ItemEntity {
 		this.currentAmount = Integer.MAX_VALUE;
 	}
 
-	// machine_id, item_id, current_amount, call_status,
-	// times_under_min, workerId, name, item_img_name
 	public ItemInMachineEntity(int machineId, int item_id, int currentAmount, Call_Status callStatus, int timeUnderMin,
 			int workerId, String name, double price, String item_img_nam) {
 		super(item_id, name, price, item_img_nam);
@@ -42,7 +40,7 @@ public class ItemInMachineEntity extends ItemEntity {
 		else
 			this.isCallOpen = true;
 		this.timeUnderMin = timeUnderMin;
-		this.workerId=workerId;
+		this.workerId = workerId;
 	}
 
 	@Override

@@ -21,7 +21,6 @@ public class ChatClient extends AbstractClient {
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
 		this.clientUI = clientUI;
-		// openConnection();
 	}
 
 
@@ -61,9 +60,6 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-//			e.printStackTrace();
-//			clientUI.display("Could not send message to server: Terminating client." + e);
-//			quit();
 			return false;
 		}
 		return true;
@@ -89,8 +85,7 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			//clientUI.display("Could not send message to server: Terminating client." + e);
-			//quit();
+
 			return false;
 		}
 		return true;
