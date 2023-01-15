@@ -8,26 +8,20 @@ package controllerGui;
  */
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-
-import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.DeliveryStatusEnum;
 import common.ICmbANDTableSetUp;
 import common.Message;
 import common.PopupTypeEnum;
 import common.ScreensNamesEnum;
 import common.TaskType;
-import entity.DeliveryEntity;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

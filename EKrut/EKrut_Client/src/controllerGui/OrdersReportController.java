@@ -75,7 +75,7 @@ public class OrdersReportController  implements IScreen {
 		reportDetails = report;
 		RecievedData = true;
 		return;
-	}
+	} 
 	/**
 
 	This method initializes the charts used in the report screen.

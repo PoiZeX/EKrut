@@ -93,21 +93,38 @@ public class OrderController {
 	public static void putItemInList(ItemInMachineEntity entity) {
 		itemsList.put(entity.getName(), entity);
 	}
+	/**
 
+	This method clears the itemsList.
+	*/
 	public static void clearItemsList() {
 		if (!itemsList.isEmpty()) {
 			itemsList.clear();
 		}
 	}
+	/**
 
+	This method returns the image of an item from itemsList by its name.
+	@param name the name of the item
+	@return the Image object of the item
+	*/
 	public static Image getImageOfItem(String name) {
 		return OrderController.itemsList.get(name).getItemImage();
 	}
+	/**
 
+	This method returns the current order.
+	@return the current OrderEntity
+	*/
 	public static OrderEntity getCurrentOrder() {
 		return currentOrder;
 	}
+	/**
 
+	This method sets the current order by creating a new OrderEntity object with the given user ID and supply method.
+	@param user_id the ID of the user who made the order
+	@param supplyMethod the method of supply chosen by the user
+	*/
 	public static void setCurrentOrder(int user_id, String supplyMethod) {
 		if (currentOrder == null)
 			currentOrder = new OrderEntity(user_id, supplyMethod);
@@ -136,7 +153,12 @@ public class OrderController {
 			cartSize += (getAmount(item));
 		return cartSize;
 	}
+	/**
 
+	Retrieves the amount of a specific item in the machine.
+	@param item The item to retrieve the amount of.
+	@return The amount of the item in the machine. Returns 0 if the item is not found in the machine.
+	*/
 	public static int getItemAmount(ItemInMachineEntity item) {
 		if (!itemsInCartList.containsKey(item))
 			return 0;
@@ -227,7 +249,11 @@ public class OrderController {
 			return true;
 		return false;
 	}
+	/**
 
+	This method returns the list of active sales.
+	@return an ArrayList of SaleEntity representing the active sales
+	*/
 	public static ArrayList<SaleEntity> getActiveSales() {
 		return activeSales;
 	}
@@ -280,11 +306,19 @@ public class OrderController {
 		calculateDiscountsPercentage();
 		isDataReceived = true;
 	}
+	/**
 
+	This method returns whether a one plus one sale exist or not.
+	@return a boolean indicating if a one plus one sale exist
+	*/
 	public static boolean isOnePlusOneSaleExist() {
 		return onePlusOneSaleExist;
 	}
+	/**
 
+	This method returns whether a percentage sale exist or not.
+	@return a boolean indicating if a percentage sale exist
+	*/
 	public static boolean isPercentageSaleExit() {
 		return percentageSaleExit;
 	}
@@ -323,7 +357,11 @@ public class OrderController {
 	public static void addDiscount(int discount) {
 		discounts *= (1 - (((double) discount) / 100));
 	}
+	/**
 
+	Returns the percentage of discounts applied to the total amount.
+	@return The percentage of discounts applied to the total amount as a double.
+	*/
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
 		return itemPrice * discounts;
 

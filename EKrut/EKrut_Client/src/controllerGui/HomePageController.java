@@ -83,9 +83,15 @@ public class HomePageController implements IScreen {
 
 	@FXML
 	private VBox rigthVbox;
+	/**
 
+	This method is used to initialize the main menu screen for the user.
+	It sets the visibility of the buttons and labels according to the role of the current connected user.
+	It also sets up the view for the personal messages and initializes the common data from the database.
+	It also activate the timeout.
+	*/
 	@Override
-	public void initialize() {
+	public void initialize() { 
 
 		// Get the role type of the current connected user
 		RolesEnum currentRole = currentUser.getRole_type();
