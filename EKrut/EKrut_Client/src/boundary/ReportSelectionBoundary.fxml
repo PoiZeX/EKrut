@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ReportSelectionController">
    <center>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="600.0" prefWidth="897.0" BorderPane.alignment="CENTER">
          <children>
@@ -56,41 +55,19 @@
                         <Font name="Verdana" size="12.0" />
                      </font>
                   </Label>
-                  <ToolBar fx:id="reportsToolBar" prefHeight="140.0" prefWidth="450.0" styleClass="GridPaneChild" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
-                     <items>
-                        <Button fx:id="clientReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Clients report" textAlignment="CENTER">
+                  <GridPane prefHeight="123.0" prefWidth="461.0" styleClass="GridPane" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="ordersReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Orders report" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
-                              <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
-                                 <image>
-                                    <Image url="@../styles/icons/clientsreportIcon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <styleClass>
-                              <String fx:value="Button-report" />
-                              <String fx:value="Button-NoBG" />
-                              <String fx:value="Label" />
-                              <String fx:value="button-Report" />
-                           </styleClass>
-                        </Button>
-                        <Button fx:id="supplyReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Supply report" textAlignment="CENTER" translateX="35.0">
-                           <graphic>
-                              <ImageView fitHeight="83.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../styles/icons/supplyReport.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <styleClass>
-                              <String fx:value="Button-report" />
-                              <String fx:value="Button-NoBG" />
-                              <String fx:value="Label" />
-                              <String fx:value="button-Report" />
-                           </styleClass>
-                        </Button>
-                        <Button fx:id="ordersReportBtn" alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" prefHeight="125.0" prefWidth="120.0" text="Orders report" textAlignment="CENTER" translateX="80.0">
-                           <graphic>
-                              <ImageView fitHeight="84.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
+                              <ImageView fitHeight="85.0" fitWidth="95.0" pickOnBounds="true" smooth="false">
                                  <image>
                                     <Image url="@../styles/icons/ordersReporticon.png" />
                                  </image>
@@ -100,20 +77,41 @@
                               <Insets left="10.0" />
                            </opaqueInsets>
                            <styleClass>
-                              <String fx:value="Button-report" />
                               <String fx:value="Button-NoBG" />
                               <String fx:value="Label" />
                               <String fx:value="button-Report" />
                            </styleClass>
                         </Button>
-                     </items>
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                     <opaqueInsets>
-                        <Insets left="10.0" right="10.0" />
-                     </opaqueInsets>
-                  </ToolBar>
+                        <Button fx:id="supplyReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Supply report" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../styles/icons/supplyReport.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="Button-NoBG" />
+                              <String fx:value="Label" />
+                              <String fx:value="button-Report" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="clientReportBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="120.0" prefWidth="130.0" text="Clients report" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" smooth="false">
+                                 <image>
+                                    <Image url="@../styles/icons/clientsreportIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="Button-NoBG" />
+                              <String fx:value="Label" />
+                              <String fx:value="button-Report" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </GridPane>
                   <Label fx:id="regionLabel" disable="true" prefHeight="21.0" prefWidth="131.0" styleClass="Label" stylesheets="@../styles/css/generalStyleSheet.css" text="Choose region:" GridPane.rowIndex="1">
                      <font>
                         <Font name="SansSerif Regular" size="12.0" />
@@ -171,7 +169,7 @@
       </GridPane>
    </bottom>
    <top>
-      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="84.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
+      <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" prefWidth="900.0" styleClass="GridPaneChild" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -179,9 +177,6 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" lineSpacing="12.0" prefHeight="39.0" prefWidth="173.0" styleClass="LabelTitle" text="Reports" underline="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-         </children>
       </GridPane>
    </top>
 </BorderPane>

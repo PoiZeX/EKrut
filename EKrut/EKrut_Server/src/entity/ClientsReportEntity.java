@@ -120,7 +120,7 @@ public class ClientsReportEntity extends ReportEntity {
 			description = "noreport";
 			return;
 		}
-		userStatusArr.put("Subscribers", Integer.parseInt(userStatusDetails[0]));
+		userStatusArr.put("Member", Integer.parseInt(userStatusDetails[0]));
 		userStatusArr.put("Registered", Integer.parseInt(userStatusDetails[1]));
 		
 	}

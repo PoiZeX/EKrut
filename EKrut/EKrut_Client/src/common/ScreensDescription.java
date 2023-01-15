@@ -13,9 +13,17 @@ public class ScreensDescription {
 	// reports
 	public static final String REPORT_SELECTION_DESCRIPTION = "Here you need you select a valid date and report type.\n"
 			+ "Region managers has an access to their region only. CEO has access for all regions";
-	public static final String ORDERS_REPORT_DESCRIPTION = "";
-	public static final String SUPPLY_REPORT_DESCRIPTION = "";
-	public static final String CLEINTS_REPORT_DESCRIPTION = "";
+	public static final String ORDERS_REPORT_DESCRIPTION = "Here as a Region Manager/CEO You can see Orders Report for certain region and date\n"
+			+ "You can choose to see the report By Quantity or By Profit, the profit report displays the profit for the machine\n"
+			+ "The Quantity Report displays how many Sales each machine made in the selected report.";
+	public static final String SUPPLY_REPORT_DESCRIPTION = "Here as a Region Manager/CEO You can see Supply Report for certain region and date\n"
+			+ "You can choose to view the chart in split or full view, and choose a machine to view the supply report for.\n"
+			+ "Each bar in the chart represents the starting and ending amount in stock for each item in the selected machine\n"
+			+ "You can also see the top 3 filled items for each month, and the items that were missed the most.";
+	public static final String CLEINTS_REPORT_DESCRIPTION = "Here as a Region Manager/CEO You can see Clients Report for certain region and date\n"
+			+ "In the sales activity bar you can see how many Users made how many Monthly Orders (for e.g : 0-2 orders were made by 50 users)\n"
+			+ "You can also see the chosen supply methods for these orders, currently displayed only pickup or machine,\n and the user status of the buyer"
+			+ "weather its Member or Registered (Remember!, Employees are Members).";
 	
 	// order
 	public static final String VIEW_CATALOG_DESCRIPTION = "In this screen you can see all the available items in store\n"

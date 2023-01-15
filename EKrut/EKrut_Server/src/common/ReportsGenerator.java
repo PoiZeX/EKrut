@@ -46,7 +46,7 @@ public class ReportsGenerator {
 	private static void generateSupplyReportForAllMachines(String month, String year) {
 
 		for (MachineEntity machine : CommonDataDBController.getMachineListFromDB()) {
-			if (!ReportsDBController.isReportExist("supply", month,  year, "", machine.getMachineId()))
+			if (!ReportsDBController.isReportExist("supply", month, year, "", machine.getMachineId()))
 				generateSupplyReportForMachineID(machine.getMachineId());
 		}
 	}
@@ -160,13 +160,15 @@ public class ReportsGenerator {
 				}
 				regionDescription.put(res.getString(3), description);
 			}
-			for (String reportKey : regionDescription.keySet()) {
+			for (String region : regionDescription.keySet()) {
+				if (ReportsDBController.isReportExist("orders", month, year, region, -1))
+					return;
 				PreparedStatement psInsert = conn.prepareStatement(
 						"insert into orders_report(description,month,year,region) " + "values(?,?,?,?)");
-				psInsert.setString(1, regionDescription.get(reportKey));
+				psInsert.setString(1, regionDescription.get(region));
 				psInsert.setString(2, month);
 				psInsert.setString(3, year);
-				psInsert.setString(4, reportKey);
+				psInsert.setString(4, region);
 				psInsert.executeUpdate();
 			}
 		} catch (SQLException e) {
@@ -194,6 +196,8 @@ public class ReportsGenerator {
 			if (con == null)
 				return;
 			for (String region : regionDetails.keySet()) {
+				if (ReportsDBController.isReportExist("clients", month, year, region, -1))
+					return;
 				String description = regionDetails.get(region).get("description");
 				String supply_methods = regionDetails.get(region).get("supply_methods");
 				String total_sales = regionDetails.get(region).get("total_sales");
@@ -227,8 +231,8 @@ public class ReportsGenerator {
 			String year) {
 		HashMap<String, ArrayList<? super Object>> allQueries = new HashMap<>();
 		String query = "SELECT m.region_name, u.role_type, COUNT(*) as amount " + "FROM orders o "
-				+ "JOIN users u ON o.user_id = u.id " + "JOIN machines m ON m.machine_id = o.machine_id "
-				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? AND (u.role_type = 'registered' OR u.role_type = 'member') "
+				+ "JOIN users u ON o.user_id = u.id JOIN machines m ON m.machine_id = o.machine_id " 
+				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ?"
 				+ "GROUP BY u.role_type, m.region_name";
 		try {
 			if (MySqlClass.getConnection() == null)
@@ -248,20 +252,15 @@ public class ReportsGenerator {
 			}
 			String userStatus = "0,0";
 			for (String region : allQueries.keySet()) {
-				while (allQueries.get(region).size() < 4)
-					allQueries.get(region).add(0);
-				switch ((String) allQueries.get(region).get(0)) {
-				case "member":
-					userStatus = String.format("%d,%d", (int) allQueries.get(region).get(1),
-							(int) allQueries.get(region).get(3));
-					break;
-				case "registered":
-					userStatus = String.format("%d,%d", (int) allQueries.get(region).get(3),
-							(int) allQueries.get(region).get(1));
-					break;
-				default:
-					break;
+				int member = 0, registered = 0;
+				ArrayList<Object> currentRes = allQueries.get(region);
+				for (int i = 0; i < currentRes.size(); i += 2) {
+					if (!currentRes.get(i).equals("registered"))
+						member += (int) currentRes.get(i + 1);
+					else
+						registered += (int) currentRes.get(i + 1);
 				}
+				userStatus = String.format("%d,%d", member, registered);
 				regionDetails.get(region).put("user_status", userStatus);
 			}
 		} catch (SQLException e) {
@@ -280,7 +279,7 @@ public class ReportsGenerator {
 			String year) {
 		HashMap<String, ArrayList<? super Object>> allQueries = new HashMap<>();
 		String query = "SELECT o.supply_method, COUNT(*) as num_orders, m.region_name "
-				+ "FROM orders o JOIN machines m ON o.machine_id = m.machine_id "
+				+ "FROM orders o JOIN users u ON o.user_id = u.id JOIN machines m ON m.machine_id = o.machine_id "
 				+ "WHERE STR_TO_DATE(buytime, '%d/%m/%Y %H:%i') BETWEEN ? AND ? "
 				+ "GROUP BY o.supply_method, m.region_name";
 		try {
@@ -383,8 +382,6 @@ public class ReportsGenerator {
 
 		for (int i = 0; i < numbersToProcess.size() - 1; i += 2) {
 			listOfPairs.add(new Pair(numbersToProcess.get(i), numbersToProcess.get(i + 1)));
-			// sb.append(String.format("%s,%s", String.valueOf(numbersToProcess.get(i)),
-			// numbersToProcess.get(i+1)));
 		}
 		// Sort by ordersAmount
 		listOfPairs.sort((o1, o2) -> o1.compareTo(o2));

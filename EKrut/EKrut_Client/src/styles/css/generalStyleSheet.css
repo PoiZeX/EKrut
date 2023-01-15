@@ -203,13 +203,13 @@
 	   
 }
 /*___________________________ report icon btn */
-.Button-report:hover{
+.button-Report:hover{
     -fx-background-color:transparent;
     -fx-border-color:#1E3D58;
     -fx-border-radius:15;
 }
 
-.button-Report:focused {
+.button-Report.pressed {
     -fx-border-color: transparent, white;
     -fx-background-color:transparent;
     -fx-border-color:#1E3D58;

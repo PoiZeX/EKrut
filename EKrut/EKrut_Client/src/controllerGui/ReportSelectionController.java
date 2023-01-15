@@ -41,9 +41,6 @@ public class ReportSelectionController implements IScreen {
 	private Label errorMsgLabel;
 
 	@FXML
-	private ToolBar reportsToolBar;
-
-	@FXML
 	private Button clientReportBtn;
 
 	@FXML
@@ -61,6 +58,7 @@ public class ReportSelectionController implements IScreen {
 	ClientController chat = HostClientController.getChat(); // define the chat for the controller
 
 	private String year, month, region;
+	private Button lastPressed = null;
 
 	/**
 	 * This method is responsible for handling the event of the 'View Report' button
@@ -93,10 +91,16 @@ public class ReportSelectionController implements IScreen {
 			}
 		}
 	}
+
 	/**
-	 * This method is used to check if the report data has been recieved from the server and to display the relevant report screen if the data is available.
-	 * @param RecievedData a boolean variable indicating whether the report data has been recieved from the server or not
-	 * 	@param screen the screen that represents the report type that the user selected*/
+	 * This method is used to check if the report data has been recieved from the
+	 * server and to display the relevant report screen if the data is available.
+	 * 
+	 * @param RecievedData a boolean variable indicating whether the report data has
+	 *                     been recieved from the server or not
+	 * @param screen       the screen that represents the report type that the user
+	 *                     selected
+	 */
 	private void checkReportData(boolean RecievedData, ScreensNamesEnum screen) {
 		while (!RecievedData) {
 			try {
@@ -125,16 +129,18 @@ public class ReportSelectionController implements IScreen {
 
 		}
 	}
-	/**
 
-	Initialize method is used to set the values for the different fields in the UI.
-	It creates an ObservableList of years from 2016 to 2023.
-	It creates an ObservableList of months from January to December.
-	It creates an ObservableList of regions from DataStore.
-	It calls setReportButtons method to set the action for each report button.
-	It sets the items for the yearItemsCmb, monthItemsCmb and regionCmb with the created ObservableLists.
-	If the connected user is a CEO, it enables the region selection otherwise it sets the region to the user's region.
-	*/
+	/**
+	 * 
+	 * Initialize method is used to set the values for the different fields in the
+	 * UI. It creates an ObservableList of years from 2016 to 2023. It creates an
+	 * ObservableList of months from January to December. It creates an
+	 * ObservableList of regions from DataStore. It calls setReportButtons method to
+	 * set the action for each report button. It sets the items for the
+	 * yearItemsCmb, monthItemsCmb and regionCmb with the created ObservableLists.
+	 * If the connected user is a CEO, it enables the region selection otherwise it
+	 * sets the region to the user's region.
+	 */
 	@Override
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
@@ -158,8 +164,10 @@ public class ReportSelectionController implements IScreen {
 		}
 
 	}
+
 	/***
-	 * validate fileds on selection for the report 
+	 * validate fileds on selection for the report
+	 * 
 	 * @return Stirng errorMsg
 	 */
 	String validateFields() {
@@ -185,36 +193,65 @@ public class ReportSelectionController implements IScreen {
 		}
 		return errorMsg;
 	}
-	/**
 
-	This method is used to set the action for each report button. It assigns a different selectedReport variable for each button.
-	supplyReportBtn sets "supplyReport", ordersReportBtn sets "ordersReport", clientReportBtn sets "clientsReport"
-	*/
+	/**
+	 * 
+	 * This method is used to set the action for each report button. It assigns a
+	 * different selectedReport variable for each button. supplyReportBtn sets
+	 * "supplyReport", ordersReportBtn sets "ordersReport", clientReportBtn sets
+	 * "clientsReport"
+	 */
 	private void setReportButtons() {
 		supplyReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = supplyReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = supplyReportBtn;
+
+				}
+				supplyReportBtn.getStyleClass().add("pressed");
 				selectedReport = "supplyReport";
+
 			}
 		});
 		ordersReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = ordersReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = ordersReportBtn;
+				}
+				ordersReportBtn.getStyleClass().add("pressed");
 				selectedReport = "ordersReport";
 			}
 		});
 		clientReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = clientReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = clientReportBtn;
+				}
+				clientReportBtn.getStyleClass().add("pressed");
 				selectedReport = "clientsReport";
 			}
 		});
 	}
-	/**
 
-	This method is used to get the selected report. It returns the selectedReport variable.
-	@return the selected report as a string
-	*/
+	/**
+	 * 
+	 * This method is used to get the selected report. It returns the selectedReport
+	 * variable.
+	 * 
+	 * @return the selected report as a string
+	 */
 	private String getSelectedReport() {
 		return this.selectedReport;
 	}
