@@ -106,7 +106,13 @@ public class ReviewOrderController implements IScreen {
 	private boolean isMember = OrderController.isMember;
 	private StringBuilder address = new StringBuilder();
 	private double totalDiscounts = 0;
-
+	/**
+	This method is used to initialize the Review Order screen.
+	It sets the cart variable to the current cart, and checks if it's a first purchase.
+	It also builds the graphical side of the order, initializes the text fields, checks and applies discounts if they exist, and checks if it's an OL/EK order (for delivery).
+	It also sets the products amount and total sum of the order entity.
+	@throws Exception in case of any error
+	*/
 	public void initialize() {
 		try {
  
@@ -122,7 +128,7 @@ public class ReviewOrderController implements IScreen {
 			// build graphical side
 			buildReviewOrder();
 
-			// initialize fields
+			// initialize fields 
 			setTextFields();
 
 			// apply discounts if exists
@@ -254,7 +260,7 @@ public class ReviewOrderController implements IScreen {
 	 * 
 	 * @throws InterruptedException
 	 */
-	private void reviewProcessManager() throws Exception {
+	private void reviewProcessManager() throws Exception {  
 		int orderId = -1;
 		String successMsg = "Yayy!\n";
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
@@ -405,7 +411,7 @@ public class ReviewOrderController implements IScreen {
 
 //			while(staySleep)
 
-	}
+	} 
 
 	/**
 	 * Checks if there are items under min amount

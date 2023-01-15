@@ -39,7 +39,7 @@ public class PopupController  implements IScreen {
 	 * initialize the screen
 	 */
 	@Override
-	public void initialize() {
+	public void initialize() { 
 		// set hidden as default
 		yesOkBtn.setVisible(false);
 		NoCancelBtn.setVisible(false);
@@ -104,21 +104,33 @@ public class PopupController  implements IScreen {
 
 	}
 
-	// this static boolean used to return an answer status
 	public static Boolean isOkPressed = null;
+	/**
 
+	This method is called when the 'Cancel' button is pressed on the window. It sets the 'isOkPressed' variable to false and closes the current window.
+	@param event The event that triggers this method.
+	*/
 	@FXML
 	void cancelAction(ActionEvent event) {
 		isOkPressed = false;
 		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
+	/**
 
+	Handles the action of pressing the OK button in the popup window.
+	Sets the value of the isOkPressed variable to true and closes the popup window.
+	@param event - the event of clicking the OK button
+	*/
 	@FXML
 	void okAction(ActionEvent event) {
 		isOkPressed = true;
 		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
-	
+	/**
+
+	This method returns the message label of the popup window
+	@return messageLabel - The label containing the message to be displayed on the popup window
+	*/
 	public Label getMsgLabel() {
 		return messageLabel;
 	}

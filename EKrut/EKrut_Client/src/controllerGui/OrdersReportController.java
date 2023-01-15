@@ -49,7 +49,12 @@ public class OrdersReportController  implements IScreen {
 
 	protected static OrderReportEntity reportDetails;
 	protected static boolean RecievedData = false;
+	/**
 
+	Initializes the controller class. This method is automatically called after the fxml file has been loaded.
+	It sets the tooltip for the help button and sets the report details label. Also it initializes the charts,
+	sets the quantityVBox to be invisible and brings the displayTypeBtn to front.
+	*/
 	@Override
 	public void initialize() {
 		helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
@@ -60,14 +65,22 @@ public class OrdersReportController  implements IScreen {
 		displayTypeBtn.toFront();
 		return;
 	}
+	/**
 
+	This method receives data from the server about the order report.
+	@param report an object of OrderReportEntity that contains the report details
+	*/
 	public static void recieveDataFromServer(OrderReportEntity report) {
 		reportDetails = report;
 		RecievedData = true;
 		return;
 	}
+	/**
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	This method initializes the charts used in the report screen.
+	The method creates a pie chart and a bar chart that display the order statistics.
+	The pie chart shows the percentage of each item in the total orders, while the bar chart shows the quantity of each item sold.
+	*/
 	private void initCharts() {
 		Map<String, Double[]> itemsMap = reportDetails.getReportsList();
 		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
@@ -81,7 +94,11 @@ public class OrdersReportController  implements IScreen {
 		pieChartOrders.setData(pieChartData);
 		pieChartOrders.setLegendVisible(false);
 	}
+	/**
 
+	Method that changes the display type of the chart from "By Quantity" to "By Profit" and vice versa.
+	@param event the event that triggers the method.
+	*/
 	@FXML
 	void changeDisplayType(ActionEvent event) {
 		String txt = !quantityVBox.isVisible() ? "By Profit" : "By Quantity";
@@ -89,7 +106,11 @@ public class OrdersReportController  implements IScreen {
 		profitVBox.setVisible(!quantityVBox.isVisible());
 		displayTypeBtn.setText(txt);
 	}
+	/**
 
+	Show the description of the Orders Report screen.
+	@param event the event that triggered the method
+	*/
     @FXML
     void showDescription(ActionEvent event) {
     	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.OrdersReport.getDescription());	

@@ -39,9 +39,12 @@ public class PaymentPopupController  implements IScreen {
 				});
 			});
 		});
-
 	}
-
+	/**
+	Method to set the text of the ccnumAndSum label with the provided credit card number and total sum.
+	@param ccNumber the credit card number to be displayed on the label
+	@param totalSum the total sum to be displayed on the label
+	*/
 	public void setLabel(String ccNumber, double totalSum) {
 		ccnumAndSum.setText(String.format("Credit card number: %s, Total sum: %.2f₪", ccNumber, totalSum));
 	}

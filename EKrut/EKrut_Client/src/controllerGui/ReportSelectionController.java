@@ -124,7 +124,16 @@ public class ReportSelectionController implements IScreen {
 
 		}
 	}
+	/**
 
+	Initialize method is used to set the values for the different fields in the UI.
+	It creates an ObservableList of years from 2016 to 2023.
+	It creates an ObservableList of months from January to December.
+	It creates an ObservableList of regions from DataStore.
+	It calls setReportButtons method to set the action for each report button.
+	It sets the items for the yearItemsCmb, monthItemsCmb and regionCmb with the created ObservableLists.
+	If the connected user is a CEO, it enables the region selection otherwise it sets the region to the user's region.
+	*/
 	@Override
 	public void initialize() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
@@ -148,10 +157,10 @@ public class ReportSelectionController implements IScreen {
 		}
 
 	}
-/***
- * validate fileds on selection for the report 
- * @return Stirng errorMsg
- */
+	/***
+	 * validate fileds on selection for the report 
+	 * @return Stirng errorMsg
+	 */
 	String validateFields() {
 		String errorMsg = "";
 		monthItemsCmb.setStyle("-fx-border-color: none;");
@@ -175,7 +184,11 @@ public class ReportSelectionController implements IScreen {
 		}
 		return errorMsg;
 	}
+	/**
 
+	This method is used to set the action for each report button. It assigns a different selectedReport variable for each button.
+	supplyReportBtn sets "supplyReport", ordersReportBtn sets "ordersReport", clientReportBtn sets "clientsReport"
+	*/
 	private void setReportButtons() {
 		supplyReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -196,7 +209,11 @@ public class ReportSelectionController implements IScreen {
 			}
 		});
 	}
+	/**
 
+	This method is used to get the selected report. It returns the selectedReport variable.
+	@return the selected report as a string
+	*/
 	private String getSelectedReport() {
 		return this.selectedReport;
 	}

@@ -30,13 +30,15 @@ public class PersonalMessagesController  implements IScreen {
 	private Label messageLabel;
 
 	public static ObservableList<PersonalMessageEntity> msgsList = FXCollections.observableArrayList();
-
+	/**
+	* This method is used to initialize the components of the view and set up the message table. It requests the personal messages, sets up the table and sets wrapping property of message label to true.
+	*/
 	@Override
 	public void initialize() {
 		requestPersonalMessages();
 		setupTable();
 		messageLabel.setWrapText(true); 
-	}
+	} 
 
 	/**
 	 * Setup the columns of table with listeners
@@ -53,17 +55,6 @@ public class PersonalMessagesController  implements IScreen {
 		messageTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {				
 				messageLabel.setText(newSelection.getMessage().toString()); // sets the new message
-				String originalMsg = newSelection.getMessage().toString();
-				String str[] = newSelection.getMessage().toString().split("\n");
-//				if (str.length > 1)
-//					newSelection.setMessage(str[0] + "...");
-//				else {
-//					if (originalMsg.length() > 256)
-//						newSelection.setMessage(originalMsg.substring(0, 256));
-//					else
-//						newSelection.setMessage(str[0]);
-//				}
-				// messageTable.getSelectionModel().clearSelection();
 			}
 		});
 
@@ -76,7 +67,11 @@ public class PersonalMessagesController  implements IScreen {
 		Message message = new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser);
 		HostClientController.getChat().acceptObj(message);
 	}
-	
+	/**
+
+	Sets the personal message to be displayed in the chat.
+	@param message the message to be displayed
+	*/
 	public static void setPersonalMessages(Object message) {
 		HostClientController.getChat().acceptObj(message);
 	}

@@ -78,7 +78,7 @@ public class SalesManagementController  implements IScreen {
 	 */
    	@Override
 	public void initialize()  {
-   		try {
+   		try { 
     	if (sales != null)
     		sales.clear();
     	String region =NavigationStoreController.connectedUser.getRegion();
