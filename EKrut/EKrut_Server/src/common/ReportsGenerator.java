@@ -36,21 +36,22 @@ public class ReportsGenerator {
 			generateOrdersReport(month, year);
 			break;
 		case "supply":
-			generateSupplyReportsForAllMachines();
+			generateSupplyReportForAllMachines(month, year);
 			break;
 		}
 	}
 
 	/**
-	 * Manager for generate all machines supply report
+	 * generate supply report for all machines if not exists
 	 */
-	private static void generateSupplyReportsForAllMachines() {
-		for(MachineEntity machine : CommonDataDBController.getMachineListFromDB())
-		{
-			generateSupplyReportForMachineID(machine.getMachineId());
+	private static void generateSupplyReportForAllMachines(String month, String year) {
+
+		for (MachineEntity machine : CommonDataDBController.getMachineListFromDB()) {
+			if (!ReportsDBController.isReportExist("supply", month,  year, "", machine.getMachineId()))
+				generateSupplyReportForMachineID(machine.getMachineId());
 		}
 	}
-	
+
 	/**
 	 * Run a query that generate and insert report for each machine
 	 * 

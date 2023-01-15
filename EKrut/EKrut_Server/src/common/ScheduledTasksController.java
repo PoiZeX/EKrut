@@ -82,23 +82,15 @@ public class ScheduledTasksController {
 		// specific case
 		if (month.equals("01")) {
 			year = String.valueOf(Integer.parseInt(year) - 1); // for example 01-01-2020, we need to calculate for last
-			month = "12";								// year (01-12-2019 -> 31-12-2019)
-		}
-		else {
+																// year (01-12-2019 -> 31-12-2019)
+			month = "12";
+		} else {
 			month = String.valueOf(Integer.parseInt(month) - 1);
 		}
-																
-		// for every region -> check if there are reports for this date
-		for (String region : CommonDataDBController.getRegionsListFromDB()) {
-			if (!ReportsDBController.isReportExist("orders", month, year, region, -1))
-				ReportsGenerator.generateReportsDB("orders", month, year); // what about region?
 
-			if (!ReportsDBController.isReportExist("clients", month, year, region, -1))
-				ReportsGenerator.generateReportsDB("clients", month, year); // what about region?
-		}
-
-		if (!ReportsDBController.isReportExist("supply", month, year, "", -1))
-			ReportsGenerator.generateReportsDB("supply", month, year);
+		String[] reportTypes = new String[] { "orders", "clients", "supply" };
+		for (String reportType : reportTypes)
+			ReportsGenerator.generateReportsDB(reportType, month, year);
 
 		// make payment for all members (as part of the terms)
 		OrderDBController.takeMonthlyMoneyScheduledManager(year, month);
