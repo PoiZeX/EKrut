@@ -29,6 +29,7 @@ public class MessageHandler {
 	public static void Handle(Message msg, ConnectionToClient client) throws IOException {
 		TaskType task = msg.getTask();
 		Object obj = msg.getObject();
+		ItemInMachineDBController itemInMachineDBController = new ItemInMachineDBController();
 		System.out.println("Message received: " + ((Message) msg).getTask().toString() + " from " + client);
 		switch (task) {
 		case ClientConnect:
@@ -114,10 +115,10 @@ public class MessageHandler {
 			MachineDBController.getMachinesFromDB((String[]) obj, client);
 			break;
 		case RequestItemsWithMinAmount:
-			SupplyManagementDBController.getMachineItemsWithMinAmount((int) obj, client);
+			itemInMachineDBController.getMachineItemsWithMinAmount((int) obj, client);
 			break;
 		case RequestProssecedItemsInMachine:
-			SupplyManagementDBController.getProcessedMachineItems((int[]) obj, client);
+			itemInMachineDBController.getProcessedMachineItems((int[]) obj, client);
 			break;
 		case RequestUpdateMachineMinAmount:
 			MachineDBController.updateMachineMinAmount((MachineEntity) obj, client);
@@ -132,11 +133,12 @@ public class MessageHandler {
 			UsersManagementDBController.getSupplyWorkers(client);
 			break;
 		case RequestAllItemsNameById:
-			client.sendToClient(new Message(TaskType.ReceiveAllItemsNameById ,ItemDBController.getAllItemsNameById((ArrayList<Integer>)obj)));
+			client.sendToClient(new Message(TaskType.ReceiveAllItemsNameById,
+					ItemDBController.getAllItemsNameById((ArrayList<Integer>) obj)));
 			break;
 //-------------------------------------------ORDERES-------------------------------------------------------			
 		case RequestItemsInMachine:
-			ItemInMachineDBController.getMachineItems((int) obj, client);
+			itemInMachineDBController.getMachineItems((int) obj, client);
 			break;
 		case isMemberFirstPurchase:
 			OrderDBController.isMemberFirstPurchase((UserEntity) obj, client);

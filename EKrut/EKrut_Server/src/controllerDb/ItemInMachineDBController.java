@@ -26,7 +26,7 @@ public class ItemInMachineDBController {
 	 * @param machineId
 	 * @param client
 	 */
-	public static void getMachineItems(int machineId, ConnectionToClient client) {
+	public void getMachineItems(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
 		try {
 			ps = con.prepareStatement(
@@ -40,34 +40,84 @@ public class ItemInMachineDBController {
 		}
 
 	}
+
+	/*----------------------------------GETDATA----------------------------*/
+
+	/**
+	 * get machine items according to minimum amount
+	 * 
+	 * @param machineId
+	 * @param client
+	 */
+	public void getMachineItemsWithMinAmount(int machineId, ConnectionToClient client) {
+		PreparedStatement ps;
+		try {
+			int minAmount = MachineDBController.getMachineMinAmount(machineId);
+			ps = con.prepareStatement("SELECT  ekrut.item_in_machine.*, ekrut.items.name "
+					+ " FROM  ekrut.item_in_machine, ekrut.items"
+					+ " WHERE item_in_machine.machine_id=? AND (item_in_machine.current_amount < ? OR  item_in_machine.call_status!=?) AND item_in_machine.item_id=items.item_id ;");
+			ps.setInt(1, machineId);
+			ps.setInt(2, minAmount);
+			ps.setString(3, ItemInMachineEntity.Call_Status.NotOpened.toString());
+
+			handleGetItems(ps.executeQuery(), client);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * get items which call status = processed and they are opened for the user
+	 * 
+	 * @param arr
+	 * @param client
+	 */
+	public void getProcessedMachineItems(int[] arr, ConnectionToClient client) {
+		int machineId = arr[0];
+		int userId = arr[1];
+		int minAmount = -1;
+		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
+		try {
+			minAmount = MachineDBController.getMachineMinAmount(machineId);
+
+			PreparedStatement ps = con.prepareStatement("SELECT  item_in_machine.*, items.name "
+					+ " FROM  ekrut.item_in_machine, ekrut.items"
+					+ " WHERE item_in_machine.machine_id=? AND  item_in_machine.call_status=? AND item_in_machine.worker_id=? AND  item_in_machine.item_id=items.item_id   ;");
+			ps.setInt(1, machineId);
+			ps.setString(2, ItemInMachineEntity.Call_Status.Processed.toString());
+			ps.setInt(3, userId);
+			handleGetItems(ps.executeQuery(), client);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * handle the process of items and send to client
 	 * 
 	 * @param res
 	 * @param client
 	 */
-	protected static void handleGetItems(ResultSet res, ConnectionToClient client) {
+	protected void handleGetItems(ResultSet res, ConnectionToClient client) {
 		ItemInMachineEntity item;
 
 		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
 		try {
 			while (res.next()) {
-				// 1 2 3 4 5 6 7 8 9 10
-				// machine_id, item_id, current_amount, call_status, times_under_min, worker_id,
-				// item_id, name, price, item_img_name
-
 				if (res.getMetaData().getColumnCount() >= 9) {
 					item = new ItemInMachineEntity(res.getInt(1), res.getInt(2), res.getInt(3),
 							ItemInMachineEntity.Call_Status.valueOf(res.getString(4)), res.getInt(5), res.getInt(6),
 							res.getString(8), res.getDouble(9), res.getString(10));
-
-					URL rsrc = ItemDBController.class.getClass()
-							.getResource("/styles/products/" + item.getItemImg().getImgName());
-					System.out.println(rsrc.getPath());
-					InputStream imgResource = ItemDBController.class.getClass()
-							.getResource("/styles/products/" + item.getItemImg().getImgName()).openStream();
-					byte[] mybytearray = new byte[(int) imgResource.available()];
-					BufferedInputStream bis = new BufferedInputStream(imgResource);
+					InputStream input = null;
+					try {
+						input = this.getClass()
+								.getResourceAsStream("/styles/products/" + item.getItemImg().getImgName());
+					} catch (Exception e) {
+					}
+					byte[] mybytearray = new byte[(int) input.available()];
+					BufferedInputStream bis = new BufferedInputStream(input);
 					item.getItemImg().initArray(mybytearray.length);
 					item.getItemImg().setSize(mybytearray.length);
 					bis.read(item.getItemImg().getMybytearray(), 0, mybytearray.length);
@@ -87,6 +137,7 @@ public class ItemInMachineDBController {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Roll back when update failed
 	 * 
@@ -172,12 +223,13 @@ public class ItemInMachineDBController {
 
 			// iterate over requested items to decrease
 			for (ItemInMachineEntity item : itemsInMachine.keySet()) {
-				ItemInMachineEntity updatedItem = null;  // set to null every iteration
+				ItemInMachineEntity updatedItem = null; // set to null every iteration
 				updatedItem = decreaseSingleItemAmount(item, itemsInMachine.get(item));
-				
+
 				// if the returned item wasn't null, there is an error
-				if (updatedItem != null) { 
-					missingItems += String.format("%s -> your order: %d, current amount: %d\n", updatedItem.getName(), itemsInMachine.get(item), item.getCurrentAmount());
+				if (updatedItem != null) {
+					missingItems += String.format("%s -> your order: %d, current amount: %d\n", updatedItem.getName(),
+							itemsInMachine.get(item), item.getCurrentAmount());
 					increaseRollBack(itemsInMachine, rollBackItems);
 					client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, missingItems));
 					return;
@@ -187,7 +239,7 @@ public class ItemInMachineDBController {
 			}
 			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, missingItems));
 		} catch (Exception e) {
-			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, e.getStackTrace()));			
+			client.sendToClient(new Message(TaskType.ReviewOrderServerAnswer, e.getStackTrace()));
 		}
 	}
 
@@ -208,9 +260,9 @@ public class ItemInMachineDBController {
 			ps.setInt(3, item.getId());
 			ps.setInt(4, amountToDecrease);
 
-			if(ps.executeUpdate() == 0)  // update failed
+			if (ps.executeUpdate() == 0) // update failed
 				throw new SQLException();
-			
+
 		} catch (SQLException e) {
 			item.setCurrentAmount(getItemInMachineQuantity(item)); // get the most updated amount
 			return item;
@@ -254,6 +306,7 @@ public class ItemInMachineDBController {
 
 	/**
 	 * Increase the times that item was under the minimum amount
+	 * 
 	 * @param machineAnditemsId
 	 * @param client
 	 */
@@ -274,12 +327,14 @@ public class ItemInMachineDBController {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 *
 	 * @param item an instance of ItemInMachineEntity which needs to be updated
 	 *
-	 *The method updateCallStatus updates the call status and worker_id of the item in the machine table in the database. 
-	 *It uses a prepared statement to update the values in the database.
+	 *             The method updateCallStatus updates the call status and worker_id
+	 *             of the item in the machine table in the database. It uses a
+	 *             prepared statement to update the values in the database.
 	 */
 	public static void updateCallStatus(ItemInMachineEntity item) {
 		try {

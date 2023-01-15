@@ -56,9 +56,6 @@ public class ItemDBController {
 				try {
 					input = this.getClass().getResourceAsStream("/styles/products/" + itemEntity.getItemImg().getImgName());
 				} catch (Exception e) {}
-//				String filePath = jarPath + "/styles/products/" + itemEntity.getItemImg().getImgName();
-//				System.out.println(filePath);
-//				FileInputStream imgResource = new FileInputStream(new File(filePath));
 				byte[] mybytearray = new byte[(int) input.available()];
 				BufferedInputStream bis = new BufferedInputStream(input);
 				itemEntity.getItemImg().initArray(mybytearray.length);
