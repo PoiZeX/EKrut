@@ -159,7 +159,7 @@ public class DeliveryManagementController  implements IScreen {
 		ObservableList<DeliveryStatusEnum> statusLst = FXCollections.observableArrayList();
 		statusLst.addAll(DeliveryStatusEnum.values());
 		deliveryStatusCol.setCellFactory(ComboBoxTableCell.forTableColumn(statusLst));
-		
+		colorTableRows(deliveryTable);
 		// Handle delivery status edit
 		deliveryStatusCol.setOnEditCommit(new EventHandler<CellEditEvent<DeliveryEntity, DeliveryStatusEnum>>() {
 			@Override
@@ -210,6 +210,25 @@ public class DeliveryManagementController  implements IScreen {
 			}
 		});
 	}
+
+	/***
+	 * color tables rows by the cuurent amount and the status
+	 */
+	private void colorTableRows(TableView<DeliveryEntity> table) {
+		table.setRowFactory(tv -> new TableRow<DeliveryEntity>() {
+			@Override
+			protected void updateItem(DeliveryEntity delivery, boolean empty) {
+				super.updateItem(delivery, empty);
+				if (delivery == null)
+					setStyle("");
+				else if (delivery.getCustomerStatus().equals(CustomerStatusEnum.APPROVED))
+					setStyle("-fx-background-color: #7cf28f;");
+				else
+					setStyle("");
+			}
+		});
+	}
+
 	/**
 	 * calculae the estimated delivery time according to the current time:
 	 *  Between 4:00 to 20:00 the estimated is within loadingTime+distance hours. 
