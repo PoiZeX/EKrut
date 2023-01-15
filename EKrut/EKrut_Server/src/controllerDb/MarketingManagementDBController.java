@@ -25,6 +25,7 @@ import ocsf.server.ConnectionToClient;
  *
  */
 public class MarketingManagementDBController {
+	private static Connection con = MySqlClass.getConnection();
 	/*
 	 * This method is for inserting a new Sale Entity into the database.
 	 * @param SaleEntity The SaleEntity object which contains all the details of the sale
@@ -33,7 +34,6 @@ public class MarketingManagementDBController {
 	public static void insertSaleEntities(SaleEntity saleEntity, ConnectionToClient client) {
 		
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 				if(isSaleExist(saleEntity)) {
@@ -62,7 +62,6 @@ public class MarketingManagementDBController {
 	public static void updateSaleEntities(ArrayList<SaleEntity> saleLst, ConnectionToClient client) {
 		
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			for (SaleEntity saleEntity : saleLst) {
@@ -87,7 +86,6 @@ public class MarketingManagementDBController {
 		SaleEntity saleEntity;
 		SaleStatus saleStatus;
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales WHERE region=?;");
@@ -113,7 +111,6 @@ public class MarketingManagementDBController {
 	public static Boolean isSaleExist(SaleEntity saleEntity) {
 	
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return false;
 			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.sales WHERE region=? And sale_type=? And days=?"
@@ -151,7 +148,6 @@ public class MarketingManagementDBController {
 		Date date = new Date();
 		String day = dayFormat.format(date);
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			// CONTAINS (days, '<yourSubstring>');

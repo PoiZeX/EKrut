@@ -77,11 +77,10 @@ public class MachineDBController {
 	private static ArrayList<MachineEntity> getMachineListForSupplyUpdateFromDB(int workerId) {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return machines;
-			Connection conn = MySqlClass.getConnection();
 
-			PreparedStatement ps = conn.prepareStatement("SELECT  ekrut.machines.* "
+			PreparedStatement ps = con.prepareStatement("SELECT  ekrut.machines.* "
 					+ "FROM ekrut.machines, ekrut.item_in_machine "
 					+ "WHERE item_in_machine.call_status=(?) AND worker_id=(?) AND machines.machine_id=item_in_machine.machine_id "
 					+ " GROUP BY machine_id;");
@@ -107,11 +106,10 @@ public class MachineDBController {
 	private static ArrayList<MachineEntity> getMachineListForSupplyRegionMFromDB(String regionName) {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return machines;
-			Connection conn = MySqlClass.getConnection();
 
-			PreparedStatement ps = conn.prepareStatement(
+			PreparedStatement ps = con.prepareStatement(
 					"SELECT  ekrut.machines.* " + "FROM ekrut.machines " + "WHERE machines.region_name=(?) ;");
 			ps.setString(1, regionName);
 			ResultSet res = ps.executeQuery();

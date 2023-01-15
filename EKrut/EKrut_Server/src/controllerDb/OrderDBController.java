@@ -19,7 +19,7 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class OrderDBController {
-
+	private static Connection con = MySqlClass.getConnection();
 	/**
 	 * Checks and sends an answer if this is the first purchase of a member
 	 * 
@@ -28,10 +28,9 @@ public class OrderDBController {
 	 */
 	public static void isMemberFirstPurchase(UserEntity member, ConnectionToClient client) {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM orders WHERE user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE user_id=?;");
 			ps.setInt(1, member.getId());
 			ResultSet res = ps.executeQuery();
 
@@ -54,7 +53,6 @@ public class OrderDBController {
 	public static void insertOrderEntity(OrderEntity entity, ConnectionToClient client) {
 
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -105,7 +103,6 @@ public class OrderDBController {
 		ArrayList<int[]> ordersToReturn = new ArrayList<int[]>();
 
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return null;
 
@@ -140,7 +137,6 @@ public class OrderDBController {
 	 */
 	private static boolean takeMoneyOnOrders(String year, String month) throws SQLException {
 		boolean isAtLeastOneFound = false;
-		Connection con = MySqlClass.getConnection();
 		if (con == null)
 			return false;
 		PreparedStatement ps = con.prepareStatement("SELECT *, SUM(t.total_sum) AS final_sum FROM("
@@ -190,7 +186,6 @@ public class OrderDBController {
 	 * @return
 	 */
 	private static void updatePaymentStatus(String year, String month) throws SQLException {
-		Connection con = MySqlClass.getConnection();
 		if (con == null)
 			return;
 		// get all orders

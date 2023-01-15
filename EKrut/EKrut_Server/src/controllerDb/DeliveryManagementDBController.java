@@ -14,12 +14,11 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class DeliveryManagementDBController {
-	
+	private static Connection con = MySqlClass.getConnection();
 	/**update estimates delivery time, delivery status and customer status in DB*/
 	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 
@@ -44,7 +43,6 @@ public class DeliveryManagementDBController {
 	 */
 	public static void insertDeliveryEntity(DeliveryEntity deliveryEntity, ConnectionToClient client) {
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement ps=con.prepareStatement("INSERT INTO ekrut.deliveries (order_id, region,address, estimated_time,deilvery_status,customer_status) "
@@ -78,7 +76,6 @@ public class DeliveryManagementDBController {
 		DeliveryEntity deliveryEntity;
 		ArrayList<DeliveryEntity> deliveries=new ArrayList<DeliveryEntity>();
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement ps=con.prepareStatement("SELECT * FROM ekrut.deliveries WHERE deilvery_status!='done' And region=?;");
@@ -106,7 +103,6 @@ public class DeliveryManagementDBController {
 	public static void getDelivery(String[] details, ConnectionToClient client) {
 		DeliveryEntity deliveryEntity=null;
 		try {
-			Connection con = MySqlClass.getConnection();
 			if (con == null)
 				return;
 			PreparedStatement ps=con.prepareStatement("SELECT ekrut.deliveries.* "

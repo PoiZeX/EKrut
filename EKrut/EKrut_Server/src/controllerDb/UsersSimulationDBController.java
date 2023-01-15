@@ -16,6 +16,7 @@ import common.RolesEnum;
 import mysql.MySqlClass;
 
 public class UsersSimulationDBController {
+	private static Connection con = MySqlClass.getConnection();
 	/**
 	 * Add all tuples to users table
 	 * 
@@ -49,9 +50,9 @@ public class UsersSimulationDBController {
 	 */
 	private static boolean insertSingleTuple(String[] tuple) throws SQLException {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return false;
-			Connection conn = MySqlClass.getConnection();
+
 			boolean isNotWorker = true;
 			// validate data
 			String validateResult = isValidTuple(tuple);
@@ -60,7 +61,7 @@ public class UsersSimulationDBController {
 
 			if (!tuple[8].toLowerCase().equals("user"))
 				isNotWorker = false;
-			PreparedStatement ps = conn.prepareStatement("insert INTO ekrut.users "
+			PreparedStatement ps = con.prepareStatement("insert INTO ekrut.users "
 					+ "(`id_number`, `username`, `password`, `first_name`, `last_name`, `email`, `phone_number`, `cc_number`, `region`, `role_type`, `logged_in`, `is_not_approved`) "
 					+ "VALUES" + "(?,?,?,?,?,?,?,?,?,?,?,?);");
 			// ps.setBoolean(1, Boolean.parseBoolean(tuple[0])); // id AutoInc
@@ -148,11 +149,11 @@ public class UsersSimulationDBController {
 	*/
 	public static void rollBackImport(ArrayList<String[]> res) {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return;
-			Connection conn = MySqlClass.getConnection();
+			Connection con = MySqlClass.getConnection();
 			for (String[] user : res) {
-				PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id_number = ?");
+				PreparedStatement ps = con.prepareStatement("DELETE FROM users WHERE id_number = ?");
 				ps.setString(1, user[0]); // id_number
 				ps.execute();
 			}

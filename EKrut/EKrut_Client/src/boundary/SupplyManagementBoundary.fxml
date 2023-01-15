@@ -12,11 +12,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyManagementController">
 
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
@@ -61,37 +60,16 @@
           <RowConstraints fillHeight="false" maxHeight="438.0" minHeight="8.0" prefHeight="438.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="331.0" prefWidth="439.0" styleClass="GridPane" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="TOP">
-               <children>
-                  <Label alignment="CENTER" layoutX="1.0" prefHeight="27.0" prefWidth="435.0" style="-fx-font-family: calibri; -fx-font-size: 18;" text="Not opened " textFill="#c32828">
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                     <font>
-                        <Font name="Calibri" size="12.0" />
-                     </font>
-                  </Label>
-               </children>
-               <GridPane.margin>
-                  <Insets top="38.0" />
-               </GridPane.margin>
-            </Pane>
-            <GridPane prefHeight="406.0" prefWidth="443.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
+            <GridPane prefHeight="397.0" prefWidth="443.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                  <ColumnConstraints />
-                  <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
-                  <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="310.0" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
-                  <RowConstraints />
+                  <RowConstraints maxHeight="333.6000122070312" minHeight="10.0" prefHeight="331.9999755859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="86.39999999999998" minHeight="10.0" prefHeight="64.80002441406248" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TableView fx:id="supplyMangmentTbl" editable="true" prefHeight="310.0" prefWidth="443.0" styleClass="column-header" GridPane.halignment="CENTER">
+                  <TableView fx:id="supplyMangmentTbl" editable="true" prefHeight="310.0" prefWidth="443.0" styleClass="column-header">
                     <columns>
                       <TableColumn fx:id="itemIdCol" prefWidth="45.0" text="item id" />
                         <TableColumn fx:id="itemNameCol" prefWidth="130.0" text="item name" />
@@ -124,7 +102,7 @@
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../styles/icons/010-minus.png" />
+                                    <Image url="@../styles/icons/trash.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -133,9 +111,6 @@
                            </font>
                         </Button>
                      </children>
-                     <GridPane.margin>
-                        <Insets top="50.0" />
-                     </GridPane.margin>
                   </GridPane>
                </children>
             </GridPane>
@@ -205,18 +180,6 @@
                         <Insets bottom="10.0" />
                      </GridPane.margin>
                   </GridPane>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="251.0" prefWidth="413.0" styleClass="GridPane" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="CENTER">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="413.0" style="-fx-font-family: calibri; -fx-font-size: 18;" text="Prosseced \ Completed calls" textAlignment="CENTER" textFill="#c32828">
-                           <padding>
-                              <Insets bottom="5.0" />
-                           </padding>
-                           <font>
-                              <Font name="Calibri" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
                   <TableView fx:id="opencallsTbl" prefHeight="223.0" prefWidth="413.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <columns>
                       <TableColumn fx:id="itemIdCol1" prefWidth="45.0" text="item id" />
@@ -226,6 +189,14 @@
                         <TableColumn fx:id="workerCol1" prefWidth="100.0" text="Worker" />
                     </columns>
                   </TableView>
+                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="413.0" style="-fx-font-family: calibri; -fx-font-size: 18;" text="Prosseced \ Completed calls" textAlignment="CENTER" textFill="#2943c2" GridPane.rowIndex="1">
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </GridPane>
             <GridPane prefHeight="54.0" prefWidth="404.0" styleClass="GridPaneChild">
@@ -259,6 +230,14 @@
                   </ComboBox>
                </children>
             </GridPane>
+            <Label alignment="CENTER" prefHeight="27.0" prefWidth="435.0" style="-fx-font-family: calibri; -fx-font-size: 18;" text="Not opened " textFill="#2943c2" GridPane.columnIndex="1">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri" size="12.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
    </center>

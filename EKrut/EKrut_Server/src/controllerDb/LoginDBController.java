@@ -16,7 +16,7 @@ import ocsf.server.ConnectionToClient;
 public class LoginDBController {
 
 	private static String username, password;
-
+	private static Connection con = MySqlClass.getConnection();
 	/**
 	 * Parse the string array into username and password
 	 * 
@@ -59,10 +59,9 @@ public class LoginDBController {
 	protected static UserEntity getUserFromDB() {
 		UserEntity user = new UserEntity();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return user;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE username=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM ekrut.users WHERE username=?;");
 			ps.setString(1, username);
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
@@ -85,10 +84,9 @@ public class LoginDBController {
 	*/
 	public static void setUserLoggedIn(UserEntity user) {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE ekrut.users SET logged_in=? WHERE username=?;");
+			PreparedStatement ps = con.prepareStatement("UPDATE ekrut.users SET logged_in=? WHERE username=?;");
 			ps.setBoolean(1, user.isLogged_in());
 			ps.setString(2, user.getUsername());
 			ps.executeUpdate();
