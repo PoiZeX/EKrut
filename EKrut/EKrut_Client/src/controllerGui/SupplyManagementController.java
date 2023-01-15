@@ -121,7 +121,13 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 	private UserEntity supplyworker;
 	private static String region;
 	public static boolean recievedData = false;
+	/**
 
+	This method initializes the GUI by setting the region to that of the connected user, initializing the array arrStr, and setting the recievedData flag to false.
+	It then sends a message to the chat object with a request for a list of machines in the user's region, and sets up the combo box with the data received.
+	It also sends a message to the chat object with a request for a list of supply workers and sets up the combo box with the data received.
+	@throws Exception if an error occurs while initializing the GUI.
+	*/
 	@Override
 	public void initialize() {
 		try { 
@@ -340,8 +346,14 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 		return;
 
 	}
+	/**
 
-	@SuppressWarnings("unchecked")
+	This method sets the cell value factories for the columns of the table displaying ItemInMachineEntity objects.
+	@param idCol The TableColumn for the item ID.
+	@param nameCol The TableColumn for the item name.
+	@param currentAmountCol The TableColumn for the current amount of the item in the machine.
+	@param stsCol The TableColumn for the call status of the item in the machine.
+	*/
 	private void setFactoryCols(TableColumn<ItemInMachineEntity, Integer> idCol,
 			TableColumn<ItemInMachineEntity, String> nameCol,
 			TableColumn<ItemInMachineEntity, Integer> currentAmountCol,
@@ -359,7 +371,6 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 	/***
 	 * set columns for table for the opened calls table
 	 */
-	@SuppressWarnings("unchecked")
 	private void setFactoryColsForOpened() {
 		setFactoryCols(itemIdCol1, itemNameCol1, currentAmountCol1, callStatusCol1);
 		workerCol1.setCellValueFactory((Callback) new PropertyValueFactory<ItemInMachineEntity, Integer>("workerId"));
@@ -489,7 +500,13 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 			this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			this.setEditable(true);
 		}
+		/**
 
+		This method updates the item in a table cell for a checkbox.
+		It sets the checkbox's alignment to center, selects the checkbox if the item is true, sets the cell's alignment to center, and sets the cell's graphic to the checkbox.
+		@param item the Boolean value of the checkbox, whether it is selected or not
+		@param empty a boolean indicating if the cell is empty or not
+		*/
 		@Override
 		public void updateItem(Boolean item, boolean empty) {
 			super.updateItem(item, empty);

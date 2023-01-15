@@ -2,8 +2,6 @@ package controllerGui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -81,7 +79,13 @@ public class HostClientController implements IScreen {
 		}
 
 	}
+	/**
 
+	The start method is responsible for setting the current screen in the Navigation Store to HostClient and checking if a machine id has been provided.
+	If no machine id has been provided, a warning message is displayed to the user.
+	@param primaryStage The primary stage of the application.
+	@throws Exception
+	*/
 	public void start(Stage primaryStage) throws Exception {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HostClient);
 		if (AppConfig.MACHINE_ID <= 0)
@@ -94,7 +98,11 @@ public class HostClientController implements IScreen {
 	public void initialize() {
 
 	}
+	/**
 
+	Returns the current instance of the ClientController.
+	@return The current instance of the ClientController.
+	*/
 	public static ClientController getChat() {
 		return chat;
 	}
