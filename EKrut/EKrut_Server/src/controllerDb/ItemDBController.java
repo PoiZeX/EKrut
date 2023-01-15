@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,6 +55,9 @@ public class ItemDBController {
 
 				InputStream file = ItemDBController.class.getClass()
 						.getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
+				URL rsrc = ItemDBController.class.getClass()
+						.getResource("/products/" + itemEntity.getItemImg().getImgName());
+				System.out.println(rsrc.getPath());
 				byte[] mybytearray = new byte[(int) file.available()];
 				BufferedInputStream bis = new BufferedInputStream(file);
 				itemEntity.getItemImg().initArray(mybytearray.length);
