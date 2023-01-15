@@ -203,13 +203,13 @@ public class ReviewOrderController implements IScreen {
 	private void rightGridHandle() {
 		if (!OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery")) {
 			rightGridPane.getChildren().clear();
-			Image image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
+			Image image = new Image(getClass().getResourceAsStream("/styles/images/homerVending.gif"));
 			ImageView imageView = new ImageView(image);
 			imageView.setFitHeight(350);
 			imageView.setFitWidth(300);
 			rightGridPane.add(imageView, 0, 2);
 			GridPane.setColumnSpan(imageView, 2);
-			GridPane.setRowSpan(imageView, 2);
+			GridPane.setRowSpan(imageView, 3);
 		}
 
 	}
