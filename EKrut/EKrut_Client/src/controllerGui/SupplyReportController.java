@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -197,6 +198,7 @@ public class SupplyReportController implements IScreen {
 			Tooltip.install(node, new TooltipSetter(itemsNames.get(i)).getTooltip());
 			i++;
 		}
+	    pieChart.setLegendSide(Side.BOTTOM);
 
 		// set pieChart
 		pieChart.setData(list);

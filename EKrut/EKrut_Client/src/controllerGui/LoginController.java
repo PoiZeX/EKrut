@@ -48,9 +48,10 @@ public class LoginController implements IScreen {
 	private Button EKTLoginBtn;
 
 	private static boolean isEKTpressed = false;
+
 	@Override
 	public void initialize() {
-		
+
 	}
 
 	public LoginController() {
@@ -173,7 +174,8 @@ public class LoginController implements IScreen {
 			return true;
 
 		// show popup message for error
-		CommonFunctions.createPopup(PopupTypeEnum.Error, errorMsg.toString());
+		if (!isServiceEnable)
+			CommonFunctions.createPopup(PopupTypeEnum.Error, errorMsg.toString());
 		return false;
 
 	}
