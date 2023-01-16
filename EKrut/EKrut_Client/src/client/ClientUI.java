@@ -15,7 +15,15 @@ import controllerGui.LoginController;
  *
  */
 public class ClientUI extends Application {
+	/**
 
+	The main method of the application, it sets the system configuration and machine ID based on the command line arguments passed in.
+	It also adds a shutdown hook to call the ExitHandler method of NavigationStoreController when the application is closed.
+	If no arguments are passed, the system configuration is set to "OL" and the machine ID is ignored.
+	The launch method is called to start the application.
+	@param args command line arguments passed to the application
+	@throws Exception if there is an error while launching the application
+	*/
 	public static void main(String[] args) throws Exception {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			NavigationStoreController.ExitHandler(true);
@@ -47,7 +55,14 @@ public class ClientUI extends Application {
 		// if args were not inserted - use default
 		launch(args);
 	}
+	/**
 
+	This method starts the application by creating a new HostClientController object and calling its start method, passing the primary stage as a parameter.
+
+	@param primaryStage the primary stage of the application
+
+	@throws Exception if there is any error while starting the application
+	*/
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		HostClientController aFrame = new HostClientController();

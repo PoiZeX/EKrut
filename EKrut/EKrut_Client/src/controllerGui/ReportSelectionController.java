@@ -69,8 +69,11 @@ public class ReportSelectionController implements IScreen {
 	 */
 	@FXML
 	void viewReport(ActionEvent event) {
-		String error = validateFields();
+		String error = validateFields(); 
 		errorMsgLabel.setText(error);
+		///
+		error = "";
+		///
 		if (error.equals("")) {
 			month = monthItemsCmb.getSelectionModel().getSelectedItem();
 			year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
@@ -191,7 +194,7 @@ public class ReportSelectionController implements IScreen {
 		if (errorMsg == "" && selectedReport == "") {
 			errorMsg = "Please Select Report Type";
 		}
-		return errorMsg;
+		return errorMsg; 
 	}
 
 	/**

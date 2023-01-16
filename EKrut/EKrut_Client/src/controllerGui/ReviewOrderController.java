@@ -213,13 +213,18 @@ public class ReviewOrderController implements IScreen {
 	private void rightGridHandle() {
 		if (!isDelivery) {
 			rightGridPane.getChildren().clear();
-			Image image = new Image(getClass().getResourceAsStream("/styles/images/homerVending.gif"));
+			Image image = new Image(getClass().getResourceAsStream("/styles/images/EKpostPerchuse.gif"));
 			ImageView imageView = new ImageView(image);
 			imageView.setFitHeight(350);
 			imageView.setFitWidth(300);
+			Label machineLbl = new Label();
+			machineLbl.setText(OrderController.getCurrentMachine().getMachineName());
+			machineLbl.getStyleClass().add("LabelRoleTitle");
 			rightGridPane.add(imageView, 0, 2);
 			GridPane.setColumnSpan(imageView, 2);
 			GridPane.setRowSpan(imageView, 3);
+			rightGridPane.add(machineLbl, 0, 0);
+			GridPane.setColumnSpan(machineLbl, 2);
 		}
 
 	}

@@ -26,24 +26,44 @@ public class Message implements Serializable {
     this.task = task;
     this.object = object;
   }
-  
+  /**
+
+  Constructor for the Message class. It Initialize a new message with the given task type and no object
+  @param task the task type of the message
+  */
   public Message(TaskType task) {
 	this.task = task;
 	this.object = null;
 }
+  /**
 
+  This method returns the task type of this message.
+  @return the task type of this message
+  */
 public TaskType getTask() {
     return this.task;
   }
-  
+/**
+
+This method sets the task type of this message to the given task type.
+@param task the task type to set for this message
+*/
   public void setTask(TaskType task) {
     this.task = task;
   }
-  
+  /**
+
+  This method returns the object of this message.
+  @return the object of this message
+  */
   public Object getObject() {
     return this.object;
   }
-  
+  /**
+
+  This method sets the object of this message to the given object.
+  @param object the object to set for this message
+  */
   public void setObject(Object object) {
     this.object = object;
   }

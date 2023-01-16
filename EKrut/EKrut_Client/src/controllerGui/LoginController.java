@@ -187,7 +187,7 @@ public class LoginController implements IScreen {
 			return;
 		}
 
-		if (user.isLogged_in()) {
+		if (user.isLogged_in()) { 
 			isValidDetails = false;
 			returnedMsg = "User is already logged in";
 			return;

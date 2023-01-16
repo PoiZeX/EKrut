@@ -344,7 +344,11 @@ public class OrderController {
 		for (SaleEntity sale : activeSales)
 			addDiscount(SaleType.getSaleType(sale.getSaleType()).getPrecentage());
 	}
+	/**
 
+	Returns the current discounts percentage as a double.
+	@return discounts percentage
+	*/
 	public static double getDiscountsPercentage() {
 		return discounts;
 	}

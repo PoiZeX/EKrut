@@ -24,6 +24,8 @@ public class SupplyReportEntity extends ReportEntity {
 		parserDetails(item_id, end_stock, times_under_min);
 	}
 
+	
+	
 	public String getItem_name() {
 		return item_id;
 	}
