@@ -179,24 +179,11 @@ public class SupplyReportController implements IScreen {
 	private void initDetails(int machineID) {
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 
-		RecievedData = false; // reset each operation
+		
 		if (pieChart != null) pieChart.getData().clear();
 		if (textConclusionsLbl != null) textConclusionsLbl.setText("");
 
-		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestReport,
-				new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
-
-		// wait for answer
-		while (RecievedData == false) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		currentReport = reportDetails;
+		currentReport = getSupplyReportFromDB(machineID);
 		
 		if (reportDetails.getReportsList() == null) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
@@ -258,6 +245,22 @@ public class SupplyReportController implements IScreen {
 
 	}
 
+	public SupplyReportEntity getSupplyReportFromDB(int machineID) {
+		RecievedData = false; // reset each operation
+		// sends the user information to server
+		chat.acceptObj(new Message(TaskType.RequestReport,
+				new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+
+		// wait for answer
+		while (RecievedData == false) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}	
+		return reportDetails;
+	}
 	/**
 	 * Handle sending list of itemsID and getting their names
 	 * 
