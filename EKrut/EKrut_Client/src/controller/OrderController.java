@@ -302,6 +302,7 @@ public class OrderController {
 	 * @param activesales
 	 */
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
+
 	Platform.runLater(()->{
 		onePlusOneSaleExist = false;
 		percentageSaleExit = false;
@@ -317,6 +318,7 @@ public class OrderController {
 				percentageSaleExit = true;
 		}
 		calculateDiscountsPercentage();});
+
 		isDataReceived = true;
 	}
 
