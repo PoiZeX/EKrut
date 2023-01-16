@@ -55,7 +55,14 @@ public class CommonFunctions {
 
 		}, num);
 	}
+	/**
 
+	Creates a pop-up window with the specified type and message.
+
+	@param type the type of pop-up to create.
+
+	@param message the message to display in the pop-up window.
+	*/
 	public static void createPopup(PopupTypeEnum type, String message) {
 		FXMLLoader loader;
 
@@ -85,15 +92,29 @@ public class CommonFunctions {
 			e.printStackTrace();
 		}
 	}
+	/**
 
+	Sets the latest pop-up scene.
+	@param sc the scene to be set as the latest pop-up scene.
+	*/
 	private static void setLatestPopup(Scene sc) {
 		latestScene = sc;
 	}
+	/**
 
+	Returns the latest pop-up scene.
+	@return the latest pop-up scene.
+	*/
 	public static Scene getLatestPopup() {
 		return latestScene;
 	}
+	/**
 
+	This method creates a select popup window using an FXML file specified by the given path and sets the title of the window to the given title.
+	The method also sets the window's resizability to false and makes the current screen unresponsive until the popup is closed.
+	@param path the path to the FXML file to use for the popup window
+	@param title the title to be set for the popup window
+	*/
 	public static void createSelectPopup(String path, String title) {
 		FXMLLoader loader;
 		loader = new FXMLLoader(CommonFunctions.class.getResource(path));
@@ -116,7 +137,14 @@ public class CommonFunctions {
 		}
 
 	}
+	/**
 
+	This method takes in a String and splits it by uppercase letters, returning a new String with spaces between each of the split parts.
+
+	@param str the input String to be split
+
+	@return a new String with spaces between each of the split parts
+	*/
 	public static String splitByUpperCase(String str) {
 		String goodName = "";
 
@@ -128,7 +156,14 @@ public class CommonFunctions {
 			goodName = splitString[0];
 		return goodName;
 	}
+	/**
 
+	This method sets up a given GridPane to display a loading animation and message.
+	It clears any existing children of the GridPane, sets its max size, clears any column or row constraints,
+	adds a "Loading Catalog, Please Wait..." label and a gif image to the GridPane,
+	and sets the alignment of these components to be centered both horizontally and vertically.
+	@param gridPane the GridPane to be set up for the loading animation and message
+	*/
 	public static void setupLoadingGridPane(GridPane gridPane) {
 		gridPane.getChildren().clear();
 		gridPane.setMaxSize(150, 150);
@@ -146,7 +181,13 @@ public class CommonFunctions {
 		GridPane.setHalignment(img, HPos.CENTER);
 		GridPane.setValignment(loadingLabel, VPos.TOP);
 	}
-	
+	/**
+
+	This method takes in a String representing a month and returns a String of the corresponding numerical month (e.g. "january" -> "01").
+	If the given month string is not a valid month, the method returns "Invalid month"
+	@param month the input month string to be converted to numerical form
+	@return a String of the numerical month representation, or "Invalid month" if the given month string is not valid
+	*/
 	public static String getNumericMonth(String month) {
 		int index, numOfMonths = 12;
 		String[] months = { "january", "february", "march", "april", "may", "june", "july", "august", "september",

@@ -32,7 +32,7 @@ class LoginControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		// define mock and inject
-		chat = mock(ClientController.class);
+		chat = mock(ClientController.class); 
 		loginController = new LoginController(chat);
 		
 		// basic objects to work with

@@ -68,7 +68,7 @@ public class SupplyReportController implements IScreen {
 	@FXML
 	private Label textConclusionsLbl;
 
-	protected static ClientController chat = HostClientController.getChat();
+	protected static ClientController chat;
 	protected static SupplyReportEntity reportDetails;
 	private SupplyReportEntity currentReport;
 	protected static boolean RecievedData = false;
@@ -80,7 +80,13 @@ public class SupplyReportController implements IScreen {
 	private ArrayList<String[]> itemsArray = new ArrayList<>();
 	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
-
+	
+	public SupplyReportController(ClientController chatService) {
+		chat = chatService;
+	}
+	public SupplyReportController() {
+		chat = HostClientController.getChat();
+	}
 	/**
 	 * 
 	 * The initialize method is used to set up the machine selection combo box and
@@ -89,10 +95,11 @@ public class SupplyReportController implements IScreen {
 	 * It populates the machine selection combo box with machines that match the
 	 * reportRegion of the current user and sets up a listener to update data when a
 	 * new machine is selected. It also sets the prevPageBtn and nextPageBtn to not
-	 * visible.
+	 * visible. 
 	 */
 	@Override
 	public void initialize() {
+		
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
 		reportDetailsLabel.setText(String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth),
@@ -170,7 +177,6 @@ public class SupplyReportController implements IScreen {
 	 * @param machineID
 	 */
 	private void initDetails(int machineID) {
-
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 
 		RecievedData = false; // reset each operation
@@ -179,7 +185,7 @@ public class SupplyReportController implements IScreen {
 
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
-				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+				new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
 
 		// wait for answer
 		while (RecievedData == false) {
@@ -189,8 +195,9 @@ public class SupplyReportController implements IScreen {
 				e.printStackTrace();
 			}
 		}
+		
 		currentReport = reportDetails;
-
+		
 		if (reportDetails.getReportsList() == null) {
 			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
@@ -203,7 +210,7 @@ public class SupplyReportController implements IScreen {
 		if (startAmount.size() != itemsNames.size()) {
 			CommonFunctions.createPopup(PopupTypeEnum.Warning,
 					"Oops... The items start amount for this month may be different from previous month.\n"
-							+ "It might happens when new items were added during the month, or previous report does not exist \n"
+							+ "It might happen when new items are added during the month, or a previous report doesn't exist \n"
 							+ "Continue with '0' on start amount for those items");
 		}
 		// initialize piechart
@@ -334,8 +341,6 @@ public class SupplyReportController implements IScreen {
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
 				new String[] { "supply", reportRegion, month, year, String.valueOf(machineID) }));
-
-		// iterate over curr_report and prev_report items
 		// wait for answer
 		while (RecievedData == false) {
 			try {
