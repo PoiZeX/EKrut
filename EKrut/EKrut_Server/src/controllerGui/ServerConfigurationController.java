@@ -2,6 +2,7 @@ package controllerGui;
 
 import utils.ConsoleStream;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -104,7 +105,9 @@ public class ServerConfigurationController {
 			}
 		if (MySqlClass.isConnectionSuccess == true)
 			importUsersBtn.setDisable(false);
-		fileChooser.setInitialDirectory(new File("./src/mysql/"));
+		fileChooser.setInitialDirectory(
+	            new File(System.getProperty("user.home")));
+//		fileChooser.setInitialDirectory(new File("./src/mysql/"));
 	}
 	/**
 	 * Disconnect from the currently connected database, this method will also disable the import button,
@@ -143,11 +146,12 @@ public class ServerConfigurationController {
 			@Override
 			public void handle(final ActionEvent e) {
 				Stage stage = (Stage) importUsersBtn.getScene().getWindow();
-				File file = fileChooser.showOpenDialog(stage);
+
+					File file = fileChooser.showOpenDialog(stage);
+				
 				if (file != null && file.getName().endsWith(".csv") ) {
 					parseFile(file);
 				} else System.out.println("Import failed: Can't open file");
-
 			}
 		});
 
