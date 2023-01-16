@@ -6,6 +6,7 @@ package controllerGui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
@@ -34,7 +35,7 @@ import utils.AppConfig;
 import utils.TooltipSetter;
 
 public class HomePageController implements IScreen {
-
+	private ArrayList<RolesEnum> rolesViableForMessages;
 	private TooltipSetter tooltip;
 	private UserEntity currentUser = NavigationStoreController.connectedUser;
 	private Image image;
@@ -83,8 +84,9 @@ public class HomePageController implements IScreen {
 
 	@FXML
 	private VBox rigthVbox;
+	
 	/**
-
+	
 	This method is used to initialize the main menu screen for the user.
 	It sets the visibility of the buttons and labels according to the role of the current connected user.
 	It also sets up the view for the personal messages and initializes the common data from the database.
@@ -92,7 +94,12 @@ public class HomePageController implements IScreen {
 	*/
 	@Override
 	public void initialize() { 
-
+		rolesViableForMessages = new ArrayList<>();
+		rolesViableForMessages.add(RolesEnum.CEO);
+		rolesViableForMessages.add(RolesEnum.regionManager);
+		rolesViableForMessages.add(RolesEnum.registered);
+		rolesViableForMessages.add(RolesEnum.member);
+		
 		// Get the role type of the current connected user
 		RolesEnum currentRole = currentUser.getRole_type();
 
@@ -138,7 +145,7 @@ public class HomePageController implements IScreen {
 	 * Initialize the personal messages if needed
 	 */
 	private void initializePersonalMessages(RolesEnum currentRole) {
-		if (currentRole == RolesEnum.member || currentRole == RolesEnum.registered) {
+		if (rolesViableForMessages.contains(currentRole)) {
 			PersonalMessagesController.setPersonalMessages(
 					new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser));
 			if (!PersonalMessagesController.getMsgList().isEmpty()) {
