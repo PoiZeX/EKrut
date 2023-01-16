@@ -19,6 +19,7 @@ import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.SaleEntity;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 
 /**
@@ -290,20 +291,22 @@ public class OrderController {
 	 * @param activesales
 	 */
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
-		onePlusOneSaleExist = false;
-		percentageSaleExit = false;
-		if (activeSales == null) {
-			activeSales = new ArrayList<>();
-		} else if (!activeSales.isEmpty())
-			activeSales.clear();
-		activeSales.addAll(activesales);
-		for (SaleEntity sale : activeSales) {
-			if (sale.getSaleType().equals("1+1"))
-				onePlusOneSaleExist = true;
-			if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
-				percentageSaleExit = true;
-		}
-		calculateDiscountsPercentage();
+		Platform.runLater(()->{
+			onePlusOneSaleExist = false;
+			percentageSaleExit = false;
+			if (activeSales == null) {
+				activeSales = new ArrayList<>();
+			} else if (!activeSales.isEmpty())
+				activeSales.clear();
+			activeSales.addAll(activesales);
+			for (SaleEntity sale : activeSales) {
+				if (sale.getSaleType().equals("1+1"))
+					onePlusOneSaleExist = true;
+				if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
+					percentageSaleExit = true;
+			}
+			calculateDiscountsPercentage();
+		});
 		isDataReceived = true;
 	}
 	/**

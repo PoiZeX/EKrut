@@ -461,7 +461,7 @@ public class ReviewOrderController implements IScreen {
 	 */
 	private String isValidDeliveryDetails() {
 		StringBuilder errMsg = new StringBuilder();
-
+		address.delete(0, address.length());
 		if (CommonFunctions.isNullOrEmpty(streetTxtField.getText()))
 			errMsg.append("Please enter street\n");
 
