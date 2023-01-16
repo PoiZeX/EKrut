@@ -235,7 +235,11 @@ public class ViewCatalogController implements IScreen {
 	 */
 	@FXML
 	void placeOrder(ActionEvent event) {
-		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);
+	if (OrderController.getCartSize() == 0) 
+		CommonFunctions.createPopup(PopupTypeEnum.Error,
+				"You can't place order with no items, \nif you want to proceed please add items to your cart.");
+	else {
+		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);}
 	}
 
 	/**

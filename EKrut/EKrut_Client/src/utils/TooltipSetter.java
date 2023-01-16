@@ -6,6 +6,7 @@ import javafx.util.Duration;
 public class TooltipSetter {
 	private String text;
 	private Tooltip tooltip;
+	
 	public TooltipSetter(String text) {
 		this.text = text;
 		tooltip = new Tooltip();
@@ -16,7 +17,7 @@ public class TooltipSetter {
 		    + "-fx-font-size: 10pt;"
 		    + "-fx-text-fill: #1E3D58;"
 		);
-		tooltip.setShowDelay(Duration.seconds(0.35));
+		//tooltip.setShowDelay(Duration.seconds(0.35));
 	}
 	
 	public Tooltip getTooltip() {
