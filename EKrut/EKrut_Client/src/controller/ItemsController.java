@@ -9,6 +9,7 @@ import client.ClientController;
 import common.Message;
 import controllerGui.HostClientController;
 import entity.ItemEntity;
+import entity.ItemInMachineEntity;
 import enums.TaskType;
 import javafx.scene.image.Image;
 import utils.AppConfig;
@@ -32,11 +33,14 @@ public class ItemsController {
 	public void getItemsFromServer(ArrayList<ItemEntity> items) {
 		for (ItemEntity item : items) {
 			item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
-			InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
-			Image fileImg = new Image(fis);
-			item.setItemImage(fileImg);
+			 convertImage(item);
 			allItems.add(item);
 		}
+	}
+	private void convertImage(ItemEntity item) {
+		InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
+		Image fileImg = new Image(fis);
+		item.setItemImage(fileImg);
 	}
 
 	/**
