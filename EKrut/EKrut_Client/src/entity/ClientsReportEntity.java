@@ -39,11 +39,19 @@ public class ClientsReportEntity extends ReportEntity {
 		setUserStatus(userStatus);
 	}
 
+	/**
 
+	This method returns the description of this object.
+	@return the description of this object
+	*/
 	public String getDescription() {
 		return description;
 	}
+	/**
 
+	This method sets the description of this object to the given string and also calls the parserDescription method with the new description.
+	@param description the new description to set for this object
+	*/
 	public void setDescription(String description) {
 		this.description = description;
 		parserDescription(description);
