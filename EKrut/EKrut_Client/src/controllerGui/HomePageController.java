@@ -380,7 +380,7 @@ public class HomePageController implements IScreen {
 		
 
 		image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
-		ItemsController.requestItemsFromServer();
+		ItemsController.getInstance().requestItemsFromServer();
 		OrderController.getActiveSalesFromDB();
 	}
 

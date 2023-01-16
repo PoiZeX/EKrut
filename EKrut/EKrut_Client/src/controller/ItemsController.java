@@ -17,14 +17,19 @@ public class ItemsController {
 
 	public static ArrayList<ItemEntity> allItems = new ArrayList<>();
 	private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
-
+	private static ItemsController instance=null;
+	public static ItemsController getInstance() {
+		if (instance==null)
+			instance= new ItemsController();
+		return instance;
+	}
 	/* request the DB to load the items */
-	public static void requestItemsFromServer() {
+	public void requestItemsFromServer() {
 		chat.acceptObj(new Message(TaskType.RequestItemsFromServer, null));
 	}
 
 	/* add the item to array list */
-	public static void getItemsFromServer(ArrayList<ItemEntity> items) {
+	public void getItemsFromServer(ArrayList<ItemEntity> items) {
 		for (ItemEntity item : items) {
 			item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
 			InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);

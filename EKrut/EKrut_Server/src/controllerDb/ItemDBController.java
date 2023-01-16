@@ -1,6 +1,8 @@
 package controllerDb;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -54,15 +56,26 @@ public class ItemDBController {
 				 */
 				itemEntity = new ItemEntity(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4));
 				try {
-					input = this.getClass().getResourceAsStream("/styles/products/" + itemEntity.getItemImg().getImgName());
-				} catch (Exception e) {}
+					input = this.getClass().getResourceAsStream("/products/" + itemEntity.getItemImg().getImgName());
+					
+				} catch (Exception e) {e.printStackTrace();}
 				byte[] mybytearray = new byte[(int) input.available()];
-				BufferedInputStream bis = new BufferedInputStream(input);
-				itemEntity.getItemImg().initArray(mybytearray.length);
+				ByteArrayOutputStream output = new ByteArrayOutputStream();
+				byte [] buffer =new byte[1024];
+				int n =0;
+				while(-1!=(n=input.read(buffer))) {
+					output.write(buffer,0,n);
+				}
+				byte [] imagesBytes=output.toByteArray();
+				
+				itemEntity.getItemImg().mybytearray=imagesBytes;
+				
+				
+				//itemEntity.getItemImg().initArray(mybytearray.length);
 				itemEntity.getItemImg().setSize(mybytearray.length);
-				bis.read(itemEntity.getItemImg().getMybytearray(), 0, mybytearray.length);
+			//	bis.read(itemEntity.getItemImg().getMybytearray(), 0, mybytearray.length);
 				itemEntitys.add(itemEntity);
-				bis.close();
+			//	bis.close();
 			}
 			client.sendToClient(new Message(TaskType.ReceiveItemsFromServer, itemEntitys)); // finally send the entity
 			rs.close();
