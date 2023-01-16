@@ -39,7 +39,7 @@ public class ItemDBController {
 	public void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
 		ItemEntity itemEntity;
-		String jarPath = MySqlClass.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		
 		try {
 			if (MySqlClass.getConnection() == null)
 				return;
