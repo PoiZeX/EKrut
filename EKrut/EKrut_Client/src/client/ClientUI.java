@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import utils.AppConfig;
 import Store.NavigationStoreController;
+import common.CommonFunctions;
+import common.PopupTypeEnum;
 import controllerGui.HostClientController;
 import controllerGui.LoginController;
 
@@ -39,11 +41,13 @@ public class ClientUI extends Application {
 			else if(args[1].equals("EK"))
 			{
 				AppConfig.SYSTEM_CONFIGURATION = "EK";
-				AppConfig.MACHINE_ID = (int) Integer.parseInt(args[1]);
+				AppConfig.MACHINE_ID = (int) Integer.parseInt(args[2]);
 
 			}
 			else
 			{
+				System.out.println("If you want to work with EK / OL please insert Command as following:\n"
+						+ "java -jar EKrut_server.jar arg OL> OR <java -jar EKrut_server.jar arg EK <number>>\n\nBy default work on OL configuration");
 				// default
 				AppConfig.SYSTEM_CONFIGURATION = "OL";  // and machine id doesn't matter
 			}	

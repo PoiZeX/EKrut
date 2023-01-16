@@ -5,11 +5,10 @@ import common.CommonFunctions;
 
 public class SupplyReportEntity extends ReportEntity {
 	private static final long serialVersionUID = 1L;
-	private String item_id, times_under_min;
-	private int min_stock, cur_stock;
+	private int machine_id, min_stock;
+	private String item_id, times_under_min, end_stock;
 	private ArrayList<String[]> reportsList;
 	private String[] details;
-	private int machine_id;
 
 	public SupplyReportEntity() {
 		super();
@@ -20,15 +19,18 @@ public class SupplyReportEntity extends ReportEntity {
 		super(id, month, year, region);
 		this.machine_id = machine_id;
 		this.min_stock = min_stock;
+		this.item_id = item_id;
+		this.times_under_min = times_under_min;
+		this.end_stock = end_stock;
 		details = new String[] { item_id, end_stock, times_under_min };
 		parserDetails(item_id, end_stock, times_under_min);
 	}
 
-	public String getItem_name() {
+	public String getItem_Id() {
 		return item_id;
 	}
 
-	public void setItem_name(String item_name) {
+	public void setItem_Id(String item_name) {
 		this.item_id = item_name;
 	}
 
@@ -40,12 +42,12 @@ public class SupplyReportEntity extends ReportEntity {
 		this.min_stock = min_stock;
 	}
 
-	public int getCur_stock() {
-		return cur_stock;
+	public String getEnd_stock() {
+		return end_stock;
 	}
 
-	public void setCur_stock(int cur_stock) {
-		this.cur_stock = cur_stock;
+	public void setEnd_stock(String cur_stock) {
+		this.end_stock = cur_stock;
 	}
 
 	public ArrayList<String[]> getReportsList() {
@@ -60,11 +62,11 @@ public class SupplyReportEntity extends ReportEntity {
 		this.machine_id = machine_id;
 	}
 
-	public String getMissing_sev() {
+	public String getTimes_under_min() {
 		return times_under_min;
 	}
 
-	public void setMissing_sev(String missing_sev) {
+	public void setTimes_under_min(String missing_sev) {
 		this.times_under_min = missing_sev;
 	}
 
@@ -94,6 +96,19 @@ public class SupplyReportEntity extends ReportEntity {
 			String sev = missing_sev_list[i];
 			reportsList.add(new String[] { name, cur, sev });
 		}
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof SupplyReportEntity)) {
+			return false;
+		}
+		SupplyReportEntity o = (SupplyReportEntity) other;
+		return getId() == o.getId() && machine_id == o.getMachine_id() && min_stock == o.getMin_stock()
+				&& item_id.equals(o.getItem_Id()) && times_under_min.equals(o.getTimes_under_min())
+				&& end_stock.equals(o.getEnd_stock()) && getMonth().equals(o.getMonth())
+				&& getYear().equals(o.getYear()) && getRegion().equals(o.getRegion());
+
 	}
 
 }
