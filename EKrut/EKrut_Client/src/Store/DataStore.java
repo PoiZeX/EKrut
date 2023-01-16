@@ -8,6 +8,7 @@ import common.TaskType;
 import controller.OrderController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
+import javafx.application.Platform;
 import utils.AppConfig;
 
 /**
@@ -34,7 +35,9 @@ public class DataStore {
 	 * @param regions
 	 */
 	public static void recieveRegions(ArrayList<String> regions) {
+		Platform.runLater(() -> {
 		allRegions = regions;
+		});
 		return;
 	}
 
@@ -53,12 +56,14 @@ public class DataStore {
 	 * @param machines
 	 */
 	public static void recieveMachines(ArrayList<MachineEntity> machines) {
+		Platform.runLater(() -> {
 		allMachines = machines;
 		for (MachineEntity m : allMachines)
 			if (m.getId() == AppConfig.MACHINE_ID) {
 				setCurrentMachine(m);
 				OrderController.setCurrentMachine(m);
 			}
+		});
 		return;
 	}
 

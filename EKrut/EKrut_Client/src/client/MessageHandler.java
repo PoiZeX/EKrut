@@ -128,7 +128,8 @@ public class MessageHandler {
 			break;
 //--------------------------------ORDER--------------------------------
 		case ReceiveItemsFromServer:
-			ItemsController.getItemsFromServer((ArrayList<ItemEntity>) obj);
+			
+			ItemsController.getInstance().getItemsFromServer((ArrayList<ItemEntity>) obj);
 			break;
 		case ReviewOrderServerAnswer:
 			ReviewOrderController.getDataFromServer(obj);
