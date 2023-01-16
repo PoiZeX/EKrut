@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;

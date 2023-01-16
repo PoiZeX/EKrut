@@ -2,17 +2,18 @@ package controllerGui;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import entity.MachineEntity;
 import entity.SupplyReportEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class SupplyReportController implements IScreen {
@@ -186,7 +188,7 @@ public class SupplyReportController implements IScreen {
 		currentReport = getSupplyReportFromDB(machineID);
 		
 		if (reportDetails.getReportsList() == null) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "No Report Found!");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "No Report Found!");
 			return;
 		}
 
@@ -195,7 +197,7 @@ public class SupplyReportController implements IScreen {
 		itemsNames = getItemsNamesByID(itemsArray);
 		startAmount = intersectItems(machineID);
 		if (startAmount.size() != itemsNames.size()) {
-			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+			PopupSetter.createPopup(PopupTypeEnum.Warning,
 					"Oops... The items start amount for this month may be different from previous month.\n"
 							+ "It might happen when new items are added during the month, or a previous report doesn't exist \n"
 							+ "Continue with '0' on start amount for those items");
@@ -267,6 +269,7 @@ public class SupplyReportController implements IScreen {
 	 * @param itemsID
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private ArrayList<String> getItemsNamesByID(ArrayList<String[]> itemsID) {
 		// change itemsID from array of string to list of int
 		ArrayList<Integer> listToSend = new ArrayList<>();
@@ -297,7 +300,6 @@ public class SupplyReportController implements IScreen {
 			return startAmounts;
 		}
 		ArrayList<String[]> prevItemsList = prevSupplyReport.getReportsList();
-		int j = 0;
 		for (String[] currentItem : itemsList) // iterate over the current items_id
 		{
 			isFound = false;
@@ -360,6 +362,7 @@ public class SupplyReportController implements IScreen {
 	/**
 	 * The main char chart initialization
 	 */
+	@SuppressWarnings("unchecked")
 	private void setupFullBarChart() {
 		if (itemsArray == null)
 			return;
@@ -384,6 +387,7 @@ public class SupplyReportController implements IScreen {
 	 * @param start
 	 * @param end
 	 */
+	@SuppressWarnings("unchecked")
 	private void setupBarChart(int start, int end) {
 		supplySBC.getData().clear();
 		XYChart.Series<String, Integer> monthStart = new XYChart.Series<>();
@@ -448,7 +452,7 @@ public class SupplyReportController implements IScreen {
 	@FXML
 	void barChartFullView(ActionEvent event) {
 		if (itemsArray == null || itemsArray.size() == 0) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "No report for this machine");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "No report for this machine");
 			return;
 		}
 		setupFullBarChart();
@@ -465,7 +469,7 @@ public class SupplyReportController implements IScreen {
 	@FXML
 	void barChartSplitView(ActionEvent event) {
 		if (itemsArray == null || itemsArray.size() == 0) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "No report for this machine");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "No report for this machine");
 			return;
 		}
 		start = 0;
@@ -482,7 +486,7 @@ public class SupplyReportController implements IScreen {
 	 */
 	@FXML
 	void showDescription(ActionEvent event) {
-		CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.SupplyReport.getDescription());
+		PopupSetter.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.SupplyReport.getDescription());
 	}
 
 	/**

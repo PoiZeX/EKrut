@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.ClientsReportEntity;
 import entity.OrderReportEntity;
 import entity.SupplyReportEntity;

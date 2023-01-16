@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.PickupEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;

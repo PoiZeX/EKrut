@@ -2,16 +2,17 @@ package controllerGui;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
-import common.TaskType;
 import common.Message;
-import common.PopupTypeEnum;
-import common.RolesEnum;
-import common.ScreensNamesEnum;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.RolesEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
+import utils.PopupSetter;
 
 public class LoginController implements IScreen {
 
@@ -166,7 +168,7 @@ public class LoginController implements IScreen {
 
 		// show popup message for error
 		if (!isServiceEnable)
-			CommonFunctions.createPopup(PopupTypeEnum.Error, errorMsg.toString());
+			PopupSetter.createPopup(PopupTypeEnum.Error, errorMsg.toString());
 		return false;
 
 	}
@@ -286,7 +288,7 @@ public class LoginController implements IScreen {
 	}
 
 	public void showErrorMsg() {
-		CommonFunctions.createPopup(PopupTypeEnum.Error, returnedMsg);
+		PopupSetter.createPopup(PopupTypeEnum.Error, returnedMsg);
 
 	}
 

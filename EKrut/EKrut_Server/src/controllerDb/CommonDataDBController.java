@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.MachineEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;

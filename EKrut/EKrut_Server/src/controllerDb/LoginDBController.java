@@ -5,10 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;

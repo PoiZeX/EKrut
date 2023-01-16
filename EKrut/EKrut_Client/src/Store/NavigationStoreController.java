@@ -9,14 +9,14 @@ import java.util.Stack;
 import client.ChatClient;
 import common.CommonFunctions;
 import common.Message;
-import common.PopupTypeEnum;
-import common.TaskType;
-import common.ScreensNamesEnum;
 import controllerGui.HostClientController;
 import controllerGui.ViewCatalogController;
 import entity.MachineEntity;
 import entity.ScreenEntity;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -42,6 +42,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 /**
@@ -392,7 +393,7 @@ public class NavigationStoreController {
 		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				CommonFunctions.createPopup(PopupTypeEnum.Information, se.getSc().getDescription());
+				PopupSetter.createPopup(PopupTypeEnum.Information, se.getSc().getDescription());
 			}
 		});
 
@@ -456,7 +457,7 @@ public class NavigationStoreController {
 			NavigationStoreController.getInstance().clearAll();
 			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
 			CommonFunctions.SleepFor(200, () -> {
-				CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+				PopupSetter.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
 			});
 		}
 	}

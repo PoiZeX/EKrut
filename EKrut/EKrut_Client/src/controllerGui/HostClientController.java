@@ -1,5 +1,13 @@
 package controllerGui;
 
+import Store.NavigationStoreController;
+import client.ClientController;
+import common.CommonFunctions;
+import common.Message;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,14 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import utils.AppConfig;
-import Store.NavigationStoreController;
-import client.ClientController;
-import common.CommonFunctions;
-import common.IScreen;
-import common.Message;
-import common.PopupTypeEnum;
-import common.TaskType;
-import common.ScreensNamesEnum;
+import utils.PopupSetter;
 
 public class HostClientController implements IScreen {
 
@@ -56,13 +57,13 @@ public class HostClientController implements IScreen {
 
 		// Validate
 		if (CommonFunctions.isNullOrEmpty(port) || CommonFunctions.isNullOrEmpty(host)) {
-			CommonFunctions.createPopup(PopupTypeEnum.Warning, "Please fill host & port");
+			PopupSetter.createPopup(PopupTypeEnum.Warning, "Please fill host & port");
 			return;
 		}
 		try {
 			Integer.parseInt(port);
 		} catch (Exception ex) {
-			CommonFunctions.createPopup(PopupTypeEnum.Warning, "Please insert digits only");
+			PopupSetter.createPopup(PopupTypeEnum.Warning, "Please insert digits only");
 			return;
 		}
 
@@ -75,7 +76,7 @@ public class HostClientController implements IScreen {
 		}
 
 		else {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "Could not connect to server.");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "Could not connect to server.");
 		}
 
 	}
@@ -89,7 +90,7 @@ public class HostClientController implements IScreen {
 	public void start(Stage primaryStage) throws Exception {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HostClient);
 		if (AppConfig.MACHINE_ID <= 0)
-			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+			PopupSetter.createPopup(PopupTypeEnum.Warning,
 					"You must provide a machine id\nThe syntax should be:\n\n"
 							+ "java -jar EKrut_Client.jar arg <machine_id>");
 	}

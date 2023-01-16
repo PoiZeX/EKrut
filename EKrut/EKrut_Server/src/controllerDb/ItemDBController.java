@@ -1,27 +1,18 @@
 package controllerDb;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.ItemEntity;
-import entity.SupplyReportEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
-import common.CommonFunctions;
-import common.IScreen;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
+
 import controller.OrderController;
 import entity.MachineEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import utils.PopupSetter;
 
 public class ShipmentMethodPopupController  implements IScreen {
 
@@ -63,7 +64,7 @@ public class ShipmentMethodPopupController  implements IScreen {
 			if (newValue != null) {
 				selectedShipmentMethod = shipmentMethodCmb.getValue();
 				if (selectedShipmentMethod.equals(null))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a method");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "You have to choose a method");
 				else if (newValue.equals("Pickup")) {
 					machineCmb.setVisible(true);
 				} else
@@ -76,7 +77,7 @@ public class ShipmentMethodPopupController  implements IScreen {
 			if (newValue != null) {
 				selectedMachine = machineCmb.getValue();
 				if (selectedMachine.equals(null))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
 			}
 		});
 		selectedMachine = null;
@@ -110,11 +111,11 @@ public class ShipmentMethodPopupController  implements IScreen {
 	void confirmMethod(ActionEvent event) {
 		String prevMethod = "";
 		if ((selectedShipmentMethod == null)) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "Select Shipmend Method");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "Select Shipmend Method");
 			return;
 		}
 		if ((selectedShipmentMethod.equals("Pickup") && selectedMachine == null)) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "Select Pickup Machine");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "Select Pickup Machine");
 			return;
 		}
 		if (OrderController.getCurrentOrder() == null) {

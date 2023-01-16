@@ -8,16 +8,17 @@ package controllerGui;
  */
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.ICmbANDTableSetUp;
 import common.Message;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.ICmbANDTableSetUp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,13 +29,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
+import utils.PopupSetter;
 
 public class SupplyUpdateController  implements ICmbANDTableSetUp {
 
@@ -120,13 +122,13 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 		machineCmb.setItems(machineLst);
 		if (machineCmb.getItems().isEmpty()) {
 			setDisableItems();
-			CommonFunctions.createPopup(PopupTypeEnum.Warning, "No new calls for items");
+			PopupSetter.createPopup(PopupTypeEnum.Warning, "No new calls for items");
 		}
 		machineCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			if (newValue != null) {
 				machine = machineCmb.getValue();
 				if (machine.equals(null))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
 				else if (oldValue != newValue) {
 					regionNameLbl.setText(machine.getRegionName());
 					machineNameLbl.setText(machine.machineName);
@@ -207,7 +209,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 				if (event.getNewValue() != null) {
 
 					if (newValue < oldValue) {
-						CommonFunctions.createPopup(PopupTypeEnum.Error,
+						PopupSetter.createPopup(PopupTypeEnum.Error,
 								"You can't decrease the amount of current items");
 					}
 
@@ -219,7 +221,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 							itemUpdate.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 
 						} else {
-							CommonFunctions.createPopup(PopupTypeEnum.Warning,
+							PopupSetter.createPopup(PopupTypeEnum.Warning,
 									"The item is still under the minimum so the call still open\nPlease fill more if you have");
 						}
 						int index = toUpdate.indexOf(itemUpdate);
@@ -242,6 +244,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 	 * 
 	 * @param event
 	 */
+	@SuppressWarnings("static-access")
 	@FXML
 	void refresh(ActionEvent event) {
 		MachineEntity tempMachine = machineCmb.getValue();
@@ -284,7 +287,7 @@ public class SupplyUpdateController  implements ICmbANDTableSetUp {
 				i.setCallStatus(ItemInMachineEntity.Call_Status.Complete);
 		}
 		chat.acceptObj(new Message(TaskType.RequestItemsInMachineRestockFromServer, toUpdate));
-		CommonFunctions.createPopup(PopupTypeEnum.Success, "Update success!");
+		PopupSetter.createPopup(PopupTypeEnum.Success, "Update success!");
 		toUpdate.clear();
 		refresh(null);
 	}

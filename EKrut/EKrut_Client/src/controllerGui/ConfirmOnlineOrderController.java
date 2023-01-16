@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatusEnum;
-import common.DeliveryStatusEnum;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import entity.DeliveryEntity;
 import entity.PickupEntity;
+import enums.CustomerStatusEnum;
+import enums.DeliveryStatusEnum;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.AppConfig;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class ConfirmOnlineOrderController implements IScreen {
@@ -85,7 +86,7 @@ public class ConfirmOnlineOrderController implements IScreen {
 		errMsgLbl.setText(errorMsg);
 		errMsgLbl.setDisable(false);
 		if (isValidOrder) {
-			CommonFunctions.createPopup(PopupTypeEnum.Success, popUpTxt);
+			PopupSetter.createPopup(PopupTypeEnum.Success, popUpTxt);
 			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.HomePage);
 		}
 	}

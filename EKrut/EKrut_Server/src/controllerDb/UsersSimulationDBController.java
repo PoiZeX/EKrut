@@ -5,16 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.regex.Pattern;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
-import common.CommonFunctions;
-import common.RolesEnum;
+import enums.RolesEnum;
 import mysql.MySqlClass;
-
 public class UsersSimulationDBController {
 	private static Connection con = MySqlClass.getConnection();
 	/**

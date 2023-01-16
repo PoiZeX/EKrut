@@ -3,10 +3,10 @@ package controllerGui;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
-import common.IScreen;
 import common.Message;
-import common.TaskType;
 import entity.PersonalMessageEntity;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,8 +56,6 @@ public class PersonalMessagesController  implements IScreen {
 		messageTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {				
 				messageLabel.setText(newSelection.getMessage().toString()); // sets the new message
-				String originalMsg = newSelection.getMessage().toString();
-				String str[] = newSelection.getMessage().toString().split("\n");
 			}
 		});
 

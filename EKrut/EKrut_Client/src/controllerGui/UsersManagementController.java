@@ -1,17 +1,18 @@
 package controllerGui;
 
 import java.util.ArrayList;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.RolesEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.RolesEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import utils.PopupSetter;
 
 public class UsersManagementController  implements IScreen {
 
@@ -132,11 +134,11 @@ public class UsersManagementController  implements IScreen {
 
 			// SMS sending msg & popup
 			SMSMailHandlerController.SendSMSOrMail("SMS", user, "Request Approved", SMSMsg);
-			CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+			PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 
 			// Mail sending msg & popup
 			SMSMailHandlerController.SendSMSOrMail("Mail", user, "Request Approved", emailMsg);
-			CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+			PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 
 		}
 		CommonFunctions.SleepFor(1000, () -> {

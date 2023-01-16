@@ -1,12 +1,13 @@
 package controllerGui;
 
-import javafx.fxml.FXML;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import Store.NavigationStoreController;
 import common.CommonFunctions;
-import common.ScreensNamesEnum;
+import enums.ScreensNamesEnum;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

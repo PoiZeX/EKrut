@@ -3,10 +3,10 @@ package controllerGui;
 import java.util.Map;
 
 import common.CommonFunctions;
-import common.IScreen;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
 import entity.OrderReportEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class OrdersReportController  implements IScreen {
@@ -82,11 +83,13 @@ public class OrdersReportController  implements IScreen {
 	The method creates a pie chart and a bar chart that display the order statistics.
 	The pie chart shows the percentage of each item in the total orders, while the bar chart shows the quantity of each item sold.
 	*/
+	@SuppressWarnings("unchecked")
 	private void initCharts() {
 		Map<String, Double[]> itemsMap = reportDetails.getReportsList();
 		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 		for (String key : reportDetails.getReportsList().keySet()) {
 			pieChartData.add(new PieChart.Data(key + " - " + Math.round(itemsMap.get(key)[0]), itemsMap.get(key)[0]));
+			@SuppressWarnings("rawtypes")
 			Series a = new Series();
 			a.setName(key);
 			a.getData().add(new XYChart.Data(key, itemsMap.get(key)[1]));
@@ -114,6 +117,6 @@ public class OrdersReportController  implements IScreen {
 	*/
     @FXML
     void showDescription(ActionEvent event) {
-    	CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.OrdersReport.getDescription());	
+    	PopupSetter.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.OrdersReport.getDescription());	
     }
 }

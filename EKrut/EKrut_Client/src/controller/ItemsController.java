@@ -4,12 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import client.ClientController;
 import common.Message;
-import common.TaskType;
 import controllerGui.HostClientController;
-import entity.ImgEntity;
 import entity.ItemEntity;
+import enums.TaskType;
 import javafx.scene.image.Image;
 import utils.AppConfig;
 

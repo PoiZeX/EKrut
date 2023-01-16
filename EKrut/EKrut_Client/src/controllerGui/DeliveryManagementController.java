@@ -3,33 +3,35 @@ package controllerGui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.CustomerStatusEnum;
-import common.DeliveryStatusEnum;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.TaskType;
 import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
 import entity.UserEntity;
+import enums.CustomerStatusEnum;
+import enums.DeliveryStatusEnum;
+import enums.PopupTypeEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import utils.PopupSetter;
 import utils.TooltipSetter;
-import javafx.scene.control.Label;
 
 public class DeliveryManagementController  implements IScreen {
 
@@ -115,7 +117,7 @@ public class DeliveryManagementController  implements IScreen {
 					String msg="Hi!\nOrder number "+de.getOrderId()+ 
 							 " is on the way\nThe estimated arrivel time is "+de.getEstimatedTime();
 					SMSMailHandlerController.SendSMSOrMail("SMS", userToSend, "Delivery", msg);
-					CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+					PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 					userToSend=null;
 				}
 			}

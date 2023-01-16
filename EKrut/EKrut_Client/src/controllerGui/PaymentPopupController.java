@@ -1,9 +1,9 @@
 package controllerGui;
 
-import javafx.fxml.FXML;
 import common.CommonFunctions;
-import common.IScreen;
+import interfaces.IScreen;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;

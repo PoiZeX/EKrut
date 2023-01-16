@@ -1,24 +1,22 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.Message;
-import common.RolesEnum;
-import common.SaleType;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import controllerGui.HostClientController;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.SaleEntity;
+import enums.RolesEnum;
+import enums.SaleType;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 
 /**
@@ -38,16 +36,16 @@ public class OrderController {
 	private static double discounts = 1.0; // in double 0.3 is 30%
 	private static OrderEntity currentOrder;
 	private static MachineEntity currentMachine = DataStore.getCurrentMachine();
-	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>(); 																		
+	private static LinkedHashMap<String, ItemInMachineEntity> itemsList = new LinkedHashMap<>();
 	private static ArrayList<SaleEntity> activeSales = null;
 	private static boolean onePlusOneSaleExist = false;
 	private static boolean percentageSaleExit = false;
-	private static ClientController chat = HostClientController.getChat(); 
+	private static ClientController chat = HostClientController.getChat();
 	private static boolean isDataReceived = false;
 	public static boolean isFirstPurchaseDiscountApplied = false;
 	private static Object data;
-	public static boolean  isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true : false;
-
+	public static boolean isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true
+			: false;
 
 	public OrderController() {
 
@@ -93,43 +91,50 @@ public class OrderController {
 	public static void putItemInList(ItemInMachineEntity entity) {
 		itemsList.put(entity.getName(), entity);
 	}
-	/**
 
-	This method clears the itemsList.
-	*/
+	/**
+	 * 
+	 * This method clears the itemsList.
+	 */
 	public static void clearItemsList() {
 		if (!itemsList.isEmpty()) {
 			itemsList.clear();
 		}
 	}
-	/**
 
-	This method returns the image of an item from itemsList by its name.
-	@param name the name of the item
-	@return the Image object of the item
-	*/
+	/**
+	 * 
+	 * This method returns the image of an item from itemsList by its name.
+	 * 
+	 * @param name the name of the item
+	 * @return the Image object of the item
+	 */
 	public static Image getImageOfItem(String name) {
 		return OrderController.itemsList.get(name).getItemImage();
 	}
-	/**
 
-	This method returns the current order.
-	@return the current OrderEntity
-	*/
+	/**
+	 * 
+	 * This method returns the current order.
+	 * 
+	 * @return the current OrderEntity
+	 */
 	public static OrderEntity getCurrentOrder() {
 		return currentOrder;
 	}
-	/**
 
-	This method sets the current order by creating a new OrderEntity object with the given user ID and supply method.
-	@param user_id the ID of the user who made the order
-	@param supplyMethod the method of supply chosen by the user
-	*/
+	/**
+	 * 
+	 * This method sets the current order by creating a new OrderEntity object with
+	 * the given user ID and supply method.
+	 * 
+	 * @param user_id      the ID of the user who made the order
+	 * @param supplyMethod the method of supply chosen by the user
+	 */
 	public static void setCurrentOrder(int user_id, String supplyMethod) {
 		if (currentOrder == null)
 			currentOrder = new OrderEntity(user_id, supplyMethod);
 	}
-
 
 //------------------------------------------------ cart
 	/**
@@ -153,12 +158,15 @@ public class OrderController {
 			cartSize += (getAmount(item));
 		return cartSize;
 	}
-	/**
 
-	Retrieves the amount of a specific item in the machine.
-	@param item The item to retrieve the amount of.
-	@return The amount of the item in the machine. Returns 0 if the item is not found in the machine.
-	*/
+	/**
+	 * 
+	 * Retrieves the amount of a specific item in the machine.
+	 * 
+	 * @param item The item to retrieve the amount of.
+	 * @return The amount of the item in the machine. Returns 0 if the item is not
+	 *         found in the machine.
+	 */
 	public static int getItemAmount(ItemInMachineEntity item) {
 		if (!itemsInCartList.containsKey(item))
 			return 0;
@@ -222,7 +230,7 @@ public class OrderController {
 		itemsInCartList.remove(item);
 		return true;
 	}
-	
+
 	/**
 	 * return the cart as list of items
 	 * 
@@ -232,11 +240,11 @@ public class OrderController {
 		return itemsInCartList;
 	}
 
-
 //----------------------------------------------------------------------Sales 
 	/***
-	 * returns if there are any active sales, 
-	 * the active sales will not be null only if the user is a member
+	 * returns if there are any active sales, the active sales will not be null only
+	 * if the user is a member
+	 * 
 	 * @return
 	 */
 	public static boolean isActiveSale() {
@@ -245,15 +253,17 @@ public class OrderController {
 				return true;
 			}
 		}
-		if(currentOrder != null && isFirstPurchaseDiscountApplied)
+		if (currentOrder != null && isFirstPurchaseDiscountApplied)
 			return true;
 		return false;
 	}
-	/**
 
-	This method returns the list of active sales.
-	@return an ArrayList of SaleEntity representing the active sales
-	*/
+	/**
+	 * 
+	 * This method returns the list of active sales.
+	 * 
+	 * @return an ArrayList of SaleEntity representing the active sales
+	 */
 	public static ArrayList<SaleEntity> getActiveSales() {
 		return activeSales;
 	}
@@ -268,6 +278,7 @@ public class OrderController {
 		activeSales.forEach(sale -> sb.append(sale.getSaleType().toString() + " "));
 		return sb.toString();
 	}
+
 	/***
 	 * request from the data base all the active sales at the moment
 	 */
@@ -281,6 +292,7 @@ public class OrderController {
 			}
 		}
 	}
+
 	/***
 	 * get callers from the message handler when receiving active sales
 	 * sets the following :
@@ -290,6 +302,7 @@ public class OrderController {
 	 * @param activesales
 	 */
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
+	Platform.runLater(()->{
 		onePlusOneSaleExist = false;
 		percentageSaleExit = false;
 		if (activeSales == null) {
@@ -303,30 +316,35 @@ public class OrderController {
 			if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
 				percentageSaleExit = true;
 		}
-		calculateDiscountsPercentage();
+		calculateDiscountsPercentage();});
 		isDataReceived = true;
 	}
-	/**
 
-	This method returns whether a one plus one sale exist or not.
-	@return a boolean indicating if a one plus one sale exist
-	*/
+	/**
+	 * 
+	 * This method returns whether a one plus one sale exist or not.
+	 * 
+	 * @return a boolean indicating if a one plus one sale exist
+	 */
 	public static boolean isOnePlusOneSaleExist() {
 		return onePlusOneSaleExist;
 	}
-	/**
 
-	This method returns whether a percentage sale exist or not.
-	@return a boolean indicating if a percentage sale exist
-	*/
+	/**
+	 * 
+	 * This method returns whether a percentage sale exist or not.
+	 * 
+	 * @return a boolean indicating if a percentage sale exist
+	 */
 	public static boolean isPercentageSaleExit() {
 		return percentageSaleExit;
 	}
+
 //-------------------------------------- discount and price calculation
 	/**
-	 * Get total discount in NIS 
+	 * Get total discount in NIS
 	 * 
-	 * @return 
+	 * @return
 	 */
 	public static double getTotalDiscounts() {
 		return getTotalPrice() * (1 - discounts);
@@ -344,11 +362,13 @@ public class OrderController {
 		for (SaleEntity sale : activeSales)
 			addDiscount(SaleType.getSaleType(sale.getSaleType()).getPrecentage());
 	}
-	/**
 
-	Returns the current discounts percentage as a double.
-	@return discounts percentage
-	*/
+	/**
+	 * 
+	 * Returns the current discounts percentage as a double.
+	 * 
+	 * @return discounts percentage
+	 */
 	public static double getDiscountsPercentage() {
 		return discounts;
 	}
@@ -361,11 +381,13 @@ public class OrderController {
 	public static void addDiscount(int discount) {
 		discounts *= (1 - (((double) discount) / 100));
 	}
-	/**
 
-	Returns the percentage of discounts applied to the total amount.
-	@return The percentage of discounts applied to the total amount as a double.
-	*/
+	/**
+	 * 
+	 * Returns the percentage of discounts applied to the total amount.
+	 * 
+	 * @return The percentage of discounts applied to the total amount as a double.
+	 */
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
 		return itemPrice * discounts;
 

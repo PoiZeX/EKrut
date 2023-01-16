@@ -2,13 +2,14 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
 import controllerGui.HostClientController;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
+import enums.TaskType;
 /**
  * This class handles sending SMS or mail messages to specific users.
  * @author Lidor

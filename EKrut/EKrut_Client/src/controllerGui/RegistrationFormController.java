@@ -1,24 +1,17 @@
 package controllerGui;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
-import Store.DataStore;
-import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.RolesEnum;
-import common.TaskType;
 import controller.SMSMailHandlerController;
-import entity.RegistrationFormEntity;
-import entity.SupplyReportEntity;
 import entity.UserEntity;
+import enums.RolesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,8 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import utils.AppConfig;
-import utils.TooltipSetter;
 
 public class RegistrationFormController implements IScreen {
 	private ArrayList<TextField> dataArray;

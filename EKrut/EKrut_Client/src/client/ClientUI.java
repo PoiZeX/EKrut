@@ -1,14 +1,10 @@
 package client;
 
+import Store.NavigationStoreController;
+import controllerGui.HostClientController;
 import javafx.application.Application;
-
 import javafx.stage.Stage;
 import utils.AppConfig;
-import Store.NavigationStoreController;
-import common.CommonFunctions;
-import common.PopupTypeEnum;
-import controllerGui.HostClientController;
-import controllerGui.LoginController;
 
 /**
  * The start class of application

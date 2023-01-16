@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import common.Message;
-import common.ScheduledTasksController;
-import common.TaskType;
+import enums.TaskType;
 import entity.OrderEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
+import utils.ScheduledTasksController;
 
 public class OrderDBController {
 	private static Connection con = MySqlClass.getConnection();
@@ -166,6 +166,7 @@ public class OrderDBController {
 	 * @param userId
 	 * @param sum
 	 */
+	@SuppressWarnings("unused")
 	private static void externalPaymentService(int userId, double sum) {
 		UserEntity user = UsersManagementDBController.getUserByID(userId);
 		if (user == null)

@@ -3,11 +3,11 @@ package controllerGui;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.TaskType;
-import common.IScreen;
 import common.Message;
-import common.RolesEnum;
-import common.ScreensNamesEnum;
+import enums.RolesEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
 
 /**
  * Controller for the Orders Report screen. Handles displaying the order data in

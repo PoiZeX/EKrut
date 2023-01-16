@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.RolesEnum;
-import common.TaskType;
 import controller.OrderController;
 import controller.SMSMailHandlerController;
 import entity.DeliveryEntity;
@@ -20,6 +17,10 @@ import entity.MachineEntity;
 import entity.OrderEntity;
 import entity.PickupEntity;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.RolesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +41,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class ReviewOrderController implements IScreen {
@@ -274,11 +276,11 @@ public class ReviewOrderController implements IScreen {
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
 		String supplyMethod = orderEntity.getSupplyMethod();
 		if (cart.size() == 0) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "Please select items to order :)");
 			return;
 		}
 		if (CommonFunctions.isNullOrEmpty(user.getCc_num())) {
-			CommonFunctions.createPopup(PopupTypeEnum.Error,
+			PopupSetter.createPopup(PopupTypeEnum.Error,
 					"The credit Card number is invalid, please contact Customer Service");
 			return;
 		}
@@ -292,7 +294,7 @@ public class ReviewOrderController implements IScreen {
 		case "Delivery": // online order
 			String resValid = isValidDeliveryDetails();
 			if (!CommonFunctions.isNullOrEmpty(resValid)) {
-				CommonFunctions.createPopup(PopupTypeEnum.Error,
+				PopupSetter.createPopup(PopupTypeEnum.Error,
 						"You must provide valid delivery information\n" + resValid + "\n");
 				return;
 			}
@@ -304,7 +306,7 @@ public class ReviewOrderController implements IScreen {
 			if (data instanceof Integer && (int) data == -1) {
 				// error inserting the order
 				RollBack();
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+				PopupSetter.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
 				return;
 			}
 			orderId = (int) data;
@@ -324,7 +326,7 @@ public class ReviewOrderController implements IScreen {
 			// check validation of items
 			if (data instanceof String && !CommonFunctions.isNullOrEmpty((String) data)) {
 				// error inserting items (Roll back of this should be taken on server side)
-				CommonFunctions.createPopup(PopupTypeEnum.Error,
+				PopupSetter.createPopup(PopupTypeEnum.Error,
 						"We sorry but the following items no longer available:\n" + ((String) data) + "\nAbort");
 				return;
 			}
@@ -333,7 +335,7 @@ public class ReviewOrderController implements IScreen {
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Boolean && !(boolean) data) {
 				// error inserting the order
-				CommonFunctions.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
+				PopupSetter.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
 				// ROLL BACK
 				RollBack();
 				return;
@@ -353,7 +355,7 @@ public class ReviewOrderController implements IScreen {
 			break;
 
 		default:
-			CommonFunctions.createPopup(PopupTypeEnum.Error, "Can not detect System Configuration (OL / EK)\nAbort");
+			PopupSetter.createPopup(PopupTypeEnum.Error, "Can not detect System Configuration (OL / EK)\nAbort");
 			return;
 		}
 
@@ -372,7 +374,7 @@ public class ReviewOrderController implements IScreen {
 	 * @param successMsg
 	 */
 	private void successfullEndProcess(String successMsg) {
-		CommonFunctions.createPopup(PopupTypeEnum.Success, successMsg);
+		PopupSetter.createPopup(PopupTypeEnum.Success, successMsg);
 
 		CommonFunctions.SleepFor(200, () -> {
 			OrderController.refreshOrderToHomePage();
@@ -444,10 +446,10 @@ public class ReviewOrderController implements IScreen {
 			UserEntity regionManager = (UserEntity) data;
 			if (regionManager != null) {
 				SMSMailHandlerController.SendSMSOrMail("SMS", regionManager, "Minimum amount Alert", sb.toString());
-				CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+				PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 
 				SMSMailHandlerController.SendSMSOrMail("Mail", regionManager, "Minimum amount Alert", sb.toString());
-				CommonFunctions.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
+				PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
 
 			}
 		}

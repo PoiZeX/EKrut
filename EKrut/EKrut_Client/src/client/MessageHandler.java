@@ -1,41 +1,39 @@
 package client;
 
-import common.Message;
-import common.TaskType;
-import controller.ItemsController;
-import controller.OrderController;
-import controllerGui.LoginController;
-import controllerGui.CreateNewSaleController;
-import controllerGui.SalesManagementController;
-import controllerGui.OrdersReportController;
-import controllerGui.PersonalMessagesController;
-import controllerGui.RegistrationFormController;
-import controllerGui.ReviewOrderController;
-import controllerGui.SupplyManagementController;
-import controllerGui.SupplyReportController;
-import controllerGui.SupplyUpdateController;
-import controllerGui.UsersManagementController;
-
-import controllerGui.ViewCatalogController;
-import controllerGui.ClientsReportController;
-import controllerGui.ConfirmOnlineOrderController;
-import controllerGui.DeliveryManagementController;
-import java.io.*;
 import java.util.ArrayList;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
-import entity.OrderReportEntity;
-import entity.PersonalMessageEntity;
-import entity.PickupEntity;
-import entity.SaleEntity;
+import common.Message;
+import controller.ItemsController;
+import controller.OrderController;
+import controllerGui.ClientsReportController;
+import controllerGui.ConfirmOnlineOrderController;
+import controllerGui.CreateNewSaleController;
+import controllerGui.DeliveryManagementController;
+import controllerGui.LoginController;
+import controllerGui.OrdersReportController;
+import controllerGui.PersonalMessagesController;
+import controllerGui.RegistrationFormController;
+import controllerGui.ReviewOrderController;
+import controllerGui.SalesManagementController;
+import controllerGui.SupplyManagementController;
+import controllerGui.SupplyReportController;
+import controllerGui.SupplyUpdateController;
+import controllerGui.UsersManagementController;
+import controllerGui.ViewCatalogController;
+import entity.ClientsReportEntity;
 import entity.DeliveryEntity;
 import entity.ItemEntity;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
-import entity.ClientsReportEntity;
+import entity.OrderReportEntity;
+import entity.PersonalMessageEntity;
+import entity.PickupEntity;
+import entity.SaleEntity;
 import entity.SupplyReportEntity;
 import entity.UserEntity;
+import enums.TaskType;
 
 public class MessageHandler {
 

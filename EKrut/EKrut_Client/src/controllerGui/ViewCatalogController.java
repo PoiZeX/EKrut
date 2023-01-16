@@ -14,15 +14,15 @@ import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import controller.ItemsController;
 import controller.OrderController;
 import entity.ItemEntity;
 import entity.ItemInMachineEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,6 +55,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import utils.AppConfig;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 /**
@@ -221,7 +222,7 @@ public class ViewCatalogController implements IScreen {
 	 */
 	@FXML
 	public void cancelOrder(ActionEvent event) {
-		CommonFunctions.createPopup(PopupTypeEnum.Decision,
+		PopupSetter.createPopup(PopupTypeEnum.Decision,
 				"You about to cancel the current order.\nAll data will lost.\n\nTo cancel click 'YES', 'NO' otherwise");
 		if ((boolean) PopupController.isOkPressed) {
 			OrderController.refreshOrderToHomePage();
@@ -236,7 +237,7 @@ public class ViewCatalogController implements IScreen {
 	@FXML
 	void placeOrder(ActionEvent event) {
 	if (OrderController.getCartSize() == 0) 
-		CommonFunctions.createPopup(PopupTypeEnum.Error,
+		PopupSetter.createPopup(PopupTypeEnum.Error,
 				"You can't place order with no items, \nif you want to proceed please add items to your cart.");
 	else {
 		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);}
@@ -309,7 +310,7 @@ public class ViewCatalogController implements IScreen {
 
 		renewCatalog();
 		if (OrderController.isOnePlusOneSaleExist() && OrderController.isActiveSale() && isMember) {
-			CommonFunctions.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
+			PopupSetter.createPopup(PopupTypeEnum.Sale, "1+1 sale will be updated in order review");
 		}
 	}
 
@@ -391,7 +392,7 @@ public class ViewCatalogController implements IScreen {
 				@Override
 				public void handle(MouseEvent e) {
 					if (!OrderController.changeItemQuantity(item, 0))
-						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
+						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
 					// Update total amount and price
 					updateCartTotalLabels();
 					addToCartBtn.setOpacity(1);
@@ -420,7 +421,7 @@ public class ViewCatalogController implements IScreen {
 							itemInCartPlusBtn.setDisable(true);
 						}
 						if (!OrderController.addItemToCart(item, amount)) // Add item to cart
-							CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+							PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 					}
 					cartGroup.setVisible(true);
 					viewCartPane.setVisible(false);
@@ -494,14 +495,14 @@ public class ViewCatalogController implements IScreen {
 					addToCartBtn.setOpacity(1);
 					addToCartBtn.setMouseTransparent(false);
 					if (!OrderController.changeItemQuantity(item, 0))
-						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
 					reorderCart(cartViewGridpane);
 				} else {
 					itemInCartAmountLabel.setText(amountLabel.getText());
 					if (!OrderController.changeItemQuantity(item, amount))
-						CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 				}
 				if (flag) {
 					viewCartPane.setVisible(false);
@@ -540,7 +541,7 @@ public class ViewCatalogController implements IScreen {
 					itemInCartPlusBtn.setDisable(true);
 				}
 				if (!OrderController.changeItemQuantity(item, amount))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 
 				itemInCartAmountLabel.setText(amountLabel.getText());
 				if (flag) {
@@ -1034,7 +1035,7 @@ public class ViewCatalogController implements IScreen {
 	*/
 	@FXML
 	void showDescription(ActionEvent event) {
-		CommonFunctions.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());
+		PopupSetter.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());
 	}
 
 }

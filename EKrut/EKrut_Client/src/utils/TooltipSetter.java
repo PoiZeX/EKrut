@@ -1,7 +1,6 @@
 package utils;
 
 import javafx.scene.control.Tooltip;
-import javafx.util.Duration;
 // Creates a new tooltip window
 public class TooltipSetter {
 	private String text;

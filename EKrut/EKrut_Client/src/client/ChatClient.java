@@ -3,14 +3,11 @@
 // license found at www.lloseng.com 
 
 package client;
-import ocsf.client.*;
-import common.ChatIF;
+import java.io.IOException;
 import common.Message;
-import java.io.*;
-
 import Store.NavigationStoreController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import interfaces.ChatIF;
+import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient {
 

@@ -3,7 +3,6 @@ package controllerDb;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.ItemInMachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
@@ -76,11 +75,7 @@ public class ItemInMachineDBController {
 	public void getProcessedMachineItems(int[] arr, ConnectionToClient client) {
 		int machineId = arr[0];
 		int userId = arr[1];
-		int minAmount = -1;
-		ArrayList<ItemInMachineEntity> itemsInMachine = new ArrayList<ItemInMachineEntity>();
-		try {
-			minAmount = MachineDBController.getMachineMinAmount(machineId);
-
+		try {	
 			PreparedStatement ps = con.prepareStatement("SELECT  item_in_machine.*, items.name "
 					+ " FROM  ekrut.item_in_machine, ekrut.items"
 					+ " WHERE item_in_machine.machine_id=? AND  item_in_machine.call_status=? AND item_in_machine.worker_id=? AND  item_in_machine.item_id=items.item_id   ;");
@@ -113,7 +108,7 @@ public class ItemInMachineDBController {
 					InputStream input = null;
 					try {
 						input = this.getClass()
-								.getResourceAsStream("/styles/products/" + item.getItemImg().getImgName());
+								.getResourceAsStream("/products/" + item.getItemImg().getImgName());
 					} catch (Exception e) {
 					}
 					byte[] mybytearray = new byte[(int) input.available()];
@@ -138,19 +133,7 @@ public class ItemInMachineDBController {
 		}
 	}
 
-	/**
-	 * Roll back when update failed
-	 * 
-	 * @param originalAmount
-	 * @param itemsInMachine
-	 * @param failedIndex
-	 */
-	private static void RollBack(int[] originalAmount, ItemInMachineEntity[] itemsInMachine, int failedIndex) {
-		for (int i = failedIndex; i >= 0; i--) {
-			itemsInMachine[i].setCurrentAmount(originalAmount[i]);
-			updateSingleItemInMachine(itemsInMachine[i]);
-		}
-	}
+
 
 	/**
 	 * get quantity of item

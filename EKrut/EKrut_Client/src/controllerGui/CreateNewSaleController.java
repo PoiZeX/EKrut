@@ -3,15 +3,15 @@ package controllerGui;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+
 import Store.DataStore;
 import client.ClientController;
-import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.SaleType;
-import common.TaskType;
 import entity.SaleEntity;
+import enums.PopupTypeEnum;
+import enums.SaleType;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class CreateNewSaleController implements IScreen  {
@@ -97,9 +98,9 @@ public class CreateNewSaleController implements IScreen  {
     			}
     		}
     		if(valid)
-    			CommonFunctions.createPopup(PopupTypeEnum.Success, "Yay! succeeding in creating a new sale");
+    			PopupSetter.createPopup(PopupTypeEnum.Success, "Yay! succeeding in creating a new sale");
     		else {
-    			CommonFunctions.createPopup(PopupTypeEnum.Error, "Sale is already exist");
+    			PopupSetter.createPopup(PopupTypeEnum.Error, "Sale is already exist");
     		}
     	}
     	

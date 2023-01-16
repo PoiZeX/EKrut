@@ -3,7 +3,7 @@ package controllerGui;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
-import common.ScreensNamesEnum;
+import enums.ScreensNamesEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

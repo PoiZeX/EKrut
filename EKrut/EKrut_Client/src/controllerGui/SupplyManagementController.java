@@ -1,17 +1,18 @@
 package controllerGui;
 
 import java.util.ArrayList;
+
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
-import common.ICmbANDTableSetUp;
 import common.Message;
-import common.PopupTypeEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.ICmbANDTableSetUp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +33,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import utils.PopupSetter;
 
 public class SupplyManagementController implements ICmbANDTableSetUp {
 	@FXML
@@ -159,7 +161,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 			if (newValue != null) {
 				machine = machineCmb.getValue();
 				if (machine.equals(null))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "You have to choose a machine");
 				else if (oldValue != newValue) {
 					saveChangesBtn.setDisable(false);
 					machineNameLbl.setText(machine.machineName);
@@ -186,7 +188,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 				if (!supplyworker.equals(null))
 					sendCallBtn.setDisable(false);
 				else
-					CommonFunctions.createPopup(PopupTypeEnum.Warning, "You have to choose a Worker");
+					PopupSetter.createPopup(PopupTypeEnum.Warning, "You have to choose a Worker");
 			}
 		});
 	}
@@ -242,7 +244,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 		filterUpdateCallStatus(oldMinAmount, newMinAmount);
 		removeCompleted(null);
 		chat.acceptObj(new Message(TaskType.RequestUpdateMachineMinAmount, machine));
-		CommonFunctions.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
+		PopupSetter.createPopup(PopupTypeEnum.Success, "The new minimum amount has been updated sucssesfully \n"
 				+ "If you want to see an updated the items list press the refresh button");
 	}
 
@@ -301,7 +303,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 	void send(ActionEvent event) throws InterruptedException {
 
 		if (toUpdate.isEmpty()) // TODO why is empty
-			CommonFunctions.createPopup(PopupTypeEnum.Information, "No new items to open calls for");
+			PopupSetter.createPopup(PopupTypeEnum.Information, "No new items to open calls for");
 
 		else {
 			for (ItemInMachineEntity i : toUpdate) {
@@ -310,7 +312,7 @@ public class SupplyManagementController implements ICmbANDTableSetUp {
 			}
 			chat.acceptObj(new Message(TaskType.RequestItemsInMachineCallStatusUpdate, toUpdate));
 
-			CommonFunctions.createPopup(PopupTypeEnum.Success, "The calls had been sent for now");
+			PopupSetter.createPopup(PopupTypeEnum.Success, "The calls had been sent for now");
 			toUpdate.clear();
 			refresh(null);
 		}

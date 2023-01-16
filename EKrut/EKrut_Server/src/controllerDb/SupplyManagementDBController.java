@@ -1,13 +1,10 @@
 package controllerDb;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import entity.ItemInMachineEntity;
-import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class SupplyManagementDBController {
-	private static Connection con = MySqlClass.getConnection();
 
 
 	/*-----------------------------------UPDATE--------------------------------*/

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
 import entity.SaleEntity;
 import entity.SaleEntity.SaleStatus;
 import mysql.MySqlClass;

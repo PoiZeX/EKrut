@@ -3,13 +3,13 @@ package server;
 
 import java.io.IOException;
 import common.Message;
-import common.ScheduledTasksController;
 import entity.ConnectedClientEntity;
 import entity.DatabaseEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mysql.MySqlClass;
 import ocsf.server.*;
+import utils.ScheduledTasksController;
 
 /**
  * The EchoServer class is an implementation of the OCSF library's

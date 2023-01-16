@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import client.ClientController;
 import common.Message;
-import common.TaskType;
 import controller.OrderController;
 import controllerGui.HostClientController;
 import entity.MachineEntity;
+import enums.TaskType;
 import javafx.application.Platform;
 import utils.AppConfig;
 

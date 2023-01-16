@@ -13,9 +13,9 @@ import mysql.MySqlClass;
 import java.io.IOException;
 import java.net.BindException;
 
-import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
+import enums.TaskType;
+
 
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
@@ -34,7 +34,7 @@ public class ServerUI extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Ekrut Server");
-		primaryStage.getIcons().add(new Image("/styles/icons/logotaskbar.png"));
+		primaryStage.getIcons().add(new Image("/servericons/logotaskbar.png"));
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent we) {
 				if (EchoServer != null) {

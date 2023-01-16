@@ -5,16 +5,15 @@ import java.util.ArrayList;
 
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.RolesEnum;
-import common.SaleType;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import entity.SaleEntity;
 import entity.SaleEntity.SaleStatus;
+import enums.PopupTypeEnum;
+import enums.RolesEnum;
+import enums.SaleType;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,12 +22,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class SalesManagementController  implements IScreen {
@@ -118,7 +118,7 @@ public class SalesManagementController  implements IScreen {
     	if (salesToUpdate.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateSales, salesToUpdate));
 			salesToUpdate.clear();
-			CommonFunctions.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
+			PopupSetter.createPopup(PopupTypeEnum.Success, "The discount was successfully updated.");
 		}
     }
     /**

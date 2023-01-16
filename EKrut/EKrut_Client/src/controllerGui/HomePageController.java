@@ -10,16 +10,16 @@ import java.time.format.DateTimeFormatter;
 import Store.DataStore;
 import Store.NavigationStoreController;
 import common.CommonFunctions;
-import common.IScreen;
 import common.Message;
-import common.PopupTypeEnum;
-import common.RolesEnum;
-import common.ScreensNamesEnum;
-import common.TaskType;
 import controller.ItemsController;
 import controller.OrderController;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.RolesEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +31,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import utils.AppConfig;
+import utils.PopupSetter;
 import utils.TooltipSetter;
 
 public class HomePageController implements IScreen {
@@ -208,7 +209,7 @@ public class HomePageController implements IScreen {
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
 			}
@@ -224,7 +225,7 @@ public class HomePageController implements IScreen {
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
 			}
@@ -240,7 +241,7 @@ public class HomePageController implements IScreen {
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
 			}
@@ -255,7 +256,7 @@ public class HomePageController implements IScreen {
 			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
 			}
@@ -271,7 +272,7 @@ public class HomePageController implements IScreen {
 			else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
 									+ "Or login in 'OL' configuration");
 			}
@@ -286,14 +287,14 @@ public class HomePageController implements IScreen {
 			else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
-					CommonFunctions.createPopup(PopupTypeEnum.Warning,
+					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
 									+ "Or login in 'OL' Configuration");
 			}
 			break;
 
 		default:
-			CommonFunctions.createPopup(PopupTypeEnum.Warning,
+			PopupSetter.createPopup(PopupTypeEnum.Warning,
 					"No role detected!\nPlease contact Customer Service to register\nPhone: 04-8109839\nEmail: service@ekrut.com");
 			break;
 		}
@@ -403,14 +404,14 @@ public class HomePageController implements IScreen {
 				switch (scName) {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-						CommonFunctions.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml",
+						PopupSetter.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml",
 								"Shipment Method");
 					else
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;
 				case SalesManagement:
 					if (currentUser.getRole_type().equals(RolesEnum.marketingManager)) {
-						CommonFunctions.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml", "Select region");
+						PopupSetter.createSelectPopup("/boundary/ChooseRegionPopUpBoundary.fxml", "Select region");
 						break;
 					}
 
