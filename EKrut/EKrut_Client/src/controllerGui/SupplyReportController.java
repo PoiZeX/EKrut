@@ -180,8 +180,8 @@ public class SupplyReportController implements IScreen {
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 
 		RecievedData = false; // reset each operation
-		pieChart.getData().clear();
-		textConclusionsLbl.setText("");
+		if (pieChart != null) pieChart.getData().clear();
+		if (textConclusionsLbl != null) textConclusionsLbl.setText("");
 
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
