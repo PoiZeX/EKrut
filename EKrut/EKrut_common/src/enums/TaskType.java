@@ -16,8 +16,7 @@ public enum TaskType {
 	
 	// Common Data Initialization //
 	InitRegions,
-	InitMachines, 
-	InitUsers,
+	InitMachines,
 	   
 	//-------------------------------------Users
 	// Requests From Server //
@@ -116,6 +115,5 @@ public enum TaskType {
 	RequestAllItemsNameById,
 	ReceiveAllItemsNameById
 	// Update Database//
-
 	
 }

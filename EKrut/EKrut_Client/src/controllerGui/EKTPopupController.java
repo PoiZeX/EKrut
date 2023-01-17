@@ -32,7 +32,7 @@ public class EKTPopupController extends LoginController {
 	protected static Timer timerTimeLimit;
 
 	// define username and password to login with
-	private String[] usernamePassword; // mbr + [N/S/U]
+	private String[] usernamePasswordStub = new String[] { "mbrN", "123456" }; // mbr + [N/S/U]
 
 	/**
 	 * Initialize screen
@@ -44,8 +44,6 @@ public class EKTPopupController extends LoginController {
 		timerTimeLimit = new Timer();
 		setBackgroundTask();
 		setTimeLimitBackgroundTask();
-		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
-		usernamePassword = s.getUser();
 	}
 
 	/**
@@ -59,7 +57,7 @@ public class EKTPopupController extends LoginController {
 				Platform.runLater(() -> {
 					// simulate: after <APPCONFIG> seconds:
 
-					if (!loginProccess(usernamePassword))
+					if (!loginProccess(usernamePasswordStub))
 						cancelOperation();
 					else {
 						timerTimeLimit.cancel(); // time limit is irrelevant now

@@ -459,7 +459,7 @@ public class ViewCatalogController implements IScreen {
 				addToCartBtn.setText("Not Available");
 			}
 			productNameLabel.setTooltip(new TooltipSetter(productNameLabel.getText()).getTooltip());
-//			productNameLabel.getTooltip().setShowDelay(Duration.seconds(0.7));
+			productNameLabel.getTooltip().setShowDelay(Duration.seconds(0.7));
 			Tooltip.install(image, new TooltipSetter(productNameLabel.getText()).getTooltip());
 
 			synchronized (lockSync) {

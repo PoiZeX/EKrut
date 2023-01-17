@@ -1,7 +1,6 @@
 package client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
@@ -48,7 +47,6 @@ public class MessageHandler {
 	 * @param thisClient
 	 * @param msg
 	 */
-	@SuppressWarnings("unchecked")
 	public static void Handle(ChatClient thisClient, Message msg) {
 		Message msgFromServer = (Message) msg;
 		TaskType task = msgFromServer.getTask();
@@ -65,9 +63,6 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
-			break;
-		case InitUsers:
-			DataStore.recieveUsers((HashMap<String,String>) obj);
 			break;
 //--------------------------------USERS--------------------------------
 		case ReceiveUserFromServerDB:
