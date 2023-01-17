@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import entity.MachineEntity;
@@ -186,7 +189,12 @@ public class ReportsGenerator {
 	private static String[] getFollowingDate(String month, String year) {
 		if (month.equals("12"))
 			return new String[] {"01", String.valueOf(Integer.parseInt(month)+1)};
-		return new String[] {String.valueOf(Integer.parseInt(month)+1),year};
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, 1);
+		Format monthFormat = new SimpleDateFormat("MM"); 
+		return new String[] {monthFormat.format(c.getTime()),year};
+		
+		//String.valueOf(Integer.parseInt(month)+1)
 	}
 
 	/**
@@ -249,7 +257,7 @@ public class ReportsGenerator {
 				+ "GROUP BY u.role_type, m.region_name";
 		String[] date = getFollowingDate(month,year);
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (MySqlClass.getConnection() ==  null)
 				return;
 			Connection conn = MySqlClass.getConnection();
 			PreparedStatement psGet = conn.prepareStatement(query);
