@@ -192,6 +192,9 @@ public class ServerConfigurationController {
 		txtDBUsername.setDisable(b);
 	}
 
+	/**
+	 * Change console to UI.
+	 */
 	@FXML
 	void changeConsoleToUI() {
 		this.printStream = new PrintStream((OutputStream) new ConsoleStream(this.consoleOutput));
@@ -199,6 +202,9 @@ public class ServerConfigurationController {
 		System.setErr(this.printStream);
 	}
 
+	/**
+	 * Connect table column to object.
+	 */
 	/*
 	 * Making a connection between the ConnectedClient object to the columns
 	 * PropertyValueFactory search for a getters like "getIp", "getHost" in entity

@@ -57,39 +57,85 @@ public class ClientsReportEntity extends ReportEntity {
 		parserDescription(description);
 	}
 
+	/**
+	 * Gets the supply methods.
+	 *
+	 * @return the supply methods
+	 */
 	public String getSupplyMethods() {
 		return supplyMethods;
 	}
 
+	/**
+	 * Sets the supply methods.
+	 *
+	 * @param supplyMethods the new supply methods
+	 */
 	public void setSupplyMethods(String supplyMethods) {
 		this.supplyMethods = supplyMethods;
 		parserSupplyMethods(supplyMethods);
 	}
+	
+	/**
+	 * Sets the user status.
+	 *
+	 * @param userStatus the new user status
+	 */
 	private void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
 		parseUserStatus(userStatus);
 	}
 
+	/**
+	 * Gets the total orders.
+	 *
+	 * @return the total orders
+	 */
 	public String getTotalOrders() {
 		return totalOrders;
 	}
 
+	/**
+	 * Sets the total orders.
+	 *
+	 * @param totalOrders the new total orders
+	 */
 	public void setTotalOrders(String totalOrders) {
 		this.totalOrders = totalOrders;
 	}
 
+	/**
+	 * Gets the total sales arr.
+	 *
+	 * @return the total sales arr
+	 */
 	public LinkedHashMap<String, Integer> getTotalSalesArr() {
 		return totalSalesArr;
 	}
 
+	/**
+	 * Gets the user status arr.
+	 *
+	 * @return the user status arr
+	 */
 	public LinkedHashMap<String, Integer> getUserStatusArr() {
 		return userStatusArr;
 	}
 
+	/**
+	 * Gets the supply methods arr.
+	 *
+	 * @return the supply methods arr
+	 */
 	public LinkedHashMap<String, Integer> getSupplyMethodsArr() {
 		return supplyMethodsArr;
 	}
 
+	/**
+	 * Parser description.
+	 *
+	 * @param description the description
+	 */
 	private void parserDescription(String description) {
 		totalSalesArr = new LinkedHashMap<String, Integer>();
 		if (CommonFunctions.isNullOrEmpty(description))
@@ -105,6 +151,11 @@ public class ClientsReportEntity extends ReportEntity {
 	}
 
 
+	/**
+	 * Parser supply methods.
+	 *
+	 * @param supplyMethods the supply methods
+	 */
 	private void parserSupplyMethods(String supplyMethods) {
 		supplyMethodsArr = new LinkedHashMap<String, Integer>();
 		if (CommonFunctions.isNullOrEmpty(supplyMethods))
@@ -119,6 +170,11 @@ public class ClientsReportEntity extends ReportEntity {
 	}
 
 
+	/**
+	 * Parses the user status.
+	 *
+	 * @param userStatus2 the user status 2
+	 */
 	private void parseUserStatus(String userStatus2) {
 		userStatusArr = new LinkedHashMap<>();
 		if (CommonFunctions.isNullOrEmpty(userStatus))

@@ -29,6 +29,13 @@ public class MarketingManagementDBController {
 	This variable holds a connection to a MySQL database.
 	*/
 	private static Connection con = MySqlClass.getConnection();
+	
+	/**
+	 * Insert sale entities.
+	 *
+	 * @param saleEntity the sale entity
+	 * @param client the client
+	 */
 	/*
 	 * This method is for inserting a new Sale Entity into the database.
 	 * @param SaleEntity The SaleEntity object which contains all the details of the sale
