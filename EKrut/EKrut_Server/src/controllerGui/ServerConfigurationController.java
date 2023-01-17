@@ -166,7 +166,7 @@ public class ServerConfigurationController {
 	/**
 	 * Get current computer IP
 	 * 
-	 * @return
+	 * @return current computers ip
 	 * @throws Exception
 	 */
 	private String getIPValue() throws Exception {
@@ -182,7 +182,7 @@ public class ServerConfigurationController {
 	/**
 	 * Disable all text fields
 	 * 
-	 * @param b
+	 * @param b boolean value true or false.
 	 */
 	private void setDisableTextFieldValues(boolean b) {
 		txtDBName.setDisable(b);
@@ -215,7 +215,7 @@ public class ServerConfigurationController {
 	/**
 	 * Parse file into tuples and send the info to DBController for insertion
 	 * 
-	 * @param file
+	 * @param file current file from import users selection
 	 */
 	private void parseFile(File file) {
 		int cnt = 0;

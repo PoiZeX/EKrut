@@ -36,7 +36,7 @@ public class ScheduledTasksController {
 	/**
 	 * Checks whether the day is the first in month or not
 	 * 
-	 * @return
+	 * @return if its the first day or the month or not
 	 */
 	public static boolean isFirstDayOfMonth() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");

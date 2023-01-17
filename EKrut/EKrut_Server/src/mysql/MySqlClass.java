@@ -10,6 +10,13 @@ import java.sql.SQLException;
 public class MySqlClass {
 	public static Boolean isConnectionSuccess = null;
 	private static Connection connection;  
+	
+	
+	/**
+	 * @param DBAddress database address 
+	 * @param username database login username 
+	 * @param password database login password
+	 */
 	public static void connectToDb(String DBAddress, String username, String password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -30,6 +37,10 @@ public class MySqlClass {
 		}
 		isConnectionSuccess = false;
 	}
+	
+	/**
+	 * @return current mysql connection
+	 */
 	public static Connection getConnection() {
 		return connection;
 	}
