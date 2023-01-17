@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"common"},{"l":"controller"},{"l":"controllerDb"},{"l":"controllerGui"},{"l":"entity"},{"l":"enums"},{"l":"interfaces"},{"l":"ocsf.client"},{"l":"ocsf.server"},{"l":"Store"},{"l":"utils"}]
