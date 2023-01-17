@@ -26,7 +26,7 @@ public class ItemsController {
 	/**
 	 * Singleton implementation
 	 * 
-	 * @return
+	 * @return instance of current controller
 	 */
 	public static ItemsController getInstance() {
 		if (instance == null)
@@ -43,6 +43,7 @@ public class ItemsController {
 
 	/**
 	 * add the item to array list
+	 * @param items ArrayList of item entities
 	 */
 	public void getItemsFromServer(ArrayList<ItemEntity> items) {
 		for (ItemEntity item : items) {
@@ -54,6 +55,7 @@ public class ItemsController {
 
 	/**
 	* Convert image from bytes to image
+	* @param item itemEntity to get image from, to convert 
 	*/
 	private void convertImage(ItemEntity item) {
 		InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);

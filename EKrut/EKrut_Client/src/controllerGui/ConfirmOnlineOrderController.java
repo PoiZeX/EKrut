@@ -69,10 +69,11 @@ public class ConfirmOnlineOrderController implements IScreen {
 		}
 
 	}
+
 	/**
 	 * confirm the delivery or collect the order
 	 * 
-	 * @param event
+	 * @param event current event
 	 */
 	@FXML
 	void confirm(ActionEvent event) {
@@ -98,6 +99,11 @@ public class ConfirmOnlineOrderController implements IScreen {
 	/**
 	 * Generic method to handle buttons setup according to button text, tooltip and
 	 * image
+	 * @param <T> type of button
+	 * @param btn generic button, with text
+	 * @param btnText the text on button
+	 * @param tooltiptext tooltip on button
+	 * @param imgPath image path to appliy on button
 	 */
 	private <T extends Button> void setBtnAndPicture(T btn, String btnText, String tooltiptext, String imgPath) {
 		Image image = new Image(getClass().getResourceAsStream(imgPath));
@@ -138,7 +144,7 @@ public class ConfirmOnlineOrderController implements IScreen {
 	 * for this customer the delivery status is outForDelivery the customerStatus!=
 	 * APPROVED Request from server to update the deliveryEntity.customerStatus
 	 * 
-	 * @param deliveryEntity
+	 * @param deliveryEntity the delivery entity got from server
 	 */
 	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
 
@@ -162,9 +168,11 @@ public class ConfirmOnlineOrderController implements IScreen {
 
 		}
 	}
+
 	/***
 	 * get the pickup status from the user after he types the order code for pickup.
-	 * @param pickupEntity
+	 * 
+	 * @param pickupEntity get from server
 	 */
 	public static void getPickupAnswer(PickupEntity pickupEntity) {
 

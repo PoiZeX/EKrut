@@ -15,6 +15,11 @@ public class ClientController implements ChatIF {
 
 	ChatClient client;
 
+	/**
+	 * Client controller to define chat between server and client
+	 * @param host ip
+	 * @param port 4 digits port
+	 */
 	public ClientController(String host, int port) {
 		try {
 			client = new ChatClient(host, port, this);
@@ -31,7 +36,12 @@ public class ClientController implements ChatIF {
 	public boolean accept(String str) {
 		return client.handleMessageFromClientUI(str);
 	}
-
+	
+	/**
+	 * Get object from server
+	 * @param obj general message
+	 * @return true/false
+	 */
 	public boolean acceptObj(Object obj) {
 		return client.handleMessageFromClient(obj);
 	}

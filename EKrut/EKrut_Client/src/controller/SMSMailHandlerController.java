@@ -19,18 +19,11 @@ public class SMSMailHandlerController {
 	private static ClientController chat = HostClientController.getChat();
 
 	
-	/**
-	 * Handle sending SMS or Mail based on <msgType> to specific user
-	 * @param msgType
-	 * @param to
-	 * @param title
-	 * @param message
-	 * @return
-	 */
+	
 	public static String lastMsg = "";
     /**
      * Handle sending SMS or Mail based on <msgType> to specific user
-     * @param msgType the type of message to send ("SMS" or "Mail")
+     * @param msgType the type of message to send ("SMS" or "Mail", can be other also)
      * @param to the recipient user
      * @param title the title of the message
      * @param message the content of the message

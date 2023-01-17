@@ -80,7 +80,7 @@ public class ReportSelectionController implements IScreen {
 			switch (getSelectedReport()) {
 			case "supplyReport":
 				SupplyReportController.setReport(year, month, region);
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.SupplyReport);
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SupplyReport);
 				break;
 			case "ordersReport":
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "orders", region, month, year }));
