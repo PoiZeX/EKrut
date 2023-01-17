@@ -34,9 +34,11 @@ import javafx.scene.layout.VBox;
 import utils.AppConfig;
 import utils.PopupSetter;
 import utils.TooltipSetter;
+
 /**
- * Home page GUI controller, implements Screen interface
- * Home page for ALL system users, which changes according to user role
+ * Home page GUI controller, implements Screen interface Home page for ALL
+ * system users, which changes according to user role
+ * 
  * @author Lidor
  *
  */
@@ -49,8 +51,8 @@ public class HomePageController implements IScreen {
 	@FXML
 	private VBox vbox;
 
-    @FXML
-    private Label homePageTopLabel;
+	@FXML
+	private Label homePageTopLabel;
 
 	@FXML
 	private Label lastMessageDateTimeLabel;
@@ -90,22 +92,22 @@ public class HomePageController implements IScreen {
 
 	@FXML
 	private VBox rigthVbox;
-	
+
 	/**
-	
-	This method is used to initialize the main menu screen for the user.
-	It sets the visibility of the buttons and labels according to the role of the current connected user.
-	It also sets up the view for the personal messages and initializes the common data from the database.
-	It also activate the timeout.
-	*/
+	 * 
+	 * This method is used to initialize the main menu screen for the user. It sets
+	 * the visibility of the buttons and labels according to the role of the current
+	 * connected user. It also sets up the view for the personal messages and
+	 * initializes the common data from the database. It also activate the timeout.
+	 */
 	@Override
-	public void initialize() { 
+	public void initialize() {
 		rolesViableForMessages = new ArrayList<>();
 		rolesViableForMessages.add(RolesEnum.CEO);
 		rolesViableForMessages.add(RolesEnum.regionManager);
 		rolesViableForMessages.add(RolesEnum.registered);
 		rolesViableForMessages.add(RolesEnum.member);
-		
+
 		// Get the role type of the current connected user
 		RolesEnum currentRole = currentUser.getRole_type();
 
@@ -123,6 +125,9 @@ public class HomePageController implements IScreen {
 
 		// activate timeout
 		NavigationStoreController.transition.play();
+
+		if (AppConfig.SYSTEM_CONFIGURATION == "OL" && !CommonFunctions.isNullOrEmpty(currentUser.getCc_num()))
+			ItemsController.getInstance().requestItemsFromServer();
 	}
 
 	/**
@@ -167,23 +172,23 @@ public class HomePageController implements IScreen {
 				// Get the first short part of the last message
 				String lastMessageShort = ((PersonalMessageEntity) (PersonalMessagesController.getMsgList()
 						.toArray()[PersonalMessagesController.getMsgList().toArray().length - 1])).getMessage()
-						.split("\n")[0];
+								.split("\n")[0];
 				lastMsgLabel.setText(lastMessageShort); // Set up short message label
 				lastMsgLabel.setTooltip(tooltip.getTooltip()); // Set up the whole message tooltip
-			}  
-			else {
+			} else {
 				// No messages to display
 				lastMsgLabel.setText("No Messages");
 				lastMessageDateTimeLabel.setText("");
 			}
-		}
-		else {
-			// If the user doesn't have the option for messages, nicely display the current time and date
+		} else {
+			// If the user doesn't have the option for messages, nicely display the current
+			// time and date
 			AnimationTimer timer = new AnimationTimer() {
-			    @Override
-			    public void handle(long now) {
-			    	lastMessageDateTimeLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-			    }
+				@Override
+				public void handle(long now) {
+					lastMessageDateTimeLabel
+							.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+				}
 			};
 			timer.start();
 			lastMsgLabel.setText("");
@@ -222,8 +227,7 @@ public class HomePageController implements IScreen {
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
-				}
-				else {
+				} else {
 					displayMemberMenu(currentRole);
 				}
 			}
@@ -283,8 +287,7 @@ public class HomePageController implements IScreen {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern", ScreensNamesEnum.CreateNewSale);
 				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
-			} 
-			else {
+			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
@@ -298,8 +301,8 @@ public class HomePageController implements IScreen {
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				checkEmployeeMemberStatus(currentUser, currentRole);
 				setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
-				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));} 
-			else {
+				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));
+			} else {
 				// is on 'EK'
 				if (!checkEmployeeMemberStatus(currentUser, currentRole))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
@@ -360,7 +363,7 @@ public class HomePageController implements IScreen {
 					public void handle(ActionEvent event) {
 						memberMenuBtn.setDisable(true);
 						employeeMenuBtn.setDisable(false);
-						toggleBtnsVisible(new Button[] {topBtn, bottomBtn, middleBtn }, false);
+						toggleBtnsVisible(new Button[] { topBtn, bottomBtn, middleBtn }, false);
 						displayMemberMenu(currentRole);
 					}
 				});
@@ -372,7 +375,7 @@ public class HomePageController implements IScreen {
 				public void handle(ActionEvent event) {
 					memberMenuBtn.setDisable(false);
 					employeeMenuBtn.setDisable(true);
-					toggleBtnsVisible(new Button[] {topBtn, bottomBtn, middleBtn }, false);
+					toggleBtnsVisible(new Button[] { topBtn, bottomBtn, middleBtn }, false);
 					displayUserMenuByRoleType(currentRole);
 				}
 			});
@@ -394,11 +397,10 @@ public class HomePageController implements IScreen {
 			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready",
 					ScreensNamesEnum.ConfirmOnlineOrder); // need
 		else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-			setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
-		
+			setBtn(middleBtn, "Confirm Delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
+
 		setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 		image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
-		ItemsController.getInstance().requestItemsFromServer();
 		OrderController.getActiveSalesFromDB();
 	}
 
@@ -421,8 +423,7 @@ public class HomePageController implements IScreen {
 				switch (scName) {
 				case ViewCatalog:
 					if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-						PopupSetter.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml",
-								"Shipment Method");
+						PopupSetter.createSelectPopup("/boundary/ShipmentMethodPopupBoundary.fxml", "Shipment Method");
 					else
 						NavigationStoreController.getInstance().setCurrentScreen(scName);
 					break;

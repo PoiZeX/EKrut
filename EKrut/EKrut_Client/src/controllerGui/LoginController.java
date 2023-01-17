@@ -25,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -62,6 +63,9 @@ public class LoginController implements IScreen {
 	private ComboBox<String> ektUserComboBox;
 
 	@FXML
+	private Label ektLabel;
+	
+	@FXML
 	private Button EKTLoginBtn;
 
 	private HashMap<String, String> allUsers = new HashMap<>();
@@ -69,12 +73,12 @@ public class LoginController implements IScreen {
 	private static boolean isEKTpressed = false;
 
 	public void initialize() {
-		if(AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
-		{
+		if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 			EKTLoginBtn.setVisible(false);
 			ektUserComboBox.setVisible(false);
-		}
-		else
+			ektLabel.setVisible(false);
+
+		} else
 			setUpEKTUsers();
 	}
 
@@ -97,14 +101,16 @@ public class LoginController implements IScreen {
 			EKTLoginBtn.setDisable(false);
 		});
 	}
+
 	/**
 	 * Return the current selected user from CB
+	 * 
 	 * @return
 	 */
 	public static String[] getUser() {
 		return new String[] { username, password };
 	}
-	
+
 	public LoginController() {
 		chat = HostClientController.getChat(); // one instance
 	}

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<GridPane styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" vgap="25.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ChooseRegionPopUpController">
+<GridPane styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" vgap="25.0" xmlns="http://javafx.com/javafx/8.0.221" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ChooseRegionPopUpController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="490.0" />
       <ColumnConstraints />

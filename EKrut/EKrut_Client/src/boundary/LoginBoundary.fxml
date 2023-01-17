@@ -108,7 +108,7 @@
                </font>
             </Button>
             <Line endX="213.5" startX="-100.0" stroke="#c3bcbc" GridPane.rowIndex="3" />
-            <Label styleClass="Label" text="Subscriber? quick login with EKT" GridPane.rowIndex="4" />
+            <Label styleClass="Label" fx:id="ektLabel"  text="Member? quick login with EKT" GridPane.rowIndex="4" />
             <Label styleClass="LabelTitel" text="Welcome to EKrut!" />
             <ComboBox fx:id="ektUserComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="215.0" promptText="Select User For EKT Simulation" styleClass="combo-box" GridPane.rowIndex="6" GridPane.valignment="TOP" />
          </children>
