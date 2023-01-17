@@ -16,18 +16,15 @@ import entity.ItemEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
-/***
- * The ItemDBController class is responsible for handling database related
- * operations related to items. It retrieves images and information of all items
- * from database, and sends it to the client
+/**
+ * The Class ItemDBController.
  */
 public class ItemDBController {
 
-	/***
-	 * This method is responsible for sending images and information of all items to
-	 * the client
-	 * 
-	 * @param client the client that requested to receive the items
+	/**
+	 * Send img to client.
+	 *
+	 * @param client the client
 	 */
 	public void sendImgToClient(ConnectionToClient client) {
 		Statement stmt;
@@ -77,11 +74,11 @@ public class ItemDBController {
 		}
 	}
 
-	/***
-	 * get all the items names by their ids
-	 * 
-	 * @param itemsID
-	 * @return
+	/**
+	 * Gets the all items name by id.
+	 *
+	 * @param itemsID the items ID
+	 * @return the all items name by id
 	 */
 	public static ArrayList<String> getAllItemsNameById(ArrayList<Integer> itemsID) {
 		ArrayList<String> itemsNames = new ArrayList<>();

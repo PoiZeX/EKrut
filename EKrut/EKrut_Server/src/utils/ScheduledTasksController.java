@@ -8,16 +8,16 @@ import controllerDb.ReportsGenerator;
 import javafx.animation.PauseTransition;
 
 /**
- * The class handles the scheduled tasks which needs to be executed
- * automatically
- * 
+ * The Class ScheduledTasksController.
  */
 public class ScheduledTasksController {
 
 	public static PauseTransition transitionDay, transitionMonth;
 
 	/**
-	 * setup timer
+	 * Sets the up timer.
+	 *
+	 * @param interval the new up timer
 	 */
 	public void setupTimer(int interval) {
 		transitionDay = new PauseTransition(new javafx.util.Duration(interval)); // one day timer
@@ -34,9 +34,9 @@ public class ScheduledTasksController {
 	}
 
 	/**
-	 * Checks whether the day is the first in month or not
-	 * 
-	 * @return if its the first day or the month or not
+	 * Checks if is first day of month.
+	 *
+	 * @return true, if is first day of month
 	 */
 	public static boolean isFirstDayOfMonth() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");
@@ -48,8 +48,7 @@ public class ScheduledTasksController {
 	}
 
 	/**
-	 * Handles the tasks need to be executed every month (Reports, 'later' payments
-	 * etc)
+	 * Tasks monthly executer.
 	 */
 	public void tasksMonthlyExecuter() {
 		DateTimeFormatter monthYear = DateTimeFormatter.ofPattern("MM yyyy");

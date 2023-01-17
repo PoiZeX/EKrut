@@ -10,10 +10,9 @@ import enums.TaskType;
 import entity.PickupEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
+
 /**
- * Pickup DB controller handles all Reports queries
- * @author Lidor
- *
+ * The Class PickupDBController.
  */
 public class PickupDBController {
 	/**
@@ -26,11 +25,12 @@ public class PickupDBController {
 	 */
 	public PickupDBController() {
 	}
+	
 	/**
-	 * update pickup status to 'done'
-	 * 
-	 * @param orderId
-	 * @param client
+	 * Update pickup status.
+	 *
+	 * @param orderId the order id
+	 * @param client the client
 	 */
 	public static void updatePickupStatus(int orderId, ConnectionToClient client) {
 		try {
@@ -47,10 +47,10 @@ public class PickupDBController {
 	}
 
 	/**
-	 * getting the pickup order for specific client from db if exist
-	 * 
-	 * @param details
-	 * @param client
+	 * Checks if is pickup valid.
+	 *
+	 * @param details the details
+	 * @param client the client
 	 */
 	public static void isPickupValid(String[] details, ConnectionToClient client) {
 		PickupEntity pickup = null;
@@ -79,10 +79,10 @@ public class PickupDBController {
 	}
 
 	/**
-	 * insert new pickup entity
-	 * 
-	 * @param pickup
-	 * @param client
+	 * Insert pickup entity.
+	 *
+	 * @param pickup the pickup
+	 * @param client the client
 	 */
 	public static void insertPickupEntity(PickupEntity pickup, ConnectionToClient client) {
 		try {

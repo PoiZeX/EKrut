@@ -3,9 +3,9 @@ package mysql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 /**
- * Handles the MySQL Connection
- *
+ * The Class MySqlClass.
  */
 public class MySqlClass {
 	public static Boolean isConnectionSuccess = null;
@@ -13,9 +13,11 @@ public class MySqlClass {
 	
 	
 	/**
-	 * @param DBAddress database address 
-	 * @param username database login username 
-	 * @param password database login password
+	 * Connect to db.
+	 *
+	 * @param DBAddress the DB address
+	 * @param username the username
+	 * @param password the password
 	 */
 	public static void connectToDb(String DBAddress, String username, String password) {
 		try {
@@ -39,7 +41,9 @@ public class MySqlClass {
 	}
 	
 	/**
-	 * @return current mysql connection
+	 * Gets the connection.
+	 *
+	 * @return the connection
 	 */
 	public static Connection getConnection() {
 		return connection;

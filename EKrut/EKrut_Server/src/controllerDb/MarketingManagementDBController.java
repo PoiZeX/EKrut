@@ -18,11 +18,8 @@ import entity.SaleEntity.SaleStatus;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
-/***
- * The MarketingManagementDBController class is responsible for handling interactions 
- * between the server and the database for all marketing management related functionality
- * @author User
- *
+/**
+ * The Class MarketingManagementDBController.
  */
 public class MarketingManagementDBController {
 	/**
@@ -65,10 +62,11 @@ public class MarketingManagementDBController {
 	}
 	
 	/**
-	 * This method is for updating Sale Entities status in the database.
-	 * @param ArrayList<SaleEntity> The list of SaleEntity objects which contains all the details of the sales
-	 * @param client The ConnectionToClient object, represent the connection between the server and the client.
-	*/
+	 * Update sale entities.
+	 *
+	 * @param saleLst the sale lst
+	 * @param client the client
+	 */
 	public static void updateSaleEntities(ArrayList<SaleEntity> saleLst, ConnectionToClient client) {
 		
 		try {
@@ -86,11 +84,14 @@ public class MarketingManagementDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * This method is for getting all sales of specific region.
-	 * @param region the region that you want to get the sales
-	 * @param client The ConnectionToClient object, represent the connection between the server and the client.
-	*/
+	 * Gets the sales.
+	 *
+	 * @param region the region
+	 * @param client the client
+	 * @return the sales
+	 */
 	public static void getSales(String region ,ConnectionToClient client) {
 		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();
 		SaleEntity saleEntity;
@@ -113,10 +114,12 @@ public class MarketingManagementDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * check if the given sale already exist in the database
-	 * @param saleEntity the sale to check for existence
-	 * @return true if the sale already exist, false otherwise
+	 * Checks if is sale exist.
+	 *
+	 * @param saleEntity the sale entity
+	 * @return the boolean
 	 */
 	public static Boolean isSaleExist(SaleEntity saleEntity) {
 	
@@ -145,9 +148,11 @@ public class MarketingManagementDBController {
 	
 	//"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
 	/**
-	 * get all active sales for a specific region and for the current day of the week
-	 * @param region region to get sales from
-	 * @param client the client to send the results to
+	 * Gets the active sales by region.
+	 *
+	 * @param region the region
+	 * @param client the client
+	 * @return the active sales by region
 	 */
 	public static void getActiveSalesByRegion(String region ,ConnectionToClient client) {
 		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();

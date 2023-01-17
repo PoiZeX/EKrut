@@ -16,9 +16,9 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 import utils.ScheduledTasksController;
+
 /**
- * Handles the order DB queries
- *
+ * The Class OrderDBController.
  */
 public class OrderDBController {
 	/**
@@ -27,10 +27,10 @@ public class OrderDBController {
 	private static Connection con = MySqlClass.getConnection();
 
 	/**
-	 * Checks and sends an answer if this is the first purchase of a member
-	 * 
-	 * @param member
-	 * @param client
+	 * Checks if is member first purchase.
+	 *
+	 * @param member the member
+	 * @param client the client
 	 */
 	public static void isMemberFirstPurchase(UserEntity member, ConnectionToClient client) {
 		try {
@@ -51,10 +51,10 @@ public class OrderDBController {
 	}
 
 	/**
-	 * Gets an order entity and insert it. Return success (or not) message to client
-	 * 
-	 * @param entity
-	 * @param client
+	 * Insert order entity.
+	 *
+	 * @param entity the entity
+	 * @param client the client
 	 */
 	public static void insertOrderEntity(OrderEntity entity, ConnectionToClient client) {
 
@@ -96,13 +96,11 @@ public class OrderDBController {
 	}
 
 	/**
-	 * Return all orders of members which not paid yet, in time range
-	 * 
-	 * @param startMonth
-	 * @param StartYear
-	 * @param endMonth
-	 * @param endYear
-	 * @return
+	 * Gets the not paid orders in time range.
+	 *
+	 * @param year the year
+	 * @param month the month
+	 * @return the not paid orders in time range
 	 */
 	public static ArrayList<int[]> getNotPaidOrdersInTimeRange(String year, String month) {
 		ArrayList<int[]> ordersToReturn = new ArrayList<int[]>();
@@ -118,10 +116,10 @@ public class OrderDBController {
 	}
 
 	/**
-	 * Manage the task of taking money from members of specific month and year
-	 * 
-	 * @param year
-	 * @param month
+	 * Take monthly money scheduled manager.
+	 *
+	 * @param month the month
+	 * @param year the year
 	 */
 	public static void takeMonthlyMoneyScheduledManager(String month, String year) {
 		try {
@@ -134,11 +132,12 @@ public class OrderDBController {
 	}
 
 	/**
-	 * Handle the query of calculating and taking the money for orders in range of
-	 * time
-	 * 
-	 * @param rs
-	 * @throws SQLException
+	 * Take money on orders.
+	 *
+	 * @param month the month
+	 * @param year the year
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
 	 */
 	private static boolean takeMoneyOnOrders( String month, String year) throws SQLException {
 		boolean isAtLeastOneFound = false;
@@ -166,11 +165,10 @@ public class OrderDBController {
 	}
 
 	/**
-	 * For simulation we get the user id and sum of money to take, and refer it to
-	 * external payment process (simulation)
-	 * 
-	 * @param userId
-	 * @param sum
+	 * External payment service.
+	 *
+	 * @param userId the user id
+	 * @param sum the sum
 	 */
 	@SuppressWarnings("unused")
 	private static void externalPaymentService(int userId, double sum) {
@@ -184,11 +182,11 @@ public class OrderDBController {
 	}
 
 	/**
-	 * Update payment status to 'later' for orders in time range of whole month
-	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * Update payment status.
+	 *
+	 * @param month the month
+	 * @param year the year
+	 * @throws SQLException the SQL exception
 	 */
 	private static void updatePaymentStatus(String month, String year) throws SQLException {
 		if (con == null)

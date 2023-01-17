@@ -13,10 +13,9 @@ import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
+
 /**
- *
- * Contains machine DB logic
- *
+ * The Class MachineDBController.
  */
 public class MachineDBController {
 	/**
@@ -31,11 +30,11 @@ public class MachineDBController {
 	}
 //-------------------------------------------GET
 	/**
-	 * get machine minimum amount
-	 * 
-	 * @param machineId
-	 * @return
-	 */
+ * Gets the machine min amount.
+ *
+ * @param machineId the machine id
+ * @return the machine min amount
+ */
 	public static int getMachineMinAmount(int machineId) {
 		int minAmount = -1;
 
@@ -56,12 +55,13 @@ public class MachineDBController {
 		}
 		return minAmount;
 	}
+	
 	/**
-	 * get machines for user by there need for exemple : region manager - gets by
-	 * region
-	 * 
-	 * @param arr
-	 * @param client
+	 * Gets the machines from DB.
+	 *
+	 * @param arr the arr
+	 * @param client the client
+	 * @return the machines from DB
 	 */
 	public static void getMachinesFromDB(String[] arr, ConnectionToClient client) {
 		try {
@@ -78,11 +78,12 @@ public class MachineDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * get machines list for worker where therse a call open for him
-	 * 
-	 * @param workerId
-	 * @return
+	 * Gets the machine list for supply update from DB.
+	 *
+	 * @param workerId the worker id
+	 * @return the machine list for supply update from DB
 	 */
 	private static ArrayList<MachineEntity> getMachineListForSupplyUpdateFromDB(int workerId) {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
@@ -108,10 +109,10 @@ public class MachineDBController {
 	}
 
 	/**
-	 * get machines list for worker where there is a call open for him
-	 * 
-	 * @param regionName
-	 * @return
+	 * Gets the machine list for supply region M from DB.
+	 *
+	 * @param regionName the region name
+	 * @return the machine list for supply region M from DB
 	 */
 	private static ArrayList<MachineEntity> getMachineListForSupplyRegionMFromDB(String regionName) {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
@@ -136,11 +137,11 @@ public class MachineDBController {
 
 //-------------------------------------------UPDATE
 	/**
-	 * Update minimum amount for machine
-	 * 
-	 * @param obj
-	 * @param client
-	 */
+ * Update machine min amount.
+ *
+ * @param obj the obj
+ * @param client the client
+ */
 	public static void updateMachineMinAmount(MachineEntity obj, ConnectionToClient client) {
 		try {
 			if (con == null)
