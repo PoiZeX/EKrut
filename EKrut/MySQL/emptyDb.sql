@@ -229,7 +229,9 @@ CREATE TABLE `personal_messages` (
   `date` varchar(64) NOT NULL,
   `type` varchar(64) NOT NULL,
   `message` varchar(2048) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id_idx` (`user_id`),
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -276,7 +278,8 @@ DROP TABLE IF EXISTS `regions`;
 CREATE TABLE `regions` (
   `region_id` int NOT NULL,
   `region_name` varchar(100) NOT NULL,
-  PRIMARY KEY (`region_id`)
+  PRIMARY KEY (`region_id`),
+  UNIQUE KEY `region_name_UNIQUE` (`region_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -286,7 +289,7 @@ CREATE TABLE `regions` (
 
 LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` VALUES (1,'North'),(2,'UAE'),(3,'South');
+INSERT INTO `regions` VALUES (1,'North'),(3,'South'),(2,'UAE');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +309,8 @@ CREATE TABLE `sales` (
   `end_time` time NOT NULL,
   `sale_status` enum('Active','NotActive') NOT NULL DEFAULT 'NotActive',
   PRIMARY KEY (`id`),
-  KEY `region_idx` (`region`)
+  KEY `region_idx` (`region`),
+  CONSTRAINT `region` FOREIGN KEY (`region`) REFERENCES `regions` (`region_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -395,4 +399,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-17 19:14:11
+-- Dump completed on 2023-01-17 19:33:47
