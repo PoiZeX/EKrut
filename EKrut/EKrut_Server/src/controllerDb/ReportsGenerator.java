@@ -399,27 +399,44 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * inner class represents a pair for orders report
-	 *
-	 */
+	This class implements a Pair of integers, with fields for ordersAmount and usersAmount.
+	*/
 	protected static class Pair implements Comparable<Pair> {
 		int ordersAmount, usersAmount;
+		/**
 
+		Constructor that initialize the fields ordersAmount and usersAmount
+		@param ordersAmount an integer representing the amount of orders
+		@param usersAmount an integer representing the amount of users
+		*/
 		public Pair(int ordersAmount, int usersAmount) {
 			this.ordersAmount = ordersAmount;
 			this.usersAmount = usersAmount;
 		}
+		/**
+		*
 
+		@return a string representation of the Pair in the format of ordersAmount,usersAmount
+		*/
 		@Override
 		public String toString() {
 			return this.ordersAmount + "," + this.usersAmount;
 		}
+		/**
 
+		Compare two Pairs by ordersAmount
+		@param o Pair to be compared
+		@return -1 if the current object's orderAmount is less than other object, 0 if they are equal, 1 if current object's orderAmount is greater than other.
+		*/
 		@Override
 		public int compareTo(Pair o) {
 			return ordersAmount > o.ordersAmount ? 1 : ordersAmount == 0 ? 0 : -1;
 		}
+		/**
+		*
 
+		@return the String representation of ordersAmount
+		*/
 		public String ordersAmountStr() {
 			return String.valueOf(ordersAmount);
 		}

@@ -25,6 +25,9 @@ import ocsf.server.ConnectionToClient;
  *
  */
 public class MarketingManagementDBController {
+	/**
+	This variable holds a connection to a MySQL database.
+	*/
 	private static Connection con = MySqlClass.getConnection();
 	/*
 	 * This method is for inserting a new Sale Entity into the database.

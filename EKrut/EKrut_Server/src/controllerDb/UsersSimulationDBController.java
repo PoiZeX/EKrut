@@ -84,11 +84,10 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Checks validation of params before inserting to table
-	 * 
-	 * @param tuple
-	 * @return
-	 */
+	This method validates the given tuple of user details, ensuring that the values for each field are correct.
+	@param tuple An array of strings containing the user's details: ID number, role type, region, first name, last name, email, phone number, credit card number and role type.
+	@return A string containing a message describing any validation errors that have occurred.
+	*/
 	private static String isValidTuple(String[] tuple) {
 		StringBuilder res = new StringBuilder("");
 
@@ -117,11 +116,11 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Algorithm to validate the ID is legal in Israel
-	 * 
-	 * @param ID
-	 * @return
-	 */
+
+	This method checks if the given ID number is a valid Israeli ID number.
+	@param ID the ID number to be validated.
+	@return true if the ID number is valid, false otherwise.
+	*/
 	private static boolean isValidID(String ID) {
 		int id = Integer.parseInt(ID);
 		String.format("%09d", id); // some IDs can be lower than 9 digits, so lets normalize that with zeros

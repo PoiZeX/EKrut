@@ -39,10 +39,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the from DB
-	 * 
-	 * @return
-	 */
+
+	This method retrieves a list of unapproved users from the MySQL database.
+	@return an ArrayList of UserEntity objects containing data for all unapproved users in the database
+	*/
 	protected static ArrayList<UserEntity> getUnapprovedUsersFromDB() {
 		ArrayList<UserEntity> unapprovedUsersList = new ArrayList<UserEntity>();
 		try {
@@ -183,11 +183,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * return the user entity for given ID, or null if not found+
-	 * 
-	 * @param userId
-	 * @return
-	 */
+
+	This method retrieves a specific user from the MySQL database by user ID.
+	@param userId an integer representing the unique identifier of the user
+	@return a UserEntity object containing data for the user with the specified userId, or null if the user was not found or the connection is null
+	*/
 	public static UserEntity getUserByID(int userId) {
 		UserEntity user = new UserEntity();
 		try {
@@ -215,10 +215,12 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of changing the user's role type in DB
-	 * 
-	 * @return user
-	 */
+
+	This method updates a specific user in the MySQL database by user ID.
+	@param details an array of strings containing the user's ID number, role type, region and credit card number
+	@param client a ConnectionToClient object representing the client that initiated the request
+	@return true if the update was successful, false otherwise
+	*/
 	public static boolean updateUserInDB(String[] details, ConnectionToClient client) {
 		if (details.length < 1 && CommonFunctions.isNullOrEmpty(details[1]))
 			return false;
@@ -266,7 +268,12 @@ public class UsersManagementDBController {
 		return user;
 
 	}
+	/**
 
+	This method retrieves a region manager from the MySQL database by region name.
+	@param region a string representing the region of the region manager
+	@return a UserEntity object containing data for the region manager with the specified region, or an empty UserEntity object if the region manager was not found or the connection is null
+	*/
 	public static UserEntity getRegionManagerFromDBQuery(String region) {
 		UserEntity user = new UserEntity();
 		try {
@@ -293,11 +300,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Query executer for getting all supply workers
-	 * 
-	 * @return
-	 * @throws SQLException
-	 */
+
+	This method retrieves a list of supply workers from the MySQL database.
+	@return an ArrayList of UserEntity objects containing data for all supply workers in the database
+	@throws SQLException if a database access error occurs or this method is called on a closed connection
+	*/
 	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException {
 		ArrayList<UserEntity> supplyWorkers = new ArrayList<>();
 		UserEntity user = new UserEntity();
@@ -346,8 +353,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * @returns all users in the database in the format of {username : password} as an hashmap.
-	 */
+
+	This method retrieves all users in the MySQL database and returns them as a HashMap.
+	@return a HashMap with all the users in the database
+	*/
 	public static HashMap<String,String> getAllUsers() {
 		HashMap<String, String> users = new HashMap<>();
 		if (MySqlClass.getConnection() == null)

@@ -17,6 +17,9 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 public class ItemInMachineDBController {
+	/**
+	This variable holds a connection to a MySQL database.
+	*/
 	private static Connection con = MySqlClass.getConnection();
 
 	/**

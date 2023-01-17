@@ -29,7 +29,7 @@ public class ReportsDBController {
 	 * Parse the string array into reportType region month and year
 	 * 
 	 * @param array with details
-	 * @return
+	 * @return true when report is set, else return false
 	 */
 	public static boolean setReport(String[] details) {
 		switch (details[0]) {
@@ -90,7 +90,7 @@ public class ReportsDBController {
 	/**
 	 * Handles the query of getting the report from DB
 	 * 
-	 * @return
+	 * @return report
 	 */
 	public static OrderReportEntity getOrderReportFromDB() {
 		OrderReportEntity report = new OrderReportEntity();
@@ -118,7 +118,10 @@ public class ReportsDBController {
 		return report;
 
 	}
-
+	/**
+	This method retrieves a ClientsReportEntity object from the MySQL database.
+	@return ClientsReportEntity object containing data from the database
+	*/
 	public static ClientsReportEntity getClientsReportFromDB() {
 		ClientsReportEntity report = new ClientsReportEntity();
 		try {
@@ -147,7 +150,7 @@ public class ReportsDBController {
 	/**
 	 * Handles the query of getting the report from DB
 	 * 
-	 * @return
+	 * @return SupplyReportEntity object containing data from the database
 	 */
 	public static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
@@ -177,14 +180,14 @@ public class ReportsDBController {
 	}
 
 	/**
-	 * return if there is any report exist by type, year, month, region
-	 * 
-	 * @param reportType
-	 * @param month
-	 * @param year
-	 * @param region
-	 * @return
-	 */
+	This method checks if a report of a given type exists in the MySQL database.
+	@param reportType a string representing the type of report to check for
+	@param month a string representing the month of the report
+	@param year a string representing the year of the report
+	@param region a string representing the region of the report
+	@param machineId an int representing the machine id of the report
+	@return boolean true if the report exists, false otherwise
+	*/
 	public static boolean isReportExist(String reportType, String month, String year, String region, int machineId) {
 		if (!setReport(new String[] { reportType, region, month, year, String.valueOf(machineId) }))
 			return false;
