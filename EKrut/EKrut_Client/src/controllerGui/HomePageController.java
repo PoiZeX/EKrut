@@ -384,7 +384,7 @@ public class HomePageController implements IScreen {
 		setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNamesEnum.ViewCatalog);
 
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
-			setBtn(topBtn, "Collect An Order", "Collect any orders that are ready",
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready",
 					ScreensNamesEnum.ConfirmOnlineOrder); // need
 		else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 			setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
