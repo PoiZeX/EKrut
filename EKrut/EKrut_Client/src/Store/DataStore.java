@@ -14,9 +14,6 @@ import utils.AppConfig;
 
 /**
  * The class saves and handles the data needs to be stored for whole process
- * 
- * @author Lidor
- *
  */
 public class DataStore {
 	private static ClientController chat = HostClientController.getChat(); // one instance
