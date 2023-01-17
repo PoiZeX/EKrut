@@ -53,7 +53,7 @@ public enum ScreensNamesEnum {
 	
 	/**
 	 * Get the description of screen
-	 * @return
+	 * @return description
 	 */
 	public String getDescription() {
 		return description;

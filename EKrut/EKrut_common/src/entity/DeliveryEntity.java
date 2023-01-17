@@ -20,13 +20,12 @@ public class DeliveryEntity implements Serializable{
 
 	/**
 	 * For getting delivery entity
-	 * @param orderId
-	 * @param region
-	 * @param customerId
-	 * @param address
-	 * @param estimatedTime
-	 * @param deliveryStatusEnum
-	 * @param customerStatusEnum
+	 * @param orderId  order id
+	 * @param region order region
+	 * @param address order address
+	 * @param estimatedTime order estimated time
+	 * @param deliveryStatusEnum order delivery status
+	 * @param customerStatusEnum order  customer status
 	 */
 	public DeliveryEntity(int orderId, String region,  String address, String estimatedTime,
 			DeliveryStatusEnum deliveryStatusEnum, CustomerStatusEnum customerStatusEnum) {
@@ -41,9 +40,8 @@ public class DeliveryEntity implements Serializable{
 
 	/**
 	 * For build new delivery entity
-	 * @param region
-	 * @param customerId
-	 * @param address
+	 * @param region customer region
+	 * @param address customer address
 	 */
 	public DeliveryEntity(String region, String address) {
 		this.address=address;

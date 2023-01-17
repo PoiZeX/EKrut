@@ -26,18 +26,18 @@ public class CommonFunctions {
 	/**
 	 * check if the string is null or empty (spaces is empty)
 	 * 
-	 * @param txt
-	 * @return
+	 * @param txt text to check
+	 * @return if the txt is null or empty
 	 */
 	public static boolean isNullOrEmpty(String txt) {
 		return (txt == null || txt.trim().isEmpty());
 	}
 
 	/**
-	 * general function to execute lambda <callback> after <num> time
+	 * general function to execute lambda callback after amount of  time
 	 * 
-	 * @param num
-	 * @param callback
+	 * @param num timer seconds amount
+	 * @param callback callback function to run after timer ends.
 	 */
 	public static void SleepFor(long num, Runnable callback) {
 		timerTimeLimit = new Timer();
@@ -58,7 +58,7 @@ public class CommonFunctions {
 	
 	/**
 
-	This method takes in a String representing a month and returns a String of the corresponding numerical month (e.g. "january" -> "01").
+	This method takes in a String representing a month and returns a String of the corresponding numerical month (e.g. "January" to "01").
 	If the given month string is not a valid month, the method returns "Invalid month"
 	@param month the input month string to be converted to numerical form
 	@return a String of the numerical month representation, or "Invalid month" if the given month string is not valid
