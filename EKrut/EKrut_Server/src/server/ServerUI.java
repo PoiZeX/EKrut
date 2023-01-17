@@ -31,8 +31,11 @@ public class ServerUI extends Application {
 	}
 
 	/**
-	 * Start of the server GUI
-	 */
+
+	This method starts the primary stage of the application, sets the scene, title, and icon, and handles the close request event.
+	@param primaryStage the primary stage of the application.
+	@throws Exception if there is an error loading the FXML file or setting the scene.
+	*/
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/boundary/ServerConfigurationBoundary.fxml"));
 		Scene scene = new Scene(root);
@@ -50,12 +53,16 @@ public class ServerUI extends Application {
 	}
 
 	/**
-	 * run the server with mysql connection string
-	 * @param portUI
-	 * @param DBAddress
-	 * @param username
-	 * @param password
-	 */
+
+	This method runs the server, by creating a new EchoServer object with the specified port, DBAddress, username and password.
+	Tries to start listening for clients and when an error occur, it will print the error message. It will also clear the client list.
+	@param portUI the port number of the server, as a string.
+	@param DBAddress the Database address of the server
+	@param username the Database username of the server
+	@param password the Database password of the server
+	@throws BindException if the server is unable to listen on the specified port because it is already in use.
+	@throws Exception if there is an error creating or listening for clients.
+	*/
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
 		try {
@@ -81,8 +88,13 @@ public class ServerUI extends Application {
 	}
 
 	/**
-	 * Handle server disconnect 
-	 */
+
+	This method is used to disconnect the server. It sends a disconnect message to all clients and waits for a maximum of 2.5 seconds
+	for all clients to disconnect. If the server is still listening, it stops the listening and then closes the server.
+	Prints "Server Disconnected" when done.
+	@throws InterruptedException if the sleep method is interrupted while waiting for clients to disconnect.
+	@throws IOException if there is an error closing the server.
+	*/
 	public static void disconnect() {
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));
 		int attempts = 5; // waiting maximum 2.5 sec (for not getting stuck in loop)
