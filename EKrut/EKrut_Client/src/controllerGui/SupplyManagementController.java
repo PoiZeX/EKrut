@@ -42,7 +42,7 @@ import utils.PopupSetter;
  * @author Lidor
  *
  */
-public class SupplyManagementController implements ICmbANDTableSetUp, IScreen {
+public class SupplyManagementController implements ICmbANDTableSetUp {
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
 

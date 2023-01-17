@@ -28,6 +28,7 @@ public class ChatClient extends AbstractClient {
 	/**
 	 * Handle a message from server, type Object.
 	 * Navigate using MessageHandler
+	 * @param msg the message got from server
 	 */
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
@@ -35,7 +36,7 @@ public class ChatClient extends AbstractClient {
 			System.out.println("Message received: " + msg);
 		} else if (msg instanceof Message) {
 			try {
-				MessageHandler.Handle(this, (Message) msg);
+				MessageHandler.Handle((Message) msg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -45,7 +46,7 @@ public class ChatClient extends AbstractClient {
 	/**
 	 * Handle a simple message, type String
 	 * @param message
-	 * @return
+	 * @return false if exception, true success
 	 */
 	public boolean handleMessageFromClientUI(String message) {
 		try {
@@ -70,7 +71,7 @@ public class ChatClient extends AbstractClient {
 	/**
 	 * Handle sending an object from client to server
 	 * @param message
-	 * @return
+	 * @return false if exception, true if success
 	 */
 	public boolean handleMessageFromClient(Object message) {
 		try {

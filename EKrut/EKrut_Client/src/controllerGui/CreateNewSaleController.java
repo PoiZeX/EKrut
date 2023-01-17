@@ -81,7 +81,7 @@ public class CreateNewSaleController implements IScreen  {
     
     /***
      * send new sale entity to the server
-     * @param event
+     * @param event the current event
      */
     @FXML
     void createSale(ActionEvent event) {
@@ -111,8 +111,8 @@ public class CreateNewSaleController implements IScreen  {
     }
     
     /**
-     * fet answer from server
-     * @param ans
+     * get answer from server
+     * @param ans the answer from server
      */
     public static void isSaleExist(Boolean ans) {
 		valid=ans;

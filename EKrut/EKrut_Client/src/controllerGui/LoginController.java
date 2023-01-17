@@ -64,7 +64,7 @@ public class LoginController implements IScreen {
 
 	@FXML
 	private Label ektLabel;
-	
+
 	@FXML
 	private Button EKTLoginBtn;
 
@@ -72,6 +72,7 @@ public class LoginController implements IScreen {
 
 	private static boolean isEKTpressed = false;
 
+	@Override
 	public void initialize() {
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 			EKTLoginBtn.setVisible(false);
@@ -105,12 +106,15 @@ public class LoginController implements IScreen {
 	/**
 	 * Return the current selected user from CB
 	 * 
-	 * @return
+	 * @return string array of 2 strings of username and password
 	 */
 	public static String[] getUser() {
 		return new String[] { username, password };
 	}
 
+	/**
+	 * Constructor
+	 */
 	public LoginController() {
 		chat = HostClientController.getChat(); // one instance
 	}
@@ -128,7 +132,7 @@ public class LoginController implements IScreen {
 	/**
 	 * Handles login with username and password for EKrut clients
 	 * 
-	 * @param event
+	 * @param event current event
 	 */
 	@FXML
 	void loginBtnAction(ActionEvent event) {
@@ -150,7 +154,7 @@ public class LoginController implements IScreen {
 	 * Handle the login and validation of user; extracted to use in sub-class as
 	 * well
 	 * 
-	 * @return
+	 * @return true if process success, else false
 	 */
 	protected boolean loginProccess(String[] usernamePassword) {
 		// sends the user information to server
@@ -176,7 +180,8 @@ public class LoginController implements IScreen {
 	/**
 	 * Control user to validate (usually will be called from registration form)
 	 * 
-	 * @param user
+	 * @param user array of 2 strings, which the first one is username and the other
+	 *             is password
 	 */
 	public static void setUser(String[] user) {
 		username = user[0];
@@ -187,7 +192,7 @@ public class LoginController implements IScreen {
 	/**
 	 * return true if username and password are valid syntax and length
 	 * 
-	 * @return
+	 * @return true if syntax is valid, false otherwise
 	 */
 	private boolean validateUsernamePasswordSyntax() {
 		// not null
@@ -233,7 +238,7 @@ public class LoginController implements IScreen {
 	 * Validated the details of given user from server checks: User is not logged
 	 * in, user approved, and the username & password matches
 	 * 
-	 * @param user
+	 * @param user get the user entity from server
 	 */
 	public static void validUserFromServer(UserEntity user) {
 		if (CommonFunctions.isNullOrEmpty(user.getUsername())
@@ -279,7 +284,7 @@ public class LoginController implements IScreen {
 	/**
 	 * Handles the login via EKT with popup
 	 * 
-	 * @param event
+	 * @param event current event
 	 */
 	@FXML
 	void ektLoginAction(ActionEvent event) {
@@ -316,7 +321,7 @@ public class LoginController implements IScreen {
 	/**
 	 * Sets login btn disable while connect with EKT
 	 * 
-	 * @param disable
+	 * @param disable true if disable, false if no
 	 */
 	protected void setLoginBtnDisable(boolean disable) {
 		usernameTxtField.setDisable(disable);
@@ -328,7 +333,7 @@ public class LoginController implements IScreen {
 	/**
 	 * return true if the user is a member or valid employee
 	 * 
-	 * @return
+	 * @return true if the user is Authorized to use EKT
 	 */
 	private static boolean isUserAuthorizedToUseEKT(UserEntity user) {
 		if (user.getRole_type().equals(RolesEnum.user) || user.getRole_type().equals(RolesEnum.registered))
@@ -343,6 +348,9 @@ public class LoginController implements IScreen {
 		return true;
 	}
 
+	/**
+	 * General to show error message
+	 */
 	public void showErrorMsg() {
 		PopupSetter.createPopup(PopupTypeEnum.Error, returnedMsg);
 

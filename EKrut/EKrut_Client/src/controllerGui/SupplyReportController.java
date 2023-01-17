@@ -31,9 +31,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import utils.PopupSetter;
 import utils.TooltipSetter;
+
 /**
- * Supply report GUI controller, implements Screen interface
- * Getting the report and showing it to user 
+ * Supply report GUI controller, implements Screen interface Getting the report
+ * and showing it to user
+ * 
  * @author Lidor
  *
  */
@@ -75,6 +77,9 @@ public class SupplyReportController implements IScreen {
 	@FXML
 	private Label textConclusionsLbl;
 
+	@FXML
+	private Label minAmountLbl;
+
 	protected static ClientController chat;
 	protected static SupplyReportEntity reportDetails;
 	private SupplyReportEntity currentReport;
@@ -87,13 +92,15 @@ public class SupplyReportController implements IScreen {
 	private ArrayList<String[]> itemsArray = new ArrayList<>();
 	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
-	
+
 	public SupplyReportController(ClientController chatService) {
 		chat = chatService;
 	}
+
 	public SupplyReportController() {
 		chat = HostClientController.getChat();
 	}
+
 	/**
 	 * 
 	 * The initialize method is used to set up the machine selection combo box and
@@ -102,15 +109,16 @@ public class SupplyReportController implements IScreen {
 	 * It populates the machine selection combo box with machines that match the
 	 * reportRegion of the current user and sets up a listener to update data when a
 	 * new machine is selected. It also sets the prevPageBtn and nextPageBtn to not
-	 * visible. 
+	 * visible.
 	 */
 	@Override
 	public void initialize() {
-		
+
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
-		reportDetailsLabel.setText(String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth),
-				reportYear));
+		minAmountLbl.setVisible(false);
+		reportDetailsLabel.setText(
+				String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth), reportYear));
 		allMachines = DataStore.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -186,19 +194,21 @@ public class SupplyReportController implements IScreen {
 	private void initDetails(int machineID) {
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 
-		
-		if (pieChart != null) pieChart.getData().clear();
-		if (textConclusionsLbl != null) textConclusionsLbl.setText("");
+		if (pieChart != null)
+			pieChart.getData().clear();
+		if (textConclusionsLbl != null)
+			textConclusionsLbl.setText("");
 
 		currentReport = getSupplyReportFromDB(machineID);
-		
-		if (reportDetails.getReportsList() == null) {
+
+		if (currentReport.getReportsList() == null) {
 			PopupSetter.createPopup(PopupTypeEnum.Error, "No Report Found!");
+			clearAllData();
 			return;
 		}
 
 		// prepare
-		itemsArray = reportDetails.getReportsList();
+		itemsArray = currentReport.getReportsList();
 		itemsNames = getItemsNamesByID(itemsArray);
 		startAmount = intersectItems(machineID);
 		if (startAmount.size() != itemsNames.size()) {
@@ -249,14 +259,15 @@ public class SupplyReportController implements IScreen {
 				: list.get(list.size() - 1).getPieValue() >= 5 ? "medium" : "low";
 		textConclusionsLbl.setText(conclusions);
 		textConclusionsLbl.setVisible(true);
-
+		minAmountLbl.setText("Min Amount: " + String.valueOf(currentReport.getMin_stock()));
+		minAmountLbl.setVisible(true);
 	}
 
 	public SupplyReportEntity getSupplyReportFromDB(int machineID) {
 		RecievedData = false; // reset each operation
 		// sends the user information to server
 		chat.acceptObj(new Message(TaskType.RequestReport,
-				new String[] {"supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
 
 		// wait for answer
 		while (RecievedData == false) {
@@ -265,9 +276,10 @@ public class SupplyReportController implements IScreen {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}	
+		}
 		return reportDetails;
 	}
+
 	/**
 	 * Handle sending list of itemsID and getting their names
 	 * 
@@ -498,10 +510,14 @@ public class SupplyReportController implements IScreen {
 	 * Clear all data from previous reports upon combobox changes
 	 */
 	private void clearAllData() {
-		itemsArray.clear();
-		itemsNames.clear();
-		startAmount.clear();
+		if (itemsArray != null)
+			itemsArray.clear();
+		if (itemsNames != null)
+			itemsNames.clear();
+		if (startAmount != null)
+			startAmount.clear();
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
+		minAmountLbl.setVisible(false);
 	}
 }
