@@ -18,20 +18,28 @@ import enums.TaskType;
 
 
 /**
- * The start of server application  and define the button's actions
- *
+ * The Class ServerUI.
  */
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
 
 	static EchoServer EchoServer;
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	public static void main(String[] args) throws Exception {
 		launch(args);
 	}
 
 	/**
-	 * Start of the server GUI
+	 * Start.
+	 *
+	 * @param primaryStage the primary stage
+	 * @throws Exception the exception
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/boundary/ServerConfigurationBoundary.fxml"));
@@ -50,11 +58,12 @@ public class ServerUI extends Application {
 	}
 
 	/**
-	 * run the server with mysql connection string
-	 * @param portUI
-	 * @param DBAddress
-	 * @param username
-	 * @param password
+	 * Run server.
+	 *
+	 * @param portUI the port UI
+	 * @param DBAddress the DB address
+	 * @param username the username
+	 * @param password the password
 	 */
 	public static void runServer(String portUI, String DBAddress, String username, String password) {
 		int serverPort = 0;
@@ -81,7 +90,7 @@ public class ServerUI extends Application {
 	}
 
 	/**
-	 * Handle server disconnect 
+	 * Disconnect.
 	 */
 	public static void disconnect() {
 		EchoServer.sendToAllClients(new Message(TaskType.ServerDisconnect));

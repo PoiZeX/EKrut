@@ -38,8 +38,8 @@ public enum SaleType {
 	}
 	/***
 	 * check what suitable string will fit the sale type
-	 * @param str
-	 * @return
+	 * @param str name of sale
+	 * @return sale percentages
 	 */
 	public static SaleType getSaleType(String str) {
 		switch (str){

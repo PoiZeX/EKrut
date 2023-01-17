@@ -16,16 +16,15 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 /**
-*
-* Contains UsersManagement DB logic, separate from login DB
-*
-*/
+ * The Class UsersManagementDBController.
+ */
 public class UsersManagementDBController {
+	
 	/**
-	 * This method get all the users from the DB that haven't been approved yet, and
-	 * sends the list of these users to the client.
-	 * 
-	 * @param client the client object that the result will be sent to.
+	 * Gets the unapproved users entity.
+	 *
+	 * @param client the client
+	 * @return the unapproved users entity
 	 */
 	public static void getUnapprovedUsersEntity(ConnectionToClient client) {
 		// sql query //
@@ -39,9 +38,9 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the from DB
-	 * 
-	 * @return
+	 * Gets the unapproved users from DB.
+	 *
+	 * @return the unapproved users from DB
 	 */
 	protected static ArrayList<UserEntity> getUnapprovedUsersFromDB() {
 		ArrayList<UserEntity> unapprovedUsersList = new ArrayList<UserEntity>();
@@ -70,10 +69,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Change users status from not-approved to approved
-	 * 
-	 * @param toApprove
-	 * @param client
+	 * Sets the unapproved users entity.
+	 *
+	 * @param toApprove the to approve
+	 * @param client the client
 	 */
 	public static void setUnapprovedUsersEntity(ArrayList<UserEntity> toApprove, ConnectionToClient client) {
 		try {
@@ -98,9 +97,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the user from DB
-	 * 
-	 * @return user
+	 * Gets the user by username or ID from DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return the user by username or ID from DB
 	 */
 	public static UserEntity getUserByUsernameOrIDFromDB(String[] details, ConnectionToClient client) {
 		// prepare
@@ -144,11 +145,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Get a user by id number
-	 * 
-	 * @param details
-	 * @param client
-	 * @return
+	 * Gets the user by ID number from DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return the user by ID number from DB
 	 */
 	public static UserEntity getUserByIDNumberFromDB(String[] details, ConnectionToClient client) {
 		String id_number = details[0];
@@ -183,10 +184,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * return the user entity for given ID, or null if not found+
-	 * 
-	 * @param userId
-	 * @return
+	 * Gets the user by ID.
+	 *
+	 * @param userId the user id
+	 * @return the user by ID
 	 */
 	public static UserEntity getUserByID(int userId) {
 		UserEntity user = new UserEntity();
@@ -215,9 +216,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of changing the user's role type in DB
-	 * 
-	 * @return user
+	 * Update user in DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return true, if successful
 	 */
 	public static boolean updateUserInDB(String[] details, ConnectionToClient client) {
 		if (details.length < 1 && CommonFunctions.isNullOrEmpty(details[1]))
@@ -251,9 +254,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the region manager from DB
-	 * 
-	 * @return user
+	 * Gets the region manager from DB.
+	 *
+	 * @param region the region
+	 * @param client the client
+	 * @return the region manager from DB
 	 */
 
 	public static UserEntity getRegionManagerFromDB(String region, ConnectionToClient client) {
@@ -266,7 +271,13 @@ public class UsersManagementDBController {
 		return user;
 
 	}
-
+	
+	/**
+	 * Gets the region manager from DB query.
+	 *
+	 * @param region the region
+	 * @return the region manager from DB query
+	 */
 	public static UserEntity getRegionManagerFromDBQuery(String region) {
 		UserEntity user = new UserEntity();
 		try {
@@ -293,10 +304,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Query executer for getting all supply workers
-	 * 
-	 * @return
-	 * @throws SQLException
+	 * Gets the supply workers query.
+	 *
+	 * @return the supply workers query
+	 * @throws SQLException the SQL exception
 	 */
 	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException {
 		ArrayList<UserEntity> supplyWorkers = new ArrayList<>();
@@ -320,9 +331,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * get supply workers from DB
-	 * 
-	 * @param client
+	 * Gets the supply workers.
+	 *
+	 * @param client the client
+	 * @return the supply workers
 	 */
 	public static void getSupplyWorkers(ConnectionToClient client) {
 		try {
@@ -333,9 +345,10 @@ public class UsersManagementDBController {
 	}
 	
 	/**
-	 * get supply workers from DB
-	 * 
-	 * @param client
+	 * Gets the all users from DB.
+	 *
+	 * @param client the client
+	 * @return the all users from DB
 	 */
 	public static void getAllUsersFromDB(ConnectionToClient client) {
 		try {
@@ -346,7 +359,9 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * @returns all users in the database in the format of {username : password} as an hashmap.
+	 * Gets the all users.
+	 *
+	 * @return the all users
 	 */
 	public static HashMap<String,String> getAllUsers() {
 		HashMap<String, String> users = new HashMap<>();

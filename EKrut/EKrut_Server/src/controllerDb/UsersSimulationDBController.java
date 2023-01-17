@@ -8,17 +8,18 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import enums.RolesEnum;
 import mysql.MySqlClass;
+
 /**
- * Specific DB controller for import users (simulation)
- *
+ * The Class UsersSimulationDBController.
  */
 public class UsersSimulationDBController {
 	private static Connection con = MySqlClass.getConnection();
+	
 	/**
-	 * Add all tuples to users table
-	 * 
-	 * @param tuplesToAdd
-	 * @throws SQLException
+	 * Insert tuples.
+	 *
+	 * @param tuplesToAdd the tuples to add
+	 * @throws SQLException the SQL exception
 	 */
 	public static void insertTuples(ArrayList<String[]> tuplesToAdd) throws SQLException {
 		/*
@@ -39,11 +40,11 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Insert single tuple to users table
-	 * 
-	 * @param tuple
-	 * @return
-	 * @throws SQLException
+	 * Insert single tuple.
+	 *
+	 * @param tuple the tuple
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
 	 */
 	private static boolean insertSingleTuple(String[] tuple) throws SQLException {
 		try {
@@ -84,10 +85,10 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Checks validation of params before inserting to table
-	 * 
-	 * @param tuple
-	 * @return
+	 * Checks if is valid tuple.
+	 *
+	 * @param tuple the tuple
+	 * @return the string
 	 */
 	private static String isValidTuple(String[] tuple) {
 		StringBuilder res = new StringBuilder("");
@@ -117,10 +118,10 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Algorithm to validate the ID is legal in Israel
-	 * 
-	 * @param ID
-	 * @return
+	 * Checks if is valid ID.
+	 *
+	 * @param ID the id
+	 * @return true, if is valid ID
 	 */
 	private static boolean isValidID(String ID) {
 		int id = Integer.parseInt(ID);
@@ -139,11 +140,12 @@ public class UsersSimulationDBController {
 
 		return false;
 	}
+	
 	/**
-	 * This method is used to roll back the recent import of users into the database.
-	 * It accepts an ArrayList of String arrays, where each array represents a user, and deletes all of the users represented by these arrays from the users table in the database.
-	 * @param res an ArrayList of String arrays, where each array represents a user
-	*/
+	 * Roll back import.
+	 *
+	 * @param res the res
+	 */
 	public static void rollBackImport(ArrayList<String[]> res) {
 		try {
 			if (con == null)

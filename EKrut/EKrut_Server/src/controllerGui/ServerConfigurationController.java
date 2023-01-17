@@ -34,12 +34,9 @@ import server.ServerUI;
 import common.CommonFunctions;
 import controllerDb.UsersSimulationDBController;
 import entity.ConnectedClientEntity;
+
 /**
- * The main and only GUI for server
- * Create a connection for server IP, PORT
- * Create a MySQL connection
- * Configure client list
- *
+ * The Class ServerConfigurationController.
  */
 public class ServerConfigurationController {
 
@@ -83,11 +80,12 @@ public class ServerConfigurationController {
 	private TextArea consoleOutput;
 
 	private PrintStream printStream;
+	
 	/**
-	 * Connect to database using the details entered in the text fields, IP, Port, Database name, username, and password.
-	 * The connect button will be disabled and disconnect button will be enabled after a successful connection
-	 * @param event a reference to the event that triggered this method call, this parameter is automatically filled by JavaFX
-	*/
+	 * Connect to DB.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void connectToDB(ActionEvent event) {
 		if (CommonFunctions.isNullOrEmpty(txtIP.getText()) || CommonFunctions.isNullOrEmpty(txtPort.getText())
@@ -115,11 +113,12 @@ public class ServerConfigurationController {
 	            new File(System.getProperty("user.home")));
 //		fileChooser.setInitialDirectory(new File("./src/mysql/"));
 	}
+	
 	/**
-	 * Disconnect from the currently connected database, this method will also disable the import button,
-	 * and enable the connect button and set the text fields to be editable
-	 * @param event a reference to the event that triggered this method call, this parameter is automatically filled by JavaFX
-	*/
+	 * Disconnect from DB.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void disconnectFromDB(ActionEvent event) {
 		ServerUI.disconnect();
@@ -128,10 +127,12 @@ public class ServerConfigurationController {
 		setDisableTextFieldValues(false);
 		importUsersBtn.setDisable(true);
 	}
+	
 	/**
-	 * This method sets up the form elements such as text fields and buttons with their default values and event handlers before the GUI is launched
-	 * @throws Exception if an error occurs while initializing the form elements
-	*/
+	 * Initialize.
+	 *
+	 * @throws Exception the exception
+	 */
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
 		txtIP.setText(getIPValue());
@@ -164,10 +165,10 @@ public class ServerConfigurationController {
 	}
 
 	/**
-	 * Get current computer IP
-	 * 
-	 * @return
-	 * @throws Exception
+	 * Gets the IP value.
+	 *
+	 * @return the IP value
+	 * @throws Exception the exception
 	 */
 	private String getIPValue() throws Exception {
 		String ip = null;
@@ -180,9 +181,9 @@ public class ServerConfigurationController {
 	}
 
 	/**
-	 * Disable all text fields
-	 * 
-	 * @param b
+	 * Sets the disable text field values.
+	 *
+	 * @param b the new disable text field values
 	 */
 	private void setDisableTextFieldValues(boolean b) {
 		txtDBName.setDisable(b);
@@ -192,6 +193,9 @@ public class ServerConfigurationController {
 		txtDBUsername.setDisable(b);
 	}
 
+	/**
+	 * Change console to UI.
+	 */
 	@FXML
 	void changeConsoleToUI() {
 		this.printStream = new PrintStream((OutputStream) new ConsoleStream(this.consoleOutput));
@@ -199,6 +203,9 @@ public class ServerConfigurationController {
 		System.setErr(this.printStream);
 	}
 
+	/**
+	 * Connect table column to object.
+	 */
 	/*
 	 * Making a connection between the ConnectedClient object to the columns
 	 * PropertyValueFactory search for a getters like "getIp", "getHost" in entity
@@ -213,9 +220,9 @@ public class ServerConfigurationController {
 	final FileChooser fileChooser = new FileChooser();
 
 	/**
-	 * Parse file into tuples and send the info to DBController for insertion
-	 * 
-	 * @param file
+	 * Parses the file.
+	 *
+	 * @param file the file
 	 */
 	private void parseFile(File file) {
 		int cnt = 0;

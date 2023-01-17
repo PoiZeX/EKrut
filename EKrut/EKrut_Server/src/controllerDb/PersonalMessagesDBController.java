@@ -15,18 +15,20 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 /**
-*
-* Contains Personal messages DB logic
-*
-*/
+ * The Class PersonalMessagesDBController.
+ */
 public class PersonalMessagesDBController {
+	/**
+	This variable holds a connection to a MySQL database.
+	*/
 	private static Connection con = MySqlClass.getConnection();
 	 
 	/**
-	 * Handles getting selected report and sending the entity back to client
-	 * 
-	 * @param usernamePassword
-	 * @param client
+	 * Gets the all personal messages.
+	 *
+	 * @param user the user
+	 * @param client the client
+	 * @return the all personal messages
 	 */
 	public static void getAllPersonalMessages(UserEntity user, ConnectionToClient client) {
 		if (user != null) {
@@ -41,9 +43,10 @@ public class PersonalMessagesDBController {
 	}
 
 	/**
-	 * Handles the query of getting all messages of specific user from DB
-	 * 
-	 * @return
+	 * Gets the personal messages from DB.
+	 *
+	 * @param user the user
+	 * @return the personal messages from DB
 	 */
 	protected static ArrayList<PersonalMessageEntity> getPersonalMessagesFromDB(UserEntity user) {
 		ArrayList<PersonalMessageEntity> messages = new ArrayList<PersonalMessageEntity>();
@@ -70,10 +73,10 @@ public class PersonalMessagesDBController {
 	}
 
 	/**
-	 * Handle inserting new personal message to table
-	 * 
-	 * @param user
-	 * @return
+	 * Sets the personal messages in DB.
+	 *
+	 * @param entity the entity
+	 * @return true, if successful
 	 */
 	public static boolean setPersonalMessagesInDB(PersonalMessageEntity entity) {
 

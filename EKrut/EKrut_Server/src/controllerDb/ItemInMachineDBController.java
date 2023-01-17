@@ -16,14 +16,21 @@ import entity.ItemInMachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * The Class ItemInMachineDBController.
+ */
 public class ItemInMachineDBController {
+	/**
+	This variable holds a connection to a MySQL database.
+	*/
 	private static Connection con = MySqlClass.getConnection();
 
 	/**
-	 * get all machine items by machine id
-	 * 
-	 * @param machineId
-	 * @param client
+	 * Gets the machine items.
+	 *
+	 * @param machineId the machine id
+	 * @param client the client
+	 * @return the machine items
 	 */
 	public void getMachineItems(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
@@ -43,10 +50,11 @@ public class ItemInMachineDBController {
 	/*----------------------------------GETDATA----------------------------*/
 
 	/**
-	 * get machine items according to minimum amount
-	 * 
-	 * @param machineId
-	 * @param client
+	 * Gets the machine items with min amount.
+	 *
+	 * @param machineId the machine id
+	 * @param client the client
+	 * @return the machine items with min amount
 	 */
 	public void getMachineItemsWithMinAmount(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
@@ -67,10 +75,11 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * get items which call status = processed and they are opened for the user
-	 * 
-	 * @param arr
-	 * @param client
+	 * Gets the processed machine items.
+	 *
+	 * @param arr the arr
+	 * @param client the client
+	 * @return the processed machine items
 	 */
 	public void getProcessedMachineItems(int[] arr, ConnectionToClient client) {
 		int machineId = arr[0];
@@ -90,10 +99,10 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * handle the process of items and send to client
-	 * 
-	 * @param res
-	 * @param client
+	 * Handle get items.
+	 *
+	 * @param res the res
+	 * @param client the client
 	 */
 	protected void handleGetItems(ResultSet res, ConnectionToClient client) {
 		ItemInMachineEntity item;
@@ -136,10 +145,10 @@ public class ItemInMachineDBController {
 
 
 	/**
-	 * get quantity of item
-	 * 
-	 * @param item
-	 * @return
+	 * Gets the item in machine quantity.
+	 *
+	 * @param item the item
+	 * @return the item in machine quantity
 	 */
 	public static int getItemInMachineQuantity(ItemInMachineEntity item) {
 		try {
@@ -165,10 +174,10 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * update single item entity
-	 * 
-	 * @param item
-	 * @return
+	 * Update single item in machine.
+	 *
+	 * @param item the item
+	 * @return the item in machine entity
 	 */
 	public static ItemInMachineEntity updateSingleItemInMachine(ItemInMachineEntity item) {
 
@@ -191,11 +200,11 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * Update items in machine with roll back option if update failed
-	 * 
-	 * @param itemsInMachine
-	 * @param client
-	 * @throws IOException
+	 * Decrease items amount in machine.
+	 *
+	 * @param itemsInMachine the items in machine
+	 * @param client the client
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void decreaseItemsAmountInMachine(Map<ItemInMachineEntity, Integer> itemsInMachine,
 			ConnectionToClient client) throws IOException {
@@ -227,11 +236,11 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * decrease amount of single item
-	 * 
-	 * @param item
-	 * @param amountToDecrease
-	 * @return
+	 * Decrease single item amount.
+	 *
+	 * @param item the item
+	 * @param amountToDecrease the amount to decrease
+	 * @return the item in machine entity
 	 */
 	public static ItemInMachineEntity decreaseSingleItemAmount(ItemInMachineEntity item, int amountToDecrease) {
 
@@ -254,10 +263,10 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * increase the amount which decreased earlier. Update is NOT good.
-	 * 
-	 * @param original
-	 * @param successItems
+	 * Increase roll back.
+	 *
+	 * @param original the original
+	 * @param successItems the success items
 	 */
 	private static void increaseRollBack(Map<ItemInMachineEntity, Integer> original,
 			ArrayList<ItemInMachineEntity> successItems) {
@@ -267,10 +276,10 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * increase amount for single items
-	 * 
-	 * @param item
-	 * @param amountToIncrease
+	 * Increase single item amount.
+	 *
+	 * @param item the item
+	 * @param amountToIncrease the amount to increase
 	 */
 	public static void increaseSingleItemAmount(ItemInMachineEntity item, int amountToIncrease) {
 		try {
@@ -288,10 +297,10 @@ public class ItemInMachineDBController {
 	}
 
 	/**
-	 * Increase the times that item was under the minimum amount
-	 * 
-	 * @param machineAnditemsId
-	 * @param client
+	 * Increase items under min.
+	 *
+	 * @param machineAnditemsId the machine anditems id
+	 * @param client the client
 	 */
 	public static void increaseItemsUnderMin(ArrayList<int[]> machineAnditemsId, ConnectionToClient client) {
 		try {
@@ -312,12 +321,9 @@ public class ItemInMachineDBController {
 	}
 
 	/**
+	 * Update call status.
 	 *
-	 * @param item an instance of ItemInMachineEntity which needs to be updated
-	 *
-	 *             The method updateCallStatus updates the call status and worker_id
-	 *             of the item in the machine table in the database. It uses a
-	 *             prepared statement to update the values in the database.
+	 * @param item the item
 	 */
 	public static void updateCallStatus(ItemInMachineEntity item) {
 		try {
