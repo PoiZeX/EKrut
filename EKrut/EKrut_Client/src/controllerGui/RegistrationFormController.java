@@ -313,7 +313,7 @@ public class RegistrationFormController implements IScreen {
     
     /** 
      * receive data from server
-     * @param user
+     * @param user the object returend from server
      */
 	public static void receiveDataFromServer(Object obj) {
 		recivedData = obj;

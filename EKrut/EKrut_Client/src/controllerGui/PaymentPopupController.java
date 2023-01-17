@@ -46,6 +46,7 @@ public class PaymentPopupController  implements IScreen {
 			});
 		});
 	}
+	
 	/**
 	Method to set the text of the ccnumAndSum label with the provided credit card number and total sum.
 	@param ccNumber the credit card number to be displayed on the label

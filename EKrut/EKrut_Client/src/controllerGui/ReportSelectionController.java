@@ -170,9 +170,9 @@ public class ReportSelectionController implements IScreen {
 	/***
 	 * validate fileds on selection for the report
 	 * 
-	 * @return Stirng errorMsg
+	 * @return String errorMsg
 	 */
-	String validateFields() {
+	private String validateFields() {
 		String errorMsg = "";
 		monthItemsCmb.setStyle("-fx-border-color: none;");
 		yearItemsCmb.setStyle("-fx-border-color: none;");
