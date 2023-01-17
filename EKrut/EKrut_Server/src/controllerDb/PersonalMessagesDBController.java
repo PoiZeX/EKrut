@@ -28,7 +28,6 @@ public class PersonalMessagesDBController {
 	 *
 	 * @param user the user
 	 * @param client the client
-	 * @return the all personal messages
 	 */
 	public static void getAllPersonalMessages(UserEntity user, ConnectionToClient client) {
 		if (user != null) {

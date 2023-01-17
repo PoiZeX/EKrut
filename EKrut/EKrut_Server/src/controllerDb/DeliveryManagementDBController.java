@@ -84,7 +84,7 @@ public class DeliveryManagementDBController {
 	 *
 	 * @param region the region
 	 * @param client the client
-	 * @return the table
+	 * returns the table for region
 	 */
 	public static void getTable(String region, ConnectionToClient client) {
 		DeliveryEntity deliveryEntity;
@@ -114,7 +114,7 @@ public class DeliveryManagementDBController {
 	 *
 	 * @param details the details
 	 * @param client the client
-	 * @return the delivery
+	 * return the delivery
 	 */
 	public static void getDelivery(String[] details, ConnectionToClient client) {
 		DeliveryEntity deliveryEntity=null;

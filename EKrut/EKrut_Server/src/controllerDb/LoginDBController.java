@@ -40,7 +40,7 @@ public class LoginDBController {
 	 *
 	 * @param usernamePassword the username password
 	 * @param client the client
-	 * @return the user entity
+	 * return the user entity
 	 */
 	public static void getUserEntity(String[] usernamePassword, ConnectionToClient client) {
 		if (setUser(usernamePassword)) {

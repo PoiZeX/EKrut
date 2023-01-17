@@ -30,7 +30,7 @@ public class ItemInMachineDBController {
 	 *
 	 * @param machineId the machine id
 	 * @param client the client
-	 * @return the machine items
+	 * return the machine items
 	 */
 	public void getMachineItems(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
@@ -54,7 +54,7 @@ public class ItemInMachineDBController {
 	 *
 	 * @param machineId the machine id
 	 * @param client the client
-	 * @return the machine items with min amount
+	 * return the machine items with min amount
 	 */
 	public void getMachineItemsWithMinAmount(int machineId, ConnectionToClient client) {
 		PreparedStatement ps;
@@ -79,7 +79,7 @@ public class ItemInMachineDBController {
 	 *
 	 * @param arr the arr
 	 * @param client the client
-	 * @return the processed machine items
+	 * return the processed machine items
 	 */
 	public void getProcessedMachineItems(int[] arr, ConnectionToClient client) {
 		int machineId = arr[0];

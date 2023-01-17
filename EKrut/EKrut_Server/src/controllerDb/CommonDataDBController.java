@@ -23,7 +23,7 @@ public class CommonDataDBController {
 	 * Gets the all regions from DB.
 	 *
 	 * @param client the client
-	 * @return the all regions from DB
+	 * the all regions from DB
 	 */
 	public static void getAllRegionsFromDB(ConnectionToClient client) {
 		// SQL query //
@@ -83,7 +83,7 @@ public class CommonDataDBController {
 	 * Gets the all machines from DB.
 	 *
 	 * @param client the client
-	 * @return the all machines from DB
+	 * return the all machines from DB
 	 */
 	public static void getAllMachinesFromDB(ConnectionToClient client) {
 		ArrayList<MachineEntity> res = getMachineListFromDB();
