@@ -57,8 +57,8 @@ public class PopupController  implements IScreen {
 	/**
 	 * Setup the popup with headline, message, buttons and image
 	 * 
-	 * @param type
-	 * @param message
+	 * @param type popup type 
+	 * @param message the message to show
 	 */
 	public void setupPopup(PopupTypeEnum type, String message) {
 		Image image = null;
@@ -110,7 +110,7 @@ public class PopupController  implements IScreen {
 		}
 
 	}
-
+	
 	public static Boolean isOkPressed = null;
 	/**
 

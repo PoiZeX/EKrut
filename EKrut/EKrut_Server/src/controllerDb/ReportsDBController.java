@@ -55,7 +55,7 @@ public class ReportsDBController {
 	 *
 	 * @param details the details
 	 * @param client the client
-	 * @return the report entity
+	 * return the report entity
 	 */
 	public static void getReportEntity(String[] details, ConnectionToClient client) {
 		Object res;

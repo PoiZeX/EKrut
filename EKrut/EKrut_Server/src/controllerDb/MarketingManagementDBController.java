@@ -90,7 +90,7 @@ public class MarketingManagementDBController {
 	 *
 	 * @param region the region
 	 * @param client the client
-	 * @return the sales
+	 * return the sales
 	 */
 	public static void getSales(String region ,ConnectionToClient client) {
 		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();
@@ -152,7 +152,7 @@ public class MarketingManagementDBController {
 	 *
 	 * @param region the region
 	 * @param client the client
-	 * @return the active sales by region
+	 * return the active sales by region
 	 */
 	public static void getActiveSalesByRegion(String region ,ConnectionToClient client) {
 		ArrayList<SaleEntity> sales=new ArrayList<SaleEntity>();

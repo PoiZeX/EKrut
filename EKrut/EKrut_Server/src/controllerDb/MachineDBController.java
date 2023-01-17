@@ -61,7 +61,7 @@ public class MachineDBController {
 	 *
 	 * @param arr the arr
 	 * @param client the client
-	 * @return the machines from DB
+	 * return the machines from DB
 	 */
 	public static void getMachinesFromDB(String[] arr, ConnectionToClient client) {
 		try {

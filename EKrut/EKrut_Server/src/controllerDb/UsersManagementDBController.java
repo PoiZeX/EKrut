@@ -24,7 +24,7 @@ public class UsersManagementDBController {
 	 * Gets the unapproved users entity.
 	 *
 	 * @param client the client
-	 * @return the unapproved users entity
+	 * return the unapproved users entity
 	 */
 	public static void getUnapprovedUsersEntity(ConnectionToClient client) {
 		// sql query //
@@ -334,7 +334,7 @@ public class UsersManagementDBController {
 	 * Gets the supply workers.
 	 *
 	 * @param client the client
-	 * @return the supply workers
+	 * return the supply workers
 	 */
 	public static void getSupplyWorkers(ConnectionToClient client) {
 		try {
@@ -348,7 +348,7 @@ public class UsersManagementDBController {
 	 * Gets the all users from DB.
 	 *
 	 * @param client the client
-	 * @return the all users from DB
+	 * return the all users from DB
 	 */
 	public static void getAllUsersFromDB(ConnectionToClient client) {
 		try {

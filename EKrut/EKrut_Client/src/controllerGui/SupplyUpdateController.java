@@ -43,7 +43,7 @@ import utils.PopupSetter;
  * display information about the machines and the items in them. 
  * @author Lidor
  */
-public class SupplyUpdateController implements ICmbANDTableSetUp, IScreen {
+public class SupplyUpdateController implements ICmbANDTableSetUp {
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;
