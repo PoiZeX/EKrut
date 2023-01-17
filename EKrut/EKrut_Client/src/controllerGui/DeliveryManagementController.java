@@ -34,103 +34,112 @@ import utils.PopupSetter;
 import utils.TooltipSetter;
 
 /**
- * Delivery Management GUI controller, implements Screen interface
- * Handler for all Boundary
+ * Delivery Management GUI controller, implements Screen interface Handler for
+ * all Boundary
+ * 
  * @author Lidor
  *
  */
-public class DeliveryManagementController  implements IScreen {
+public class DeliveryManagementController implements IScreen {
 
-
-    @FXML
-    private TableColumn<DeliveryEntity, String> addressCol;
+	@FXML
+	private TableColumn<DeliveryEntity, String> addressCol;
 
 	@FXML
 	private TableView<DeliveryEntity> deliveryTable;
 
-    @FXML
-    private TableColumn<DeliveryEntity, String> estimatedTimeCol;
-    
-    @FXML
-    private TableColumn<DeliveryEntity, Integer> orderIdCol;
-    
-    @FXML
-    private TableColumn<DeliveryEntity, DeliveryStatusEnum> deliveryStatusCol;
-    
-    @FXML
-    private TableColumn<DeliveryEntity, CustomerStatusEnum> customerStatusCol;
-    
-    @FXML
-    private Button refreshBtn;
-
-    @FXML
-    private Button saveBtn;
-    
-    @FXML
-    private Label errorLbl;
-    
-
-   private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
-	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
-	public static ObservableList<DeliveryEntity> deliveries=FXCollections.observableArrayList();
-	private TooltipSetter tooltip;
-	private static UserEntity userToSend=null;
-	private static final int loadingTime=2; //constant for the delivery loading time
-	private static final int distance=2; //constant for distance of the destination in km
-	private  final int fourAm=4;  //constant for the start time of the delivery activity
-	private  final int eightPm=20; //constant for the end time of the delivery activity
-	
 	@FXML
-	/**Setup screen before launching view*/
+	private TableColumn<DeliveryEntity, String> estimatedTimeCol;
+
+	@FXML
+	private TableColumn<DeliveryEntity, Integer> orderIdCol;
+
+	@FXML
+	private TableColumn<DeliveryEntity, DeliveryStatusEnum> deliveryStatusCol;
+
+	@FXML
+	private TableColumn<DeliveryEntity, CustomerStatusEnum> customerStatusCol;
+
+	@FXML
+	private Button refreshBtn;
+
+	@FXML
+	private Button saveBtn;
+
+	@FXML
+	private Label errorLbl;
+
+	private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
+	private ArrayList<DeliveryEntity> changedDeliveryItems = new ArrayList<>();
+	public static ObservableList<DeliveryEntity> deliveries = FXCollections.observableArrayList();
+	private TooltipSetter tooltip;
+	private static UserEntity userToSend = null;
+	private static final int loadingTime = 2; // constant for the delivery loading time
+	private static final int distance = 2; // constant for distance of the destination in km
+	private final int fourAm = 4; // constant for the start time of the delivery activity
+	private final int eightPm = 20; // constant for the end time of the delivery activity
+
+	@FXML
+	/** 
+	 * Setup screen before launching view
+	  */
 	@Override
-	public void initialize(){
+	public void initialize() {
 		try {
-		refresh(null);
-		setupTable(); // setup columns connection
-		tooltip = new TooltipSetter("Save changes");
-		saveBtn.setTooltip(tooltip.getTooltip());
-		tooltip = new TooltipSetter("Refresh");
-		refreshBtn.setTooltip(tooltip.getTooltip()); 
-		}catch(Exception e) {
+			refresh(null);
+			setupTable(); // setup columns connection
+			tooltip = new TooltipSetter("Save changes");
+			saveBtn.setTooltip(tooltip.getTooltip());
+			tooltip = new TooltipSetter("Refresh");
+			refreshBtn.setTooltip(tooltip.getTooltip());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	/**
 
-	This method is responsible for refreshing the deliveries table by requesting all deliveries for the current region from the server
-	@param event the event that triggered this method (clicking on the refresh button)
-	*/
+	/**
+	 * 
+	 * This method is responsible for refreshing the deliveries table by requesting
+	 * all deliveries for the current region from the server
+	 * 
+	 * @param event the event that triggered this method (clicking on the refresh
+	 *              button)
+	 */
 	@FXML
 	private void refresh(ActionEvent event) {
 		if (deliveries != null)
 			deliveries.clear();
-		chat.acceptObj(new Message(TaskType.RequestDeliveriesFromServer,NavigationStoreController.connectedUser.getRegion())); // get all entities to ArrayList from
-																					// DB
+		chat.acceptObj(
+				new Message(TaskType.RequestDeliveriesFromServer, NavigationStoreController.connectedUser.getRegion())); // get
+
 	}
+
 	/**
-	 * Send to server the deliveries for update
-	 * Send massage (SMS) to the relevant customers with the estimated arrival time
-	 * @param event
+	 * Send to server the deliveries for update Send massage (SMS) to the relevant
+	 * customers with the estimated arrival time
+	 * 
+	 * @param event current event
 	 */
 	@FXML
 	private void save(ActionEvent event) {
 		if (changedDeliveryItems.size() > 0) {
 			chat.acceptObj(new Message(TaskType.RequestUpdateDeliveries, changedDeliveryItems));
-			for(DeliveryEntity de:changedDeliveryItems) {
-				if(de.getDeliveryStatus().equals(DeliveryStatusEnum.outForDelivery)) {
-					chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer,de.getOrderId()));
+			for (DeliveryEntity de : changedDeliveryItems) {
+				if (de.getDeliveryStatus().equals(DeliveryStatusEnum.outForDelivery)) {
+					chat.acceptObj(new Message(TaskType.RequestUserByOrderIdFromServer, de.getOrderId()));
 					waitToAnswer();
-					String msg="Hi!\nOrder number "+de.getOrderId()+ 
-							 " is on the way\nThe estimated arrivel time is "+de.getEstimatedTime();
+					String msg = "Hi!\nOrder number " + de.getOrderId()
+							+ " is on the way\nThe estimated arrivel time is " + de.getEstimatedTime();
 					SMSMailHandlerController.SendSMSOrMail("SMS", userToSend, "Delivery", msg);
 					PopupSetter.createPopup(PopupTypeEnum.Simulation, SMSMailHandlerController.lastMsg);
-					userToSend=null;
+					userToSend = null;
 				}
 			}
 			changedDeliveryItems.clear();
 		}
 
 	}
+
 	/**
 	 * Waiting to receive the UserEntity from the server
 	 */
@@ -143,13 +152,11 @@ public class DeliveryManagementController  implements IScreen {
 			}
 		}
 	}
-	
+
 	/**
-	 *  setUp the delivery table according to the region
-	 *  Handle delivery status edit:
-		 * can change from "pendingApproval" to "outForDelivery"
-		 * or from "outForDelivery" to "done".
-		 * in other cases, the changes aren't saved
+	 * setUp the delivery table according to the region Handle delivery status edit:
+	 * can change from "pendingApproval" to "outForDelivery" or from
+	 * "outForDelivery" to "done". in other cases, the changes aren't saved
 	 */
 	private void setupTable() {
 		deliveryTable.setEditable(true); // make table editable
@@ -161,10 +168,12 @@ public class DeliveryManagementController  implements IScreen {
 		// factory
 		orderIdCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, Integer>("orderId"));
 		addressCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("address"));
-		estimatedTimeCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
-		deliveryStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatusEnum>("deliveryStatus"));
-		customerStatusCol.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, CustomerStatusEnum>("customerStatus"));
-
+		estimatedTimeCol
+				.setCellValueFactory((Callback) new PropertyValueFactory<DeliveryEntity, String>("estimatedTime"));
+		deliveryStatusCol.setCellValueFactory(
+				(Callback) new PropertyValueFactory<DeliveryEntity, DeliveryStatusEnum>("deliveryStatus"));
+		customerStatusCol.setCellValueFactory(
+				(Callback) new PropertyValueFactory<DeliveryEntity, CustomerStatusEnum>("customerStatus"));
 
 		// define the editable cells- delivery status
 		ObservableList<DeliveryStatusEnum> statusLst = FXCollections.observableArrayList();
@@ -176,15 +185,16 @@ public class DeliveryManagementController  implements IScreen {
 			@Override
 			public void handle(CellEditEvent<DeliveryEntity, DeliveryStatusEnum> event) {
 				DeliveryEntity deliveryEntity = event.getRowValue();
-				DeliveryEntity deliveryEntityUpdate=new DeliveryEntity(deliveryEntity.getOrderId(),deliveryEntity.getRegion(),deliveryEntity.getAddress(),
-						deliveryEntity.getEstimatedTime(),deliveryEntity.getDeliveryStatus(),deliveryEntity.getCustomerStatus());
-				DeliveryStatusEnum oldStatus=deliveryEntity.getDeliveryStatus();
-				DeliveryStatusEnum newStatus=event.getNewValue();
-			
-				if(!oldStatus.equals(newStatus)) {
-					switch (newStatus){
+				DeliveryEntity deliveryEntityUpdate = new DeliveryEntity(deliveryEntity.getOrderId(),
+						deliveryEntity.getRegion(), deliveryEntity.getAddress(), deliveryEntity.getEstimatedTime(),
+						deliveryEntity.getDeliveryStatus(), deliveryEntity.getCustomerStatus());
+				DeliveryStatusEnum oldStatus = deliveryEntity.getDeliveryStatus();
+				DeliveryStatusEnum newStatus = event.getNewValue();
+
+				if (!oldStatus.equals(newStatus)) {
+					switch (newStatus) {
 					case pendingApproval:
-						if(!CommonFunctions.isNullOrEmpty(deliveryEntity.getEstimatedTime()))
+						if (!CommonFunctions.isNullOrEmpty(deliveryEntity.getEstimatedTime()))
 							errorLbl.setText("Can't change to pendingApproval ");
 						else {
 							deliveryEntityUpdate.setEstimatedTime("");
@@ -192,29 +202,30 @@ public class DeliveryManagementController  implements IScreen {
 						}
 						break;
 					case outForDelivery:
-						if(oldStatus.equals(DeliveryStatusEnum.pendingApproval)) {
+						if (oldStatus.equals(DeliveryStatusEnum.pendingApproval)) {
 							deliveryEntityUpdate.setEstimatedTime(calculateEstimatedTime());
 							deliveryEntityUpdate.setDeliveryStatus(newStatus);
 							errorLbl.setText("");
+						} else {
+							errorLbl.setText("Can't change from done status to outForDelivery status ");
 						}
-						else {
-						errorLbl.setText("Can't change from done status to outForDelivery status ");}
 						break;
 					case done:
-						if(oldStatus.equals(DeliveryStatusEnum.outForDelivery)) {
-							if( deliveryEntity.getCustomerStatus().equals(CustomerStatusEnum.APPROVED)) {
+						if (oldStatus.equals(DeliveryStatusEnum.outForDelivery)) {
+							if (deliveryEntity.getCustomerStatus().equals(CustomerStatusEnum.APPROVED)) {
 								deliveryEntityUpdate.setDeliveryStatus(newStatus);
 								errorLbl.setText("");
+							} else {
+								errorLbl.setText(
+										"The customer's status is \"not approved\". Unable to change status to \"Done\"");
 							}
-							else {
-							errorLbl.setText("The customer's status is \"not approved\". Unable to change status to \"Done\"");}
+						} else {
+							errorLbl.setText("Can't change from pendingApproval status to done status ");
 						}
-						else {
-						errorLbl.setText("Can't change from pendingApproval status to done status ");}
 						break;
-					}	
+					}
 				}
-				//for save the last update
+				// for save the last update
 				if (changedDeliveryItems.contains(deliveryEntityUpdate))
 					changedDeliveryItems.remove(deliveryEntityUpdate);
 				changedDeliveryItems.add(deliveryEntityUpdate);
@@ -223,7 +234,7 @@ public class DeliveryManagementController  implements IScreen {
 	}
 
 	/***
-	 * color tables rows by the cuurent amount and the status
+	 * color tables rows by the current amount and the status
 	 */
 	private void colorTableRows(TableView<DeliveryEntity> table) {
 		table.setRowFactory(tv -> new TableRow<DeliveryEntity>() {
@@ -241,36 +252,43 @@ public class DeliveryManagementController  implements IScreen {
 	}
 
 	/**
-	 * calculae the estimated delivery time according to the current time:
-	 *  Between 4:00 to 20:00 the estimated is within loadingTime+distance hours. 
-	 *  Between 00:00 to 04:00 the estimated is within 5+loadingTime+distance hours .
-	 *  Between 20:00 to 00:00 the estimated is in the next day at current hour+loadingTime+distance hours.
+	 * calculae the estimated delivery time according to the current time: Between
+	 * 4:00 to 20:00 the estimated is within loadingTime+distance hours. Between
+	 * 00:00 to 04:00 the estimated is within 5+loadingTime+distance hours . Between
+	 * 20:00 to 00:00 the estimated is in the next day at current
+	 * hour+loadingTime+distance hours.
 	 */
 	private String calculateEstimatedTime() {
-		Calendar estimated = Calendar.getInstance(); //gets now time
+		Calendar estimated = Calendar.getInstance(); // gets now time
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		if (estimated.get(Calendar.HOUR_OF_DAY) < fourAm) {
-			
+
 			estimated.add(Calendar.HOUR, 5);
-			
-		
+
 		} else if (estimated.get(Calendar.HOUR_OF_DAY) > eightPm) {
 			estimated.add(Calendar.DATE, 1);
 			estimated.add(Calendar.HOUR, -12);
-		}	
-		
-		estimated.add(Calendar.HOUR, loadingTime+distance);
+		}
+
+		estimated.add(Calendar.HOUR, loadingTime + distance);
 		return formatter.format(estimated.getTime());
 	}
 
-	/** adding the deliveryEntity to deliveries list */
+	/**
+	 * adding the deliveryEntity to deliveries list
+	 * @param deliveriesArr deliveries array to add
+	 */
 	public static void getDeliveryEntityFromServer(ArrayList<DeliveryEntity> deliveriesArr) {
-			deliveries.addAll(deliveriesArr);
+		deliveries.addAll(deliveriesArr);
 	}
-	/** gets the userEntity for send him message */
+
+	/**
+	 * gets the userEntity for send him message
+	 * @param userEntity the user entity to send message for
+	 */
 	public static void getUserEntityFromServer(UserEntity userEntity) {
-		userToSend=userEntity;
-}
+		userToSend = userEntity;
+	}
 
 }

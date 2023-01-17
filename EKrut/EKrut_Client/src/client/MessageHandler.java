@@ -45,10 +45,9 @@ public class MessageHandler {
 	/**
 	 * Handle the navigations of messages got from server
 	 * 
-	 * @param thisClient
-	 * @param msg
+	 * @param msg the Message class to navigate with
 	 */
-	public static void Handle(ChatClient thisClient, Message msg) {
+	public static void Handle(Message msg) {
 		Message msgFromServer = (Message) msg;
 		TaskType task = msgFromServer.getTask();
 		Object obj = msgFromServer.getObject();
@@ -153,6 +152,10 @@ public class MessageHandler {
 		}
 	}
 
+	/**
+	 * Navigate items based on same calling from server, by current controller
+	 * @param obj the array list of ItemInMachineEntity
+	 */
 	private static void navigateItems(ArrayList<ItemInMachineEntity> obj) {
 		Object currentController = NavigationStoreController.getInstance().getController();
 		if (currentController instanceof SupplyManagementController)

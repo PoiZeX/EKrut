@@ -16,16 +16,15 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 /**
-*
-* Contains UsersManagement DB logic, separate from login DB
-*
-*/
+ * The Class UsersManagementDBController.
+ */
 public class UsersManagementDBController {
+	
 	/**
-	 * This method get all the users from the DB that haven't been approved yet, and
-	 * sends the list of these users to the client.
-	 * 
-	 * @param client the client object that the result will be sent to.
+	 * Gets the unapproved users entity.
+	 *
+	 * @param client the client
+	 * return the unapproved users entity
 	 */
 	public static void getUnapprovedUsersEntity(ConnectionToClient client) {
 		// sql query //
@@ -39,10 +38,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-
-	This method retrieves a list of unapproved users from the MySQL database.
-	@return an ArrayList of UserEntity objects containing data for all unapproved users in the database
-	*/
+	 * Gets the unapproved users from DB.
+	 *
+	 * @return the unapproved users from DB
+	 */
 	protected static ArrayList<UserEntity> getUnapprovedUsersFromDB() {
 		ArrayList<UserEntity> unapprovedUsersList = new ArrayList<UserEntity>();
 		try {
@@ -70,10 +69,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Change users status from not-approved to approved
-	 * 
-	 * @param toApprove
-	 * @param client
+	 * Sets the unapproved users entity.
+	 *
+	 * @param toApprove the to approve
+	 * @param client the client
 	 */
 	public static void setUnapprovedUsersEntity(ArrayList<UserEntity> toApprove, ConnectionToClient client) {
 		try {
@@ -98,9 +97,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the user from DB
-	 * 
-	 * @return user
+	 * Gets the user by username or ID from DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return the user by username or ID from DB
 	 */
 	public static UserEntity getUserByUsernameOrIDFromDB(String[] details, ConnectionToClient client) {
 		// prepare
@@ -144,11 +145,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Get a user by id number
-	 * 
-	 * @param details
-	 * @param client
-	 * @return
+	 * Gets the user by ID number from DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return the user by ID number from DB
 	 */
 	public static UserEntity getUserByIDNumberFromDB(String[] details, ConnectionToClient client) {
 		String id_number = details[0];
@@ -183,11 +184,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-
-	This method retrieves a specific user from the MySQL database by user ID.
-	@param userId an integer representing the unique identifier of the user
-	@return a UserEntity object containing data for the user with the specified userId, or null if the user was not found or the connection is null
-	*/
+	 * Gets the user by ID.
+	 *
+	 * @param userId the user id
+	 * @return the user by ID
+	 */
 	public static UserEntity getUserByID(int userId) {
 		UserEntity user = new UserEntity();
 		try {
@@ -215,12 +216,12 @@ public class UsersManagementDBController {
 	}
 
 	/**
-
-	This method updates a specific user in the MySQL database by user ID.
-	@param details an array of strings containing the user's ID number, role type, region and credit card number
-	@param client a ConnectionToClient object representing the client that initiated the request
-	@return true if the update was successful, false otherwise
-	*/
+	 * Update user in DB.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return true, if successful
+	 */
 	public static boolean updateUserInDB(String[] details, ConnectionToClient client) {
 		if (details.length < 1 && CommonFunctions.isNullOrEmpty(details[1]))
 			return false;
@@ -253,9 +254,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * Handles the query of getting the region manager from DB
-	 * 
-	 * @return user
+	 * Gets the region manager from DB.
+	 *
+	 * @param region the region
+	 * @param client the client
+	 * @return the region manager from DB
 	 */
 
 	public static UserEntity getRegionManagerFromDB(String region, ConnectionToClient client) {
@@ -268,12 +271,13 @@ public class UsersManagementDBController {
 		return user;
 
 	}
+	
 	/**
-
-	This method retrieves a region manager from the MySQL database by region name.
-	@param region a string representing the region of the region manager
-	@return a UserEntity object containing data for the region manager with the specified region, or an empty UserEntity object if the region manager was not found or the connection is null
-	*/
+	 * Gets the region manager from DB query.
+	 *
+	 * @param region the region
+	 * @return the region manager from DB query
+	 */
 	public static UserEntity getRegionManagerFromDBQuery(String region) {
 		UserEntity user = new UserEntity();
 		try {
@@ -300,11 +304,11 @@ public class UsersManagementDBController {
 	}
 
 	/**
-
-	This method retrieves a list of supply workers from the MySQL database.
-	@return an ArrayList of UserEntity objects containing data for all supply workers in the database
-	@throws SQLException if a database access error occurs or this method is called on a closed connection
-	*/
+	 * Gets the supply workers query.
+	 *
+	 * @return the supply workers query
+	 * @throws SQLException the SQL exception
+	 */
 	private static ArrayList<UserEntity> getSupplyWorkersQuery() throws SQLException {
 		ArrayList<UserEntity> supplyWorkers = new ArrayList<>();
 		UserEntity user = new UserEntity();
@@ -327,9 +331,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-	 * get supply workers from DB
-	 * 
-	 * @param client
+	 * Gets the supply workers.
+	 *
+	 * @param client the client
+	 * return the supply workers
 	 */
 	public static void getSupplyWorkers(ConnectionToClient client) {
 		try {
@@ -340,9 +345,10 @@ public class UsersManagementDBController {
 	}
 	
 	/**
-	 * get supply workers from DB
-	 * 
-	 * @param client
+	 * Gets the all users from DB.
+	 *
+	 * @param client the client
+	 * return the all users from DB
 	 */
 	public static void getAllUsersFromDB(ConnectionToClient client) {
 		try {
@@ -353,10 +359,10 @@ public class UsersManagementDBController {
 	}
 
 	/**
-
-	This method retrieves all users in the MySQL database and returns them as a HashMap.
-	@return a HashMap with all the users in the database
-	*/
+	 * Gets the all users.
+	 *
+	 * @return the all users
+	 */
 	public static HashMap<String,String> getAllUsers() {
 		HashMap<String, String> users = new HashMap<>();
 		if (MySqlClass.getConnection() == null)

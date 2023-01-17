@@ -93,7 +93,7 @@ public class PersonalMessagesController  implements IScreen {
 	
 	/**
 	 * Return the message list
-	 * @return
+	 * @return return the observable list of all messages
 	 */
 	public static ObservableList<PersonalMessageEntity> getMsgList() {
 		return msgsList;

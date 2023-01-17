@@ -154,6 +154,7 @@ public class HomePageController implements IScreen {
 
 	/**
 	 * Initialize the personal messages if needed
+	 * @param currentRole role of current logged in user
 	 */
 	private void initializePersonalMessages(RolesEnum currentRole) {
 		if (rolesViableForMessages.contains(currentRole)) {
@@ -200,7 +201,7 @@ public class HomePageController implements IScreen {
 	/**
 	 * Manager for menu displaying
 	 * 
-	 * @param currentRole
+	 * @param currentRole role of current logged in user 
 	 */
 	private void displayUserMenuByRoleType(RolesEnum currentRole) {
 		// switch case by role
@@ -220,10 +221,10 @@ public class HomePageController implements IScreen {
 					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 				}
 				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole)) {
+				if (!checkEmployeeMemberStatus(currentUser)) {
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
@@ -240,10 +241,10 @@ public class HomePageController implements IScreen {
 				setBtn(topBtn, "Open New Account", "Open new registered / subscribed account",
 						ScreensNamesEnum.RegistrationForm);
 				image = new Image(getClass().getResourceAsStream("/styles/images/salesworker.png"));
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
@@ -253,13 +254,13 @@ public class HomePageController implements IScreen {
 		case deliveryOperator:
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 				setBtn(topBtn, "Handle Delivery", "See details and change status of current delivery",
 						ScreensNamesEnum.DeliveryManagement);
 				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
@@ -269,12 +270,12 @@ public class HomePageController implements IScreen {
 		case marketingWorker:
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 				setBtn(topBtn, "Activate New Sale", "Activate sale for region", ScreensNamesEnum.SalesManagement);
 				image = new Image(getClass().getResourceAsStream("/styles/images/salesworker.png"));
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
@@ -284,12 +285,12 @@ public class HomePageController implements IScreen {
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 				image = new Image(getClass().getResourceAsStream("/styles/images/marketingManager.png"));
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 				setBtn(topBtn, "Create New Sale", "Activate region sale by pattern", ScreensNamesEnum.CreateNewSale);
 				setBtn(middleBtn, "Watch sales", "Watch sales by region", ScreensNamesEnum.SalesManagement);
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
 									+ "Or login in 'OL' configuration");
@@ -299,12 +300,12 @@ public class HomePageController implements IScreen {
 		case supplyWorker:
 			toggleBtnsVisible(new Button[] { mailBtn, bottomBtn, middleBtn }, false);
 			if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
-				checkEmployeeMemberStatus(currentUser, currentRole);
+				checkEmployeeMemberStatus(currentUser);
 				setBtn(topBtn, "Update supply", "Update supplies for item(s)", ScreensNamesEnum.SupplyUpdate);
 				image = new Image(getClass().getResourceAsStream("/styles/images/deliveryguy.png"));
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser))
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here!\nIf you want to order please register in Customer Service\n"
 									+ "Or login in 'OL' Configuration");
@@ -331,8 +332,8 @@ public class HomePageController implements IScreen {
 	/**
 	 * Change all buttons visibility at once
 	 * 
-	 * @param btns
-	 * @param setToVisible
+	 * @param btns btns to affect on
+	 * @param setToVisible true for visible, false to not
 	 */
 	private void toggleBtnsVisible(Button[] btns, boolean setToVisible) {
 		for (Button btn : btns)
@@ -342,11 +343,10 @@ public class HomePageController implements IScreen {
 	/**
 	 * Manager for employee which is a member
 	 * 
-	 * @param currentUser
-	 * @param currentRole
-	 * @return
+	 * @param currentUser current logged in user
+	 * @return true if member, false if not
 	 */
-	private boolean checkEmployeeMemberStatus(UserEntity currentUser, RolesEnum currentRole) {
+	private boolean checkEmployeeMemberStatus(UserEntity currentUser) {
 		if (!CommonFunctions.isNullOrEmpty(currentUser.getCc_num())) {
 			if (AppConfig.SYSTEM_CONFIGURATION == "OL") {
 				memberEmployeeGridBox.setVisible(true);
@@ -364,7 +364,7 @@ public class HomePageController implements IScreen {
 						memberMenuBtn.setDisable(true);
 						employeeMenuBtn.setDisable(false);
 						toggleBtnsVisible(new Button[] { topBtn, bottomBtn, middleBtn }, false);
-						displayMemberMenu(currentRole);
+						displayMemberMenu(currentUser.getRole_type());
 					}
 				});
 			}
@@ -376,7 +376,7 @@ public class HomePageController implements IScreen {
 					memberMenuBtn.setDisable(false);
 					employeeMenuBtn.setDisable(true);
 					toggleBtnsVisible(new Button[] { topBtn, bottomBtn, middleBtn }, false);
-					displayUserMenuByRoleType(currentRole);
+					displayUserMenuByRoleType((currentUser.getRole_type()));
 				}
 			});
 			return true;
@@ -387,8 +387,7 @@ public class HomePageController implements IScreen {
 	/**
 	 * Member menu manager
 	 * 
-	 * @param image
-	 * @param currentRole
+	 * @param currentRole current logged in user's role
 	 */
 	private void displayMemberMenu(RolesEnum currentRole) {
 		setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNamesEnum.ViewCatalog);
@@ -408,11 +407,11 @@ public class HomePageController implements IScreen {
 	 * Generic method to handle buttons setup according to button text, tooltip and
 	 * the screen to go to
 	 * 
-	 * @param <T>
-	 * @param btn
-	 * @param btnText
-	 * @param tooltiptext
-	 * @param scName
+	 * @param <T> general button
+	 * @param btn button to act on
+	 * @param btnText text to put on button
+	 * @param tooltiptext tool tip for button
+	 * @param scName scene name enum
 	 */
 	private <T extends Button> void setBtn(T btn, String btnText, String tooltiptext, ScreensNamesEnum scName) {
 		btn.setText(btnText);
@@ -446,7 +445,7 @@ public class HomePageController implements IScreen {
 	/**
 	 * Log out from the system. sets the current user to null and changes the view
 	 * 
-	 * @param event
+	 * @param event current event
 	 */
 	@FXML
 	private void logOutAction(ActionEvent event) {

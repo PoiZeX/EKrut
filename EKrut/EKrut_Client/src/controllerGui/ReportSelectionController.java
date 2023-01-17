@@ -80,7 +80,7 @@ public class ReportSelectionController implements IScreen {
 			switch (getSelectedReport()) {
 			case "supplyReport":
 				SupplyReportController.setReport(year, month, region);
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.SupplyReport);
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SupplyReport);
 				break;
 			case "ordersReport":
 				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "orders", region, month, year }));
@@ -170,9 +170,9 @@ public class ReportSelectionController implements IScreen {
 	/***
 	 * validate fileds on selection for the report
 	 * 
-	 * @return Stirng errorMsg
+	 * @return String errorMsg
 	 */
-	String validateFields() {
+	private String validateFields() {
 		String errorMsg = "";
 		monthItemsCmb.setStyle("-fx-border-color: none;");
 		yearItemsCmb.setStyle("-fx-border-color: none;");

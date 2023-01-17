@@ -12,14 +12,19 @@ import enums.TaskType;
 import entity.DeliveryEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
+
 /**
-*
-* Contains delivery DB logic
-*
-*/
+ * The Class DeliveryManagementDBController.
+ */
 public class DeliveryManagementDBController {
 	private static Connection con = MySqlClass.getConnection();
-	/**update estimates delivery time, delivery status and customer status in DB*/
+	
+	/**
+	 * Update delivery entities.
+	 *
+	 * @param deliveryLst the delivery lst
+	 * @param client the client
+	 */
 	public static void updateDeliveryEntities(ArrayList<DeliveryEntity> deliveryLst, ConnectionToClient client) {
 		
 		try {
@@ -40,10 +45,12 @@ public class DeliveryManagementDBController {
 		}
 		return;
 	}
+	
 	/**
-	 * insert new delivery to DB
-	 * @param deliveryEntity
-	 * @param client
+	 * Insert delivery entity.
+	 *
+	 * @param deliveryEntity the delivery entity
+	 * @param client the client
 	 */
 	public static void insertDeliveryEntity(DeliveryEntity deliveryEntity, ConnectionToClient client) {
 		try {
@@ -73,8 +80,11 @@ public class DeliveryManagementDBController {
 	}
 	
 	/**
-	 * get deliveries from DB
-	 * @param client
+	 * Gets the table.
+	 *
+	 * @param region the region
+	 * @param client the client
+	 * returns the table for region
 	 */
 	public static void getTable(String region, ConnectionToClient client) {
 		DeliveryEntity deliveryEntity;
@@ -100,9 +110,11 @@ public class DeliveryManagementDBController {
 	}
 	
 	/**
-	 * get specific delivery by customer id and order id
-	 * @param details
-	 * @param client
+	 * Gets the delivery.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * return the delivery
 	 */
 	public static void getDelivery(String[] details, ConnectionToClient client) {
 		DeliveryEntity deliveryEntity=null;

@@ -12,17 +12,18 @@ import entity.MachineEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-/***
- * CommonDataDBController contains methods that interact with the database to get data
- * for different screens.
- * This class has methods for getting the regions, machines and UserEntity by order id
- * from the database.
+
+/**
+ * The Class CommonDataDBController.
  */
 public class CommonDataDBController {
 	private static Connection con = MySqlClass.getConnection();
+	
 	/**
-	 * This method retrieves all the regions from the database and sends it to the client
-	 * @param client The client that requested the data
+	 * Gets the all regions from DB.
+	 *
+	 * @param client the client
+	 * the all regions from DB
 	 */
 	public static void getAllRegionsFromDB(ConnectionToClient client) {
 		// SQL query //
@@ -34,9 +35,11 @@ public class CommonDataDBController {
 		}
 
 	}
+	
 	/**
-	 * This method retrieves all regions from the database
-	 * @return ArrayList<String>  regions from the database
+	 * Gets the regions list from DB.
+	 *
+	 * @return the regions list from DB
 	 */
 	public static ArrayList<String> getRegionsListFromDB() {
 		ArrayList<String> regions = new ArrayList<String>();
@@ -56,7 +59,10 @@ public class CommonDataDBController {
 	}
 	
 	/**
-	 * This method retrieves a region by its ID from the database
+	 * Gets the region name by ID.
+	 *
+	 * @param regionID the region ID
+	 * @return the region name by ID
 	 */
 	public static String getRegionNameByID(int regionID) {
 		try {
@@ -74,8 +80,10 @@ public class CommonDataDBController {
 	}
 	
 	/**
-	 * This method retrieves all the machines from the database and sends it to the client
-	 * @param client The client that requested the data
+	 * Gets the all machines from DB.
+	 *
+	 * @param client the client
+	 * return the all machines from DB
 	 */
 	public static void getAllMachinesFromDB(ConnectionToClient client) {
 		ArrayList<MachineEntity> res = getMachineListFromDB();
@@ -85,9 +93,11 @@ public class CommonDataDBController {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
-	 * This method retrieves all machines from the database
-	 * @return ArrayList<MachineEntity> machines from the database
+	 * Gets the machine list from DB.
+	 *
+	 * @return the machine list from DB
 	 */
 	public static ArrayList<MachineEntity> getMachineListFromDB() {
 		ArrayList<MachineEntity> machines = new ArrayList<MachineEntity>();
@@ -104,14 +114,14 @@ public class CommonDataDBController {
 		}
 		return machines;
 	}
+	
 	/**
-	* getUserByOrderId method is used to retrive the user information by providing the order id.
-	* This method performs a SELECT SQL statement on the ekrut.users and ekrut.orders table.
-	* the connection object is getting the connection from MySqlClass class.
-	* @param OrderId an integer representing the id of an order
-	* @param client an object of ConnectionToClient class that is used to communicate with the client
-	* @return UserEntity an object of UserEntity class representing the user.
-	*/
+	 * Gets the user by order id.
+	 *
+	 * @param OrderId the order id
+	 * @param client the client
+	 * @return the user by order id
+	 */
 	public static UserEntity getUserByOrderId(int OrderId, ConnectionToClient client) {
 		UserEntity user = new UserEntity();
 		try {

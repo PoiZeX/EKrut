@@ -7,33 +7,70 @@ public class DatabaseEntity {
 	  
 	  private String DBAddress;
 	  
-	  public DatabaseEntity(String username, String password, String DBAddress) {
+	  /**
+  	 * Instantiates a new database entity.
+  	 *
+  	 * @param username the username
+  	 * @param password the password
+  	 * @param DBAddress the DB address
+  	 */
+  	public DatabaseEntity(String username, String password, String DBAddress) {
 	    this.username = username;
 	    this.password = password;
 	    this.DBAddress = DBAddress;
 	  }
 	  
-	  public String getUsername() {
+	  /**
+  	 * Gets the username.
+  	 *
+  	 * @return the username
+  	 */
+  	public String getUsername() {
 	    return this.username;
 	  }
 	  
-	  public void setUsername(String username) {
+	  /**
+  	 * Sets the username.
+  	 *
+  	 * @param username the new username
+  	 */
+  	public void setUsername(String username) {
 	    this.username = username;
 	  }
 	  
-	  public void setDBAddress(String DBAddress) {
+	  /**
+  	 * Sets the DB address.
+  	 *
+  	 * @param DBAddress the new DB address
+  	 */
+  	public void setDBAddress(String DBAddress) {
 	    this.DBAddress = DBAddress;
 	  }
 	  
-	  public String getDBAddress() {
+	  /**
+  	 * Gets the DB address.
+  	 *
+  	 * @return the DB address
+  	 */
+  	public String getDBAddress() {
 	    return this.DBAddress;
 	  }
 	  
-	  public String getPassword() {
+	  /**
+  	 * Gets the password.
+  	 *
+  	 * @return the password
+  	 */
+  	public String getPassword() {
 	    return this.password;
 	  }
 	  
-	  public void setPassword(String password) {
+	  /**
+  	 * Sets the password.
+  	 *
+  	 * @param password the new password
+  	 */
+  	public void setPassword(String password) {
 	    this.password = password;
 	  }
 }

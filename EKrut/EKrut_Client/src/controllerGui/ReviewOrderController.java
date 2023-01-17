@@ -180,7 +180,6 @@ public class ReviewOrderController implements IScreen {
 
 	/**
 	 * Check if there are any sales and handle this case
-	 * 
 	 * @throws Exception
 	 */
 	private void checkAndApplyDiscounts() throws Exception {
@@ -209,6 +208,10 @@ public class ReviewOrderController implements IScreen {
 
 	}
 
+	/**
+	 * check if its the first purchase of member
+	 * @throws Exception
+	 */
 	private void isFirstpurchase() throws Exception {
 		if (NavigationStoreController.connectedUser.getRole_type().equals(RolesEnum.member)
 				&& !OrderController.isFirstPurchaseDiscountApplied) {
@@ -257,8 +260,8 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * local function to handle sending and waiting for answer
 	 * 
-	 * @param msg
-	 * @throws Exception
+	 * @param msg the messag object to send
+	 * @throws Exception when thread sleep failed
 	 */
 	private void waitOn(Message msg) throws Exception {
 		isDataRecived = false;
@@ -384,7 +387,7 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * Handle the end of the process
 	 * 
-	 * @param successMsg
+	 * @param successMsg the success message to return 
 	 */
 	private void successfullEndProcess(String successMsg) {
 		PopupSetter.createPopup(PopupTypeEnum.Success, successMsg);
@@ -399,7 +402,7 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * External payment process. Will Always success
 	 * 
-	 * @throws InterruptedException
+	 * @throws InterruptedException exception
 	 */
 	private void paymentProccess(String ccNumber, double totalSum) throws InterruptedException {
 		// make a popup for simulation of payment process
@@ -428,7 +431,7 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * Checks if there are items under min amount
 	 * 
-	 * @throws Exception
+	 * @throws Exception exception
 	 */
 	private void handleItemsUnderMinAmount() throws Exception {
 		StringBuilder sb = new StringBuilder(); // string for formal message
@@ -472,7 +475,7 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * Checks all fields of delivery and return true if valid
 	 * 
-	 * @return
+	 * @return the message
 	 */
 	private String isValidDeliveryDetails() {
 		StringBuilder errMsg = new StringBuilder();

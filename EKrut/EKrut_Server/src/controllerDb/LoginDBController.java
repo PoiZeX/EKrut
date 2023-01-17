@@ -13,19 +13,18 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 /**
-*
-* Contains login DB logic, separate from UsersManagement DB
-*
-*/
+ * The Class LoginDBController.
+ */
 public class LoginDBController {
 
 	private static String username, password;
 	private static Connection con = MySqlClass.getConnection();
+	
 	/**
-	 * Parse the string array into username and password
-	 * 
-	 * @param usernamePassword
-	 * @return
+	 * Sets the user.
+	 *
+	 * @param usernamePassword the username password
+	 * @return true, if successful
 	 */
 	public static boolean setUser(String[] usernamePassword) {
 		if (usernamePassword.length == 2) {
@@ -37,10 +36,11 @@ public class LoginDBController {
 	}
 
 	/**
-	 * Handles getting selected user and sending the entity back to client
-	 * 
-	 * @param usernamePassword
-	 * @param client
+	 * Gets the user entity.
+	 *
+	 * @param usernamePassword the username password
+	 * @param client the client
+	 * return the user entity
 	 */
 	public static void getUserEntity(String[] usernamePassword, ConnectionToClient client) {
 		if (setUser(usernamePassword)) {
@@ -56,9 +56,9 @@ public class LoginDBController {
 	}
 
 	/**
-	 * Handles the query of getting the user from DB
-	 * 
-	 * @return
+	 * Gets the user from DB.
+	 *
+	 * @return the user from DB
 	 */
 	protected static UserEntity getUserFromDB() {
 		UserEntity user = new UserEntity();
@@ -82,10 +82,12 @@ public class LoginDBController {
 		return user;
 
 	}
+	
 	/**
-	 * The method setUserLoggedIn sets the user's logged_in status in the database based on the provided UserEntity
-	 * @param user an instance of UserEntity class that holds the user information and the updated status of the user
-	*/
+	 * Sets the user logged in.
+	 *
+	 * @param user the new user logged in
+	 */
 	public static void setUserLoggedIn(UserEntity user) {
 		try {
 			if (con == null)

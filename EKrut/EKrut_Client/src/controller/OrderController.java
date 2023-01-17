@@ -78,7 +78,7 @@ public class OrderController {
 	/**
 	 * get items list
 	 * 
-	 * @return
+	 * @return map of: Item Name, Item Entity
 	 */
 	public static LinkedHashMap<String, ItemInMachineEntity> getItemsList() {
 		return itemsList;
@@ -87,8 +87,7 @@ public class OrderController {
 	/**
 	 * put an item in itemslist
 	 * 
-	 * @param name
-	 * @param entity
+	 * @param entity item in machine entity
 	 */
 	public static void putItemInList(ItemInMachineEntity entity) {
 		itemsList.put(entity.getName(), entity);
@@ -236,7 +235,7 @@ public class OrderController {
 	/**
 	 * return the cart as list of items
 	 * 
-	 * @return
+	 * @return map of item entity, and quantity to order
 	 */
 	public static LinkedHashMap<ItemInMachineEntity, Integer> getCart() {
 		return itemsInCartList;
@@ -346,7 +345,7 @@ public class OrderController {
 	/**
 	 * Get total discount in NIS
 	 * 
-	 * @return
+	 * @return total discounts
 	 */
 	public static double getTotalDiscounts() {
 		return getTotalPrice() * (1 - discounts);
@@ -355,7 +354,6 @@ public class OrderController {
 	/**
 	 * Get total discount in double
 	 * 
-	 * @return
 	 */
 	public static void calculateDiscountsPercentage() {
 		if (activeSales == null)
@@ -377,7 +375,7 @@ public class OrderController {
 	/**
 	 * Add discount in %
 	 * 
-	 * @param discount
+	 * @param discount number of discounts to apply
 	 */
 	public static void addDiscount(int discount) {
 		discounts *= (1 - (((double) discount) / 100));
@@ -396,7 +394,7 @@ public class OrderController {
 	/**
 	 * Get total price after discounts applied
 	 * 
-	 * @return
+	 * @return price after discount in NIS
 	 */
 	public static double getPriceAfterDiscounts() {
 		if (activeSales == null)
@@ -407,7 +405,7 @@ public class OrderController {
 	/**
 	 * Get the current machine for order
 	 * 
-	 * @return
+	 * @return machine entity
 	 */
 	public static MachineEntity getCurrentMachine() {
 		return currentMachine;
@@ -416,7 +414,7 @@ public class OrderController {
 	/**
 	 * Set the current machine to order from
 	 * 
-	 * @param currentMachine
+	 * @param currentMachine machine entity to set
 	 */
 	public static void setCurrentMachine(MachineEntity currentMachine) {
 		OrderController.currentMachine = currentMachine;
