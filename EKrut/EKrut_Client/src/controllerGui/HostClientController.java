@@ -1,5 +1,6 @@
 package controllerGui;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -72,7 +73,15 @@ public class HostClientController implements IScreen {
 		if (chat.acceptObj(new Message(TaskType.ClientConnect, null))) // send server that client connected
 		{
 			// Go to next screen (controller creates the screen)
+			DataStore.InitAllUsers();
+			while (!DataStore.recievedData)
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.Login);
+
 		}
 
 		else {
@@ -80,30 +89,35 @@ public class HostClientController implements IScreen {
 		}
 
 	}
-	/**
 
-	The start method is responsible for setting the current screen in the Navigation Store to HostClient and checking if a machine id has been provided.
-	If no machine id has been provided, a warning message is displayed to the user.
-	@param primaryStage The primary stage of the application.
-	@throws Exception
-	*/
+	/**
+	 * 
+	 * The start method is responsible for setting the current screen in the
+	 * Navigation Store to HostClient and checking if a machine id has been
+	 * provided. If no machine id has been provided, a warning message is displayed
+	 * to the user.
+	 * 
+	 * @param primaryStage The primary stage of the application.
+	 * @throws Exception
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.HostClient);
 		if (AppConfig.MACHINE_ID <= 0)
-			PopupSetter.createPopup(PopupTypeEnum.Warning,
-					"You must provide a machine id\nThe syntax should be:\n\n"
-							+ "java -jar EKrut_Client.jar arg <machine_id>");
+			PopupSetter.createPopup(PopupTypeEnum.Warning, "You must provide a machine id\nThe syntax should be:\n\n"
+					+ "java -jar EKrut_Client.jar arg <machine_id>");
 	}
 
 	@Override
 	public void initialize() {
 
 	}
-	/**
 
-	Returns the current instance of the ClientController.
-	@return The current instance of the ClientController.
-	*/
+	/**
+	 * 
+	 * Returns the current instance of the ClientController.
+	 * 
+	 * @return The current instance of the ClientController.
+	 */
 	public static ClientController getChat() {
 		return chat;
 	}
