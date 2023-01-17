@@ -9,6 +9,13 @@ import java.util.Objects;
 public class ItemInCartEntity {
 	private int itemId, quantity, originalPrice, priceAfterDiscount;
 
+	/**
+	 * Instantiates a new item in cart entity.
+	 *
+	 * @param itemId the item id
+	 * @param quantity the quantity
+	 * @param originalPrice the original price
+	 */
 	public ItemInCartEntity(int itemId, int quantity, int originalPrice) {
 		super();
 		this.itemId = itemId;
@@ -17,6 +24,14 @@ public class ItemInCartEntity {
 		this.priceAfterDiscount = originalPrice; // if no discount given
 	}
 
+	/**
+	 * Instantiates a new item in cart entity.
+	 *
+	 * @param itemId the item id
+	 * @param quantity the quantity
+	 * @param originalPrice the original price
+	 * @param priceAfterDiscount the price after discount
+	 */
 	public ItemInCartEntity(int itemId, int quantity, int originalPrice, int priceAfterDiscount) {
 		this(itemId, quantity, originalPrice);
 		this.priceAfterDiscount = priceAfterDiscount;
@@ -40,34 +55,74 @@ public class ItemInCartEntity {
 				&& priceAfterDiscount == other.priceAfterDiscount && quantity == other.quantity;
 	}
 
+	/**
+	 * Gets the item id.
+	 *
+	 * @return the item id
+	 */
 	public int getItemId() {
 		return itemId;
 	}
 
+	/**
+	 * Sets the item id.
+	 *
+	 * @param itemId the new item id
+	 */
 	public void setItemId(int itemId) {
 		this.itemId = itemId;
 	}
 
+	/**
+	 * Gets the quantity.
+	 *
+	 * @return the quantity
+	 */
 	public int getQuantity() {
 		return quantity;
 	}
 
+	/**
+	 * Sets the quantity.
+	 *
+	 * @param quantity the new quantity
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
+	/**
+	 * Gets the original price.
+	 *
+	 * @return the original price
+	 */
 	public int getOriginalPrice() {
 		return originalPrice;
 	}
 
+	/**
+	 * Sets the original price.
+	 *
+	 * @param originalPrice the new original price
+	 */
 	public void setOriginalPrice(int originalPrice) {
 		this.originalPrice = originalPrice;
 	}
 
+	/**
+	 * Gets the price after discount.
+	 *
+	 * @return the price after discount
+	 */
 	public int getPriceAfterDiscount() {
 		return priceAfterDiscount;
 	}
 
+	/**
+	 * Sets the price after discount.
+	 *
+	 * @param priceAfterDiscount the new price after discount
+	 */
 	public void setPriceAfterDiscount(int priceAfterDiscount) {
 		this.priceAfterDiscount = priceAfterDiscount;
 	}

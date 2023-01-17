@@ -13,19 +13,18 @@ import entity.MachineEntity;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
+
 /**
- * Generator handles for all report types
- * @author Lidor
- *
+ * The Class ReportsGenerator.
  */
 public class ReportsGenerator {
 
 	/**
-	 * Manager for report generator for given type, month and year
-	 * 
-	 * @param reportType clients / orders / supply
-	 * @param month      string format 'MM'
-	 * @param year       string format 'yyyy'
+	 * Generate reports DB.
+	 *
+	 * @param reportType the report type
+	 * @param month the month
+	 * @param year the year
 	 */
 	public static void generateReportsDB(String reportType, String month, String year) {
 		switch (reportType) {
@@ -42,7 +41,10 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * generate supply report for all machines if not exists
+	 * Generate supply report for all machines.
+	 *
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateSupplyReportForAllMachines(String month, String year) {
 
@@ -53,8 +55,9 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * Run a query that generate and insert report for each machine
-	 * 
+	 * Generate supply report for machine ID.
+	 *
+	 * @param machineId the machine id
 	 */
 	private static void generateSupplyReportForMachineID(int machineId) {
 		try {
@@ -110,7 +113,9 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * Resets the times under min for ALL machines
+	 * Reset times under min for machine ID.
+	 *
+	 * @param machineId the machine id
 	 */
 	private static void resetTimesUnderMinForMachineID(int machineId) {
 		try {
@@ -128,10 +133,10 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * orders report Manager, generate and insert
-	 * 
-	 * @param month
-	 * @param year
+	 * Generate orders report.
+	 *
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateOrdersReport(String month, String year) {
 		HashMap<String, String> regionDescription = new HashMap<>();
@@ -178,10 +183,10 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * clients report Manager, generate and insert
-	 * 
-	 * @param month
-	 * @param year
+	 * Generate clients report.
+	 *
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateClientsReport(String month, String year) {
 
@@ -222,11 +227,11 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * generate the user status for clients-report
-	 * 
-	 * @param regionDetails
-	 * @param month
-	 * @param year
+	 * Generate user status.
+	 *
+	 * @param regionDetails the region details
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateUserStatus(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
@@ -270,11 +275,11 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * generate the supply total column for clients-report
-	 * 
-	 * @param regionDetails
-	 * @param month
-	 * @param year
+	 * Generate supply total.
+	 *
+	 * @param regionDetails the region details
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateSupplyTotal(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
@@ -324,11 +329,11 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * Generate the description column for clients-report
-	 * 
-	 * @param regionDetails
-	 * @param month
-	 * @param year
+	 * Generate description.
+	 *
+	 * @param regionDetails the region details
+	 * @param month the month
+	 * @param year the year
 	 */
 	private static void generateDescription(HashMap<String, HashMap<String, String>> regionDetails, String month,
 			String year) {
@@ -372,10 +377,11 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * Build the string array for given region
-	 * 
-	 * @param region
-	 * @return
+	 * Builds the string for region.
+	 *
+	 * @param allQueries the all queries
+	 * @param region the region
+	 * @return the string
 	 */
 	private static String buildStringForRegion(HashMap<String, ArrayList<Integer>> allQueries, String region) {
 		ArrayList<Integer> numbersToProcess = allQueries.get(region);
@@ -399,27 +405,48 @@ public class ReportsGenerator {
 	}
 
 	/**
-	 * inner class represents a pair for orders report
-	 *
+	 * The Class Pair.
 	 */
 	protected static class Pair implements Comparable<Pair> {
 		int ordersAmount, usersAmount;
-
+		
+		/**
+		 * Instantiates a new pair.
+		 *
+		 * @param ordersAmount the orders amount
+		 * @param usersAmount the users amount
+		 */
 		public Pair(int ordersAmount, int usersAmount) {
 			this.ordersAmount = ordersAmount;
 			this.usersAmount = usersAmount;
 		}
-
+		
+		/**
+		 * To string.
+		 *
+		 * @return the string
+		 */
 		@Override
 		public String toString() {
 			return this.ordersAmount + "," + this.usersAmount;
 		}
-
+		
+		/**
+		 * Compare to.
+		 *
+		 * @param o the o
+		 * @return the int
+		 */
 		@Override
 		public int compareTo(Pair o) {
 			return ordersAmount > o.ordersAmount ? 1 : ordersAmount == 0 ? 0 : -1;
 		}
-
+		
+		/**
+		 * Orders amount str.
+		 *
+		 * @return the string
+		 */
 		public String ordersAmountStr() {
 			return String.valueOf(ordersAmount);
 		}

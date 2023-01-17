@@ -16,9 +16,7 @@ import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
 /**
- * Reports DB controller handles all Reports queries
- * @author Lidor
- *
+ * The Class ReportsDBController.
  */
 public class ReportsDBController {
 	private static String reportType, month, year, region;
@@ -26,10 +24,10 @@ public class ReportsDBController {
 	private static Connection con = MySqlClass.getConnection();
 
 	/**
-	 * Parse the string array into reportType region month and year
-	 * 
-	 * @param array with details
-	 * @return
+	 * Sets the report.
+	 *
+	 * @param details the details
+	 * @return true, if successful
 	 */
 	public static boolean setReport(String[] details) {
 		switch (details[0]) {
@@ -53,10 +51,11 @@ public class ReportsDBController {
 	}
 
 	/**
-	 * Handles getting selected report and sending the entity back to client
-	 * 
-	 * @param details
-	 * @param client
+	 * Gets the report entity.
+	 *
+	 * @param details the details
+	 * @param client the client
+	 * @return the report entity
 	 */
 	public static void getReportEntity(String[] details, ConnectionToClient client) {
 		Object res;
@@ -88,9 +87,9 @@ public class ReportsDBController {
 	}
 
 	/**
-	 * Handles the query of getting the report from DB
-	 * 
-	 * @return
+	 * Gets the order report from DB.
+	 *
+	 * @return the order report from DB
 	 */
 	public static OrderReportEntity getOrderReportFromDB() {
 		OrderReportEntity report = new OrderReportEntity();
@@ -118,7 +117,12 @@ public class ReportsDBController {
 		return report;
 
 	}
-
+	
+	/**
+	 * Gets the clients report from DB.
+	 *
+	 * @return the clients report from DB
+	 */
 	public static ClientsReportEntity getClientsReportFromDB() {
 		ClientsReportEntity report = new ClientsReportEntity();
 		try {
@@ -145,9 +149,9 @@ public class ReportsDBController {
 	}
 
 	/**
-	 * Handles the query of getting the report from DB
-	 * 
-	 * @return
+	 * Gets the supply report from DB.
+	 *
+	 * @return the supply report from DB
 	 */
 	public static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
@@ -177,13 +181,14 @@ public class ReportsDBController {
 	}
 
 	/**
-	 * return if there is any report exist by type, year, month, region
-	 * 
-	 * @param reportType
-	 * @param month
-	 * @param year
-	 * @param region
-	 * @return
+	 * Checks if is report exist.
+	 *
+	 * @param reportType the report type
+	 * @param month the month
+	 * @param year the year
+	 * @param region the region
+	 * @param machineId the machine id
+	 * @return true, if is report exist
 	 */
 	public static boolean isReportExist(String reportType, String month, String year, String region, int machineId) {
 		if (!setReport(new String[] { reportType, region, month, year, String.valueOf(machineId) }))
