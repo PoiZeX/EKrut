@@ -598,11 +598,12 @@ public class ReviewOrderController implements IScreen {
 		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
 			double priceAfterDis = item.getPrice();
-			if (firstPurchase)
-				priceAfterDis *= 0.8;
+			
 			if (!isDelivery) {
 				priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			}
+			if (firstPurchase)
+				priceAfterDis *= 0.8;
 
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
