@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import common.CommonFunctions;
 import common.Message;
@@ -315,6 +316,7 @@ public class UsersManagementDBController {
 
 			supplyWorkers.add(user);
 		}
+
 		return supplyWorkers;
 	}
 
@@ -331,4 +333,39 @@ public class UsersManagementDBController {
 		}
 	}
 
+	/**
+	 * get supply workers from DB
+	 * 
+	 * @param client
+	 */
+	public static void getAllUsersFromDB(ConnectionToClient client) {
+		try {
+			client.sendToClient(new Message(TaskType.InitUsers, getAllUsers())); // finally
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @returns all users in the database in the format of {username : password} as an hashmap.
+	 */
+	public static HashMap<String,String> getAllUsers() {
+		HashMap<String, String> users = new HashMap<>();
+		if (MySqlClass.getConnection() == null)
+			return users;
+		try {
+
+			Connection conn = MySqlClass.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users;");
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				String username = res.getString(3);
+				String password = res.getString(4);
+				users.put(username,password);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
 }

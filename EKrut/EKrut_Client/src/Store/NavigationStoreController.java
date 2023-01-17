@@ -61,10 +61,11 @@ public class NavigationStoreController {
 	public static UserEntity connectedUser; // hold the current connected user
 	public static PauseTransition transition;
 	public static boolean isFirstTime = true;
+	private String configuration = "";
 
 	/**
 	 * Constructor, creates the new instances
-	 */ 
+	 */
 	private NavigationStoreController() {
 		// create objects
 		screenScenes = new HashMap<>();
@@ -141,19 +142,24 @@ public class NavigationStoreController {
 	 */
 	private void setWindowTitle(ScreensNamesEnum scName) {
 		try {
-			String configuration = "";
+
 			if (!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
 				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
 					configuration = " Online";
 				} else {
-					MachineEntity machine;
-					do {
-						Thread.sleep(100);
-						machine = DataStore.getCurrentMachine();
-					} while (machine == null);
-					String machineName = machine.getMachineName();
-					configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
-
+					Platform.runLater(() -> {
+						MachineEntity machine;
+						do {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							machine = DataStore.getCurrentMachine();
+						} while (machine == null);
+						String machineName = machine.getMachineName();
+						configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
+					});
 				}
 
 			// Set title
@@ -250,10 +256,7 @@ public class NavigationStoreController {
 				scene = new Scene(root);
 			scene.setUserData(loader.getController());
 			se.setScene(scene); // set scene in entity
-//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalStyleSheet.css").toExternalForm());
-//			scene.getStylesheets().add(getClass().getResource("/styles/css/loginStyleSheet.css").toExternalForm());
-//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalizedCss.css").toExternalForm());
-//			scene.getStylesheets().add(getClass().getResource("/styles/css/DateAndTime.css").toExternalForm());
+
 			// refresh activity
 			if ((connectedUser != null && connectedUser.isLogged_in()))
 				scene.addEventFilter(InputEvent.ANY, evt -> transition.playFromStart());
@@ -320,7 +323,8 @@ public class NavigationStoreController {
 
 		else if (((BorderPane) stage).getTop() instanceof GridPane) {
 			GridPane top = (GridPane) ((BorderPane) stage).getTop();
-			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport) && !se.getSc().equals(ScreensNamesEnum.SupplyReport)) // ignore top on view catalog
+			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport)
+					&& !se.getSc().equals(ScreensNamesEnum.SupplyReport)) // ignore top on view catalog
 				top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
 		}
 
@@ -342,8 +346,7 @@ public class NavigationStoreController {
 
 		// grid pane setup
 		gridPane.setId("headerBar");
-		gridPane.getColumnConstraints()
-				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.NEVER, HPos.LEFT, true));
+		gridPane.getColumnConstraints().add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.NEVER, HPos.LEFT, true));
 		gridPane.getRowConstraints().add(new RowConstraints(20.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
 		gridPane.getRowConstraints().add(new RowConstraints(30.0, 30.0, 30.0, Priority.NEVER, VPos.CENTER, true));
 		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));

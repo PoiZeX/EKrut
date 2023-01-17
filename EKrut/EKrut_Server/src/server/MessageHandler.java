@@ -81,6 +81,9 @@ public class MessageHandler {
 		case InitMachines:
 			CommonDataDBController.getAllMachinesFromDB(client);
 			break;
+		case InitUsers:
+			UsersManagementDBController.getAllUsersFromDB(client);
+			break;
 //----------------------------------------DELIVERY---------------------------------------------------------
 		case RequestDeliveriesFromServer:
 			DeliveryManagementDBController.getTable((String) obj, client);
