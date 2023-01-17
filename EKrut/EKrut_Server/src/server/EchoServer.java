@@ -38,17 +38,17 @@ public class EchoServer extends AbstractServer {
 	/**
 	 * Sets the clients list
 	 * 
-	 * @param clientList
+	 * @param clientList holds all connected clients entitys
 	 */
 	public static void setClientList(final ObservableList<ConnectedClientEntity> clientList) {
 		EchoServer.clientList = clientList;
 	}
 
+	/**
+	 * @return the current client list of connected users
+	 */
 	public static ObservableList<ConnectedClientEntity> getClientList() {
 		return EchoServer.clientList;
-	}
-
-	protected void clientConnected(final ConnectionToClient client) {
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class EchoServer extends AbstractServer {
 	/**
 	 * Return true if all clients disconnected
 	 * 
-	 * @return
+	 * @return return true if all the clinets are disconnected
 	 */
 	public boolean isAllClientsDisconnected() {
 		for (ConnectedClientEntity client : clientList)

@@ -11,12 +11,13 @@ public class PersonalMessageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String date, title, message;
 	private int userId, id;
+
+	
 	/**
-	 * Constructor
-	 * 
-	 * @param date
-	 * @param type
-	 * @param message
+	 * @param userId current user id
+	 * @param date current date
+	 * @param title message title
+	 * @param message message content
 	 */
 	public PersonalMessageEntity(int userId, String date, String title, String message) {
 		super();
