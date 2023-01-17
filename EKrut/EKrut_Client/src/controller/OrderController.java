@@ -55,7 +55,9 @@ public class OrderController {
 	 * Add a 20% discount for first purchase of a member
 	 */
 	public static void addMemberFirstPurchaseDiscount() {
+
 		OrderController.isFirstPurchaseDiscountApplied = true;
+
 	}
 
 	/**
@@ -296,25 +298,27 @@ public class OrderController {
 	/***
 	 * get callers from the message handler when receiving active sales
 	 * ArrayList<SaleEntity> activeSales
+	 * 
 	 * @param activesales
 	 */
 	public static void setActiveSales(ArrayList<SaleEntity> activesales) {
 
-	Platform.runLater(()->{
-		onePlusOneSaleExist = false;
-		percentageSaleExit = false;
-		if (activeSales == null) {
-			activeSales = new ArrayList<>();
-		} else if (!activeSales.isEmpty())
-			activeSales.clear();
-		activeSales.addAll(activesales);
-		for (SaleEntity sale : activeSales) {
-			if (sale.getSaleType().equals("1+1"))
-				onePlusOneSaleExist = true;
-			if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
-				percentageSaleExit = true;
-		}
-		calculateDiscountsPercentage();});
+		Platform.runLater(() -> {
+			onePlusOneSaleExist = false;
+			percentageSaleExit = false;
+			if (activeSales == null) {
+				activeSales = new ArrayList<>();
+			} else if (!activeSales.isEmpty())
+				activeSales.clear();
+			activeSales.addAll(activesales);
+			for (SaleEntity sale : activeSales) {
+				if (sale.getSaleType().equals("1+1"))
+					onePlusOneSaleExist = true;
+				if (!sale.getSaleType().equals(SaleType.onePlusOne.getName()))
+					percentageSaleExit = true;
+			}
+			calculateDiscountsPercentage();
+		});
 
 		isDataReceived = true;
 	}
@@ -322,6 +326,7 @@ public class OrderController {
 	/**
 	 * 
 	 * This method returns whether a one plus one sale exist or not.
+	 * 
 	 * @return a boolean indicating if a one plus one sale exist
 	 */
 	public static boolean isOnePlusOneSaleExist() {
@@ -330,6 +335,7 @@ public class OrderController {
 
 	/**
 	 * This method returns whether a percentage sale exist or not.
+	 * 
 	 * @return a boolean indicating if a percentage sale exist
 	 */
 	public static boolean isPercentageSaleExit() {
@@ -339,6 +345,7 @@ public class OrderController {
 //-------------------------------------- discount and price calculation
 	/**
 	 * Get total discount in NIS
+	 * 
 	 * @return
 	 */
 	public static double getTotalDiscounts() {
@@ -347,6 +354,7 @@ public class OrderController {
 
 	/**
 	 * Get total discount in double
+	 * 
 	 * @return
 	 */
 	public static void calculateDiscountsPercentage() {
@@ -359,6 +367,7 @@ public class OrderController {
 
 	/**
 	 * Returns the current discounts percentage as a double.
+	 * 
 	 * @return discounts percentage
 	 */
 	public static double getDiscountsPercentage() {
@@ -367,6 +376,7 @@ public class OrderController {
 
 	/**
 	 * Add discount in %
+	 * 
 	 * @param discount
 	 */
 	public static void addDiscount(int discount) {
@@ -375,6 +385,7 @@ public class OrderController {
 
 	/**
 	 * Returns the percentage of discounts applied to the total amount.
+	 * 
 	 * @return The percentage of discounts applied to the total amount as a double.
 	 */
 	public static double getItemPriceAfterDiscounts(double itemPrice) {
@@ -384,6 +395,7 @@ public class OrderController {
 
 	/**
 	 * Get total price after discounts applied
+	 * 
 	 * @return
 	 */
 	public static double getPriceAfterDiscounts() {
@@ -394,6 +406,7 @@ public class OrderController {
 
 	/**
 	 * Get the current machine for order
+	 * 
 	 * @return
 	 */
 	public static MachineEntity getCurrentMachine() {
@@ -402,6 +415,7 @@ public class OrderController {
 
 	/**
 	 * Set the current machine to order from
+	 * 
 	 * @param currentMachine
 	 */
 	public static void setCurrentMachine(MachineEntity currentMachine) {

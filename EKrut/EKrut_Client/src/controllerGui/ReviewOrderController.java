@@ -21,6 +21,7 @@ import enums.PopupTypeEnum;
 import enums.RolesEnum;
 import enums.TaskType;
 import interfaces.IScreen;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,11 +44,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.PopupSetter;
 import utils.TooltipSetter;
+
 /**
- * Review Order GUI controller, implements Screen interface
- * Shows the user's order summary, includes first time purchase discounts
- * and navigates to payment.
- * Check also validation for shipping (if needed)
+ * Review Order GUI controller, implements Screen interface Shows the user's
+ * order summary, includes first time purchase discounts and navigates to
+ * payment. Check also validation for shipping (if needed)
+ * 
  * @author Lidor
  *
  */
@@ -117,21 +119,25 @@ public class ReviewOrderController implements IScreen {
 	private boolean isMember = OrderController.isMember;
 	private StringBuilder address = new StringBuilder();
 	private double totalDiscounts = 0;
+
 	/**
-	This method is used to initialize the Review Order screen.
-	It sets the cart variable to the current cart, and checks if it's a first purchase.
-	It also builds the graphical side of the order, initializes the text fields, checks and applies discounts if they exist, and checks if it's an OL/EK order (for delivery).
-	It also sets the products amount and total sum of the order entity.
-	@throws Exception in case of any error
-	*/
+	 * This method is used to initialize the Review Order screen. It sets the cart
+	 * variable to the current cart, and checks if it's a first purchase. It also
+	 * builds the graphical side of the order, initializes the text fields, checks
+	 * and applies discounts if they exist, and checks if it's an OL/EK order (for
+	 * delivery). It also sets the products amount and total sum of the order
+	 * entity.
+	 * 
+	 * @throws Exception in case of any error
+	 */
 	public void initialize() {
 		try {
- 
+
 			/*
 			 * TODO: 2. check if item is under minimum 3. Cancel order button
 			 */
-			isDelivery=OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery");
-			OrderController.isFirstPurchaseDiscountApplied=false;
+			isDelivery = OrderController.getCurrentOrder().getSupplyMethod().equals("Delivery");
+			OrderController.isFirstPurchaseDiscountApplied = false;
 			// set current cart (replace with order entity?)
 			cart = OrderController.getCart();
 			firstPurchase = false;
@@ -140,7 +146,7 @@ public class ReviewOrderController implements IScreen {
 			// build graphical side
 			buildReviewOrder();
 
-			// initialize fields 
+			// initialize fields
 			setTextFields();
 
 			// apply discounts if exists
@@ -277,7 +283,7 @@ public class ReviewOrderController implements IScreen {
 	 * 
 	 * @throws InterruptedException
 	 */
-	private void reviewProcessManager() throws Exception {  
+	private void reviewProcessManager() throws Exception {
 		int orderId = -1;
 		String successMsg = "Yayy!\n";
 		MachineEntity machine = OrderController.getCurrentMachine(); // by default the same machine
@@ -587,17 +593,17 @@ public class ReviewOrderController implements IScreen {
 		sum.getStyleClass().add("Label-list");
 		GridPane.setHalignment(sum, HPos.LEFT);
 		GridPane.setRowSpan(imageView, 3);
-		
+
 		// price after discount
 		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
-			double priceAfterDis=item.getPrice();
-			if(firstPurchase)
-				priceAfterDis*=0.8;
-			if(!isDelivery) {
+			double priceAfterDis = item.getPrice();
+			if (firstPurchase)
+				priceAfterDis *= 0.8;
+			if (!isDelivery) {
 				priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			}
-				
+
 			priceAfterDiscount.setText(String.format("%.2f₪", priceAfterDis));
 			priceAfterDiscount.setPrefSize(262, 18);
 			priceAfterDiscount.getStyleClass().add("Label-list-red");
@@ -610,7 +616,7 @@ public class ReviewOrderController implements IScreen {
 			}
 			gridpane.add(price, 1, 1);
 
-			if (OrderController.isOnePlusOneSaleExist() && !isDelivery ) {
+			if (OrderController.isOnePlusOneSaleExist() && !isDelivery) {
 				double quantityToGiveFree = Math.floor((double) cart.get(item) / 2.0);
 				tempSum = quantityToGiveFree * item.getPrice();
 				if (cart.get(item) % 2 == 1)
@@ -621,8 +627,8 @@ public class ReviewOrderController implements IScreen {
 			tempSum = (OrderController.isPercentageSaleExit() && !isDelivery)
 					? OrderController.getItemPriceAfterDiscounts((double) tempSum)
 					: tempSum;
-			if(firstPurchase)
-				tempSum*=0.8;
+			if (firstPurchase)
+				tempSum *= 0.8;
 
 			// set total discounts for labels
 			totalDiscounts += totalDiscountForRowInNIS - tempSum;

@@ -212,19 +212,22 @@ public class HomePageController implements IScreen {
 					setBtn(topBtn, "Approve Users", "View, Manage and Approve users", ScreensNamesEnum.UsersManagement);
 					setBtn(bottomBtn, "Supply Management", "Manage the available supply",
 							ScreensNamesEnum.SupplyManagement);
+					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
 				}
 				setBtn(middleBtn, "View Reports", "View the current monthly reports", ScreensNamesEnum.ReportSelection);
-				if (currentUser.getRole_type() == RolesEnum.regionManager)
-					setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
-				image = new Image(getClass().getResourceAsStream("/styles/images/manager.png"));
 				checkEmployeeMemberStatus(currentUser, currentRole);
 			} else {
 				// is on 'EK'
-				if (!checkEmployeeMemberStatus(currentUser, currentRole))
+				if (!checkEmployeeMemberStatus(currentUser, currentRole)) {
 					PopupSetter.createPopup(PopupTypeEnum.Warning,
 							"You have nothing to see here\nIf you want to order please register in customer service\n"
 									+ "Or login in 'OL' configuration");
+				}
+				else {
+					displayMemberMenu(currentRole);
+				}
 			}
+			image = new Image(getClass().getResourceAsStream("/styles/images/manager.png"));
 			break;
 
 		case customerServiceWorker:
@@ -342,23 +345,26 @@ public class HomePageController implements IScreen {
 	 */
 	private boolean checkEmployeeMemberStatus(UserEntity currentUser, RolesEnum currentRole) {
 		if (!CommonFunctions.isNullOrEmpty(currentUser.getCc_num())) {
-			memberEmployeeGridBox.setVisible(true);
+			if (AppConfig.SYSTEM_CONFIGURATION == "OL") {
+				memberEmployeeGridBox.setVisible(true);
 
-			employeeMenuBtn.setTooltip(new TooltipSetter("Display the employee menu").getTooltip());
-			memberMenuBtn.setTooltip(new TooltipSetter("Display the member menu").getTooltip());
+				employeeMenuBtn.setTooltip(new TooltipSetter("Display the employee menu").getTooltip());
+				memberMenuBtn.setTooltip(new TooltipSetter("Display the member menu").getTooltip());
 
-			employeeMenuBtn.setDisable(true);
-			memberMenuBtn.setDisable(false);
+				employeeMenuBtn.setDisable(true);
+				memberMenuBtn.setDisable(false);
 
-			// member action setter
-			memberMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					memberMenuBtn.setDisable(true);
-					employeeMenuBtn.setDisable(false);
-					displayMemberMenu(currentRole);
-				}
-			});
+				// member action setter
+				memberMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						memberMenuBtn.setDisable(true);
+						employeeMenuBtn.setDisable(false);
+						toggleBtnsVisible(new Button[] {topBtn, bottomBtn, middleBtn }, false);
+						displayMemberMenu(currentRole);
+					}
+				});
+			}
 
 			// employee action setter
 			employeeMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -366,6 +372,7 @@ public class HomePageController implements IScreen {
 				public void handle(ActionEvent event) {
 					memberMenuBtn.setDisable(false);
 					employeeMenuBtn.setDisable(true);
+					toggleBtnsVisible(new Button[] {topBtn, bottomBtn, middleBtn }, false);
 					displayUserMenuByRoleType(currentRole);
 				}
 			});
@@ -384,14 +391,12 @@ public class HomePageController implements IScreen {
 		setBtn(topBtn, "Create New Order", "View the catalog and create a new order", ScreensNamesEnum.ViewCatalog);
 
 		if (AppConfig.SYSTEM_CONFIGURATION.equals("EK"))
-			setBtn(topBtn, "Collect An Order", "Collect any orders that are ready",
+			setBtn(middleBtn, "Collect An Order", "Collect any orders that are ready",
 					ScreensNamesEnum.ConfirmOnlineOrder); // need
 		else if (AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
 			setBtn(middleBtn, "Confirm delivery", "Confirm recived delivery", ScreensNamesEnum.ConfirmOnlineOrder);
 		
 		setBtn(mailBtn, "", "See messages", ScreensNamesEnum.PersonalMessages);
-		
-
 		image = new Image(getClass().getResourceAsStream("/styles/images/vending-machineNOBG.png"));
 		ItemsController.getInstance().requestItemsFromServer();
 		OrderController.getActiveSalesFromDB();

@@ -1,8 +1,10 @@
 package controllerGui;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -13,6 +15,8 @@ import enums.RolesEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
 import interfaces.IScreen;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,15 +24,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
 import utils.PopupSetter;
+
 /**
- * Login GUI controller, implements Screen interface
- * Handle the login boundary, validation, process and navigation
+ * Login GUI controller, implements Screen interface Handle the login boundary,
+ * validation, process and navigation
+ * 
  * @author Lidor
  *
  */
@@ -52,15 +59,53 @@ public class LoginController implements IScreen {
 	private TextField usernameTxtField;
 
 	@FXML
+	private ComboBox<String> ektUserComboBox;
+
+	@FXML
 	private Button EKTLoginBtn;
+
+	private HashMap<String, String> allUsers = new HashMap<>();
 
 	private static boolean isEKTpressed = false;
 
 	public void initialize() {
-		
+		if(AppConfig.SYSTEM_CONFIGURATION.equals("OL"))
+		{
+			EKTLoginBtn.setVisible(false);
+			ektUserComboBox.setVisible(false);
+		}
+		else
+			setUpEKTUsers();
 	}
 
-	public LoginController() { 
+	/**
+	 * Get all users from server and initialize the combo-box with users to select
+	 * one for EKT simulation
+	 */
+	private void setUpEKTUsers() {
+		EKTLoginBtn.setDisable(true);
+		ObservableList<String> usernames = FXCollections.observableArrayList();
+
+		allUsers = DataStore.getUsers();
+		for (String username : allUsers.keySet())
+			usernames.add(username);
+		ektUserComboBox.setItems(usernames);
+
+		ektUserComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			setUser(new String[] { ektUserComboBox.getSelectionModel().getSelectedItem(),
+					allUsers.get(ektUserComboBox.getSelectionModel().getSelectedItem()) });
+			EKTLoginBtn.setDisable(false);
+		});
+	}
+	/**
+	 * Return the current selected user from CB
+	 * @return
+	 */
+	public static String[] getUser() {
+		return new String[] { username, password };
+	}
+	
+	public LoginController() {
 		chat = HostClientController.getChat(); // one instance
 	}
 
@@ -106,7 +151,7 @@ public class LoginController implements IScreen {
 		chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword));
 
 		// wait for answer
-		while (isValidDetails == null) { 
+		while (isValidDetails == null) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -115,7 +160,7 @@ public class LoginController implements IScreen {
 		}
 
 		if (isValidDetails) {
-			if (!isServiceEnable) 
+			if (!isServiceEnable)
 				return true; // Go to next screen (controller creates the screen)
 		} else
 			return false;
@@ -194,7 +239,7 @@ public class LoginController implements IScreen {
 			return;
 		}
 
-		if (user.isLogged_in()) { 
+		if (user.isLogged_in()) {
 			isValidDetails = false;
 			returnedMsg = "User is already logged in";
 			return;
@@ -206,7 +251,7 @@ public class LoginController implements IScreen {
 			returnedMsg = "User is not approved yet";
 			return;
 		}
-	
+
 		// this condition needs to be checked just if the user tried to connect via EKT
 		if (isEKTpressed && !isUserAuthorizedToUseEKT(user)) {
 			isValidDetails = false;

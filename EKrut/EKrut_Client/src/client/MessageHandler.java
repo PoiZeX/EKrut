@@ -1,6 +1,7 @@
 package client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Store.DataStore;
 import Store.NavigationStoreController;
@@ -63,6 +64,9 @@ public class MessageHandler {
 			break;
 		case InitMachines:
 			DataStore.recieveMachines((ArrayList<MachineEntity>) obj);
+			break;
+		case InitUsers:
+			DataStore.recieveUsers((HashMap<String,String>) obj);
 			break;
 //--------------------------------USERS--------------------------------
 		case ReceiveUserFromServerDB:

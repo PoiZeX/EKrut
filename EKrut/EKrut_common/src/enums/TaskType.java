@@ -17,7 +17,7 @@ public enum TaskType {
 	// Common Data Initialization //
 	InitRegions,
 	InitMachines,
-	   
+	InitUsers,
 	//-------------------------------------Users
 	// Requests From Server //
 	RequestUsersApproval,

@@ -32,7 +32,7 @@ public class EKTPopupController extends LoginController {
 	protected static Timer timerTimeLimit;
 
 	// define username and password to login with
-	private String[] usernamePasswordStub = new String[] { "mbrN", "123456" }; // mbr + [N/S/U]
+	private String[] usernamePassword; //= new String[] { "mbrN", "123456" }; // mbr + [N/S/U]
 
 	/**
 	 * Initialize screen
@@ -40,6 +40,8 @@ public class EKTPopupController extends LoginController {
 	@Override
 	public void initialize() {
 		headlineLabel.setText("Waiting for EKT connection");
+		LoginController s = (LoginController) NavigationStoreController.getInstance().getController();
+		usernamePassword = s.getUser();
 		timerSuccess = new Timer();
 		timerTimeLimit = new Timer();
 		setBackgroundTask();
@@ -51,13 +53,16 @@ public class EKTPopupController extends LoginController {
 	 * information (works like NFC)
 	 */
 	private void setBackgroundTask() {
+		
+		
 		timerSuccess.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				Platform.runLater(() -> {
 					// simulate: after <APPCONFIG> seconds:
-
-					if (!loginProccess(usernamePasswordStub))
+				
+					
+					if (!loginProccess(usernamePassword))
 						cancelOperation();
 					else {
 						timerTimeLimit.cancel(); // time limit is irrelevant now

@@ -1,5 +1,6 @@
 package controllerGui;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
@@ -76,6 +77,7 @@ public class HostClientController implements IScreen {
 		chat = new ClientController(host, Integer.parseInt(port));
 		if (chat.acceptObj(new Message(TaskType.ClientConnect, null))) // send server that client connected
 		{
+			DataStore.initUsers();
 			// Go to next screen (controller creates the screen)
 			NavigationStoreController.getInstance().setCurrentScreen(ScreensNamesEnum.Login);
 		}
