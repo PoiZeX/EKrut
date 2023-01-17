@@ -26,7 +26,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
 import utils.PopupSetter;
-
+/**
+ * Login GUI controller, implements Screen interface
+ * Handle the login boundary, validation, process and navigation
+ * @author Lidor
+ *
+ */
 public class LoginController implements IScreen {
 
 	protected static ClientController chat;

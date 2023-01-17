@@ -5,7 +5,10 @@ import Store.NavigationStoreController;
 import enums.PopupTypeEnum;
 import interfaces.ChatIF;
 import utils.PopupSetter;
-
+/**
+ * Class that implements the ChatIF ocsf interface, handles the connection with server
+ *
+ */
 public class ClientController implements ChatIF {
 
 	public static int DEFAULT_PORT = 5555; // Extract this and other const do other class

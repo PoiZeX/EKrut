@@ -26,7 +26,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import utils.PopupSetter;
 import utils.TooltipSetter;
-
+/**
+ * create new sale GUI controller, , implements Screen interface
+ * @author Lidor
+ *
+ */
 public class CreateNewSaleController implements IScreen  {
 
     @FXML

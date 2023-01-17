@@ -15,6 +15,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * Personal messages area GUI controller, implements Screen interface
+ * Getting and showing user's messages from all times. SMS & Mail also (as simulation)
+ * @author Lidor
+ *
+ */
 public class PersonalMessagesController  implements IScreen {
 	@FXML
 	private TableView<PersonalMessageEntity> messageTable;
@@ -85,6 +91,10 @@ public class PersonalMessagesController  implements IScreen {
 		msgsList.addAll(obj);
 	}
 	
+	/**
+	 * Return the message list
+	 * @return
+	 */
 	public static ObservableList<PersonalMessageEntity> getMsgList() {
 		return msgsList;
 	}

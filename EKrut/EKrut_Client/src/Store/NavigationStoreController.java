@@ -229,17 +229,6 @@ public class NavigationStoreController {
 		return se;
 	}
 
-//	/**
-//	 * Set all stages into HashMap, using 'setSingleStage'
-//	 */
-//	private void setAllScenes() {
-//		for (ScreensNames screenName : ScreensNames.values()) {
-//			Scene scene = createSingleScene(screenName);
-//			if (scene != null)
-//				screenScenes.put(screenName, scene);
-//		}
-//	}
-
 	/**
 	 * Creates one scene and attach to the primary stage (to save in dictionary)
 	 * 

@@ -16,7 +16,10 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 import utils.ScheduledTasksController;
-
+/**
+ * Handles the order DB queries
+ *
+ */
 public class OrderDBController {
 	private static Connection con = MySqlClass.getConnection();
 

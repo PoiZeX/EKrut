@@ -22,7 +22,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-
+/**
+ * Registration GUI controller, implements Screen interface
+ * Customer service worker use this screen to get user information and sign in him
+ * @author Lidor
+ *
+ */
 public class RegistrationFormController implements IScreen {
 	private ArrayList<TextField> dataArray;
 

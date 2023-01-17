@@ -12,6 +12,10 @@ import javafx.scene.control.TextArea;
  * @since YYYY-MM-DD
 */
 
+/**
+ * Pipes the stream for default console to GUI Console
+ *
+ */
 public class ConsoleStream extends OutputStream {
 	private TextArea textArea;
 	/**

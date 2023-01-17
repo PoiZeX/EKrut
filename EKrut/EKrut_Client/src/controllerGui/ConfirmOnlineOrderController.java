@@ -25,6 +25,10 @@ import utils.AppConfig;
 import utils.PopupSetter;
 import utils.TooltipSetter;
 
+/**
+ * Confirm online order screen, implements Screen interface
+ *
+ */
 public class ConfirmOnlineOrderController implements IScreen {
 
 	@FXML

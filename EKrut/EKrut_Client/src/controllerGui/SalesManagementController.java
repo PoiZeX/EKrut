@@ -31,6 +31,12 @@ import javafx.util.Callback;
 import utils.PopupSetter;
 import utils.TooltipSetter;
 
+/**
+ * Sales Management GUI controller, implements Screen interface
+ * creates new sale pattern 
+ * @author Lidor
+ *
+ */
 public class SalesManagementController  implements IScreen {
 
 

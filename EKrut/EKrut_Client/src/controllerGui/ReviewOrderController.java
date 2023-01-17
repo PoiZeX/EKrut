@@ -43,7 +43,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utils.PopupSetter;
 import utils.TooltipSetter;
-
+/**
+ * Review Order GUI controller, implements Screen interface
+ * Shows the user's order summary, includes first time purchase discounts
+ * and navigates to payment.
+ * Check also validation for shipping (if needed)
+ * @author Lidor
+ *
+ */
 public class ReviewOrderController implements IScreen {
 	private static ClientController chat = HostClientController.getChat();
 

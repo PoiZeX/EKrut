@@ -13,7 +13,7 @@ import utils.AppConfig;
 
 /**
  * The class saves and handles the data needs to be stored for whole process
- * @author דוד
+ * @author Lidor
  *
  */
 public class DataStore {

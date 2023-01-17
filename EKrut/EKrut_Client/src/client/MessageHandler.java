@@ -35,10 +35,14 @@ import entity.SupplyReportEntity;
 import entity.UserEntity;
 import enums.TaskType;
 
+/**
+ * Class handles the navigation of messages from and to server
+ *
+ */
 public class MessageHandler {
 
 	/**
-	 * Handle the messages from server and navigates them to right methods
+	 * Handle the navigations of messages got from server
 	 * 
 	 * @param thisClient
 	 * @param msg

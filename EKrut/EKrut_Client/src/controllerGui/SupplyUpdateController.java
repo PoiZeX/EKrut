@@ -1,11 +1,5 @@
 package controllerGui;
-/**
- * The SupplyUpdateController class is a JavaFX controller for a GUI used to update the supply of machines. 
- * It uses various JavaFX components such as ComboBox, TableView, and Labels to display information 
- * about the machines and the items in them. The class also communicates with a server using the 
- * ClientController class for retrieving data about the machines and updating the supply of items.
- *
- */
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -19,6 +13,7 @@ import enums.PopupTypeEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
 import interfaces.ICmbANDTableSetUp;
+import interfaces.IScreen;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +33,17 @@ import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import utils.PopupSetter;
 
-public class SupplyUpdateController  implements ICmbANDTableSetUp {
+/**
+ * Order report GUI controller, implements Screen interface
+ * Getting the report and showing it to user 
+ *
+ */
+/**
+ * Supply Update implements Screen interface for a GUI used to update the supply of machines. 
+ * display information about the machines and the items in them. 
+ * @author Lidor
+ */
+public class SupplyUpdateController implements ICmbANDTableSetUp, IScreen {
 
 	@FXML
 	private TableColumn<ItemInMachineEntity, Integer> currentAmountCol;

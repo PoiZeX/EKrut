@@ -12,6 +12,11 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+*
+* Contains login DB logic, separate from UsersManagement DB
+*
+*/
 public class LoginDBController {
 
 	private static String username, password;

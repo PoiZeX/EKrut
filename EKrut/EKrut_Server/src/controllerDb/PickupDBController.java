@@ -10,11 +10,14 @@ import enums.TaskType;
 import entity.PickupEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-
+/**
+ * Pickup DB controller handles all Reports queries
+ * @author Lidor
+ *
+ */
 public class PickupDBController {
 	private static Connection con = MySqlClass.getConnection();
 	public PickupDBController() {
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * update pickup status to 'done'

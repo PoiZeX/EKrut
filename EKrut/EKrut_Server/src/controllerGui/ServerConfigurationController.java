@@ -34,7 +34,13 @@ import server.ServerUI;
 import common.CommonFunctions;
 import controllerDb.UsersSimulationDBController;
 import entity.ConnectedClientEntity;
-
+/**
+ * The main and only GUI for server
+ * Create a connection for server IP, PORT
+ * Create a MySQL connection
+ * Configure client list
+ *
+ */
 public class ServerConfigurationController {
 
 	@FXML

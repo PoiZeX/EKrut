@@ -12,7 +12,11 @@ import enums.TaskType;
 import entity.DeliveryEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-
+/**
+*
+* Contains delivery DB logic
+*
+*/
 public class DeliveryManagementDBController {
 	private static Connection con = MySqlClass.getConnection();
 	/**update estimates delivery time, delivery status and customer status in DB*/

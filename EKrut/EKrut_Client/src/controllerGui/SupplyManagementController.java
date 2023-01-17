@@ -13,6 +13,7 @@ import enums.PopupTypeEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
 import interfaces.ICmbANDTableSetUp;
+import interfaces.IScreen;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,7 +36,13 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import utils.PopupSetter;
 
-public class SupplyManagementController implements ICmbANDTableSetUp {
+/**
+ * Supply Management GUI controller, implements Screen interface and ICmbANDTableSetUp
+ * Getting and changing supply information. Can open calls for re-supply
+ * @author Lidor
+ *
+ */
+public class SupplyManagementController implements ICmbANDTableSetUp, IScreen {
 	@FXML
 	private TableColumn<ItemInMachineEntity, ItemInMachineEntity.Call_Status> callStatusCol1;
 

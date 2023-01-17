@@ -14,6 +14,11 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+*
+* Contains Personal messages DB logic
+*
+*/
 public class PersonalMessagesDBController {
 	private static Connection con = MySqlClass.getConnection();
 	 

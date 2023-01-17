@@ -18,7 +18,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import utils.AppConfig;
 import utils.PopupSetter;
-
+/**
+ * Host Client GUI controller, implements Screen interface
+ * Handler for first screen of client-server connection
+ * @author Lidor
+ *
+ */
 public class HostClientController implements IScreen {
 
 	@FXML

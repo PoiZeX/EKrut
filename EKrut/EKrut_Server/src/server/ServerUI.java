@@ -17,6 +17,10 @@ import common.Message;
 import enums.TaskType;
 
 
+/**
+ * The start of server application  and define the button's actions
+ *
+ */
 public class ServerUI extends Application {
 	public static final int DEFAULT_PORT = 5555;
 

@@ -9,7 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+/**
+ * Popup GUI controller, implements Screen interface
+ * Controls the popup text, image and buttons according to parameters; 
+ * Generic controller for most popup messages from server
+ * @author Lidor
+ *
+ */
 public class PopupController  implements IScreen {
 
 	@FXML

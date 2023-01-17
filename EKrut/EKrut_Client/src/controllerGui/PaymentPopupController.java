@@ -7,7 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+/**
+ * Payment GUI controller, implements Screen interface
+ * Simulate the external popup. In future it will replaced with real one
+ * @author Lidor
+ *
+ */
 public class PaymentPopupController  implements IScreen {
 
 	@FXML

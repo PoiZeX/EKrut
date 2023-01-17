@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import enums.RolesEnum;
 import mysql.MySqlClass;
+/**
+ * Specific DB controller for import users (simulation)
+ *
+ */
 public class UsersSimulationDBController {
 	private static Connection con = MySqlClass.getConnection();
 	/**

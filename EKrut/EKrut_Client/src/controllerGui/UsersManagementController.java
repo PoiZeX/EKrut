@@ -28,6 +28,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import utils.PopupSetter;
 
+/**
+ * Users management GUI controller, implements Screen interface
+ * Can see all unapproved from users from customer service, and can approve them
+ * @author Lidor
+ *
+ */
 public class UsersManagementController  implements IScreen {
 
 	@FXML

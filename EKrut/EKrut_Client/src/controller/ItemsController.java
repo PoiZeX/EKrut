@@ -14,29 +14,47 @@ import enums.TaskType;
 import javafx.scene.image.Image;
 import utils.AppConfig;
 
+/**
+ * Controller for logic handler of items without GUI
+ */
 public class ItemsController {
 
 	public static ArrayList<ItemEntity> allItems = new ArrayList<>();
 	private static ClientController chat = HostClientController.getChat(); // define the chat for the controller
-	private static ItemsController instance=null;
+	private static ItemsController instance = null;
+
+	/**
+	 * Singleton implementation
+	 * 
+	 * @return
+	 */
 	public static ItemsController getInstance() {
-		if (instance==null)
-			instance= new ItemsController();
+		if (instance == null)
+			instance = new ItemsController();
 		return instance;
 	}
-	/* request the DB to load the items */
+
+	/**
+	 * request the DB to load the items
+	 */
 	public void requestItemsFromServer() {
 		chat.acceptObj(new Message(TaskType.RequestItemsFromServer, null));
 	}
 
-	/* add the item to array list */
+	/**
+	 * add the item to array list
+	 */
 	public void getItemsFromServer(ArrayList<ItemEntity> items) {
 		for (ItemEntity item : items) {
 			item.setImg_relative_path(AppConfig.PRODUCTS_PATH_CLIENT);
-			 convertImage(item);
+			convertImage(item);
 			allItems.add(item);
 		}
 	}
+
+	/**
+	* Convert image from bytes to image
+	*/
 	private void convertImage(ItemEntity item) {
 		InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
 		Image fileImg = new Image(fis);

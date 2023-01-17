@@ -11,7 +11,6 @@ import javafx.animation.PauseTransition;
  * The class handles the scheduled tasks which needs to be executed
  * automatically
  * 
- *
  */
 public class ScheduledTasksController {
 

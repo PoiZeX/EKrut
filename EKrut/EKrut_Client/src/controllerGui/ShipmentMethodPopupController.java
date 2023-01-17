@@ -19,7 +19,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import utils.PopupSetter;
-
+/**
+ * Shipment Method Popup GUI controller, implements Screen interface
+ * getting information about shipping method from user, and according to this showing the items etc
+ * @author Lidor
+ *
+ */
 public class ShipmentMethodPopupController  implements IScreen {
 
 	@FXML

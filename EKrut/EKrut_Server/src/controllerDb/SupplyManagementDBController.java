@@ -3,7 +3,11 @@ package controllerDb;
 import java.util.ArrayList;
 import entity.ItemInMachineEntity;
 import ocsf.server.ConnectionToClient;
-
+/**
+ * DB querys for supply management 
+ * @author Lidor
+ *
+ */
 public class SupplyManagementDBController {
 
 

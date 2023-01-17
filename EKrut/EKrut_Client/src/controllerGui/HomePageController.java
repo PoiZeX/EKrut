@@ -34,7 +34,12 @@ import javafx.scene.layout.VBox;
 import utils.AppConfig;
 import utils.PopupSetter;
 import utils.TooltipSetter;
-
+/**
+ * Home page GUI controller, implements Screen interface
+ * Home page for ALL system users, which changes according to user role
+ * @author Lidor
+ *
+ */
 public class HomePageController implements IScreen {
 	private ArrayList<RolesEnum> rolesViableForMessages;
 	private TooltipSetter tooltip;

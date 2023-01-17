@@ -13,7 +13,11 @@ import entity.MachineEntity;
 import entity.PersonalMessageEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
-
+/**
+ * Generator handles for all report types
+ * @author Lidor
+ *
+ */
 public class ReportsGenerator {
 
 	/**

@@ -22,6 +22,12 @@ import javafx.scene.layout.VBox;
 import utils.PopupSetter;
 import utils.TooltipSetter;
 
+/**
+ * Order report GUI controller, implements Screen interface
+ * Getting the report and showing it to user 
+ * @author Lidor
+ *
+ */
 public class OrdersReportController  implements IScreen {
 
 	@FXML

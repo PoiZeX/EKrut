@@ -31,7 +31,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import utils.PopupSetter;
 import utils.TooltipSetter;
-
+/**
+ * Supply report GUI controller, implements Screen interface
+ * Getting the report and showing it to user 
+ * @author Lidor
+ *
+ */
 public class SupplyReportController implements IScreen {
 
 	@FXML

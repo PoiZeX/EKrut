@@ -14,6 +14,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import utils.AppConfig;
 
+/**
+ * EKT popup controller, implements Screen interface
+ * Controls the quick login for members only
+ * @author Lidor
+ *
+ */
 public class EKTPopupController extends LoginController {
 
 	@FXML

@@ -15,6 +15,11 @@ import entity.SupplyReportEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * Reports DB controller handles all Reports queries
+ * @author Lidor
+ *
+ */
 public class ReportsDBController {
 	private static String reportType, month, year, region;
 	private static int machineID;

@@ -14,6 +14,11 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+*
+* Contains UsersManagement DB logic, separate from login DB
+*
+*/
 public class UsersManagementDBController {
 	/**
 	 * This method get all the users from the DB that haven't been approved yet, and

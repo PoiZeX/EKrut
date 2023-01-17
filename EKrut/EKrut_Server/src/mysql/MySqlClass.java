@@ -3,7 +3,10 @@ package mysql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+/**
+ * Handles the MySQL Connection
+ *
+ */
 public class MySqlClass {
 	public static Boolean isConnectionSuccess = null;
 	private static Connection connection;  

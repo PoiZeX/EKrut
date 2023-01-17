@@ -13,11 +13,14 @@ import entity.ItemInMachineEntity;
 import entity.MachineEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
-
+/**
+ *
+ * Contains machine DB logic
+ *
+ */
 public class MachineDBController {
 	private static Connection con = MySqlClass.getConnection();
 	public MachineDBController() {
-		// TODO Auto-generated constructor stub
 	}
 //-------------------------------------------GET
 	/**

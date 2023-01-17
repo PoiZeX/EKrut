@@ -133,7 +133,7 @@ public class ViewCatalogController implements IScreen {
 	public void initialize() {
 		try {
 			helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
-			
+
 			checkRequestType();
 			while (!recievedData)
 				Thread.sleep(100);
@@ -236,11 +236,12 @@ public class ViewCatalogController implements IScreen {
 	 */
 	@FXML
 	void placeOrder(ActionEvent event) {
-	if (OrderController.getCartSize() == 0) 
-		PopupSetter.createPopup(PopupTypeEnum.Error,
-				"You can't place order with no items, \nif you want to proceed please add items to your cart.");
-	else {
-		NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);}
+		if (OrderController.getCartSize() == 0)
+			PopupSetter.createPopup(PopupTypeEnum.Error,
+					"You can't place order with no items, \nif you want to proceed please add items to your cart.");
+		else {
+			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.ReviewOrder);
+		}
 	}
 
 	/**
@@ -269,12 +270,24 @@ public class ViewCatalogController implements IScreen {
 		recievedData = true;
 	}
 
+	/**
+	 * Converting image from bytes to image
+	 * 
+	 * @param item
+	 */
 	private static void convertImage(ItemInMachineEntity item) {
 		InputStream fis = new ByteArrayInputStream(item.getItemImg().mybytearray);
 		Image fileImg = new Image(fis);
 		item.setItemImage(fileImg);
 	}
 
+	/**
+	 * generate catalog manager
+	 * 
+	 * @param itemsList
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	private void generateCatalog(Map<String, ItemInMachineEntity> itemsList)
 			throws InterruptedException, ExecutionException {
 		generateRowConstraints(itemsList);
@@ -461,23 +474,31 @@ public class ViewCatalogController implements IScreen {
 	}
 
 	/**
-		This method creates and returns an EventHandler that handles MouseEvent.
-		When the event is triggered (by clicking a button), it performs several actions:
-		Decrement the value displayed in the amountLabel by 1.
-		Check if the plus button is disabled, if true, it enables it.
-		Check if the amount is now 0, if true, it makes the addToCartBtn visible and clickable and remove the item from the cart.
-		If the amount is not 0, it updates the itemInCartAmountLabel with the new amount and updates the item's quantity in the cart.
-		If the flag is true, it hides the viewCartPane and updates the cart total labels.
-		@param amountLabel a Label that holds the current amount of the item
-		@param plusBtn a button that increases the amount of the item
-		@param itemInCartPlusBtn a button that increases the amount of the item in the cart
-		@param addToCartBtn a button that adds the item to the cart
-		@param newItemInCart a GridPane that holds the item information in the cart
-		@param item an ItemInMachineEntity object that represents the item
-		@param itemInCartAmountLabel a Label that holds the current amount of the item in the cart
-		@param flag a boolean value that indicates whether to hide the viewCartPane or not.
-		@return an EventHandler that handles the MouseEvent
-	*/
+	 * This method creates and returns an EventHandler that handles MouseEvent. When
+	 * the event is triggered (by clicking a button), it performs several actions:
+	 * Decrement the value displayed in the amountLabel by 1. Check if the plus
+	 * button is disabled, if true, it enables it. Check if the amount is now 0, if
+	 * true, it makes the addToCartBtn visible and clickable and remove the item
+	 * from the cart. If the amount is not 0, it updates the itemInCartAmountLabel
+	 * with the new amount and updates the item's quantity in the cart. If the flag
+	 * is true, it hides the viewCartPane and updates the cart total labels.
+	 * 
+	 * @param amountLabel           a Label that holds the current amount of the
+	 *                              item
+	 * @param plusBtn               a button that increases the amount of the item
+	 * @param itemInCartPlusBtn     a button that increases the amount of the item
+	 *                              in the cart
+	 * @param addToCartBtn          a button that adds the item to the cart
+	 * @param newItemInCart         a GridPane that holds the item information in
+	 *                              the cart
+	 * @param item                  an ItemInMachineEntity object that represents
+	 *                              the item
+	 * @param itemInCartAmountLabel a Label that holds the current amount of the
+	 *                              item in the cart
+	 * @param flag                  a boolean value that indicates whether to hide
+	 *                              the viewCartPane or not.
+	 * @return an EventHandler that handles the MouseEvent
+	 */
 	private EventHandler<MouseEvent> getMinusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
 			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
 			boolean flag) {
@@ -516,17 +537,25 @@ public class ViewCatalogController implements IScreen {
 	}
 
 	/**
-		This method creates an event handler for the 'plus' button, which increases the amount of an item in the cart by 1.
-		@param amountLabel The label that displays the current amount of the item in the cart
-		@param plusBtn The plus button that the event handler is being created for
-		@param itemInCartPlusBtn The plus button in the cart view of the item
-		@param addToCartBtn The add to cart button of the item
-		@param newItemInCart The GridPane representing the item in the cart view
-		@param item The item that is being added to the cart
-		@param itemInCartAmountLabel The label in the cart view that displays the current amount of the item
-		@param flag A flag indicating whether the cart view should be closed when the button is clicked
-		@return An EventHandler for the plus button that increases the amount of the item in the cart.
-	*/
+	 * This method creates an event handler for the 'plus' button, which increases
+	 * the amount of an item in the cart by 1.
+	 * 
+	 * @param amountLabel           The label that displays the current amount of
+	 *                              the item in the cart
+	 * @param plusBtn               The plus button that the event handler is being
+	 *                              created for
+	 * @param itemInCartPlusBtn     The plus button in the cart view of the item
+	 * @param addToCartBtn          The add to cart button of the item
+	 * @param newItemInCart         The GridPane representing the item in the cart
+	 *                              view
+	 * @param item                  The item that is being added to the cart
+	 * @param itemInCartAmountLabel The label in the cart view that displays the
+	 *                              current amount of the item
+	 * @param flag                  A flag indicating whether the cart view should
+	 *                              be closed when the button is clicked
+	 * @return An EventHandler for the plus button that increases the amount of the
+	 *         item in the cart.
+	 */
 	private EventHandler<MouseEvent> getPlusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
 			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
 			boolean flag) {
@@ -574,6 +603,9 @@ public class ViewCatalogController implements IScreen {
 		}
 	}
 
+	/**
+	 * Update the cart labels according to changes
+	 */
 	private void updateCartTotalLabels() {
 		updateCartBubble(OrderController.getCartSize());
 		if (OrderController.getCartSize() == 0) {
@@ -597,10 +629,13 @@ public class ViewCatalogController implements IScreen {
 			}
 		}
 	}
+
 	/**
-		This method is responsible for reordering the items in the cart view gridpane.
-		@param cartViewGridpane the gridpane containing the items in the cart.
-	*/
+	 * This method is responsible for reordering the items in the cart view
+	 * gridpane.
+	 * 
+	 * @param cartViewGridpane the gridpane containing the items in the cart.
+	 */
 	private void reorderCart(GridPane cartViewGridpane) {
 		ObservableList<Node> tempItems = FXCollections.observableArrayList(cartViewGridpane.getChildren());
 		cartViewGridpane.getChildren().clear();
@@ -644,12 +679,16 @@ public class ViewCatalogController implements IScreen {
 			catalogViewGridpane.add(item, (i++) % 4, i % 4 == 0 ? j++ : j);
 		}
 	}
-	/**
 
-	This method creates a single catalog item for the catalog view. It creates a GridPane and sets its size and style. It also creates column and row constraints for the GridPane.
-	An ImageView and a button bar are created and added to the GridPane.
-	@return A GridPane that represents a single catalog item.
-	*/
+	/**
+	 * 
+	 * This method creates a single catalog item for the catalog view. It creates a
+	 * GridPane and sets its size and style. It also creates column and row
+	 * constraints for the GridPane. An ImageView and a button bar are created and
+	 * added to the GridPane.
+	 * 
+	 * @return A GridPane that represents a single catalog item.
+	 */
 	private GridPane createSingleCatalogItem() {
 		// Create a GridPane
 		GridPane itemViewGridpane = new GridPane();
@@ -862,12 +901,16 @@ public class ViewCatalogController implements IScreen {
 
 		return itemViewGridpane;
 	}
+
 	/**
-		Creates a GridPane layout container that represents a single item in the cart.
-		This method sets the layout, dimensions, and styles of the GridPane as well as creates
-		and adds all of the child elements (such as ImageView and Label) to the GridPane.
-		@return gridPane, a GridPane layout container representing a single item in the cart
-	*/
+	 * Creates a GridPane layout container that represents a single item in the
+	 * cart. This method sets the layout, dimensions, and styles of the GridPane as
+	 * well as creates and adds all of the child elements (such as ImageView and
+	 * Label) to the GridPane.
+	 * 
+	 * @return gridPane, a GridPane layout container representing a single item in
+	 *         the cart
+	 */
 	private GridPane createSingleCartItem() {
 		// Create a GridPane layout container
 		GridPane gridPane = new GridPane();
@@ -1028,11 +1071,15 @@ public class ViewCatalogController implements IScreen {
 		gridPane.setPadding(right10);
 		return gridPane;
 	}
+
 	/**
-		This method is used to show the description of the ViewCatalog screen when the 'description' button is pressed.
-		It creates a popup window with the information about the screen, using the CommonFunctions class and the ScreensNamesEnum.
-		@param event the event triggered when the 'description' button is pressed
-	*/
+	 * This method is used to show the description of the ViewCatalog screen when
+	 * the 'description' button is pressed. It creates a popup window with the
+	 * information about the screen, using the CommonFunctions class and the
+	 * ScreensNamesEnum.
+	 * 
+	 * @param event the event triggered when the 'description' button is pressed
+	 */
 	@FXML
 	void showDescription(ActionEvent event) {
 		PopupSetter.createPopup(PopupTypeEnum.Information, ScreensNamesEnum.ViewCatalog.getDescription());

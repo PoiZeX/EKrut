@@ -33,6 +33,12 @@ import javafx.util.Callback;
 import utils.PopupSetter;
 import utils.TooltipSetter;
 
+/**
+ * Delivery Management GUI controller, implements Screen interface
+ * Handler for all Boundary
+ * @author Lidor
+ *
+ */
 public class DeliveryManagementController  implements IScreen {
 
 

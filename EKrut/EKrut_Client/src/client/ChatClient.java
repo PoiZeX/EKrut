@@ -9,6 +9,10 @@ import Store.NavigationStoreController;
 import interfaces.ChatIF;
 import ocsf.client.AbstractClient;
 
+/**
+ * Class that handles the chat of client with server 
+ *
+ */
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
