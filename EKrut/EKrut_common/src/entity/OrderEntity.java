@@ -1,6 +1,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OrderEntity implements Serializable {
 	/**
@@ -15,6 +17,8 @@ public class OrderEntity implements Serializable {
 	private double productsAmount;
 	private String payment_status;
 	private String supplyMethod;
+	private ArrayList<String[]> orderCart;
+	
 
 	/**
 	 * Instantiates a new order entity.
@@ -30,6 +34,7 @@ public class OrderEntity implements Serializable {
 		this.buytime = "";
 		this.productsAmount = -1;
 		this.payment_status = "";
+		this.orderCart = new ArrayList<>();
 	}
 
 	/**
@@ -179,6 +184,24 @@ public class OrderEntity implements Serializable {
 	 */
 	public void setSupplyMethod(String supplyMethod) {
 		this.supplyMethod = supplyMethod;
+	}
+
+	public ArrayList<String[]> getOrderCart() {
+		return orderCart;
+	}
+
+	public void setOrderCart(HashMap<ItemInMachineEntity,Integer> cart) {
+		for (ItemInMachineEntity item : cart.keySet()) {
+			orderCart.add(new String[] {String.valueOf(item.getId()), String.valueOf(cart.get(item))});
+		}
+	}
+	
+	public String getCartString() {
+		String res = "";
+		for (String[] items : orderCart) {
+			res+= String.format("[%s,%s],", items[0],items[1]);
+		}
+		return res.substring(0, res.length()-1);
 	}
 
 }

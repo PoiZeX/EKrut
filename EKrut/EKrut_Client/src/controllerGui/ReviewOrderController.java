@@ -180,6 +180,7 @@ public class ReviewOrderController implements IScreen {
 
 	/**
 	 * Check if there are any sales and handle this case
+	 * 
 	 * @throws Exception
 	 */
 	private void checkAndApplyDiscounts() throws Exception {
@@ -210,6 +211,7 @@ public class ReviewOrderController implements IScreen {
 
 	/**
 	 * check if its the first purchase of member
+	 * 
 	 * @throws Exception
 	 */
 	private void isFirstpurchase() throws Exception {
@@ -316,7 +318,7 @@ public class ReviewOrderController implements IScreen {
 			}
 			DeliveryEntity deliveryEntity = new DeliveryEntity(user.getRegion(), address.toString());
 			orderEntity.setMachine_id(-1);
-
+			orderEntity.setOrderCart(cart);
 			// insert new order
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Integer && (int) data == -1) {
@@ -348,6 +350,7 @@ public class ReviewOrderController implements IScreen {
 			}
 
 			// insert new order
+			orderEntity.setOrderCart(cart);
 			waitOn(new Message(TaskType.NewOrderCreation, orderEntity));
 			if (data instanceof Boolean && !(boolean) data) {
 				// error inserting the order
@@ -380,6 +383,7 @@ public class ReviewOrderController implements IScreen {
 		} else {
 			successMsg += "As a member, the payment will be done on the first of the next month";
 		}
+
 		successfullEndProcess(successMsg);
 
 	}
@@ -387,9 +391,10 @@ public class ReviewOrderController implements IScreen {
 	/**
 	 * Handle the end of the process
 	 * 
-	 * @param successMsg the success message to return 
+	 * @param successMsg the success message to return
 	 */
 	private void successfullEndProcess(String successMsg) {
+
 		PopupSetter.createPopup(PopupTypeEnum.Success, successMsg);
 
 		CommonFunctions.SleepFor(200, () -> {
@@ -601,7 +606,7 @@ public class ReviewOrderController implements IScreen {
 		if ((OrderController.isActiveSale() || firstPurchase) && isMember) {
 			// set item price
 			double priceAfterDis = item.getPrice();
-			
+
 			if (!isDelivery) {
 				priceAfterDis = OrderController.getItemPriceAfterDiscounts(item.getPrice());
 			}

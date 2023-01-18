@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import common.Message;
@@ -64,9 +65,9 @@ public class OrderDBController {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			Date date = new Date();
 			PreparedStatement ps = con.prepareStatement("INSERT INTO orders "
-					+ "(machine_id, total_sum, user_id, buytime, products_amount, payment_status, supply_method) VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
-
+					+ "(machine_id, total_sum, user_id, buytime, products_amount, payment_status, supply_method, cart_description) VALUES "
+					+ "(?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+			
 			ps.setInt(1, entity.getMachine_id());
 			ps.setDouble(2, entity.getTotal_sum());
 			ps.setInt(3, entity.getUser_id());
@@ -74,6 +75,7 @@ public class OrderDBController {
 			ps.setDouble(5, entity.getProductsAmount());
 			ps.setString(6, entity.getPaymentStatus());
 			ps.setString(7, entity.getSupplyMethod());
+			ps.setString(8, entity.getCartString()); //Arrays.toString(list.toArray())
 			ps.executeUpdate();
 
 			ResultSet rs = ps.getGeneratedKeys();
