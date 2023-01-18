@@ -188,7 +188,7 @@ public class SupplyReportController implements IScreen {
 	 * 
 	 * @param machineID
 	 */
-	public void initDetails(int machineID) {
+	private void initDetails(int machineID) {
 		ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
 
 		if (pieChart != null)
