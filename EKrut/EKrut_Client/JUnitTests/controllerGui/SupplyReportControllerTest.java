@@ -10,18 +10,23 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import client.ClientController;
 import common.Message;
 import entity.SupplyReportEntity;
 import enums.TaskType;
 
+@RunWith(MockitoJUnitRunner.class)
 class SupplyReportControllerTest {
-	private Field actualResult;
-	private ClientController chat;
-	private SupplyReportController mockedSupplyController;
 	private Method initDetailsMethod;
+	private Field actualResult;
+	private SupplyReportController supplyController;
+	private ClientController chat;
 
 //	private boolean isSameLength(String compare, String to) {
 //		if (compare.length() != to.length())
@@ -51,21 +56,22 @@ class SupplyReportControllerTest {
 		actualResult.setAccessible(true);
 		initDetailsMethod = SupplyReportController.class.getDeclaredMethod("initDetails", int.class);
 		initDetailsMethod.setAccessible(true);
+
+		supplyController = new SupplyReportController();
 		chat = mock(ClientController.class);
-		mockedSupplyController = new SupplyReportController(chat);
+		supplyController.setChatService(chat);
+
 	}
 
 	@Test
 	void testSuccessfulSupplyReport() throws Exception {
-		initDetailsMethod.invoke(mockedSupplyController, 1);
-		when(chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "supply", "North", "12", "2022", "1" })))
-				.thenReturn(true);
-		
+		when(chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "supply", "North", "12", "2022", "1" }))).thenReturn(true);
+		supplyController.getSupplyReportFromDB(1);
 	}
 
 	@Test
 	void testBadSupplyReport() throws Exception {
-		
+
 	}
 
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
