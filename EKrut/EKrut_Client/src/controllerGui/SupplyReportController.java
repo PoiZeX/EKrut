@@ -93,13 +93,6 @@ public class SupplyReportController implements IScreen {
 	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
 
-	public SupplyReportController(ClientController chatService) {
-		chat = chatService;
-	}
-
-	public SupplyReportController() {
-		chat = HostClientController.getChat();
-	}
 
 	/**
 	 * 
@@ -141,6 +134,10 @@ public class SupplyReportController implements IScreen {
 		});
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
+	}
+	
+	public void setChatService(ClientController chatService) {
+		chat = chatService;
 	}
 
 	/**
