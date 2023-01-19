@@ -410,6 +410,8 @@ public class ViewCatalogController implements IScreen {
 						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
 					// Update total amount and price
 					updateCartTotalLabels();
+					amountLabel.setText("0");
+					minusBtn.setDisable(true);
 //					addToCartBtn.setOpacity(1);
 //					addToCartBtn.setMouseTransparent(false);
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
@@ -581,6 +583,7 @@ public class ViewCatalogController implements IScreen {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 					updateCartTotalLabels();
+					OrderController.addItemToCart(item, amount);
 				}
 				if (amount == item.getCurrentAmount()) {
 					plusBtn.setDisable(true);
@@ -1016,7 +1019,7 @@ public class ViewCatalogController implements IScreen {
 		itemInCartNameLabel.setMinHeight(-1.0);
 		itemInCartNameLabel.setMinWidth(-1.0);
 		itemInCartNameLabel.setPrefHeight(50.0);
-		itemInCartNameLabel.setPrefWidth(65.0);
+		itemInCartNameLabel.setPrefWidth(60.0);
 		itemInCartNameLabel.getStyleClass().add("Label-list");
 		itemInCartNameLabel.setText("Label");
 
@@ -1030,7 +1033,7 @@ public class ViewCatalogController implements IScreen {
 		minusAmountInCartBtn.setMinWidth(-1.0);
 		minusAmountInCartBtn.setMnemonicParsing(false);
 		minusAmountInCartBtn.setPrefHeight(25.0);
-		minusAmountInCartBtn.setPrefWidth(40.0);
+		minusAmountInCartBtn.setPrefWidth(25.0);
 		minusAmountInCartBtn.getStyleClass().add("Button-NoBG");
 		minusAmountInCartBtn.setText("");
 
@@ -1048,7 +1051,7 @@ public class ViewCatalogController implements IScreen {
 		Label itemInCartAmountLabel = new Label();
 		itemInCartAmountLabel.setAlignment(Pos.CENTER);
 		itemInCartAmountLabel.setPrefHeight(15.0);
-		itemInCartAmountLabel.setPrefWidth(33.0);
+		itemInCartAmountLabel.setPrefWidth(30.0);
 		itemInCartAmountLabel.setText("0");
 
 		Button plusAmountInCartBtn = new Button();
@@ -1057,7 +1060,7 @@ public class ViewCatalogController implements IScreen {
 		plusAmountInCartBtn.setMinHeight(-1.0);
 		plusAmountInCartBtn.setMinWidth(-1.0);
 		plusAmountInCartBtn.setPrefHeight(25.0);
-		plusAmountInCartBtn.setPrefWidth(40.0);
+		plusAmountInCartBtn.setPrefWidth(25.0);
 
 		ImageView plusAmountInCartBtnGraphic = new ImageView();
 		plusAmountInCartBtnGraphic.setFitHeight(20.0);
@@ -1074,24 +1077,24 @@ public class ViewCatalogController implements IScreen {
 		deleteItemBtn.setMinHeight(-1.0);
 		deleteItemBtn.setMinWidth(-1.0);
 		deleteItemBtn.setPrefHeight(30.0);
-		deleteItemBtn.setPrefWidth(41.0);
+		deleteItemBtn.setPrefWidth(35.0);
+
 
 		ImageView deleteItemBtnGraphic = new ImageView();
 		deleteItemBtnGraphic.setFitHeight(25.0);
-		deleteItemBtnGraphic.setFitWidth(42.0);
-		deleteItemBtnGraphic.setPickOnBounds(true);
+		deleteItemBtnGraphic.setFitWidth(25.0);
+		//deleteItemBtnGraphic.setPickOnBounds(true);
 		deleteItemBtnGraphic.setPreserveRatio(true);
 		Image deleteItemBtnImage = new Image(getClass().getResourceAsStream("/styles/icons/xIcon_noCircle.png"));
 		deleteItemBtnGraphic.setImage(deleteItemBtnImage);
 		deleteItemBtn.setGraphic(deleteItemBtnGraphic);
-
 		gridPane.add(itemInCartImage, 1, 0);
 		gridPane.add(itemInCartNameLabel, 2, 0);
 		gridPane.add(minusAmountInCartBtn, 3, 0);
 		gridPane.add(itemInCartAmountLabel, 4, 0);
 		gridPane.add(plusAmountInCartBtn, 5, 0);
 		gridPane.add(deleteItemBtn, 0, 0);
-
+	
 		GridPane.setHalignment(minusAmountInCartBtn, HPos.CENTER);
 
 		GridPane.setHalignment(itemInCartNameLabel, HPos.LEFT);
