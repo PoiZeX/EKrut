@@ -402,6 +402,7 @@ public class ViewCatalogController implements IScreen {
 			Button deleteItemBtn = (Button) newItemInCart.getChildren().get(5);
 			itemInCartNameLabel.setText(item.getName());
 			itemInCartNameLabel.setWrapText(true);
+			minusBtn.setDisable(true);
 			// Handle delete button
 			deleteItemBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
