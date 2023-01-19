@@ -20,6 +20,7 @@ import controller.OrderController;
 import entity.ItemEntity;
 import entity.ItemInMachineEntity;
 import enums.PopupTypeEnum;
+import enums.RolesEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
 import interfaces.IScreen;
@@ -133,7 +134,8 @@ public class ViewCatalogController implements IScreen {
 	public void initialize() {
 		try {
 			helpBtn.setTooltip((new TooltipSetter("Click for help").getTooltip()));
-
+			isMember = NavigationStoreController.connectedUser.getRole_type() == RolesEnum.member ? true
+					: false;
 			checkRequestType();
 			while (!recievedData)
 				Thread.sleep(100);
