@@ -56,7 +56,7 @@ class LoginControllerTest {
 		// clear fields every test
 		result = "";
 		excepted = "";
-
+		NavigationStoreController.connectedUser = null;  // static so need to be cleared every test (like logout)
 	}
 
 	/**
@@ -309,21 +309,58 @@ class LoginControllerTest {
 		assertEquals(NavigationStoreController.connectedUser, user);
 	}
 
-	
+
+	@Test
+	void loginProccessUserNotExistInFailed() {
+		LoginController.setUser(new String[] { "imnotexisting", "123456" });  // the user 'input'
+		user.setUsername("");  // empty means user were not found
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		boolean booleanResult = loginController.loginProccess(usernamePassword);
+		assertEquals(LoginController.returnedMsg, "Username or Password are incorrect");
+
+		assertFalse(booleanResult);
+		assertEquals(NavigationStoreController.connectedUser, null); 
+	}
+	
+	@Test
+	void loginProccessPasswordIncorrectInFailed() {
+		LoginController.setUser(new String[] { "rmNorth", "not123456" });  // the user 'input'
+		user.setUsername("rmNorth");  // empty means user were not found
+		user.setPassword("123456");  // empty means user were not found
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		// act
+		boolean booleanResult = loginController.loginProccess(usernamePassword);
+		assertEquals(LoginController.returnedMsg, "Username or Password are incorrect");
+		assertFalse(booleanResult);
+		assertEquals(NavigationStoreController.connectedUser, null);
+	}
+	
+	
+	
 	@Test
 	void loginProccessUserLoggedInFailed() {
 		user.setLogged_in(true);
 		
-		// user exist
+		// prepare behavior
 		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
-		//when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
 		LoginController.validUserFromServer(user);
-		//boolean booleanResult = loginController.loginProccess(usernamePassword);
-
+		
+		boolean booleanResult = loginController.loginProccess(usernamePassword);
 		assertEquals(LoginController.returnedMsg, "User is already logged in");
-		//assertTrue(booleanResult);
-		//assertEquals(NavigationStoreController.connectedUser, user);
+		assertFalse(booleanResult);
+		assertEquals(NavigationStoreController.connectedUser, null);
 	}
 
+	
 
 }
