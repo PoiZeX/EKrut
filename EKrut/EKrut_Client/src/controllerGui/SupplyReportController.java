@@ -80,7 +80,7 @@ public class SupplyReportController implements IScreen {
 	@FXML
 	private Label minAmountLbl;
 
-	protected static ClientController chat;
+	protected static ClientController chat = HostClientController.getChat();
 	protected static SupplyReportEntity reportDetails;
 	private SupplyReportEntity currentReport;
 	protected static boolean RecievedData = false;
@@ -106,7 +106,6 @@ public class SupplyReportController implements IScreen {
 	 */
 	@Override
 	public void initialize() {
-
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
 		minAmountLbl.setVisible(false);
@@ -139,6 +138,7 @@ public class SupplyReportController implements IScreen {
 	public void setChatService(ClientController chatService) {
 		chat = chatService;
 	}
+	
 
 	/**
 	 * 
@@ -392,6 +392,7 @@ public class SupplyReportController implements IScreen {
 		}
 		monthStart.setName("Month Start Amount");
 		monthEnd.setName("Month End Amount");
+		supplySBC.setBarGap(0);
 		supplySBC.getData().addAll(monthStart, monthEnd);
 	}
 
