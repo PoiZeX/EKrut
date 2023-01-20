@@ -1,11 +1,13 @@
 package controllerGui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,67 +18,56 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import client.ChatClient;
 import client.ClientController;
 import common.Message;
 import entity.SupplyReportEntity;
 import enums.TaskType;
 
-@RunWith(MockitoJUnitRunner.class)
 class SupplyReportControllerTest {
 	private Method initDetailsMethod;
 	private Field actualResult;
-	private SupplyReportController supplyController;
-	private ClientController chat;
+	private SupplyReportController supplyReportController;
+	private ClientController chatService;
+	private int machineID;
 
-//	private boolean isSameLength(String compare, String to) {
-//		if (compare.length() != to.length())
-//			return false;
-//		return true;
-//	}
-//
-//	private HashMap<String, String[]> makeItemInSupply(String itemID_string, String timesUnderMin_string,
-//			String endStock_string) {
-//		// Compare the lengths of the input strings
-//		if (!isSameLength(itemID_string, timesUnderMin_string) || !isSameLength(timesUnderMin_string, endStock_string))
-//			return null;
-//		// Create a hash map to store the item's details
-//		HashMap<String, String[]> itemsInSupply = new HashMap<>();
-//		String[] itemID_list = itemID_string.split(",");
-//		String[] timesUnderMin_list = timesUnderMin_string.split(",");
-//		String[] endStock_list = endStock_string.split(",");
-//		// Put item deatils into hashmap [id, [under_min, end_stock]]
-//		for (int i = 0; i < itemID_list.length; i++)
-//			itemsInSupply.put(itemID_list[i], new String[] { timesUnderMin_list[i], endStock_list[i] });
-//		return itemsInSupply;
-//	}
+	private boolean compareReports(SupplyReportEntity compareReport, SupplyReportEntity toReport) {
+		ArrayList<Boolean> boolArray = new ArrayList<>();
+		boolArray.add(compareReport.getId() == toReport.getId());
+		boolArray.add(compareReport.getYear() == toReport.getYear());
+		boolArray.add(compareReport.getMonth() == toReport.getMonth());
+		boolArray.add(compareReport.getMachine_id() == toReport.getMachine_id());
+		for (String[] itemSet : compareReport.getReportsList())
+			boolArray.add(toReport.getReportsList().contains(itemSet));
+		if (boolArray.contains(false)) return false;
+		return true;
+	}
 
 	@BeforeEach
 	void setUp() throws Exception {
-		actualResult = SupplyReportController.class.getDeclaredField("currentReport");
-		actualResult.setAccessible(true);
-		initDetailsMethod = SupplyReportController.class.getDeclaredMethod("initDetails", int.class);
-		initDetailsMethod.setAccessible(true);
-
-		supplyController = new SupplyReportController();
-		chat = mock(ClientController.class);
-		supplyController.setChatService(chat);
-
+		supplyReportController = new SupplyReportController();
+		// Handle this differently later, currently you need to run the server
+		chatService = new ClientController("localhost", 5555);
+		supplyReportController.setChatService(chatService);
 	}
 
 	@Test
 	void testSuccessfulSupplyReport() throws Exception {
-		when(chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "supply", "North", "12", "2022", "1" }))).thenReturn(true);
-		supplyController.getSupplyReportFromDB(1);
-	}
 
-	@Test
-	void testBadSupplyReport() throws Exception {
+		SupplyReportController.setReport("2022", "12", "1");
+		SupplyReportEntity actualResult = supplyReportController.getSupplyReportFromDB(1);
+
+		SupplyReportEntity expectedResult = setExpectedResult(63, 1, 7,
+				"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
+				"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+				"10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "12", "2022", "1");
+
+		assertTrue(compareReports(actualResult, expectedResult));
 
 	}
 
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
 			String times_under_min, String end_stock, String month, String year, String region) {
-
 		return new SupplyReportEntity(id, machine_id, min_stock, item_id, times_under_min, end_stock, month, year,
 				region);
 	}

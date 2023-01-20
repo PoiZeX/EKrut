@@ -34,9 +34,9 @@ public class ReportsGenerator {
 		case "clients":
 			generateClientsReport(month, year);
 			break;
-		case "orders":
-			generateOrdersReport(month, year);
-			break;
+//		case "orders":
+//			generateOrdersReport(month, year);
+//			break;
 		case "supply":
 			generateSupplyReportForAllMachines(month, year);
 			break;
