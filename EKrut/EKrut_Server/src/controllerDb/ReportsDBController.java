@@ -45,7 +45,6 @@ public class ReportsDBController {
 			year = details[3];
 			machineID = Integer.parseInt(details[4]);
 			return true;
-
 		}
 		return false;
 	}
@@ -156,7 +155,7 @@ public class ReportsDBController {
 	public static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
 		try {
-			if (con == null)
+			if (con.equals(null))
 				return report;
 			String query = "SELECT * FROM ekrut.supply_report where month = ? AND year = ? AND machine_id = ?";
 
