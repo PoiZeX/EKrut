@@ -24,8 +24,8 @@ class LoginControllerTest {
 	private LoginController loginController;
 	private UserEntity user;
 	private String errorCompare;
-	private Method validateSyntaxMethod, validateUserEntityMethod;
-	private Field errorMsgField, validateUserMessageField;
+	private Method validateSyntaxMethod;
+	private Field errorMsgField, isEKTpressedField;
 	private String[] usernamePassword;
 	private boolean invokeResult; // need to be downcasting
 	private String result, excepted;
@@ -50,13 +50,17 @@ class LoginControllerTest {
 		// syntax validation method
 		validateSyntaxMethod = LoginController.class.getDeclaredMethod("validateUsernamePasswordSyntax");
 		errorMsgField = LoginController.class.getDeclaredField("errorMsg");
+		isEKTpressedField = LoginController.class.getDeclaredField("isEKTpressed");
 		validateSyntaxMethod.setAccessible(true);
 		errorMsgField.setAccessible(true);
+		isEKTpressedField.setAccessible(true);
 		
 		// clear fields every test
 		result = "";
 		excepted = "";
 		NavigationStoreController.connectedUser = null;  // static so need to be cleared every test (like logout)
+		isEKTpressedField.set(loginController, false); // default
+		
 	}
 
 	/**
@@ -79,6 +83,25 @@ class LoginControllerTest {
 		return ((StringBuilder) errorMsgField.get(loginController)).toString();
 	}
 	
+	/**
+	 * helper method to assertEquals for a message and for connected user
+	 * @param expectedMsg the message that set after login validation end
+	 * @param expectedConnectedUser check which user is connected 
+	 */
+	private void loginEndProcessAssertion(String expectedMsg, UserEntity expectedConnectedUser) {
+		// get actual information
+		String actucalMsg = LoginController.returnedMsg;
+		UserEntity actucalConnectedUser = NavigationStoreController.connectedUser;
+		boolean booleanResult = loginController.loginProccess(usernamePassword);
+		
+		assertEquals(actucalMsg, expectedMsg);
+		assertEquals(actucalConnectedUser, expectedConnectedUser);
+		if(expectedMsg.contains("Success"))  // actually its equals, but its better to be safe
+			assertTrue(booleanResult);
+		else
+			assertFalse(booleanResult);
+	}
+
 	
 	// ------------------------------------------
 	// --------------NULL--Empty-----------------
@@ -295,18 +318,20 @@ class LoginControllerTest {
 	// ---------User--Entity--Validation---------
 	// ------------------------------------------
 
-	// need to check this again. Im not sure ------------------
 	@Test
 	void loginProccessSuccess() {
+		//
 		user.setLogged_in(false);
 		user.setNotApproved(false);
+		
+		//
 		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
-		//when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(false);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(false);
 		LoginController.validUserFromServer(user);
-		boolean booleanResult = loginController.loginProccess(usernamePassword);
+		
+		//
 
-		assertTrue(booleanResult);
-		assertEquals(NavigationStoreController.connectedUser, user);
+		loginEndProcessAssertion("Success", user);
 	}
 
 
@@ -319,11 +344,10 @@ class LoginControllerTest {
 		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
 		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
 		LoginController.validUserFromServer(user);
-		boolean booleanResult = loginController.loginProccess(usernamePassword);
-		assertEquals(LoginController.returnedMsg, "Username or Password are incorrect");
+		
+		//
+		loginEndProcessAssertion("Username or Password are incorrect", null);
 
-		assertFalse(booleanResult);
-		assertEquals(NavigationStoreController.connectedUser, null); 
 	}
 	
 	@Test
@@ -333,15 +357,13 @@ class LoginControllerTest {
 		user.setPassword("123456");  // empty means user were not found
 		
 		// prepare behavior
-		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
-		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+//		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+//		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
 		LoginController.validUserFromServer(user);
 		
 		// act
-		boolean booleanResult = loginController.loginProccess(usernamePassword);
-		assertEquals(LoginController.returnedMsg, "Username or Password are incorrect");
-		assertFalse(booleanResult);
-		assertEquals(NavigationStoreController.connectedUser, null);
+		loginEndProcessAssertion("Username or Password are incorrect", null);
+
 	}
 	
 	
@@ -355,12 +377,78 @@ class LoginControllerTest {
 		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
 		LoginController.validUserFromServer(user);
 		
-		boolean booleanResult = loginController.loginProccess(usernamePassword);
-		assertEquals(LoginController.returnedMsg, "User is already logged in");
-		assertFalse(booleanResult);
-		assertEquals(NavigationStoreController.connectedUser, null);
+		loginEndProcessAssertion("User is already logged in", null);
 	}
-
 	
+	@Test
+	void loginProccessUserNotApprovedFailed() {
+		user.setNotApproved(true);
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		loginEndProcessAssertion("User is not approved yet", null);
+	}
+	
+	
+	// ------------------------------------------
+	// ----------Connect--With--EKT--------------
+	// ------------------------------------------
+	@Test
+	void loginProccessUserAuthorizedSuccess() throws Exception {
+		isEKTpressedField.set(loginController, true);
+		user.setRole_type("member");
+		user.setCc_num("1234123412341234");
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		loginEndProcessAssertion("Success", user);
+	}
+	
+	@Test
+	void loginProccessUserNotAuthorizedUserFailed() throws Exception {
+		isEKTpressedField.set(loginController, true);
+		user.setRole_type("user");
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		loginEndProcessAssertion("You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)", null);
+	}
+	
+	@Test
+	void loginProccessUserNotAuthorizedRegisterFailed() throws Exception {
+		isEKTpressedField.set(loginController, true);
+		user.setRole_type("registered");
+		
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		loginEndProcessAssertion("You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)", null);
+	}
+	
+	
+	@Test
+	void loginProccessUserNotAuthorizedWorkerFailed() throws Exception {
+		isEKTpressedField.set(loginController, true);
+		user.setRole_type("CEO"); 	// cc_num is not set - so not a member
 
+		// prepare behavior
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		LoginController.validUserFromServer(user);
+		
+		loginEndProcessAssertion("You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)", null);
+	}
+	
+	
 }
