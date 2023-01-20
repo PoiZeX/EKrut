@@ -10,18 +10,16 @@ import org.junit.jupiter.api.Test;
 import client.ClientController;
 import entity.SupplyReportEntity;
 
-class SupplyReportControllerTest {
-	private Method initDetailsMethod;
-	private Field actualResult;
+class SupplyReportControllerTest_Server {
 	private SupplyReportController supplyReportController;
 	private ClientController chatService;
-	private int machineID;
 
 	private boolean compareReports(SupplyReportEntity compareReport, SupplyReportEntity toReport) {
 		ArrayList<Boolean> boolArray = new ArrayList<>();
-		boolArray.add(compareReport.getId() == toReport.getId());
+		boolArray.add(compareReport.getId() == toReport.getId()); // ?
 		boolArray.add(compareReport.getYear().equals(toReport.getYear()));
 		boolArray.add(compareReport.getMonth().equals(toReport.getMonth()));
+		boolArray.add(compareReport.getRegion().equals(toReport.getRegion()));
 		boolArray.add(compareReport.getMachine_id() == toReport.getMachine_id());
 		boolArray.add(compareReport.getReportsList().size() == toReport.getReportsList().size());
 		if (boolArray.contains(false)) return false;
@@ -31,7 +29,7 @@ class SupplyReportControllerTest {
 		
 		// Compare item data sets
 		for (String[] compareDataSet : compareReport.getReportsList()) {
-			for (String[] toDataSet : compareReport.getReportsList()) {
+			for (String[] toDataSet : toReport.getReportsList()) {
 				if (new ArrayList<String>(Arrays.asList(compareDataSet)).equals(new ArrayList<String>(Arrays.asList(toDataSet)))) {
 					numberOfEqualDataSets++;
 				}	
@@ -63,6 +61,8 @@ class SupplyReportControllerTest {
 
 	}
 
+	
+	
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
 			String times_under_min, String end_stock, String month, String year, String region) {
 		return new SupplyReportEntity(id, machine_id, min_stock, item_id, times_under_min, end_stock, month, year,

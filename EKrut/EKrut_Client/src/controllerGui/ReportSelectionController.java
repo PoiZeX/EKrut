@@ -59,6 +59,9 @@ public class ReportSelectionController implements IScreen {
 	private String year, month, region;
 	private Button lastPressed = null;
 
+	public ReportSelectionController () {
+	}
+	
 	/**
 	 * This method is responsible for handling the event of the 'View Report' button
 	 * being clicked. It validates the user input, and based on the selected report
@@ -68,7 +71,7 @@ public class ReportSelectionController implements IScreen {
 	 */
 	@FXML
 	void viewReport(ActionEvent event) {
-		String error = validateFields(); 
+		String error = validateFields();
 		errorMsgLabel.setText(error);
 		///
 		error = "";
@@ -172,7 +175,7 @@ public class ReportSelectionController implements IScreen {
 	 * 
 	 * @return String errorMsg
 	 */
-	private String validateFields() {
+	public String validateFields() {
 		String errorMsg = "";
 		monthItemsCmb.setStyle("-fx-border-color: none;");
 		yearItemsCmb.setStyle("-fx-border-color: none;");
@@ -193,7 +196,7 @@ public class ReportSelectionController implements IScreen {
 		if (errorMsg == "" && selectedReport == "") {
 			errorMsg = "Please Select Report Type";
 		}
-		return errorMsg; 
+		return errorMsg;
 	}
 
 	/**
@@ -256,5 +259,9 @@ public class ReportSelectionController implements IScreen {
 	 */
 	private String getSelectedReport() {
 		return this.selectedReport;
+	}
+	
+	public void setDetails(String reportType, String region, String month, String year) {
+		this.selectedReport = reportType;
 	}
 }
