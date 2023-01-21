@@ -84,7 +84,7 @@ public class EchoServer extends AbstractServer {
 	 * @param connectionStatus the connection status
 	 */
 	// Extract it from here later
-	static void updateClientList(final ConnectionToClient client, final String connectionStatus) {
+	public static void updateClientList(final ConnectionToClient client, final String connectionStatus) {
 		final ObservableList<ConnectedClientEntity> clientList = EchoServer.getClientList();
 		for (int i = 0; i < clientList.size(); ++i) {
 			if (((ConnectedClientEntity) clientList.get(i)).getIp().equals(client.getInetAddress().getHostAddress())) {

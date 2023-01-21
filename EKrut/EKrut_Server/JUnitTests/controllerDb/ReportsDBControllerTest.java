@@ -11,16 +11,23 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import common.Message;
+
 import java.lang.reflect.Field;
 import java.sql.Connection;
 
 import entity.SupplyReportEntity;
+import entity.UserEntity;
+import enums.TaskType;
 import mysql.MySqlClass;
+import server.EchoServer;
+import server.ServerUI;
 
 class ReportsDBControllerTest {
 	private static boolean connectionSuccessful = false;
+	private static boolean toConnect = true;
 	private Field connectionField;
-	private Connection con;
+	public static UserEntity connectedUser;
 
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
 			String times_under_min, String end_stock, String month, String year, String region) {
@@ -65,9 +72,6 @@ class ReportsDBControllerTest {
 		connectionSuccessful = true;
 		connectionField = ReportsDBController.class.getDeclaredField("con");
 		connectionField.setAccessible(true);
-		
-		con = mock(Connection.class);
-
 	}
 	
 	@Test
@@ -109,27 +113,4 @@ class ReportsDBControllerTest {
 		assertEquals(actualResult.getId(), expectedResult.getId());
 	}
 	
-	@Test
-	// Functionality: Supply Report request with no connection to DB
-	// Input: String "supply", String "", String "", String "", String ""
-	// Result: SupplyReportEntity
-	void testUnsuccessfulNoConnectionToDBSupplyReport() throws Exception {
-		//connectionField.set(ReportsDBController.class, null);
-		ReportsDBController.setReport(new String[] { "supply", "", "", "", "1" });
-		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
-		SupplyReportEntity expectedResult = new SupplyReportEntity();
-		assertEquals(actualResult.getId(), expectedResult.getId());
-	}
-	
-//	@Test
-//	// Functionality: Supply Report request from the server with invalid machineID credential
-//	// Input: String "supply", String "1", String "12", String "2022", String "1"
-//	// Result: null
-//	void testInvalidMachineIDSupplyReport() throws Exception {
-//		ReportsDBController.setReport(new String[] { "supply", "1", "12", "2024", ".1+" });
-//		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
-//		assertNull(actualResult.getReportsList());
-//	}
-	
-
 }

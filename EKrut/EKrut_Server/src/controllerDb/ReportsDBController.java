@@ -155,7 +155,7 @@ public class ReportsDBController {
 	public static SupplyReportEntity getSupplyReportFromDB() {
 		SupplyReportEntity report = new SupplyReportEntity();
 		try {
-			if (con.equals(null))
+			if (con == null)
 				return report;
 			String query = "SELECT * FROM ekrut.supply_report where month = ? AND year = ? AND machine_id = ?";
 
