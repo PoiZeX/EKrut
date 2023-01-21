@@ -1,6 +1,7 @@
 package controllerGui;
 
-import common.PopupTypeEnum;
+import enums.PopupTypeEnum;
+import interfaces.IScreen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,8 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-public class PopupController {
+/**
+ * Popup GUI controller, implements Screen interface
+ * Controls the popup text, image and buttons according to parameters; 
+ * Generic controller for most popup messages from server
+ * @author Lidor
+ *
+ */
+public class PopupController  implements IScreen {
 
 	@FXML
 	private Button NoCancelBtn;
@@ -25,6 +32,8 @@ public class PopupController {
 
 	@FXML
 	private Button yesOkBtn;
+    @FXML
+    private ImageView onePlusOneImg;
 
 	// define colors
 	private static final String ERROR_COLOR = "#ff0303";
@@ -36,20 +45,20 @@ public class PopupController {
 	/**
 	 * initialize the screen
 	 */
-	public void initialize() {
-
+	@Override
+	public void initialize() { 
 		// set hidden as default
 		yesOkBtn.setVisible(false);
 		NoCancelBtn.setVisible(false);
 		yesOkBtn.setText("OK");
-
+		messageLabel.setWrapText(true);
 	}
 
 	/**
 	 * Setup the popup with headline, message, buttons and image
 	 * 
-	 * @param type
-	 * @param message
+	 * @param type popup type 
+	 * @param message the message to show
 	 */
 	public void setupPopup(PopupTypeEnum type, String message) {
 		Image image = null;
@@ -71,8 +80,12 @@ public class PopupController {
 			break;
 
 		case Information:
+		case Simulation:
+		case Sale:
 			image = new Image(getClass().getResourceAsStream("/styles/icons/info.png"));
 			titleLabel.setStyle("-fx-text-fill: " + INFORMATION_COLOR);
+			if(type.equals(PopupTypeEnum.Sale))
+				onePlusOneImg.setVisible(true);
 			break;
 
 		case Decision:
@@ -97,19 +110,35 @@ public class PopupController {
 		}
 
 	}
-
-	// this static boolean used to return an answer status
+	
 	public static Boolean isOkPressed = null;
+	/**
 
+	This method is called when the 'Cancel' button is pressed on the window. It sets the 'isOkPressed' variable to false and closes the current window.
+	@param event The event that triggers this method.
+	*/
 	@FXML
 	void cancelAction(ActionEvent event) {
 		isOkPressed = false;
+		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
+	/**
 
+	Handles the action of pressing the OK button in the popup window.
+	Sets the value of the isOkPressed variable to true and closes the popup window.
+	@param event - the event of clicking the OK button
+	*/
 	@FXML
 	void okAction(ActionEvent event) {
 		isOkPressed = true;
 		((Stage) yesOkBtn.getScene().getWindow()).close(); // close the popup window
 	}
+	/**
 
+	This method returns the message label of the popup window
+	@return messageLabel - The label containing the message to be displayed on the popup window
+	*/
+	public Label getMsgLabel() {
+		return messageLabel;
+	}
 }

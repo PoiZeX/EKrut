@@ -5,24 +5,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import common.Message;
-import common.TaskType;
-import entity.SubscriberEntity;
+import enums.TaskType;
 import entity.UserEntity;
 import mysql.MySqlClass;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * The Class LoginDBController.
+ */
 public class LoginDBController {
 
 	private static String username, password;
-
+	private static Connection con = MySqlClass.getConnection();
+	
 	/**
-	 * Parse the string array into username and password
-	 * 
-	 * @param usernamePassword
-	 * @return
+	 * Sets the user.
+	 *
+	 * @param usernamePassword the username password
+	 * @return true, if successful
 	 */
 	public static boolean setUser(String[] usernamePassword) {
 		if (usernamePassword.length == 2) {
@@ -34,10 +36,11 @@ public class LoginDBController {
 	}
 
 	/**
-	 * Handles getting selected user and sending the entity back to client
-	 * 
-	 * @param usernamePassword
-	 * @param client
+	 * Gets the user entity.
+	 *
+	 * @param usernamePassword the username password
+	 * @param client the client
+	 * return the user entity
 	 */
 	public static void getUserEntity(String[] usernamePassword, ConnectionToClient client) {
 		if (setUser(usernamePassword)) {
@@ -53,17 +56,16 @@ public class LoginDBController {
 	}
 
 	/**
-	 * Handles the query of getting the user from DB
-	 * 
-	 * @return
+	 * Gets the user from DB.
+	 *
+	 * @return the user from DB
 	 */
 	protected static UserEntity getUserFromDB() {
 		UserEntity user = new UserEntity();
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return user;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM ekrut.users WHERE username=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM ekrut.users WHERE username=?;");
 			ps.setString(1, username);
 			ResultSet res = ps.executeQuery();
 			if (res.next()) {
@@ -80,13 +82,17 @@ public class LoginDBController {
 		return user;
 
 	}
-
+	
+	/**
+	 * Sets the user logged in.
+	 *
+	 * @param user the new user logged in
+	 */
 	public static void setUserLoggedIn(UserEntity user) {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return;
-			Connection conn = MySqlClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("UPDATE ekrut.users SET logged_in=? WHERE username=?;");
+			PreparedStatement ps = con.prepareStatement("UPDATE ekrut.users SET logged_in=? WHERE username=?;");
 			ps.setBoolean(1, user.isLogged_in());
 			ps.setString(2, user.getUsername());
 			ps.executeUpdate();

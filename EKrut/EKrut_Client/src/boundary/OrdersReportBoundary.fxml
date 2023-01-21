@@ -6,20 +6,58 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
-   <center>
-      <HBox prefWidth="880.0" BorderPane.alignment="CENTER">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.OrdersReportController">
+	<top>
+      <GridPane id="headerBar" hgap="10.0" prefHeight="54.0" prefWidth="902.0" styleClass="GridPaneChild" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
+            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="238.0" minWidth="-Infinity" prefWidth="205.0" />
+            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="555.0" />
+            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="65.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+        </rowConstraints>
          <children>
-            <VBox>
+            <Label alignment="TOP_LEFT" prefHeight="16.0" prefWidth="919.0" styleClass="LabelLocations" text="Home Page ➜ Report Selection ➜ Order Report" GridPane.columnSpan="4" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
+            <Label alignment="CENTER" mouseTransparent="true" prefHeight="41.0" prefWidth="898.0" styleClass="LabelTitle" text="Order Report" textAlignment="CENTER" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="helpBtn" mnemonicParsing="false" onAction="#showDescription" prefHeight="30.0" prefWidth="30.0" styleClass="Button-return" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../styles/icons/question.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </top>  
+   <center>
+      <StackPane prefHeight="600.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="profitVBox" prefWidth="825.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="381.0" style="-fx-font-size: 17;" styleClass="Label-list" text="By Profit" />
-                  <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="534.0" prefWidth="409.0" stylesheets="@../styles/css/generalStyleSheet.css">
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="900.0" style="-fx-font-size: 15;" styleClass="LabelRoleTitle" text="Profit Report">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <BarChart fx:id="orderBarChart" categoryGap="5.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css">
                     <xAxis>
                       <CategoryAxis label="Machine Name" prefHeight="28.0" prefWidth="362.0" styleClass="Label" tickMarkVisible="false">
                            <tickLabelFont>
@@ -31,7 +69,11 @@
                         </CategoryAxis>
                     </xAxis>
                     <yAxis>
-                      <NumberAxis label="Profit In (K)" minorTickVisible="false" prefHeight="511.0" prefWidth="41.0" side="LEFT" />
+                      <NumberAxis label="Profit In (K)" minorTickVisible="false" prefHeight="440.0" prefWidth="45.0" side="LEFT" tickLength="5.0">
+                           <tickLabelFont>
+                              <Font size="13.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
                     </yAxis>
                      <styleClass>
                         <String fx:value="default-color0" />
@@ -41,19 +83,61 @@
                   </BarChart>
                </children>
             </VBox>
-            <VBox>
+            <VBox fx:id="quantityVBox" prefWidth="900.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="480.0" style="-fx-font-size: 17;" styleClass="Label-list" text="By Quantity" />
-                  <PieChart fx:id="pieChartOrders" prefHeight="543.0" prefWidth="486.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="28.0" prefWidth="900.0" style="-fx-font-size: 15;" styleClass="LabelRoleTitle" text="Quantity Report">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <PieChart fx:id="pieChartOrders" prefHeight="600.0" prefWidth="900.0" styleClass="default-color0" stylesheets="@../styles/css/generalStyleSheet.css" />
                </children>
             </VBox>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="897.0" StackPane.alignment="TOP_CENTER">
+               <columnConstraints>
+                  <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />
+                  <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="300.0" />
+                  <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <Label prefHeight="25.0" prefWidth="55.0" text="Display :">
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Button fx:id="displayTypeBtn" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeDisplayType" prefHeight="25.0" prefWidth="105.0" styleClass="Button-newSale" text="By Profit">
+                     <GridPane.margin>
+                        <Insets left="80.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </GridPane>
          </children>
-      </HBox>
+      </StackPane>
    </center>
-   <top>
-      <Label fx:id="titleLabel" alignment="CENTER" styleClass="LabelTitel" stylesheets="@../styles/css/generalStyleSheet.css" BorderPane.alignment="CENTER" />
-   </top>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+   <bottom>
+      <GridPane prefHeight="51.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="reportDetailsLabel" alignment="CENTER" prefHeight="54.0" prefWidth="450.0" style="-fx-text-fill: black;" styleClass="LabelTitle" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" />
+               </padding></Label>
+         </children>
+      </GridPane>
+   </bottom>
 </BorderPane>

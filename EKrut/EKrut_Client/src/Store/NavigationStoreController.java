@@ -5,32 +5,45 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
+
+import client.ChatClient;
 import common.CommonFunctions;
 import common.Message;
-import common.PopupTypeEnum;
-import common.TaskType;
-import common.ScreensNames;
-import controllerGui.HomePageController;
 import controllerGui.HostClientController;
+import controllerGui.ViewCatalogController;
+import entity.MachineEntity;
+import entity.ScreenEntity;
 import entity.UserEntity;
+import enums.PopupTypeEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.AppConfig;
+import utils.PopupSetter;
+import utils.TooltipSetter;
 
 /**
  * The class handles the navigation store for different pages
@@ -39,16 +52,19 @@ import utils.AppConfig;
  *
  */
 public class NavigationStoreController {
-	private HashMap<ScreensNames, Scene> screenScenes; // saves the instance of the screen
-	private Stack<Scene> history; // saves the history of screens changes
+	private HashMap<ScreensNamesEnum, ScreenEntity> screenScenes; // saves the instance of the screen
+	private Stack<ScreenEntity> history; // saves the history of screens changes
 	private static NavigationStoreController instance = null;
 	private Stage primaryStage; // the main stage (window)
-	private ScreensNames[] isSkipped = { ScreensNames.HostClient, ScreensNames.HomePage, ScreensNames.Login };
+	private ScreensNamesEnum[] isSkipped = { ScreensNamesEnum.HostClient, ScreensNamesEnum.HomePage,
+			ScreensNamesEnum.Login };
 	public static UserEntity connectedUser; // hold the current connected user
+	public static PauseTransition transition;
+	public static boolean isFirstTime = true;
 
 	/**
 	 * Constructor, creates the new instances
-	 */
+	 */ 
 	private NavigationStoreController() {
 		// create objects
 		screenScenes = new HashMap<>();
@@ -76,24 +92,74 @@ public class NavigationStoreController {
 	 * 
 	 * @param scName
 	 */
-	public void setCurrentScreen(ScreensNames scName) {
-		Scene scene = screenScenes.get(scName);
+	public void setCurrentScreen(ScreensNamesEnum scName) {
+		ScreenEntity se = screenScenes.get(scName);
+		Scene scene = null;
+		if (se == null)
+			se = new ScreenEntity(scName, null);
+
+		scene = se.getScene();
 
 		// if null create new instance (should not happens)
-		if (scene == null)
-			scene = createSingleScene(scName);
-		handleTitle(scName);
+		if (scene == null) {
+			scene = createSingleScene(scName, se);
+
+			se.setScene(scene);
+			screenScenes.put(scName, se);
+		}
+		setWindowTitle(scName);
 		// save to stack
-		primaryStage.setScene(history.push(scene));
+		primaryStage.setScene(history.push(se).getScene());
+
+		setTopBarLabels(se);
 	}
 
-	private void handleTitle(ScreensNames scName) {
-		// Set title
-		String[] splitString = scName.toString().split("(?<=[^A-Z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z])");
-		if (splitString.length == 2) {
-			primaryStage.setTitle(splitString[0] + " " + splitString[1]);
-		} else {
-			primaryStage.setTitle(scName.toString());
+	/**
+	 * Set the screen title of top bar for each screen
+	 */
+	private void setTopBarLabels(ScreenEntity se) {
+		if (se.getHeadline() == null || se.getPath() == null)
+			return;
+		if (history.size() > 0)
+			se.getHeadline().setText((history.peek().toString()));
+		String res = "";
+
+		// for every screen exclude the 'hostclient' and 'login'
+		for (int i = 2; i < history.size(); i++) {
+			res += history.get(i).toString() + " ➜ ";
+		}
+
+		if (!res.equals(""))
+			res = res.substring(0, res.length() - 4); // delete the last arrow
+		se.getPath().setText(res);
+	}
+
+	/**
+	 * Set the title for the window
+	 * 
+	 * @param scName
+	 */
+	private void setWindowTitle(ScreensNamesEnum scName) {
+		try {
+			String configuration = "";
+			if (!scName.equals(isSkipped[0]) && !scName.equals(isSkipped[2]))
+				if (AppConfig.SYSTEM_CONFIGURATION.equals("OL")) {
+					configuration = " Online";
+				} else {
+					MachineEntity machine;
+					do {
+						Thread.sleep(100);
+						machine = DataStore.getCurrentMachine();
+					} while (machine == null);
+					String machineName = machine.getMachineName();
+					configuration = CommonFunctions.isNullOrEmpty(machineName) ? "" : " - " + machineName;
+
+				}
+
+			// Set title
+			primaryStage.setTitle("EKrut" + configuration);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -105,12 +171,15 @@ public class NavigationStoreController {
 		// show the last stage
 		// history will never be null, you can't go back to login page (and even before)
 		if (history.size() >= 1) {
+
 			history.pop(); // throw the current
-			for (ScreensNames key : screenScenes.keySet()) {
-				if (screenScenes.get(key).equals(history.peek()))
+			for (ScreensNamesEnum key : screenScenes.keySet()) {
+				if (screenScenes.get(key) != null && screenScenes.get(key).equals(history.peek())) {
 					primaryStage.setTitle(key.toString());
+					break;
+				}
 			}
-			primaryStage.setScene(history.peek());
+			primaryStage.setScene(history.peek().getScene());
 
 		}
 
@@ -122,29 +191,42 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	public boolean refreshStage(ScreensNames screenName) {
-		Scene scene = createSingleScene(screenName); // create new instance
-		if (scene == null)
+	public boolean refreshStage(ScreensNamesEnum screenName) {
+		ScreenEntity screenEntity = refreshWithoutScreenChange(screenName);
+		if (screenEntity == null)
 			return false;
-		screenScenes.replace(screenName, scene); // replace the last stage with new
 
-		// REPLACE the stack head
-		handleTitle(screenName);
-		if (history.size() > 0)
-			history.pop(); // remove the last instance of the current screen and sets a new one
-		primaryStage.setScene(history.push(scene));
+		// checks if the screen already in the stack and remove
+		// avoid circles (usually when going backwards)
+		while (history.size() > 0 && history.contains(screenEntity)) {
+			screenScenes.replace(history.pop().getSc(), null);
+		}
+
+		primaryStage.setScene(history.push(screenEntity).getScene());
+		setTopBarLabels(screenEntity);
+
 		return true;
 	}
 
 	/**
-	 * Set all stages into HashMap, using 'setSingleStage'
+	 * Sets a new ScreenEntity in the dictionary
+	 * 
+	 * @param screenName
+	 * @return
 	 */
-	private void setAllScenes() {
-		for (ScreensNames screenName : ScreensNames.values()) {
-			Scene scene = createSingleScene(screenName);
-			if (scene != null)
-				screenScenes.put(screenName, scene);
-		}
+	public ScreenEntity refreshWithoutScreenChange(ScreensNamesEnum screenName) {
+		ScreenEntity se = new ScreenEntity(screenName, null);
+		Scene scene = createSingleScene(screenName, se); // create new instance
+		if (scene == null)
+			return null;
+		se.setScene(scene);
+		if (!screenScenes.containsKey(screenName))
+			screenScenes.put(screenName, se);
+		else
+			screenScenes.replace(screenName, se); // replace the last stage with new
+		// REPLACE the stack head
+		setWindowTitle(screenName);
+		return se;
 	}
 
 	/**
@@ -153,20 +235,25 @@ public class NavigationStoreController {
 	 * @param screenName
 	 * @return
 	 */
-	private Scene createSingleScene(ScreensNames screenName) {
+	private Scene createSingleScene(ScreensNamesEnum screenName, ScreenEntity se) {
 		Scene scene = null;
-		ArrayList<ScreensNames> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
+
+		ArrayList<ScreensNamesEnum> skippedScreens = new ArrayList<>(Arrays.asList(isSkipped));
 		try {
 			String path = "/boundary/" + screenName.toString() + "Boundary.fxml";
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 			Parent root = loader.load();
 
 			if (!skippedScreens.contains(screenName))// for submit
-				scene = new Scene(setBottomBar(root));
+				scene = new Scene(setBottomBar(root, se));
 			else
 				scene = new Scene(root);
 			scene.setUserData(loader.getController());
-
+			se.setScene(scene); // set scene in entity
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalStyleSheet.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/loginStyleSheet.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/generalizedCss.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/css/DateAndTime.css").toExternalForm());
 			// refresh activity
 			if ((connectedUser != null && connectedUser.isLogged_in()))
 				scene.addEventFilter(InputEvent.ANY, evt -> transition.playFromStart());
@@ -174,17 +261,10 @@ public class NavigationStoreController {
 			// set actions
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					if (connectedUser != null && connectedUser.isLogged_in()) {
-						connectedUser.setLogged_in(false); // logout the user
-						HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
-					}
-					if (HostClientController.chat != null)
-						HostClientController.chat.acceptObj(new Message(TaskType.ClientDisconnect, null));
-					closeAllScreens();
+					ExitHandler(true);
 				}
 			});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return scene;
@@ -196,7 +276,7 @@ public class NavigationStoreController {
 	 * @param stage
 	 * @return
 	 */
-	private Parent setBottomBar(Parent stage) {
+	private Parent setBottomBar(Parent stage, ScreenEntity se) {
 		Button returnBtn = new Button();
 		ImageView returnImage = new ImageView();
 
@@ -214,38 +294,125 @@ public class NavigationStoreController {
 		returnBtn.setGraphic(returnImage);
 		returnBtn.setPrefSize(24.0, 27.0);
 		returnBtn.getStyleClass().add("Button-return");
-
+		returnBtn.setTooltip(new TooltipSetter("Return to the previous screen").getTooltip());
 		returnBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae) {
-				NavigationStoreController.getInstance().goBack();
+
+				if (se.getSc().equals(ScreensNamesEnum.ViewCatalog))
+					((ViewCatalogController) NavigationStoreController.getInstance().getController()).cancelOrder(null);
+				else {
+					NavigationStoreController.getInstance().goBack();
+				}
+
 			}
 		});
 
 		if (((BorderPane) stage).bottomProperty().getValue() instanceof GridPane) {
 			GridPane t = (GridPane) ((BorderPane) stage).bottomProperty().getValue();
 			t.add(returnBtn, 0, 0);
+
 		} else {
 			((BorderPane) stage).setBottom(returnBtn);
 		}
 
+		if (((BorderPane) stage).getTop() == null)
+			((BorderPane) stage).setTop(getTopBar(se));
+
+		else if (((BorderPane) stage).getTop() instanceof GridPane) {
+			GridPane top = (GridPane) ((BorderPane) stage).getTop();
+			if (!se.getSc().equals(ScreensNamesEnum.ViewCatalog) && !se.getSc().equals(ScreensNamesEnum.OrdersReport) && !se.getSc().equals(ScreensNamesEnum.SupplyReport)) // ignore top on view catalog
+				top.add(getTopBar(se), 0, 0, top.getColumnConstraints().size(), 1);
+		}
+
 		return stage;
+	}
+
+	/**
+	 * Set the navigation Top bar for all pages after login
+	 * 
+	 * @param stage
+	 * @return
+	 */
+	private GridPane getTopBar(ScreenEntity se) {
+		GridPane gridPane = new GridPane();
+		Label headlineLabel = new Label(); // se.getHeadline();
+		Label pathLbl = new Label(); // se.getPath();
+		Button helpBtn = new Button();
+		ImageView helpImage = new ImageView();
+
+		// grid pane setup
+		gridPane.setId("headerBar");
+		gridPane.getColumnConstraints()
+				.add(new ColumnConstraints(10.0, 900.0, 900.0, Priority.NEVER, HPos.LEFT, true));
+		gridPane.getRowConstraints().add(new RowConstraints(20.0, 20.0, 20.0, Priority.NEVER, VPos.TOP, true));
+		gridPane.getRowConstraints().add(new RowConstraints(30.0, 30.0, 30.0, Priority.NEVER, VPos.CENTER, true));
+		// gridPane.setPadding(new Insets(22.0, 0, 0, 5.0));
+		// gridPane.setMouseTransparent(true);
+
+		// main label setup
+		headlineLabel.setId("headlineLabel");
+		headlineLabel.setAlignment(Pos.CENTER);
+		headlineLabel.setTextAlignment(TextAlignment.CENTER);
+		headlineLabel.setPrefSize(900, 30);
+		headlineLabel.getStyleClass().add("LabelTitle");
+
+		// sub-label setup
+		pathLbl.setId("pathLbl");
+		pathLbl.setPrefSize(600, 20);
+		pathLbl.getStyleClass().add("LabelLocations");
+
+		// "help" button
+		Image image = new Image(getClass().getResourceAsStream("/styles/icons/question.png"));
+		helpImage.setImage(image);
+		helpImage.setFitHeight(30.0);
+		helpImage.setFitWidth(30.0);
+		helpImage.setPickOnBounds(true);
+		helpImage.setPreserveRatio(true);
+		helpImage.getStyleClass().add("Button-return");
+
+		helpBtn.setId("helpBtn");
+		helpBtn.setAlignment(Pos.CENTER);
+		helpBtn.setContentDisplay(ContentDisplay.BOTTOM);
+		helpBtn.setGraphic(helpImage);
+		helpBtn.setPrefSize(30.0, 30.0);
+		helpBtn.getStyleClass().add("Button-return");
+		helpBtn.setTooltip((new TooltipSetter("Click for help")).getTooltip());
+		helpBtn.setMouseTransparent(false);
+
+		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				PopupSetter.createPopup(PopupTypeEnum.Information, se.getSc().getDescription());
+			}
+		});
+
+		// add to grid
+		gridPane.add(pathLbl, 0, 0);
+		gridPane.add(headlineLabel, 0, 1);
+		gridPane.add(helpBtn, 2, 1);
+
+		se.setHeadline(headlineLabel);
+		se.setPath(pathLbl);
+
+		return gridPane;
 
 	}
 
 	/**
-	 * Close all screens, and exits from platform & system
+	 * return the current 'user data' which hold the controller (for the CURRENT
+	 * scene)
+	 * 
+	 * @return
 	 */
-	public static void closeAllScreens() {
-
-		Platform.exit(); // exit JavaFx
-		System.exit(0); // exit system
-
-	}
-
 	public Object getController() {
 		return primaryStage.getScene().getUserData();
 	}
 
+	/**
+	 * return the primary stage
+	 * 
+	 * @return
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
@@ -256,9 +423,8 @@ public class NavigationStoreController {
 	public void clearAll() {
 		screenScenes.clear();
 		history.clear();
+		isFirstTime = true;
 	}
-
-	public static PauseTransition transition;
 
 	/**
 	 * setup timeout
@@ -275,12 +441,68 @@ public class NavigationStoreController {
 	private void logoutFromTimeout() {
 		if (connectedUser != null && connectedUser.isLogged_in()) {
 			connectedUser.setLogged_in(false); // logout user
-			HostClientController.chat.acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+			HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
 			connectedUser = null;
 			NavigationStoreController.getInstance().clearAll();
-			NavigationStoreController.getInstance().refreshStage(ScreensNames.Login);
-			CommonFunctions.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+			NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+			CommonFunctions.SleepFor(200, () -> {
+				PopupSetter.createPopup(PopupTypeEnum.Information, "Disconnected due to inactivity");
+			});
 		}
+	}
+
+	/**
+	 * exit handler which can be targeted from different places
+	 * 
+	 * @param closeAllScreens
+	 * @throws InterruptedException
+	 */
+	public static void ExitHandler(boolean closeAllScreens) {
+		try {
+			// CommonFunctions.SleepFor(1000, () -> {
+			if (connectedUser != null) {
+
+				if (connectedUser.isLogged_in()) {
+					connectedUser.setLogged_in(false); // logout the user
+					CommonFunctions.SleepFor(150, () -> {
+						ChatClient.awaitResponse = false;
+					});
+					HostClientController.getChat().acceptObj(new Message(TaskType.SetUserLoggedIn, connectedUser));
+				}
+
+				connectedUser = null;
+			}
+			if (isFirstTime) {
+				isFirstTime = false;
+				if (!closeAllScreens) { // reset all and refresh
+					NavigationStoreController.getInstance().clearAll();
+					NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.Login);
+
+				} else {
+					if (HostClientController.getChat() != null) {
+						CommonFunctions.SleepFor(150, () -> {
+							ChatClient.awaitResponse = false;
+						});
+						HostClientController.getChat().acceptObj(new Message(TaskType.ClientDisconnect, null));
+					}
+					closeAllScreens();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// });
+	}
+
+	/**
+	 * Close all screens, and exits from platform & system
+	 */
+	public static void closeAllScreens() {
+		Platform.exit(); // exit JavaFx
+		System.exit(0); // force the system to exit
+		// exit
+		// function)
+
 	}
 
 }

@@ -3,42 +3,52 @@
 // license found at www.lloseng.com 
 
 package client;
-import ocsf.client.*;
-import common.ChatIF;
+import java.io.IOException;
 import common.Message;
-import java.io.*;
-import entity.SubscriberEntity;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Store.NavigationStoreController;
+import interfaces.ChatIF;
+import ocsf.client.AbstractClient;
 
+/**
+ * Class that handles the chat of client with server 
+ *
+ */
 public class ChatClient extends AbstractClient {
 
 	ChatIF clientUI;
-	public static ObservableList<SubscriberEntity> subscribers;
 	public static boolean awaitResponse = false;
 
 
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
 		this.clientUI = clientUI;
-		// openConnection();
 	}
 
 
+	/**
+	 * Handle a message from server, type Object.
+	 * Navigate using MessageHandler
+	 * @param msg the message got from server
+	 */
 	public void handleMessageFromServer(Object msg) {
 		awaitResponse = false;
 		if (msg instanceof String) {
 			System.out.println("Message received: " + msg);
 		} else if (msg instanceof Message) {
 			try {
-				MessageHandler.Handle(this, (Message) msg);
+				MessageHandler.Handle((Message) msg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void handleMessageFromClientUI(String message) {
+	/**
+	 * Handle a simple message, type String
+	 * @param message
+	 * @return false if exception, true success
+	 */
+	public boolean handleMessageFromClientUI(String message) {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
@@ -52,16 +62,20 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			clientUI.display("Could not send message to server: Terminating client." + e);
-			quit();
+			return false;
 		}
+		return true;
 	}
 
 
-	public void handleMessageFromClient(Object message) {
+	/**
+	 * Handle sending an object from client to server
+	 * @param message
+	 * @return false if exception, true if success
+	 */
+	public boolean handleMessageFromClient(Object message) {
 		try {
-			openConnection();// in order to send more than one message
+			openConnection(); // in order to send more than one message
 			awaitResponse = true;
 			sendToServer(message);
 			// wait for response
@@ -73,10 +87,10 @@ public class ChatClient extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			clientUI.display("Could not send message to server: Terminating client." + e);
-			quit();
+
+			return false;
 		}
+		return true;
 	}
 
 
@@ -88,20 +102,8 @@ public class ChatClient extends AbstractClient {
 			closeConnection();
 		} catch (IOException e) {
 		}
-		System.exit(0);
-	}
-	
-	
-	static {
-		ChatClient.subscribers = FXCollections.observableArrayList();
+		NavigationStoreController.closeAllScreens();
 	}
 
-	public static void setClientList(final ObservableList<SubscriberEntity> subscribers) {
-		ChatClient.subscribers = subscribers;
-	}
-
-	public static ObservableList<SubscriberEntity> getClientList() {
-		return ChatClient.subscribers;
-	}
 	
 }

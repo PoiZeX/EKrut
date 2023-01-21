@@ -3,11 +3,10 @@ package controllerGui;
 import java.util.ArrayList;
 
 import Store.NavigationStoreController;
-import common.CommonFunctions;
 import common.Message;
-import common.TaskType;
-import controller.SMSMailHandlerController;
 import entity.PersonalMessageEntity;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,7 +15,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class PersonalMessagesController {
+/**
+ * Personal messages area GUI controller, implements Screen interface
+ * Getting and showing user's messages from all times. SMS & Mail also (as simulation)
+ * @author Lidor
+ *
+ */
+public class PersonalMessagesController  implements IScreen {
 	@FXML
 	private TableView<PersonalMessageEntity> messageTable;
 	@FXML
@@ -32,12 +37,15 @@ public class PersonalMessagesController {
 	private Label messageLabel;
 
 	public static ObservableList<PersonalMessageEntity> msgsList = FXCollections.observableArrayList();
-
+	/**
+	* This method is used to initialize the components of the view and set up the message table. It requests the personal messages, sets up the table and sets wrapping property of message label to true.
+	*/
+	@Override
 	public void initialize() {
 		requestPersonalMessages();
 		setupTable();
-		messageLabel.setWrapText(true);
-	}
+		messageLabel.setWrapText(true); 
+	} 
 
 	/**
 	 * Setup the columns of table with listeners
@@ -54,17 +62,6 @@ public class PersonalMessagesController {
 		messageTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {				
 				messageLabel.setText(newSelection.getMessage().toString()); // sets the new message
-				String originalMsg = newSelection.getMessage().toString();
-				String str[] = newSelection.getMessage().toString().split("\n");
-//				if (str.length > 1)
-//					newSelection.setMessage(str[0] + "...");
-//				else {
-//					if (originalMsg.length() > 256)
-//						newSelection.setMessage(originalMsg.substring(0, 256));
-//					else
-//						newSelection.setMessage(str[0]);
-//				}
-				// messageTable.getSelectionModel().clearSelection();
 			}
 		});
 
@@ -75,7 +72,15 @@ public class PersonalMessagesController {
 	 */
 	private void requestPersonalMessages() {
 		Message message = new Message(TaskType.RequestPersonalMessages, NavigationStoreController.connectedUser);
-		HostClientController.chat.acceptObj(message);
+		HostClientController.getChat().acceptObj(message);
+	}
+	/**
+
+	Sets the personal message to be displayed in the chat.
+	@param message the message to be displayed
+	*/
+	public static void setPersonalMessages(Object message) {
+		HostClientController.getChat().acceptObj(message);
 	}
 
 	/**
@@ -84,6 +89,14 @@ public class PersonalMessagesController {
 	public static void getAllMessagesFromServer(ArrayList<PersonalMessageEntity> obj) {
 		msgsList.clear(); // if not empty before
 		msgsList.addAll(obj);
+	}
+	
+	/**
+	 * Return the message list
+	 * @return return the observable list of all messages
+	 */
+	public static ObservableList<PersonalMessageEntity> getMsgList() {
+		return msgsList;
 	}
 
 }

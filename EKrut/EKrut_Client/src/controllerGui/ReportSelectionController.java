@@ -1,24 +1,32 @@
 package controllerGui;
 
+import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
-import common.TaskType;
-import common.CommonData;
 import common.Message;
-import common.RolesEnum;
-import common.ScreensNames;
+import enums.RolesEnum;
+import enums.ScreensNamesEnum;
+import enums.TaskType;
+import interfaces.IScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
+import utils.IValidateFields;
 
-public class ReportSelectionController {
+/**
+ * Controller for the Orders Report screen. Handles displaying the order data in
+ * a pie chart and a bar chart. Allows switching between displaying the data by
+ * profit or by quantity.
+ *
+ * @author David
+ */
+public class ReportSelectionController implements IScreen {
 	private String selectedReport = "";
 
 	@FXML
@@ -32,9 +40,6 @@ public class ReportSelectionController {
 
 	@FXML
 	private Label errorMsgLabel;
-
-	@FXML
-	private ToolBar reportsToolBar;
 
 	@FXML
 	private Button clientReportBtn;
@@ -51,37 +56,74 @@ public class ReportSelectionController {
 	@FXML
 	private Label regionLabel;
 
-	ClientController chat = HostClientController.chat; // define the chat for the controller
-	
+	ClientController chat = HostClientController.getChat(); // define the chat for the controller
+	ObservableList<String> months, regions, allowedTypes;
+	ObservableList<Integer> years;
 	private String year, month, region;
+	private Button lastPressed = null;
+	private IValidateFields fieldsValidator = new FieldsValidator();
 
+	public ReportSelectionController() {
+		years = FXCollections.observableArrayList();
+		for (int i = 2015; i <= 2023; i++)
+			years.add(i);
+
+		months = FXCollections.observableArrayList();
+		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+				"November", "December");
+
+		allowedTypes = FXCollections.observableArrayList();
+		allowedTypes.addAll("clientsReport", "ordersReport", "supplyReport");
+
+		regions = FXCollections.observableArrayList();
+		regions.addAll("North", "UAE", "South");
+	}
+
+	/**
+	 * This method is responsible for handling the event of the 'View Report' button
+	 * being clicked. It validates the user input, and based on the selected report
+	 * type, it sets the report data and opens the relevant report screen.
+	 * 
+	 * @param event the event of the 'View Report' button being clicked
+	 */
 	@FXML
 	void viewReport(ActionEvent event) {
 		String error = validateFields();
 		errorMsgLabel.setText(error);
+		///
+		error = "";
+		///
 		if (error.equals("")) {
 			month = monthItemsCmb.getSelectionModel().getSelectedItem();
 			year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
 			region = regionCmb.getSelectionModel().getSelectedItem();
 			switch (getSelectedReport()) {
 			case "supplyReport":
-//				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"supply", region, month, year }));
 				SupplyReportController.setReport(year, month, region);
-				NavigationStoreController.getInstance().setCurrentScreen(ScreensNames.SupplyReport);
+				NavigationStoreController.getInstance().refreshStage(ScreensNamesEnum.SupplyReport);
 				break;
 			case "ordersReport":
-				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"orders", region, month, year }));
-				checkReportData(OrdersReportController.RecievedData, ScreensNames.OrdersReport);
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "orders", region, month, year }));
+				checkReportData(OrdersReportController.RecievedData, ScreensNamesEnum.OrdersReport);
 				break;
-			case "clientsReport": 
-				chat.acceptObj(new Message(TaskType.RequestReport, new String[] {"clients", region, month, year }));
-				checkReportData(ClientsReportController.RecievedData, ScreensNames.ClientsReport);
+			case "clientsReport":
+				chat.acceptObj(new Message(TaskType.RequestReport, new String[] { "clients", region, month, year }));
+				checkReportData(ClientsReportController.RecievedData, ScreensNamesEnum.ClientsReport);
 				break;
 			}
 		}
 	}
 
-	private void checkReportData(boolean RecievedData, ScreensNames screen) {
+	/**
+	 * This method is used to check if the report data has been recieved from the
+	 * server and to display the relevant report screen if the data is available.
+	 * 
+	 * @param RecievedData a boolean variable indicating whether the report data has
+	 *                     been recieved from the server or not
+	 * @param screen       the screen that represents the report type that the user
+	 *                     selected
+	 */
+	private void checkReportData(boolean RecievedData, ScreensNamesEnum screen) {
 		while (!RecievedData) {
 			try {
 				Thread.sleep(100);
@@ -95,9 +137,7 @@ public class ReportSelectionController {
 					|| OrdersReportController.reportDetails.getReportsList() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(screen);
-			break;
-		case SupplyReport:
+				NavigationStoreController.getInstance().refreshStage(screen);
 			break;
 		case ClientsReport:
 			if (ClientsReportController.reportDetails.getDescription().equals("noreport")
@@ -105,22 +145,34 @@ public class ReportSelectionController {
 					|| ClientsReportController.reportDetails.getSupplyMethodsArr() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(screen);
+				NavigationStoreController.getInstance().refreshStage(screen);
 		default:
 			break;
 
 		}
 	}
 
+	/**
+	 * 
+	 * Initialize method is used to set the values for the different fields in the
+	 * UI. It creates an ObservableList of years from 2016 to 2023. It creates an
+	 * ObservableList of months from January to December. It creates an
+	 * ObservableList of regions from DataStore. It calls setReportButtons method to
+	 * set the action for each report button. It sets the items for the
+	 * yearItemsCmb, monthItemsCmb and regionCmb with the created ObservableLists.
+	 * If the connected user is a CEO, it enables the region selection otherwise it
+	 * sets the region to the user's region.
+	 */
+	@Override
 	public void initialize() {
-		ObservableList<Integer> years = FXCollections.observableArrayList();
+		years = FXCollections.observableArrayList();
 		for (int i = 2016; i <= 2023; i++) {
 			years.add(i);
 		}
-		ObservableList<String> months = FXCollections.observableArrayList();
+		months = FXCollections.observableArrayList();
 		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 				"November", "December");
-		ObservableList<String> regions = FXCollections.observableArrayList(CommonData.getRegions());
+		regions = FXCollections.observableArrayList(DataStore.getRegions());
 		setReportButtons();
 		regionCmb.setItems(regions);
 		monthItemsCmb.setItems(months);
@@ -135,52 +187,236 @@ public class ReportSelectionController {
 
 	}
 
-	String validateFields() {
+	/***
+	 * validate fileds on selection for the report
+	 * 
+	 * @return String errorMsg
+	 */
+	public String validateFields() {
 		String errorMsg = "";
-		monthItemsCmb.setStyle("-fx-border-color: none;");
-		yearItemsCmb.setStyle("-fx-border-color: none;");
-		if (monthItemsCmb.getSelectionModel().isEmpty() && yearItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Month and Year";
-			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
-			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
-		} else if (monthItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Month";
-			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
-		} else if (yearItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Year";
-			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
+		fieldsValidator.styleSetter(monthItemsCmb, false);
+		fieldsValidator.styleSetter(yearItemsCmb, false);
+		if (!fieldsValidator.isMonthValid() && !fieldsValidator.isYearValid()) {
+			errorMsg = "Please Select Valid Month and Year";
+			fieldsValidator.styleSetter(monthItemsCmb, true);
+			fieldsValidator.styleSetter(yearItemsCmb, true);
+		} else if (!fieldsValidator.isMonthValid()) {
+			errorMsg = "Please Select Valid Month";
+			fieldsValidator.styleSetter(monthItemsCmb, true);
+		} else if (!fieldsValidator.isYearValid()) {
+			errorMsg = "Please Select Valid Year";
+			fieldsValidator.styleSetter(yearItemsCmb, true);
 		}
-		if (errorMsg != "" && selectedReport == "") {
-			errorMsg += " and Report Type";
+		if (errorMsg != "" && !fieldsValidator.isRegionValid()) {
+			errorMsg += " and Valid Region";
 		}
-		if (errorMsg == "" && selectedReport == "") {
-			errorMsg = "Please Select Report Type";
+		if (errorMsg != "" && !fieldsValidator.isSelectedReportValid()) {
+			errorMsg += " and Valid Report Type";
+		}
+		if (errorMsg == "" && !fieldsValidator.isSelectedReportValid()) {
+			errorMsg = "Please Select Valid Report Type";
 		}
 		return errorMsg;
 	}
 
+	/**
+	 * 
+	 * This method is used to set the action for each report button. It assigns a
+	 * different selectedReport variable for each button. supplyReportBtn sets
+	 * "supplyReport", ordersReportBtn sets "ordersReport", clientReportBtn sets
+	 * "clientsReport"
+	 */
 	private void setReportButtons() {
 		supplyReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = supplyReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = supplyReportBtn;
+
+				}
+				supplyReportBtn.getStyleClass().add("pressed");
 				selectedReport = "supplyReport";
+
 			}
 		});
 		ordersReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = ordersReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = ordersReportBtn;
+				}
+				ordersReportBtn.getStyleClass().add("pressed");
 				selectedReport = "ordersReport";
 			}
 		});
 		clientReportBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ce) {
+				if (lastPressed == null) {
+					lastPressed = clientReportBtn;
+				} else {
+					lastPressed.getStyleClass().remove("pressed");
+					lastPressed = clientReportBtn;
+				}
+				clientReportBtn.getStyleClass().add("pressed");
 				selectedReport = "clientsReport";
 			}
 		});
 	}
 
-	private String getSelectedReport() {
-		return this.selectedReport;
+	// for unit testing
+
+	/**
+	 * @param reportType sets the report type from one of the allowed types
+	 * @param region sets the region from one of the allowed region
+	 * @param month sets the months from one of the allowed months
+	 * @param year sets the year from one of the allowed years
+	 */
+	public void setDetails(String reportType, String region, String month, String year) {
+		this.selectedReport = reportType;
+		this.region = region;
+		this.month = month;
+		this.year = year;
+	}
+
+	/**
+	 * @return allowed month values
+	 */
+	public ObservableList<String> getMonths() {
+		return months;
+	}
+
+	/**
+	 * @return allowed year values
+	 */
+	public ObservableList<Integer> getYears() {
+		return years;
+	}
+
+	/**
+	 * @return allowed region values
+	 */
+	public ObservableList<String> getRegions() {
+		return regions;
+	}
+
+	/**
+	 * @return allowed report type values
+	 */
+	public ObservableList<String> getReportTypes() {
+		return allowedTypes;
+	}
+
+	/**
+	 * @return selected report year
+	 */
+	public String getSelectedYear() {
+		return year;
+	}
+
+	/**
+	 * @return selected report region
+	 */
+	public String getSelectedRegion() {
+		return region;
+	}
+
+	/**
+	 * @return selected report month
+	 */
+	public String getSelectedMonth() {
+		return month;
+	}
+
+	/**
+	 * 
+	 * This method is used to get the selected report. It returns the selectedReport
+	 * variable.
+	 * 
+	 * @return the selected report as a string
+	 */
+	public String getSelectedReport() {
+		return selectedReport;
+	}
+
+	/**
+	 * Sets the fieldsValidator object to a given IValidateFields object
+	 * 
+	 * @param fieldsValidator The IValidateFields object to set as the validator
+	 */
+	public void setValidaions(IValidateFields fieldsValidator) {
+		this.fieldsValidator = fieldsValidator;
+	}
+
+	/**
+	 * Returns the current fieldsValidator object
+	 * 
+	 * @return The current IValidateFields object
+	 */
+	public IValidateFields getValidations() {
+		return fieldsValidator;
+	}
+
+	private class FieldsValidator implements IValidateFields {
+
+		/**
+		 * Checks if the year has been selected
+		 * 
+		 * @return true if year has been selected, false otherwise
+		 */
+		@Override
+		public boolean isYearValid() {
+			return !yearItemsCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Checks if the month has been selected
+		 * 
+		 * @return true if month has been selected, false otherwise
+		 */
+		@Override
+		public boolean isMonthValid() {
+			return !monthItemsCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Checks if the region has been selected
+		 * 
+		 * @return true if region has been selected, false otherwise
+		 */
+		@Override
+		public boolean isRegionValid() {
+			return !regionCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Sets the style of a Node depending on the value of a flag
+		 * 
+		 * @param n    The Node to set the style of
+		 * @param flag true to set red border, false to remove border
+		 */
+		@Override
+		public void styleSetter(Node n, boolean flag) {
+			if (flag)
+				n.setStyle("-fx-border-color: #ff1414;");
+			else
+				n.setStyle("-fx-border-color: none;");
+		}
+
+		/**
+		 * Checks if the selected report is valid
+		 * 
+		 * @return true if a report has been selected, false otherwise
+		 */
+		@Override
+		public boolean isSelectedReportValid() {
+			return selectedReport != "";
+		}
 	}
 }

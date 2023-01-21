@@ -5,57 +5,61 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.regex.Pattern;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
-import common.CommonFunctions;
-import common.RolesEnum;
+import enums.RolesEnum;
 import mysql.MySqlClass;
 
+/**
+ * The Class UsersSimulationDBController.
+ */
 public class UsersSimulationDBController {
+	private static Connection con = MySqlClass.getConnection();
+	
 	/**
-	 * Add all tuples to users table
-	 * 
-	 * @param tuplesToAdd
-	 * @return
-	 * @throws SQLException
+	 * Insert tuples.
+	 *
+	 * @param tuplesToAdd the tuples to add
+	 * @throws SQLException the SQL exception
 	 */
-	public static boolean insertTuples(ArrayList<String[]> tuplesToAdd) throws SQLException {
+	public static void insertTuples(ArrayList<String[]> tuplesToAdd) throws SQLException {
 		/*
 		 * each tuple contains: firstname, lastname, user_id, email, phone, (for
 		 * workers: region, role_type)
 		 */
-		for (String[] tuple : tuplesToAdd) {
-			if (!insertSingleTuple(tuple))
-				return false;
+		ArrayList<String[]> imported = new ArrayList<>();
+		try {
+			for (String[] tuple : tuplesToAdd) {
+				insertSingleTuple(tuple);
+				imported.add(tuple);
+			}
+		} catch (SQLException e) {
+			UsersSimulationDBController.rollBackImport(imported);
+			throw e;
 		}
-		return true;
+
 	}
 
 	/**
-	 * Insert single tuple to users table
-	 * 
-	 * @param tuple
-	 * @return
-	 * @throws SQLException
+	 * Insert single tuple.
+	 *
+	 * @param tuple the tuple
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
 	 */
 	private static boolean insertSingleTuple(String[] tuple) throws SQLException {
 		try {
-			if (MySqlClass.getConnection() == null)
+			if (con == null)
 				return false;
-			Connection conn = MySqlClass.getConnection();
+
 			boolean isNotWorker = true;
 			// validate data
 			String validateResult = isValidTuple(tuple);
 			if (!validateResult.equals(""))
 				throw new SQLException(validateResult);
-			
-			if(!tuple[8].toLowerCase().equals("user"))
+
+			if (!tuple[8].toLowerCase().equals("user"))
 				isNotWorker = false;
-			PreparedStatement ps = conn.prepareStatement("insert INTO ekrut.users "
+			PreparedStatement ps = con.prepareStatement("insert INTO ekrut.users "
 					+ "(`id_number`, `username`, `password`, `first_name`, `last_name`, `email`, `phone_number`, `cc_number`, `region`, `role_type`, `logged_in`, `is_not_approved`) "
 					+ "VALUES" + "(?,?,?,?,?,?,?,?,?,?,?,?);");
 			// ps.setBoolean(1, Boolean.parseBoolean(tuple[0])); // id AutoInc
@@ -81,10 +85,10 @@ public class UsersSimulationDBController {
 	}
 
 	/**
-	 * Checks validation of params before inserting to table
-	 * 
-	 * @param tuple
-	 * @return
+	 * Checks if is valid tuple.
+	 *
+	 * @param tuple the tuple
+	 * @return the string
 	 */
 	private static String isValidTuple(String[] tuple) {
 		StringBuilder res = new StringBuilder("");
@@ -108,18 +112,16 @@ public class UsersSimulationDBController {
 			res.append("* phone number {" + tuple[6] + "} is not in the right format\n");
 
 		// validate role
-		if (tuple[8].toLowerCase().equals("registered") || tuple[8].toLowerCase().equals("member") || !RolesEnum.isValidRole(tuple[8]))
+		if (!tuple[8].equals(RolesEnum.user.toString()))
 			res.append("* role type {" + tuple[8] + "} is not valid, can be user or valid employee role.\n");
-		
-		
 		return res.toString();
 	}
 
 	/**
-	 * Algorithm to validate the ID is legal in Israel
-	 * 
-	 * @param ID
-	 * @return
+	 * Checks if is valid ID.
+	 *
+	 * @param ID the id
+	 * @return true, if is valid ID
 	 */
 	private static boolean isValidID(String ID) {
 		int id = Integer.parseInt(ID);
@@ -137,5 +139,23 @@ public class UsersSimulationDBController {
 			return true;
 
 		return false;
+	}
+	
+	/**
+	 * Roll back import.
+	 *
+	 * @param res the res
+	 */
+	public static void rollBackImport(ArrayList<String[]> res) {
+		try {
+			if (con == null)
+				return;
+			Connection con = MySqlClass.getConnection();
+			for (String[] user : res) {
+				PreparedStatement ps = con.prepareStatement("DELETE FROM users WHERE id_number = ?");
+				ps.setString(1, user[0]); // id_number
+				ps.execute();
+			}
+		} catch (Exception e) {}
 	}
 }

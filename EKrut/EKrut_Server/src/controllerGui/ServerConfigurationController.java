@@ -2,6 +2,7 @@ package controllerGui;
 
 import utils.ConsoleStream;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,10 +11,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Inet4Address;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +35,9 @@ import common.CommonFunctions;
 import controllerDb.UsersSimulationDBController;
 import entity.ConnectedClientEntity;
 
+/**
+ * The Class ServerConfigurationController.
+ */
 public class ServerConfigurationController {
 
 	@FXML
@@ -77,7 +80,12 @@ public class ServerConfigurationController {
 	private TextArea consoleOutput;
 
 	private PrintStream printStream;
-
+	
+	/**
+	 * Connect to DB.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void connectToDB(ActionEvent event) {
 		if (CommonFunctions.isNullOrEmpty(txtIP.getText()) || CommonFunctions.isNullOrEmpty(txtPort.getText())
@@ -89,10 +97,10 @@ public class ServerConfigurationController {
 		}
 		ServerUI.runServer(this.txtPort.getText(), this.txtDBName.getText(), this.txtDBUsername.getText(),
 				this.txtDBPassword.getText());
+
 		connectBtn.setDisable(true);
 		disconnectBtn.setDisable(false);
 		setDisableTextFieldValues(true);
-
 		while (MySqlClass.isConnectionSuccess == null)
 			try {
 				Thread.sleep(200);
@@ -101,9 +109,16 @@ public class ServerConfigurationController {
 			}
 		if (MySqlClass.isConnectionSuccess == true)
 			importUsersBtn.setDisable(false);
-
+		fileChooser.setInitialDirectory(
+	            new File(System.getProperty("user.home")));
+//		fileChooser.setInitialDirectory(new File("./src/mysql/"));
 	}
-
+	
+	/**
+	 * Disconnect from DB.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void disconnectFromDB(ActionEvent event) {
 		ServerUI.disconnect();
@@ -112,7 +127,12 @@ public class ServerConfigurationController {
 		setDisableTextFieldValues(false);
 		importUsersBtn.setDisable(true);
 	}
-
+	
+	/**
+	 * Initialize.
+	 *
+	 * @throws Exception the exception
+	 */
 	@FXML
 	public void initialize() throws Exception { // Setup screen before launching view
 		txtIP.setText(getIPValue());
@@ -133,15 +153,23 @@ public class ServerConfigurationController {
 			@Override
 			public void handle(final ActionEvent e) {
 				Stage stage = (Stage) importUsersBtn.getScene().getWindow();
-				File file = fileChooser.showOpenDialog(stage);
-				if (file != null) {
+
+					File file = fileChooser.showOpenDialog(stage);
+				
+				if (file != null && file.getName().endsWith(".csv") ) {
 					parseFile(file);
-				}
+				} else System.out.println("Import failed: Can't open file");
 			}
 		});
 
 	}
 
+	/**
+	 * Gets the IP value.
+	 *
+	 * @return the IP value
+	 * @throws Exception the exception
+	 */
 	private String getIPValue() throws Exception {
 		String ip = null;
 		try {
@@ -152,6 +180,11 @@ public class ServerConfigurationController {
 		return ip;
 	}
 
+	/**
+	 * Sets the disable text field values.
+	 *
+	 * @param b the new disable text field values
+	 */
 	private void setDisableTextFieldValues(boolean b) {
 		txtDBName.setDisable(b);
 		txtIP.setDisable(b);
@@ -160,6 +193,9 @@ public class ServerConfigurationController {
 		txtDBUsername.setDisable(b);
 	}
 
+	/**
+	 * Change console to UI.
+	 */
 	@FXML
 	void changeConsoleToUI() {
 		this.printStream = new PrintStream((OutputStream) new ConsoleStream(this.consoleOutput));
@@ -167,6 +203,9 @@ public class ServerConfigurationController {
 		System.setErr(this.printStream);
 	}
 
+	/**
+	 * Connect table column to object.
+	 */
 	/*
 	 * Making a connection between the ConnectedClient object to the columns
 	 * PropertyValueFactory search for a getters like "getIp", "getHost" in entity
@@ -178,17 +217,12 @@ public class ServerConfigurationController {
 		Status.setCellValueFactory((Callback) new PropertyValueFactory<ConnectedClientEntity, String>("status"));
 	}
 
-	@FXML
-	public void importUsersFromDB(ActionEvent event) {
-		// nothing to do here now
-	}
-
 	final FileChooser fileChooser = new FileChooser();
 
 	/**
-	 * Parse file into tuples and send the info to DBController for insertion
-	 * 
-	 * @param file
+	 * Parses the file.
+	 *
+	 * @param file the file
 	 */
 	private void parseFile(File file) {
 		int cnt = 0;
@@ -204,21 +238,22 @@ public class ServerConfigurationController {
 					continue; // skip empty lines
 				ArrayList<String> fields = new ArrayList<>(Arrays.asList(line.split(cvsSplitBy)));
 				cnt++;
-				
+
 				fields.forEach(item -> {
 					fields.set(fields.indexOf(item), item.trim());
 				});
-				
+
 				// normalization form
-				if (fields.size() != num_of_fields || fields.contains("")) {
+				if (fields.size() != num_of_fields || fields.contains("") ) {
 					System.out.println(String.format("Error in line %d", cnt));
 					System.out.println("Tuples rules reminder:\n"
-					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
+							+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
 					continue;
 				}
 				res.add(fields.toArray(new String[fields.size()]));
 				// System.out.println(Arrays.toString(fields));
 			}
+			System.out.println("Attempting to insert all valid tuples.");
 			UsersSimulationDBController.insertTuples(res);
 			System.out.println("Import success");
 		} catch (IOException e) {
@@ -226,7 +261,11 @@ public class ServerConfigurationController {
 		} catch (SQLException e) {
 			System.out.println("Import failed:\n" + e.toString().split("Exception: ")[1] + "Tuples rules reminder:\n"
 					+ "<id_number>, <user_name>, <password>, <first_name>, <last_name>, <email>, <phone_number>, <region>, <role_type>\n");
+
 		}
 
 	}
+
+
+
 }

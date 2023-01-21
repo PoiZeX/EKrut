@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyUpdateController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.SupplyUpdateController">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -52,8 +52,8 @@
         <columnConstraints>
           <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="172.6666717529297" />
             <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="73.0" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="186.0" />
-            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.3333435058594" minWidth="10.0" prefWidth="451.0" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.66668701171875" minWidth="10.0" prefWidth="175.00003662109376" />
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="477.3333435058594" minWidth="10.0" prefWidth="460.59996337890624" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints fillHeight="false" maxHeight="106.0" minHeight="7.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -65,7 +65,7 @@
                   <Insets left="25.0" />
                </GridPane.margin>
             </ComboBox>
-            <GridPane prefHeight="382.0" prefWidth="326.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <GridPane prefHeight="382.0" prefWidth="450.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -82,10 +82,10 @@
                <children>
                   <TableView fx:id="supplyMangmentTbl" editable="true" prefHeight="310.0" prefWidth="267.0" styleClass="column-header" GridPane.halignment="CENTER">
                     <columns>
-                        <TableColumn fx:id="machineIdCol" prefWidth="70.0" text="machine id" />
-                      <TableColumn fx:id="itemIdCol" prefWidth="70.0" text="item id" />
-                        <TableColumn fx:id="itemNameCol" prefWidth="70.0" text="item name" />
-                        <TableColumn fx:id="currentAmountCol" prefWidth="94.33334350585938" text="current amount" />
+                        <TableColumn fx:id="machineIdCol" prefWidth="85.0" text="machine id" />
+                      <TableColumn fx:id="itemIdCol" text="item id" />
+                        <TableColumn fx:id="itemNameCol" prefWidth="160.0" text="item name" />
+                        <TableColumn fx:id="currentAmountCol" prefWidth="100.0" text="current amount" />
                     </columns>
                      <GridPane.margin>
                         <Insets />
@@ -150,7 +150,7 @@
                       <RowConstraints fillHeight="false" maxHeight="285.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <GridPane prefHeight="86.0" prefWidth="242.0" styleClass="Label-list" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <GridPane prefHeight="110.0" prefWidth="241.0" styleClass="Label-list" GridPane.columnIndex="1" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="53.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="98.0" />
@@ -158,16 +158,19 @@
                           </columnConstraints>
                           <rowConstraints>
                               <RowConstraints fillHeight="false" maxHeight="68.0" minHeight="10.0" prefHeight="34.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints fillHeight="false" maxHeight="68.0" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                             <RowConstraints fillHeight="false" maxHeight="68.0" minHeight="10.0" prefHeight="26.0" valignment="CENTER" vgrow="SOMETIMES" />
                             <RowConstraints fillHeight="false" maxHeight="94.0" minHeight="10.0" prefHeight="38.0" valignment="CENTER" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Name:" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Label text="Minimum amount:" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                              <Label fx:id="machineNameLbl" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                              <Label fx:id="minamountLbl" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label text="Name:" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                              <Label text="Minimum amount:" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                              <Label fx:id="machineNameLbl" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                              <Label fx:id="minamountLbl" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                               <Label text="Region:" />
                               <Label fx:id="regionNameLbl" GridPane.columnIndex="1" />
+                              <Label text="Machine Id:" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                              <Label fx:id="machineIdLbl" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <ImageView fitHeight="131.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">

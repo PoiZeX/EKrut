@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<GridPane fx:id="gridPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="469.0" styleClass="GridPane" stylesheets="@../styles/css/generalStyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ShipmentMethodPopupController">
+  <columnConstraints>
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="436.20001220703125" minWidth="10.0" prefWidth="322.40001220703124" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="230.60003662109375" minWidth="10.0" prefWidth="151.19998779296878" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="89.79999389648438" minHeight="6.599980258941656" prefHeight="45.6000244140625" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="184.20001974105836" minHeight="10.0" prefHeight="87.0" valignment="CENTER" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="203.99998779296874" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="175.1999938964844" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label styleClass="LabelTitle" text="Please select shipment method:" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+      <ComboBox fx:id="shipmentMethodCmb" prefHeight="32.0" prefWidth="223.0" promptText="Pick up/ Delivery" styleClass="ComboBox" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <StackPane prefHeight="150.0" prefWidth="474.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+         <children>
+            <ComboBox fx:id="machineCmb" prefHeight="42.0" prefWidth="214.0" promptText="Choose machine" styleClass="ComboBox" visible="false" />
+         </children>
+      </StackPane>
+      <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="39.0" prefWidth="103.0" styleClass="ButtonNO" text="Cancel" GridPane.rowIndex="3" />
+      <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#confirmMethod" prefHeight="39.0" prefWidth="124.0" styleClass="ButtonYesOK" text="Confirm" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   </children>
+</GridPane>

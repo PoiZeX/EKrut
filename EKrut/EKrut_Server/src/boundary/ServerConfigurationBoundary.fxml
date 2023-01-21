@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="vboxServer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ServerConfigurationController">
+<VBox id="vboxServer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #303841;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerGui.ServerConfigurationController">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -158,7 +158,7 @@
                         </ButtonBar>
                      </children>
                   </GridPane>
-                  <Button id="disconnectBtn" fx:id="importUsersBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#importUsersFromDB" prefHeight="23.0" prefWidth="211.0" style="-fx-background-color: #00ADB5;" text="Import users" textFill="#eeeeee" translateX="7.0">
+                  <Button id="disconnectBtn" fx:id="importUsersBtn" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" prefHeight="23.0" prefWidth="211.0" style="-fx-background-color: #00ADB5;" text="Import users" textFill="#eeeeee" translateX="7.0">
                      <opaqueInsets>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </opaqueInsets>

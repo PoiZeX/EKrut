@@ -20,4 +20,10 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>RELATIVE_FOLDER</name>
+			<value>$%7BPROJECT_LOC%7D/src/styles</value>
+		</variable>
+	</variableList>
 </projectDescription>
