@@ -15,18 +15,19 @@ import common.Message;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import entity.SupplyReportEntity;
 import entity.UserEntity;
 import enums.TaskType;
 import mysql.MySqlClass;
+import ocsf.server.AbstractServer;
 import server.EchoServer;
 import server.ServerUI;
 
 class ReportsDBControllerTest {
 	private static boolean connectionSuccessful = false;
 	private static boolean toConnect = true;
-	private Field connectionField;
 	public static UserEntity connectedUser;
 
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
@@ -64,21 +65,30 @@ class ReportsDBControllerTest {
 		return true;
 	}
 
+	private boolean closeConnection(boolean toClose) throws SQLException {
+		if (toClose)
+			MySqlClass.getConnection().close();
+		return true;
+	}
+	
 	@BeforeEach
 	public void setUp() throws Exception {
 		if (connectionSuccessful)
 			return;
-		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
 		connectionSuccessful = true;
-		connectionField = ReportsDBController.class.getDeclaredField("con");
-		connectionField.setAccessible(true);
+		//ServerUI.runServer("5555", "jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
+		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
+		
 	}
+	
+
 	
 	@Test
 	// Functionality: Supply Report request from the server returns an existing Supply Report
 	// Input: String "supply", String "1", String "12", String "2022", String "1"
 	// Result: SupplyReportEntity
 	void testSuccessfulSupplyReport() throws Exception {
+		connectionSuccessful = true;
 		ReportsDBController.setReport(new String[] { "supply", "1", "12", "2022", "1" });
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = setExpectedResult(63, 1, 7,
@@ -92,7 +102,7 @@ class ReportsDBControllerTest {
 	// Functionality: Supply Report request with month as String from the server returns an existing Supply Report
 	// Input: String "supply", String "1", String "December", String "2022", String "1"
 	// Result: SupplyReportEntity
-	void testSuccessfulNonNumericMonthSupplyReport() throws Exception {
+	void testNonNumericMonthSupplyReport() throws Exception {
 		ReportsDBController.setReport(new String[] { "supply", "1", "December", "2022", "1" });
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = setExpectedResult(63, 1, 7,
@@ -106,11 +116,22 @@ class ReportsDBControllerTest {
 	// Functionality: Supply Report request with empty credentials
 	// Input: String "supply", String "", String "", String "", String ""
 	// Result: SupplyReportEntity
-	void testSuccessfulNullSupplyReport() throws Exception {
+	void testEmptySupplyReport() throws Exception {
 		ReportsDBController.setReport(new String[] { "supply", "", "", "", "1" });
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = new SupplyReportEntity();
 		assertEquals(actualResult.getId(), expectedResult.getId());
 	}
-	
+	@Test
+	// Functionality: Supply Report request with empty credentials
+	// Input: String "supply", String "", String "", String "", String ""
+	// Result: SupplyReportEntity
+	void testDisconnectedFromDBSupplyReport() throws Exception {
+		
+		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
+		SupplyReportEntity expectedResult = new SupplyReportEntity();
+		assertEquals(actualResult.getId(), expectedResult.getId());
+		
+	}
+
 }
