@@ -216,6 +216,9 @@ public class ReportSelectionController implements IScreen {
 		if (errorMsg == "" && !fieldsValidator.isSelectedReportValid()) {
 			errorMsg = "Please Select Valid Report Type";
 		}
+		if (errorMsg == "" && !fieldsValidator.isRegionValid()) {
+			errorMsg = "Please Select Valid Region";
+		}
 		return errorMsg;
 	}
 
@@ -274,9 +277,9 @@ public class ReportSelectionController implements IScreen {
 
 	/**
 	 * @param reportType sets the report type from one of the allowed types
-	 * @param region sets the region from one of the allowed region
-	 * @param month sets the months from one of the allowed months
-	 * @param year sets the year from one of the allowed years
+	 * @param region     sets the region from one of the allowed region
+	 * @param month      sets the months from one of the allowed months
+	 * @param year       sets the year from one of the allowed years
 	 */
 	public void setDetails(String reportType, String region, String month, String year) {
 		this.selectedReport = reportType;
