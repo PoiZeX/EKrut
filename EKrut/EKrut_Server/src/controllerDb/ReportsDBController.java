@@ -45,7 +45,6 @@ public class ReportsDBController {
 			year = details[3];
 			machineID = Integer.parseInt(details[4]);
 			return true;
-
 		}
 		return false;
 	}

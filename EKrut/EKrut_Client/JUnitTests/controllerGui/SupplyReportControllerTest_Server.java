@@ -82,7 +82,7 @@ class SupplyReportControllerTest_Server {
 	// Result: null
 	void testInvalidSupplyReport() throws Exception {
 		SupplyReportController.setReport("", "", "");
-		SupplyReportEntity actualResult = supplyReportController.getSupplyReportFromDB(0);
+		SupplyReportEntity actualResult = supplyReportController.getSupplyReportFromDB(1);
 		assertNull(actualResult.getReportsList());
 	}
 	

@@ -13,9 +13,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import utils.IValidateFields;
 
 /**
  * Controller for the Orders Report screen. Handles displaying the order data in
@@ -55,13 +57,28 @@ public class ReportSelectionController implements IScreen {
 	private Label regionLabel;
 
 	ClientController chat = HostClientController.getChat(); // define the chat for the controller
-
+	ObservableList<String> months, regions, allowedTypes;
+	ObservableList<Integer> years;
 	private String year, month, region;
 	private Button lastPressed = null;
+	private IValidateFields fieldsValidator = new FieldsValidator();
 
-	public ReportSelectionController () {
+	public ReportSelectionController() {
+		years = FXCollections.observableArrayList();
+		for (int i = 2015; i <= 2023; i++)
+			years.add(i);
+
+		months = FXCollections.observableArrayList();
+		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+				"November", "December");
+
+		allowedTypes = FXCollections.observableArrayList();
+		allowedTypes.addAll("clientsReport", "ordersReport", "supplyReport");
+
+		regions = FXCollections.observableArrayList();
+		regions.addAll("North", "UAE", "South");
 	}
-	
+
 	/**
 	 * This method is responsible for handling the event of the 'View Report' button
 	 * being clicked. It validates the user input, and based on the selected report
@@ -120,7 +137,7 @@ public class ReportSelectionController implements IScreen {
 					|| OrdersReportController.reportDetails.getReportsList() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(screen);
+				NavigationStoreController.getInstance().refreshStage(screen);
 			break;
 		case ClientsReport:
 			if (ClientsReportController.reportDetails.getDescription().equals("noreport")
@@ -128,7 +145,7 @@ public class ReportSelectionController implements IScreen {
 					|| ClientsReportController.reportDetails.getSupplyMethodsArr() == null)
 				errorMsgLabel.setText("No Report Found");
 			else
-				NavigationStoreController.getInstance().setCurrentScreen(screen);
+				NavigationStoreController.getInstance().refreshStage(screen);
 		default:
 			break;
 
@@ -148,14 +165,14 @@ public class ReportSelectionController implements IScreen {
 	 */
 	@Override
 	public void initialize() {
-		ObservableList<Integer> years = FXCollections.observableArrayList();
+		years = FXCollections.observableArrayList();
 		for (int i = 2016; i <= 2023; i++) {
 			years.add(i);
 		}
-		ObservableList<String> months = FXCollections.observableArrayList();
+		months = FXCollections.observableArrayList();
 		months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 				"November", "December");
-		ObservableList<String> regions = FXCollections.observableArrayList(DataStore.getRegions());
+		regions = FXCollections.observableArrayList(DataStore.getRegions());
 		setReportButtons();
 		regionCmb.setItems(regions);
 		monthItemsCmb.setItems(months);
@@ -177,24 +194,27 @@ public class ReportSelectionController implements IScreen {
 	 */
 	public String validateFields() {
 		String errorMsg = "";
-		monthItemsCmb.setStyle("-fx-border-color: none;");
-		yearItemsCmb.setStyle("-fx-border-color: none;");
-		if (monthItemsCmb.getSelectionModel().isEmpty() && yearItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Month and Year";
-			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
-			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
-		} else if (monthItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Month";
-			monthItemsCmb.setStyle("-fx-border-color: #ff1414;");
-		} else if (yearItemsCmb.getSelectionModel().isEmpty()) {
-			errorMsg = "Please Select Year";
-			yearItemsCmb.setStyle("-fx-border-color: #ff1414;");
+		fieldsValidator.styleSetter(monthItemsCmb, false);
+		fieldsValidator.styleSetter(yearItemsCmb, false);
+		if (!fieldsValidator.isMonthValid() && !fieldsValidator.isYearValid()) {
+			errorMsg = "Please Select Valid Month and Year";
+			fieldsValidator.styleSetter(monthItemsCmb, true);
+			fieldsValidator.styleSetter(yearItemsCmb, true);
+		} else if (!fieldsValidator.isMonthValid()) {
+			errorMsg = "Please Select Valid Month";
+			fieldsValidator.styleSetter(monthItemsCmb, true);
+		} else if (!fieldsValidator.isYearValid()) {
+			errorMsg = "Please Select Valid Year";
+			fieldsValidator.styleSetter(yearItemsCmb, true);
 		}
-		if (errorMsg != "" && selectedReport == "") {
-			errorMsg += " and Report Type";
+		if (errorMsg != "" && !fieldsValidator.isRegionValid()) {
+			errorMsg += " and Valid Region";
 		}
-		if (errorMsg == "" && selectedReport == "") {
-			errorMsg = "Please Select Report Type";
+		if (errorMsg != "" && !fieldsValidator.isSelectedReportValid()) {
+			errorMsg += " and Valid Report Type";
+		}
+		if (errorMsg == "" && !fieldsValidator.isSelectedReportValid()) {
+			errorMsg = "Please Select Valid Report Type";
 		}
 		return errorMsg;
 	}
@@ -250,6 +270,70 @@ public class ReportSelectionController implements IScreen {
 		});
 	}
 
+	// for unit testing
+
+	/**
+	 * @param reportType sets the report type from one of the allowed types
+	 * @param region sets the region from one of the allowed region
+	 * @param month sets the months from one of the allowed months
+	 * @param year sets the year from one of the allowed years
+	 */
+	public void setDetails(String reportType, String region, String month, String year) {
+		this.selectedReport = reportType;
+		this.region = region;
+		this.month = month;
+		this.year = year;
+	}
+
+	/**
+	 * @return allowed month values
+	 */
+	public ObservableList<String> getMonths() {
+		return months;
+	}
+
+	/**
+	 * @return allowed year values
+	 */
+	public ObservableList<Integer> getYears() {
+		return years;
+	}
+
+	/**
+	 * @return allowed region values
+	 */
+	public ObservableList<String> getRegions() {
+		return regions;
+	}
+
+	/**
+	 * @return allowed report type values
+	 */
+	public ObservableList<String> getReportTypes() {
+		return allowedTypes;
+	}
+
+	/**
+	 * @return selected report year
+	 */
+	public String getSelectedYear() {
+		return year;
+	}
+
+	/**
+	 * @return selected report region
+	 */
+	public String getSelectedRegion() {
+		return region;
+	}
+
+	/**
+	 * @return selected report month
+	 */
+	public String getSelectedMonth() {
+		return month;
+	}
+
 	/**
 	 * 
 	 * This method is used to get the selected report. It returns the selectedReport
@@ -257,11 +341,82 @@ public class ReportSelectionController implements IScreen {
 	 * 
 	 * @return the selected report as a string
 	 */
-	private String getSelectedReport() {
-		return this.selectedReport;
+	public String getSelectedReport() {
+		return selectedReport;
 	}
-	
-	public void setDetails(String reportType, String region, String month, String year) {
-		this.selectedReport = reportType;
+
+	/**
+	 * Sets the fieldsValidator object to a given IValidateFields object
+	 * 
+	 * @param fieldsValidator The IValidateFields object to set as the validator
+	 */
+	public void setValidaions(IValidateFields fieldsValidator) {
+		this.fieldsValidator = fieldsValidator;
+	}
+
+	/**
+	 * Returns the current fieldsValidator object
+	 * 
+	 * @return The current IValidateFields object
+	 */
+	public IValidateFields getValidations() {
+		return fieldsValidator;
+	}
+
+	private class FieldsValidator implements IValidateFields {
+
+		/**
+		 * Checks if the year has been selected
+		 * 
+		 * @return true if year has been selected, false otherwise
+		 */
+		@Override
+		public boolean isYearValid() {
+			return !yearItemsCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Checks if the month has been selected
+		 * 
+		 * @return true if month has been selected, false otherwise
+		 */
+		@Override
+		public boolean isMonthValid() {
+			return !monthItemsCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Checks if the region has been selected
+		 * 
+		 * @return true if region has been selected, false otherwise
+		 */
+		@Override
+		public boolean isRegionValid() {
+			return !regionCmb.getSelectionModel().isEmpty();
+		}
+
+		/**
+		 * Sets the style of a Node depending on the value of a flag
+		 * 
+		 * @param n    The Node to set the style of
+		 * @param flag true to set red border, false to remove border
+		 */
+		@Override
+		public void styleSetter(Node n, boolean flag) {
+			if (flag)
+				n.setStyle("-fx-border-color: #ff1414;");
+			else
+				n.setStyle("-fx-border-color: none;");
+		}
+
+		/**
+		 * Checks if the selected report is valid
+		 * 
+		 * @return true if a report has been selected, false otherwise
+		 */
+		@Override
+		public boolean isSelectedReportValid() {
+			return selectedReport != "";
+		}
 	}
 }
