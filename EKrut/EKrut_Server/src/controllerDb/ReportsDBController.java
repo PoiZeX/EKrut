@@ -21,8 +21,16 @@ import ocsf.server.ConnectionToClient;
 public class ReportsDBController {
 	private static String reportType, month, year, region;
 	private static int machineID;
-	private static Connection con = MySqlClass.getConnection();
+	private static Connection con;
 
+	public ReportsDBController() {
+		con = MySqlClass.getConnection();
+	}
+	
+	public ReportsDBController(Connection connection) {
+		con = connection;
+	}
+	
 	/**
 	 * Sets the report.
 	 *
@@ -157,6 +165,7 @@ public class ReportsDBController {
 		try {
 			if (con == null)
 				return report;
+			System.out.println(year + month + region);
 			String query = "SELECT * FROM ekrut.supply_report where month = ? AND year = ? AND machine_id = ?";
 
 			PreparedStatement ps = con.prepareStatement(query);

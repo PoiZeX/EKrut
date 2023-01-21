@@ -62,7 +62,7 @@ public class ReportsGenerator {
 	 *
 	 * @param machineId the machine id
 	 */
-	private static void generateSupplyReportForMachineID(int machineId) {
+	public static void generateSupplyReportForMachineID(int machineId) {
 		try {
 			Connection con = MySqlClass.getConnection();
 			if (con == null)
