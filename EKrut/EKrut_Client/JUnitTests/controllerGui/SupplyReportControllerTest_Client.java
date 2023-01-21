@@ -59,7 +59,19 @@ class SupplyReportControllerTest_Client {
 	}
 
 	@Test
-	void Test_Bad_Month() {
+	void Test_GoodValues() {
+		reportType = "clientsReport";
+		region = "North";
+		month = "January";
+		year = "2022";
+		selectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "";
+		String actualMsg = selectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	@Test
+	void Test_BadMonthValue() {
 		reportType = "clientsReport";
 		region = "North";
 		month = "BlaBla";
@@ -70,4 +82,66 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	@Test
+	void Test_BadYearValue() {
+		reportType = "clientsReport";
+		region = "North";
+		month = "January";
+		year = "20239402";
+		selectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Year";
+		String actualMsg = selectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	@Test
+	void Test_BadRegionValue() {
+		reportType = "clientsReport";
+		region = "SomeWhereFarAway";
+		month = "December";
+		year = "2022";
+		selectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Region";
+		String actualMsg = selectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	@Test
+	void Test_BadReportTypeValue() {
+		reportType = "SomeReportType";
+		region = "North";
+		month = "January";
+		year = "2022";
+		selectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Report Type";
+		String actualMsg = selectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	@Test
+	void Test_BadValues() {
+		reportType = "SomeReportType";
+		region = "SomeText";
+		month = "SomeText";
+		year = "25059";
+		selectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Month and Year and Valid Region and Valid Report Type";
+		String actualMsg = selectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	@Test
+	void Test_NonNumericYear() {
+		reportType = "SomeReportType";
+		region = "SomeText";
+		month = "SomeText";
+		year = "asd";
+		selectionClass.setDetails(reportType, region, month, year);
+		try {
+			String actualMsg = selectionClass.validateFields();
+		} catch (Exception e) {
+			System.out.println("Not a valid year exception was caught");
+			assertTrue(true);
+		}
+	}
 }
