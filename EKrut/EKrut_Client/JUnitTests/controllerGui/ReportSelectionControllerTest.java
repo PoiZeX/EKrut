@@ -9,44 +9,41 @@ import utils.IValidateFields;
 
 class ReportSelectionControllerTest {
 	class FieldsValidatorStub implements IValidateFields {
-
 		@Override
 		public boolean isYearValid() {
-			return validatorClass.getYears().contains(Integer.parseInt(validatorClass.getSelectedYear()));
+			return (ReportSelectionClass.getSelectedYear() != "" && ReportSelectionClass.getYears().contains(Integer.parseInt(ReportSelectionClass.getSelectedYear())));
 		}
 
 		@Override
 		public boolean isMonthValid() {
-			return validatorClass.getMonths().contains(validatorClass.getSelectedMonth());
+			return ReportSelectionClass.getMonths().contains(ReportSelectionClass.getSelectedMonth());
 		}
 
 		@Override
 		public boolean isRegionValid() {
-			return validatorClass.getRegions().contains(validatorClass.getSelectedRegion());
+			return ReportSelectionClass.getRegions().contains(ReportSelectionClass.getSelectedRegion());
 		}
 
 		@Override
 		public boolean isSelectedReportValid() {
-			return validatorClass.getReportTypes().contains(validatorClass.getSelectedReport());
+			return ReportSelectionClass.getReportTypes().contains(ReportSelectionClass.getSelectedReport());
 		}
 
 		@Override
 		public void styleSetter(Node n, boolean flag) {
 			return;
 		}
-
 	}
 
 	private FieldsValidatorStub validatorStub;
-	private ReportSelectionController validatorClass;
+	private ReportSelectionController ReportSelectionClass;
 	private String reportType, region, month, year;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-
-		validatorClass = new ReportSelectionController();
+		ReportSelectionClass = new ReportSelectionController();
 		validatorStub = new FieldsValidatorStub();
-		validatorClass.setValidaions(validatorStub);
+		ReportSelectionClass.setValidaions(validatorStub);
 	}
 	/**
 	 * Functionality : Test that all values are good error message indicator is
@@ -59,9 +56,9 @@ class ReportSelectionControllerTest {
 		region = "North";
 		month = "January";
 		year = "2022";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -76,9 +73,9 @@ class ReportSelectionControllerTest {
 		region = "North";
 		month = "BlaBla";
 		year = "2022";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "Please Select Valid Month";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -93,9 +90,9 @@ class ReportSelectionControllerTest {
 		region = "North";
 		month = "January";
 		year = "20239402";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "Please Select Valid Year";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -110,9 +107,9 @@ class ReportSelectionControllerTest {
 		region = "SomeWhereFarAway";
 		month = "December";
 		year = "2022";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "Please Select Valid Region";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -127,9 +124,9 @@ class ReportSelectionControllerTest {
 		region = "North";
 		month = "January";
 		year = "2022";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "Please Select Valid Report Type";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -144,9 +141,9 @@ class ReportSelectionControllerTest {
 		region = "SomeText";
 		month = "SomeText";
 		year = "25059";
-		validatorClass.setDetails(reportType, region, month, year);
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		String expectedMsg = "Please Select Valid Month and Year and Valid Region and Valid Report Type";
-		String actualMsg = validatorClass.validateFields();
+		String actualMsg = ReportSelectionClass.validateFields();
 		assertEquals(expectedMsg, actualMsg);
 	}
 
@@ -156,14 +153,14 @@ class ReportSelectionControllerTest {
 	 * Result : exception about bad year thrown
 	 */
 	@Test
-	void validateFieldsTestInvalidFieldsNonNumericYearFeiledSucsses() {
-		reportType = "SomeReportType";
-		region = "SomeText";
-		month = "SomeText";
-		year = "asd";
-		validatorClass.setDetails(reportType, region, month, year);
+	void validateFieldsTestInvalidFieldsNonNumericYearFailedSucsses() {
+		reportType = "";
+		region = "";
+		month = "";
+		year = "NonInteger";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
 		try {
-			String actualMsg = validatorClass.validateFields();
+			String actualMsg = ReportSelectionClass.validateFields();
 		} catch (Exception e) {
 			System.out.println("Not a valid year exception was caught in : Test_NonNumericYear");
 			assertTrue(true);
@@ -171,4 +168,122 @@ class ReportSelectionControllerTest {
 	}
 
 
+	/**
+	 * Functionality : Test that error message shows bad month selection Input :
+	 * Valid reportType region year, Empty month 
+	 * Result : error message indicates bad month selected
+	 */
+	@Test
+	void validateFieldsTestEmptyMonthSucsses() {
+		reportType = "clientsReport";
+		region = "North";
+		month = "";
+		year = "2022";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Month";
+		String actualMsg = ReportSelectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message shows bad year selection 
+	 * Input : Valid reportType region month, Empty year 
+	 * Result : error message indicates bad year selected
+	 */
+	@Test
+	void validateFieldsTestEmptyYearSucsses() {
+		reportType = "clientsReport";
+		region = "North";
+		month = "January";
+		year = "";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Year";
+		String actualMsg = ReportSelectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message shows bad region selection 
+	 * Input : Valid reportType month year, Empty region 
+	 * Result : error message indicates bad region selected
+	 */
+	@Test
+	void validateFieldsTestEmptyRegionAndYearSucsses() {
+		reportType = "clientsReport";
+		region = "";
+		month = "December";
+		year = "";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Year and Valid Region";
+		String actualMsg = ReportSelectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message shows bad reportType selection 
+	 * Input : Valid year region month, Empty reportType 
+	 * Result : error message indicates bad reportType selected
+	 */
+	@Test
+	void validateFieldsTestEmptyReportTypeAndRegionSucsses() {
+		reportType = "";
+		region = "";
+		month = "January";
+		year = "2022";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Report Type and Valid Region";
+		String actualMsg = ReportSelectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message shows all bad values selection 
+	 * Input : Valid reportType region month, invalid year 
+	 * Result : error message indicates bad year selected
+	 */
+	@Test
+	void validateFieldsTestEmptyFieldsSucsses() {
+		reportType = "";
+		region = "";
+		month = "";
+		year = "";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Please Select Valid Month and Year and Valid Region and Valid Report Type";
+		String actualMsg = ReportSelectionClass.validateFields();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message is empty on valid date selection
+	 * Input : valid date
+	 * Result : error message is empty
+	 */
+	@Test
+	void validateDateTestValidDateSuccess() {
+		reportType = "supplyReport";
+		region = "North";
+		month = "December";
+		year = "2020";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "";
+		String actualMsg = ReportSelectionClass.validateDate();
+		assertEquals(expectedMsg, actualMsg);
+	}
+
+	/**
+	 * Functionality : Test that error message shows invalid date on later date selected
+	 * Input : invalid date
+	 * Result : error message shows invalid date selected
+	 */
+	@Test
+	void validateDateTestInvalidDateSuccess() {
+		reportType = "supplyReport";
+		region = "North";
+		month = "December";
+		year = "2025";
+		ReportSelectionClass.setDetails(reportType, region, month, year);
+		String expectedMsg = "Cannot select date greater than today.";
+		String actualMsg = ReportSelectionClass.validateDate();
+		assertEquals(expectedMsg, actualMsg);
+	}
 }

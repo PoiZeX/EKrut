@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import entity.SupplyReportEntity;
-import javafx.scene.Node;
 import utils.IReportsFromDB;
-import utils.IValidateFields;
-import utils.PopupSetter;
 
 class SupplyReportControllerTest_Client {
 
