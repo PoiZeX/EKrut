@@ -216,7 +216,6 @@ class ReportsDBControllerTest {
 	// Result: SupplyReportEntity
 	void testInvalidRegionSupplyReport() throws Exception {
 		new ReportsDBController();
-
 		ReportsDBController.setReport(setReportDetails("$a", "", "", "1"));
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = new SupplyReportEntity();
