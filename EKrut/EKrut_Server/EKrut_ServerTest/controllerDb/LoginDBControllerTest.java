@@ -19,7 +19,7 @@ class LoginDBControllerTest {
 	void setUp() throws Exception {
 		if(isConnected) return;
 		// setup connection to mysql
-		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "Vital242");
+		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "Aa123456");
 		con = MySqlClass.getConnection();
 		isConnected = true;
 	}
