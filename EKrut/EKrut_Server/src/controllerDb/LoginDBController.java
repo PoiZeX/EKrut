@@ -87,7 +87,7 @@ public class LoginDBController {
 	 * Sets the user logged in.
 	 *
 	 * @param user the new user logged in
-	 */
+	 */ 
 	public static void setUserLoggedIn(UserEntity user) {
 		try {
 			if (con == null)
