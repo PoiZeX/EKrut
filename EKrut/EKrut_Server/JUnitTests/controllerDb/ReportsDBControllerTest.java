@@ -76,7 +76,6 @@ class ReportsDBControllerTest {
 		if (connectionSuccessful)
 			return;
 		connectionSuccessful = true;
-		//ServerUI.runServer("5555", "jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
 		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
 		
 	}
