@@ -222,12 +222,13 @@ class SupplyReportControllerTest_Client {
 		SupplyReportEntity misMatchedItems = new SupplyReportEntity(61, 1, 7,
 				"2,1,4,3,6,5,9,11,7,10,8,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
 				"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-				"10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "11", "2022", "1");
+				"7,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "11", "2022", "1");
+
 		reportsGetterStub.setPrevReport(misMatchedItems);
 		supplyReportClass.setCurrentReport(supplyReportClass.getSupplyReportFromDB(machineID));
 		ArrayList<String> actualRes = supplyReportClass.intersectItems(machineID);
 		ArrayList<String> expectedRes = new ArrayList<String>(
-				Arrays.asList(new String[] { "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10",
+				Arrays.asList(new String[] { "10", "7", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10",
 						"10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10" }));
 		assertEquals(expectedRes, actualRes);
 	}
