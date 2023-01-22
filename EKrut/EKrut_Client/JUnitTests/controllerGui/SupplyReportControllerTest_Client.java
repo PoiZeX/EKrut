@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import entity.SupplyReportEntity;
-import javafx.scene.Node;
 import utils.IReportsFromDB;
-import utils.IValidateFields;
-import utils.PopupSetter;
 
 class SupplyReportControllerTest_Client {
 
@@ -50,6 +47,7 @@ class SupplyReportControllerTest_Client {
 				"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
 				"10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "12", "2022", "1");
 	}
+	
 	/**
 	 * Functionality : Test that when previous month report is valid, start amount is calculated correctly
 	 * Input : Valid report and previous report
@@ -133,7 +131,7 @@ class SupplyReportControllerTest_Client {
 						"10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10" }));
 		assertEquals(expectedRes, actualRes);
 	}
-
+	
 	/**
 	 * Functionality : Test that the report label is displayed correctly
 	 * Input : region month and year

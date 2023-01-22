@@ -1,9 +1,19 @@
 package controllerGui;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import Store.DataStore;
 import Store.NavigationStoreController;
 import client.ClientController;
+import common.CommonFunctions;
 import common.Message;
+import entity.ItemInMachineEntity;
+import enums.PopupTypeEnum;
 import enums.RolesEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
@@ -18,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import utils.IValidateFields;
+import utils.PopupSetter;
 
 /**
  * Controller for the Orders Report screen. Handles displaying the order data in
@@ -89,14 +100,15 @@ public class ReportSelectionController implements IScreen {
 	@FXML
 	void viewReport(ActionEvent event) {
 		String error = validateFields();
-		errorMsgLabel.setText(error);
+		String dateError = validateDate();
+		if (error != "")
+			errorMsgLabel.setText(error);
+		else if (dateError != "")
+			errorMsgLabel.setText(dateError);
 		///
 		error = "";
 		///
-		if (error.equals("")) {
-			month = monthItemsCmb.getSelectionModel().getSelectedItem();
-			year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
-			region = regionCmb.getSelectionModel().getSelectedItem();
+		if (dateError.equals("") && error.equals("")) {
 			switch (getSelectedReport()) {
 			case "supplyReport":
 				SupplyReportController.setReport(year, month, region);
@@ -112,6 +124,26 @@ public class ReportSelectionController implements IScreen {
 				break;
 			}
 		}
+	}
+
+	public String validateDate() {
+		String errorMsg = "";
+		if (year == null || month == null)
+			return "";
+		try {
+			Format monthFormat = new SimpleDateFormat("MM");
+			Format yearFormat = new SimpleDateFormat("yyyy");
+			Date selectedDate = new SimpleDateFormat("MM/yyyy")
+					.parse(String.format("%s/%s", CommonFunctions.getNumericMonth(month), year));
+			Date todaysDate = new SimpleDateFormat("MM/yyyy")
+					.parse(String.format("%s/%s", monthFormat.format(Calendar.getInstance().getTime()),
+							yearFormat.format(Calendar.getInstance().getTime())));
+			if (selectedDate.compareTo(todaysDate) > 0)
+				errorMsg = "Cannot select date greater than today.";
+		} catch (ParseException e) {
+		}
+		return errorMsg;
+
 	}
 
 	/**
@@ -185,6 +217,21 @@ public class ReportSelectionController implements IScreen {
 			regionCmb.getSelectionModel().select(region);
 		}
 
+		regionCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				region = newValue;
+			}
+		});
+		monthItemsCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				month = newValue;
+			}
+		});
+		yearItemsCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				year = newValue.toString();
+			}
+		});
 	}
 
 	/***
@@ -207,17 +254,17 @@ public class ReportSelectionController implements IScreen {
 			errorMsg = "Please Select Valid Year";
 			fieldsValidator.styleSetter(yearItemsCmb, true);
 		}
-		if (errorMsg != "" && !fieldsValidator.isRegionValid()) {
-			errorMsg += " and Valid Region";
-		}
-		if (errorMsg != "" && !fieldsValidator.isSelectedReportValid()) {
-			errorMsg += " and Valid Report Type";
-		}
 		if (errorMsg == "" && !fieldsValidator.isSelectedReportValid()) {
 			errorMsg = "Please Select Valid Report Type";
 		}
+		if (errorMsg != "" && !errorMsg.contains("Region") && !fieldsValidator.isRegionValid()) {
+			errorMsg += " and Valid Region";
+		}
 		if (errorMsg == "" && !fieldsValidator.isRegionValid()) {
 			errorMsg = "Please Select Valid Region";
+		}
+		if (errorMsg != "" && !errorMsg.contains("Report Type") && !fieldsValidator.isSelectedReportValid()) {
+			errorMsg += " and Valid Report Type";
 		}
 		return errorMsg;
 	}
