@@ -503,10 +503,10 @@ public class ReviewOrderController implements IScreen {
 			errMsg.append("City can contain letters and space only in length of 2-12\n");
 
 		if (!Pattern.matches("^[a-zA-Z][a-zA-Z 0-9]{1,12}$", streetTxtField.getText()))
-			errMsg.append("Street can contain number and '/' only in length of 1-5\n");
+			errMsg.append("Street can contain number and / only in length of 1-5\n");
 
 		if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText()))
-			errMsg.append("Apartment number can contain number and '/' only in length of 1-5\n");
+			errMsg.append("Apartment number can contain number and / only in length of 1-5\n");
 
 		address.append(streetTxtField.getText());
 		address.append(" " + aptTxtField.getText());

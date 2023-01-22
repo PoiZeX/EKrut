@@ -363,12 +363,12 @@ public class ViewCatalogController implements IScreen {
 			Button minusBtn = (Button) btnBar.getChildren().get(0);
 			Label amountLabel = (Label) btnBar.getChildren().get(1);
 			Button plusBtn = (Button) btnBar.getChildren().get(2);
-			Button addToCartBtn = (Button) newItem.getChildren().get(2);
-			Label priceLabel = (Label) newItem.getChildren().get(3);
-			Label productNameLabel = (Label) newItem.getChildren().get(4);
-			Text discountPriceLabel = (Text) newItem.getChildren().get(5);
-			ImageView salePersentageIconImg = (ImageView) newItem.getChildren().get(6);
-			ImageView onePlusOneImg = (ImageView) newItem.getChildren().get(7);
+			//Button addToCartBtn = (Button) newItem.getChildren().get(2);
+			Label priceLabel = (Label) newItem.getChildren().get(2);
+			Label productNameLabel = (Label) newItem.getChildren().get(3);
+			Text discountPriceLabel = (Text) newItem.getChildren().get(4);
+			ImageView salePersentageIconImg = (ImageView) newItem.getChildren().get(5);
+			ImageView onePlusOneImg = (ImageView) newItem.getChildren().get(6);
 
 			productNameLabel.setText(item.getName());
 			if (OrderController.isOnePlusOneSaleExist() && currentSupplyMethod != "Delivery" && isMember)
@@ -402,6 +402,7 @@ public class ViewCatalogController implements IScreen {
 			Button deleteItemBtn = (Button) newItemInCart.getChildren().get(5);
 			itemInCartNameLabel.setText(item.getName());
 			itemInCartNameLabel.setWrapText(true);
+			minusBtn.setDisable(true);
 			// Handle delete button
 			deleteItemBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
@@ -410,8 +411,10 @@ public class ViewCatalogController implements IScreen {
 						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't change the item's amount");
 					// Update total amount and price
 					updateCartTotalLabels();
-					addToCartBtn.setOpacity(1);
-					addToCartBtn.setMouseTransparent(false);
+					amountLabel.setText("0");
+					minusBtn.setDisable(true);
+//					addToCartBtn.setOpacity(1);
+//					addToCartBtn.setMouseTransparent(false);
 					cartViewGridpane.getChildren().remove(cartViewGridpane.getChildren().indexOf(newItemInCart));
 					reorderCart(cartViewGridpane);
 				}
@@ -420,45 +423,46 @@ public class ViewCatalogController implements IScreen {
 			image.setImage(item.getItemImage());
 
 			// Add to cart button
-			addToCartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent e) {
-					// Check if it's possible to add the item
-					if (item.getCurrentAmount() > 0) {
-						addToCartBtn.setOpacity(0);
-						addToCartBtn.setMouseTransparent(true);
-						amountLabel.setText("1");
-						int amount = Integer.parseInt(amountLabel.getText());
-						itemInCartAmountLabel.setText(amountLabel.getText());
-						cartViewGridpane.add(newItemInCart, 0, cartViewGridpane.getChildren().size());
-						if (item.getCurrentAmount() == 1) {
-							plusBtn.setDisable(true);
-							itemInCartPlusBtn.setDisable(true);
-						}
-						if (!OrderController.addItemToCart(item, amount)) // Add item to cart
-							PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
-					}
-					cartGroup.setVisible(true);
-					viewCartPane.setVisible(false);
-					viewCartPane.setMouseTransparent(false);
-					itemInCartNameLabel.setTooltip(new TooltipSetter(itemInCartNameLabel.getText()).getTooltip());
-					updateCartTotalLabels();
-				}
-			});
+////			addToCartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//				@Override
+//				public void handle(MouseEvent e) {
+//					// Check if it's possible to add the item
+//					if (item.getCurrentAmount() > 0) {
+//						//addToCartBtn.setOpacity(0);
+//						addToCartBtn.setPrefSize(20, 20);
+//						addToCartBtn.setMouseTransparent(true);
+//						amountLabel.setText("1");
+//						int amount = Integer.parseInt(amountLabel.getText());
+//						itemInCartAmountLabel.setText(amountLabel.getText());
+//						cartViewGridpane.add(newItemInCart, 0, cartViewGridpane.getChildren().size());
+//						if (item.getCurrentAmount() == 1) {
+//							plusBtn.setDisable(true);
+//							itemInCartPlusBtn.setDisable(true);
+//						}
+//						if (!OrderController.addItemToCart(item, amount)) // Add item to cart
+//							PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+//					}
+//					cartGroup.setVisible(true);
+//					viewCartPane.setVisible(false);
+//					viewCartPane.setMouseTransparent(false);
+//					itemInCartNameLabel.setTooltip(new TooltipSetter(itemInCartNameLabel.getText()).getTooltip());
+//					updateCartTotalLabels();
+//				}
+//			});
 
-			plusBtn.setOnMouseClicked(getPlusEvent(amountLabel, plusBtn, itemInCartPlusBtn, addToCartBtn, newItemInCart,
+			plusBtn.setOnMouseClicked(getPlusEvent(amountLabel, plusBtn, itemInCartPlusBtn, minusBtn, newItemInCart,
 					item, itemInCartAmountLabel, true));
-			minusBtn.setOnMouseClicked(getMinusEvent(amountLabel, plusBtn, itemInCartPlusBtn, addToCartBtn,
+			minusBtn.setOnMouseClicked(getMinusEvent(amountLabel, plusBtn, itemInCartPlusBtn, minusBtn,
 					newItemInCart, item, itemInCartAmountLabel, true));
-			itemInCartPlusBtn.setOnMouseClicked(getPlusEvent(amountLabel, plusBtn, itemInCartPlusBtn, addToCartBtn,
+			itemInCartPlusBtn.setOnMouseClicked(getPlusEvent(amountLabel, plusBtn, itemInCartPlusBtn, minusBtn,
 					newItemInCart, item, itemInCartAmountLabel, false));
-			itemInCartMinusBtn.setOnMouseClicked(getMinusEvent(amountLabel, plusBtn, itemInCartPlusBtn, addToCartBtn,
+			itemInCartMinusBtn.setOnMouseClicked(getMinusEvent(amountLabel, plusBtn, itemInCartPlusBtn, minusBtn,
 					newItemInCart, item, itemInCartAmountLabel, false));
 			if (item.getCurrentAmount() == 0) {
 				newItem.setDisable(true);
 				image.setOpacity(0.5);
 				btnBar.setVisible(false);
-				addToCartBtn.setText("Not Available");
+			//	addToCartBtn.setText("Not Available");
 			}
 			productNameLabel.setTooltip(new TooltipSetter(productNameLabel.getText()).getTooltip());
 			//productNameLabel.getTooltip().setShowDelay(Duration.seconds(0.7));
@@ -502,7 +506,7 @@ public class ViewCatalogController implements IScreen {
 	 * @return an EventHandler that handles the MouseEvent
 	 */
 	private EventHandler<MouseEvent> getMinusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
-			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
+			Button minusBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
 			boolean flag) {
 		EventHandler<MouseEvent> minusEvent = new EventHandler<MouseEvent>() {
 			@Override
@@ -515,8 +519,13 @@ public class ViewCatalogController implements IScreen {
 					itemInCartPlusBtn.setDisable(false);
 				}
 				if (amount == 0) {
-					addToCartBtn.setOpacity(1);
-					addToCartBtn.setMouseTransparent(false);
+					minusBtn.setDisable(true);
+//					//addToCartBtn.setOpacity(1);
+//					addToCartBtn.setVisible(true);
+//					addToCartBtn.setPrefHeight(40.0);
+//					addToCartBtn.setPrefWidth(178.0);
+//					addToCartBtn.setMouseTransparent(false);
+					
 					if (!OrderController.changeItemQuantity(item, 0))
 						PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
 
@@ -531,7 +540,8 @@ public class ViewCatalogController implements IScreen {
 					viewCartPane.setVisible(false);
 					viewCartPane.setMouseTransparent(false);
 				}
-
+				
+				
 				updateCartTotalLabels();
 			}
 		};
@@ -559,14 +569,23 @@ public class ViewCatalogController implements IScreen {
 	 *         item in the cart.
 	 */
 	private EventHandler<MouseEvent> getPlusEvent(Label amountLabel, Button plusBtn, Button itemInCartPlusBtn,
-			Button addToCartBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
+			Button minusBtn, GridPane newItemInCart, ItemInMachineEntity item, Label itemInCartAmountLabel,
 			boolean flag) {
 		EventHandler<MouseEvent> plusEvent = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				int amount = Integer.parseInt(amountLabel.getText());
+				minusBtn.setDisable(false);
 				amountLabel.setText(String.valueOf(amount + 1));
 				amount = Integer.parseInt(amountLabel.getText());
+				if(amount==1) {
+					cartViewGridpane.add(newItemInCart, 0, cartViewGridpane.getChildren().size());
+					cartGroup.setVisible(true);
+					viewCartPane.setVisible(false);
+					viewCartPane.setMouseTransparent(false);
+					updateCartTotalLabels();
+					OrderController.addItemToCart(item, amount);
+				}
 				if (amount == item.getCurrentAmount()) {
 					plusBtn.setDisable(true);
 					itemInCartPlusBtn.setDisable(true);
@@ -581,6 +600,19 @@ public class ViewCatalogController implements IScreen {
 				}
 				updateCartTotalLabels();
 			}
+			
+//			int amount = Integer.parseInt(amountLabel.getText());
+//			itemInCartAmountLabel.setText(amountLabel.getText());
+//			cartViewGridpane.add(newItemInCart, 0, cartViewGridpane.getChildren().size());
+//			if (item.getCurrentAmount() == 1) {
+//				plusBtn.setDisable(true);
+//				itemInCartPlusBtn.setDisable(true);
+//			}
+//			if (!OrderController.addItemToCart(item, amount)) // Add item to cart
+//				PopupSetter.createPopup(PopupTypeEnum.Warning, "Couldn't add the item to the cart");
+//		}
+	
+			
 		};
 		return plusEvent;
 	}
@@ -793,7 +825,7 @@ public class ViewCatalogController implements IScreen {
 		minusBtn.setPrefWidth(55.0);
 		minusBtn.getStyleClass().add("Button-NoBG");
 
-		Label quantityLabel = new Label("#");
+		Label quantityLabel = new Label("0");
 		quantityLabel.setId("quntityLabel");
 
 		Button plusBtn = new Button("+");
@@ -811,17 +843,17 @@ public class ViewCatalogController implements IScreen {
 		changeQuantityBtn.getButtons().add(buttonPane);
 		// -------------------------------------------------------------------------
 
-		Button AddToCartBtn = new Button();
-		AddToCartBtn.setId("button_AddToCart");
-		AddToCartBtn.setMaxHeight(Double.NEGATIVE_INFINITY);
-		AddToCartBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
-		AddToCartBtn.setMinHeight(Double.NEGATIVE_INFINITY);
-		AddToCartBtn.setMinWidth(Double.NEGATIVE_INFINITY);
-		AddToCartBtn.setMnemonicParsing(false);
-		AddToCartBtn.setPrefHeight(40.0);
-		AddToCartBtn.setPrefWidth(178.0);
-		AddToCartBtn.getStylesheets().add("/styles/css/generalStyleSheet.css");
-		AddToCartBtn.setText("Add To Cart");
+//		Button AddToCartBtn = new Button();
+//		AddToCartBtn.setId("button_AddToCart");
+//		AddToCartBtn.setMaxHeight(Double.NEGATIVE_INFINITY);
+//		AddToCartBtn.setMaxWidth(Double.NEGATIVE_INFINITY);
+//		AddToCartBtn.setMinHeight(Double.NEGATIVE_INFINITY);
+//		AddToCartBtn.setMinWidth(Double.NEGATIVE_INFINITY);
+//		AddToCartBtn.setMnemonicParsing(false);
+//		AddToCartBtn.setPrefHeight(40.0);
+//		AddToCartBtn.setPrefWidth(178.0);
+//		AddToCartBtn.getStylesheets().add("/styles/css/generalStyleSheet.css");
+//		AddToCartBtn.setText("Add To Cart");
 
 		Label priceLabel = new Label();
 		priceLabel.setPrefHeight(15.0);
@@ -863,7 +895,7 @@ public class ViewCatalogController implements IScreen {
 
 		itemViewGridpane.add(itemImageView, 0, 0);
 		itemViewGridpane.add(changeQuantityBtn, 0, 3);
-		itemViewGridpane.add(AddToCartBtn, 0, 3);
+	//	itemViewGridpane.add(AddToCartBtn, 0, 3);
 		itemViewGridpane.add(priceLabel, 0, 2);
 		itemViewGridpane.add(productLabel, 0, 1);
 		itemViewGridpane.add(text, 1, 2);
@@ -880,8 +912,8 @@ public class ViewCatalogController implements IScreen {
 		GridPane.setColumnSpan(productLabel, 2);
 		GridPane.setHalignment(productLabel, HPos.LEFT);
 		GridPane.setRowIndex(productLabel, 1);
-		GridPane.setColumnSpan(AddToCartBtn, 2);
-		GridPane.setRowIndex(AddToCartBtn, 3);
+//		GridPane.setColumnSpan(AddToCartBtn, 2);
+//		GridPane.setRowIndex(AddToCartBtn, 3);
 		GridPane.setHalignment(plusBtn, HPos.RIGHT);
 		GridPane.setRowIndex(plusBtn, 0);
 		GridPane.setHalignment(quantityLabel, HPos.CENTER);
@@ -988,7 +1020,7 @@ public class ViewCatalogController implements IScreen {
 		itemInCartNameLabel.setMinHeight(-1.0);
 		itemInCartNameLabel.setMinWidth(-1.0);
 		itemInCartNameLabel.setPrefHeight(50.0);
-		itemInCartNameLabel.setPrefWidth(65.0);
+		itemInCartNameLabel.setPrefWidth(60.0);
 		itemInCartNameLabel.getStyleClass().add("Label-list");
 		itemInCartNameLabel.setText("Label");
 
@@ -1002,7 +1034,7 @@ public class ViewCatalogController implements IScreen {
 		minusAmountInCartBtn.setMinWidth(-1.0);
 		minusAmountInCartBtn.setMnemonicParsing(false);
 		minusAmountInCartBtn.setPrefHeight(25.0);
-		minusAmountInCartBtn.setPrefWidth(40.0);
+		minusAmountInCartBtn.setPrefWidth(25.0);
 		minusAmountInCartBtn.getStyleClass().add("Button-NoBG");
 		minusAmountInCartBtn.setText("");
 
@@ -1020,7 +1052,7 @@ public class ViewCatalogController implements IScreen {
 		Label itemInCartAmountLabel = new Label();
 		itemInCartAmountLabel.setAlignment(Pos.CENTER);
 		itemInCartAmountLabel.setPrefHeight(15.0);
-		itemInCartAmountLabel.setPrefWidth(33.0);
+		itemInCartAmountLabel.setPrefWidth(30.0);
 		itemInCartAmountLabel.setText("0");
 
 		Button plusAmountInCartBtn = new Button();
@@ -1029,7 +1061,7 @@ public class ViewCatalogController implements IScreen {
 		plusAmountInCartBtn.setMinHeight(-1.0);
 		plusAmountInCartBtn.setMinWidth(-1.0);
 		plusAmountInCartBtn.setPrefHeight(25.0);
-		plusAmountInCartBtn.setPrefWidth(40.0);
+		plusAmountInCartBtn.setPrefWidth(25.0);
 
 		ImageView plusAmountInCartBtnGraphic = new ImageView();
 		plusAmountInCartBtnGraphic.setFitHeight(20.0);
@@ -1046,24 +1078,24 @@ public class ViewCatalogController implements IScreen {
 		deleteItemBtn.setMinHeight(-1.0);
 		deleteItemBtn.setMinWidth(-1.0);
 		deleteItemBtn.setPrefHeight(30.0);
-		deleteItemBtn.setPrefWidth(41.0);
+		deleteItemBtn.setPrefWidth(35.0);
+
 
 		ImageView deleteItemBtnGraphic = new ImageView();
 		deleteItemBtnGraphic.setFitHeight(25.0);
-		deleteItemBtnGraphic.setFitWidth(42.0);
-		deleteItemBtnGraphic.setPickOnBounds(true);
+		deleteItemBtnGraphic.setFitWidth(25.0);
+		//deleteItemBtnGraphic.setPickOnBounds(true);
 		deleteItemBtnGraphic.setPreserveRatio(true);
 		Image deleteItemBtnImage = new Image(getClass().getResourceAsStream("/styles/icons/xIcon_noCircle.png"));
 		deleteItemBtnGraphic.setImage(deleteItemBtnImage);
 		deleteItemBtn.setGraphic(deleteItemBtnGraphic);
-
 		gridPane.add(itemInCartImage, 1, 0);
 		gridPane.add(itemInCartNameLabel, 2, 0);
 		gridPane.add(minusAmountInCartBtn, 3, 0);
 		gridPane.add(itemInCartAmountLabel, 4, 0);
 		gridPane.add(plusAmountInCartBtn, 5, 0);
 		gridPane.add(deleteItemBtn, 0, 0);
-
+	
 		GridPane.setHalignment(minusAmountInCartBtn, HPos.CENTER);
 
 		GridPane.setHalignment(itemInCartNameLabel, HPos.LEFT);
