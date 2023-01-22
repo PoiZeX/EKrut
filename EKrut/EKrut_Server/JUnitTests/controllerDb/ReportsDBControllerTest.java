@@ -1,5 +1,6 @@
 package controllerDb;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +16,18 @@ import mysql.MySqlClass;
 
 class ReportsDBControllerTest {
 	private static boolean isConnected = false;
-	public static UserEntity connectedUser;
 	private Connection nullConnection;
+	private String reportRegion, reportMonth, reportYear, reportMachineID;
+	final private String SUPPLY = "supply";
 
+	private String[] setReportDetails(String region, String month, String year, String machineID) {
+		reportRegion = region;
+		reportMonth = month;
+		reportYear = year;
+		reportMachineID = machineID;
+		return new String[] {SUPPLY, reportRegion, reportMonth, reportYear, reportMachineID};
+	}
+	
 	// Sets up and return a new SupplyReportEntity
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
 			String times_under_min, String end_stock, String month, String year, String region) {
@@ -35,7 +45,6 @@ class ReportsDBControllerTest {
 		boolArray.add(compareReport.getReportsList().size() == toReport.getReportsList().size());
 		if (boolArray.contains(false))
 			return false;
-
 		int numberOfDataSets = compareReport.getReportsList().size();
 		int numberOfEqualDataSets = 0;
 
@@ -101,25 +110,26 @@ class ReportsDBControllerTest {
 	// Input: String "supply", String "12", String "2022", String "3", int 14
 	// Result: True
 	void testGenerateSupplyReportInDBWithValidMachineID() throws Exception {
+		setReportDetails("3", "12", "2022", "14");
 		new ReportsDBController();
 		// Make sure the report doesn't exist before generating it
-		assertFalse(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
+		assertFalse(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
 		ReportsGenerator.generateSupplyReportForMachineID(14);
-		assertTrue(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
+		assertTrue(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
 		// Keep automation of UnitTesting by deleting the generated result
 		deleteReportFromDB(14);
 		// Make sure the result was properly deleted
-		assertFalse(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
+		assertFalse(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
 	}
 
 	@Test
 	// Functionality: Generate a new Supply Report with a vali d Machine ID and
 	// store it in the DB
-	// Input: String "supply", String "12", String "2022", String "", int -1
+	// Input: String "supply", String "12", String "2022", String "", int -2
 	// Result: Message
 	void testGenerateSupplyReportInDBWithUnvalidMachineID() throws Exception {
 		new ReportsDBController();
-		ReportsGenerator.generateSupplyReportForMachineID(-1);
+		ReportsGenerator.generateSupplyReportForMachineID(-2);
 		UserEntity manager = UsersManagementDBController.getRegionManagerFromDBQuery("North");
 		String expectedResult = "Supply report for 12/2022 failed. Please contact EKrut team to check whats wrong";
 		String actualResult = PersonalMessagesDBController.getPersonalMessagesFromDB(manager)
@@ -135,9 +145,9 @@ class ReportsDBControllerTest {
 	// Supply Report
 	// Input: String "supply", String "3", String "12", String "2022", String "13"
 	// Result: SupplyReportEntity
-	void testGettingExistingSupplyReport() throws Exception {
+	void testGettingExistingSupplyReport() throws Exception { 
 		new ReportsDBController();
-		ReportsDBController.setReport(new String[] { "supply", "3", "12", "2022", "13" });
+		ReportsDBController.setReport(setReportDetails("3", "12", "2022", "13"));
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = setExpectedResult(1, 13, 0,
 				"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
@@ -154,7 +164,7 @@ class ReportsDBControllerTest {
 	// Result: SupplyReportEntity
 	void testGettingNonNumericMonthSupplyReport() throws Exception {
 		new ReportsDBController();
-		ReportsDBController.setReport(new String[] { "supply", "3", "December", "2022", "13" });
+		ReportsDBController.setReport(setReportDetails("3", "December", "2022", "13"));
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = setExpectedResult(1, 13, 0,
 				"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
@@ -164,15 +174,70 @@ class ReportsDBControllerTest {
 	}
 
 	@Test
-	// Functionality: Supply Report request with empty credentials
-	// Input: String "supply", String "", String "", String "", String ""
+	// Functionality: Supply Report request with no region, month and year
+	// Input: String "supply", String "", String "", String "", String "1"
 	// Result: SupplyReportEntity
 	void testGettingEmptySupplyReport() throws Exception {
 		new ReportsDBController();
-		ReportsDBController.setReport(new String[] { "supply", "", "", "", "1" });
+		ReportsDBController.setReport(setReportDetails("", "", "", "1"));
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = new SupplyReportEntity();
 		assertEquals(actualResult.getId(), expectedResult.getId());
+	}
+	
+	@Test
+	// Functionality: Supply Report request with an invalid year
+	// Input: String "supply", String "", String "", String "a$", String "1"
+	// Result: SupplyReportEntity
+	void testInvalidYearSupplyReport() throws Exception {
+		new ReportsDBController();
+		ReportsDBController.setReport(setReportDetails("", "", "$a", "1"));
+		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
+		SupplyReportEntity expectedResult = new SupplyReportEntity();
+		assertEquals(actualResult.getId(), expectedResult.getId());
+	}
+	
+	@Test
+	// Functionality: Supply Report request with an invalid month
+	// Input: String "supply", String "", String "a$", String "", String "1"
+	// Result: SupplyReportEntity
+	void testInvalidMonthSupplyReport() throws Exception {
+		new ReportsDBController();
+		ReportsDBController.setReport(setReportDetails("", "$a", "", "1"));
+		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
+		SupplyReportEntity expectedResult = new SupplyReportEntity();
+		assertEquals(actualResult.getId(), expectedResult.getId());
+	}
+	
+	@Test
+	// Functionality: Supply Report request with an invalid region
+	// Input: String "supply", String "", String "a$", String "", String "1"
+	// Result: SupplyReportEntity
+	void testInvalidRegionSupplyReport() throws Exception {
+		new ReportsDBController();
+
+		ReportsDBController.setReport(setReportDetails("$a", "", "", "1"));
+		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
+		SupplyReportEntity expectedResult = new SupplyReportEntity();
+		assertEquals(actualResult.getId(), expectedResult.getId());
+	}
+	
+	@Test
+	// Functionality: Supply Report request with empty credentials
+	// Input: String "supply", String "", String "", String "", String ""
+	// Result: NumberFormatException
+	void testEmptyCredentialsSupplyReport() throws Exception {
+		new ReportsDBController();
+		assertThrows(NumberFormatException.class, () -> {ReportsDBController.setReport(setReportDetails("", "", "", ""));});
+	}
+	
+	@Test
+	// Functionality: Supply Report request with null credentials
+	// Input: null, null, null, null, null
+	// Result: NullPointerException
+	void testNullCredentialsSupplyReport() throws Exception {
+		new ReportsDBController();
+		assertThrows(NullPointerException.class, () -> {ReportsDBController.setReport(new String[] { null, null, null, null, null });});
 	}
 
 	@Test
@@ -180,10 +245,10 @@ class ReportsDBControllerTest {
 	// Input: String "", String "", String "", String "", String ""
 	// Result: SupplyReportEntity
 	void testDisconnectedFromDBSupplyReport() throws Exception {
-		new ReportsDBController(nullConnection);
+		new ReportsDBController(nullConnection); // Stub the Connection to the DB
 		SupplyReportEntity actualResult = ReportsDBController.getSupplyReportFromDB();
 		SupplyReportEntity expectedResult = new SupplyReportEntity();
 		assertEquals(actualResult.getId(), expectedResult.getId());
 	}
-
+	
 }
