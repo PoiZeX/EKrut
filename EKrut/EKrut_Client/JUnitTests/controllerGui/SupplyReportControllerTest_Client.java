@@ -47,6 +47,7 @@ class SupplyReportControllerTest_Client {
 				"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
 				"10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "12", "2022", "1");
 	}
+	
 	/**
 	 * Functionality : Test that when previous month report is valid, start amount is calculated correctly
 	 * Input : Valid report and previous report

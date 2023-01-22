@@ -3,6 +3,7 @@ package controllerGui;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +12,8 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
+import entity.ItemInMachineEntity;
+import enums.PopupTypeEnum;
 import enums.RolesEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
@@ -25,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import utils.IValidateFields;
+import utils.PopupSetter;
 
 /**
  * Controller for the Orders Report screen. Handles displaying the order data in
@@ -95,9 +99,6 @@ public class ReportSelectionController implements IScreen {
 	 */
 	@FXML
 	void viewReport(ActionEvent event) {
-		month = monthItemsCmb.getSelectionModel().getSelectedItem();
-		year = yearItemsCmb.getSelectionModel().getSelectedItem().toString();
-		region = regionCmb.getSelectionModel().getSelectedItem();
 		String error = validateFields();
 		String dateError = validateDate();
 		if (error != "")
@@ -127,6 +128,8 @@ public class ReportSelectionController implements IScreen {
 
 	public String validateDate() {
 		String errorMsg = "";
+		if (year == null || month == null)
+			return "";
 		try {
 			Format monthFormat = new SimpleDateFormat("MM");
 			Format yearFormat = new SimpleDateFormat("yyyy");
@@ -214,6 +217,21 @@ public class ReportSelectionController implements IScreen {
 			regionCmb.getSelectionModel().select(region);
 		}
 
+		regionCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				region = newValue;
+			}
+		});
+		monthItemsCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				month = newValue;
+			}
+		});
+		yearItemsCmb.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			if (newValue != null) {
+				year = newValue.toString();
+			}
+		});
 	}
 
 	/***
