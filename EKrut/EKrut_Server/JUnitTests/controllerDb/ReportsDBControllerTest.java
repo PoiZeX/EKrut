@@ -19,7 +19,8 @@ class ReportsDBControllerTest {
 	private Connection nullConnection;
 	private String reportRegion, reportMonth, reportYear, reportMachineID;
 	final private String SUPPLY = "supply";
-
+	
+	// Sets the report's details
 	private String[] setReportDetails(String region, String month, String year, String machineID) {
 		reportRegion = region;
 		reportMonth = month;
