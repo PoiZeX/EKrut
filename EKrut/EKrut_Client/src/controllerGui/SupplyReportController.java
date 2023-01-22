@@ -109,8 +109,8 @@ public class SupplyReportController implements IScreen {
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
 		minAmountLbl.setVisible(false);
-		reportDetailsLabel.setText(
-				String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth), reportYear));
+		reportDetailsLabel.setText(getReportDate());
+				
 		allMachines = DataStore.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -135,6 +135,11 @@ public class SupplyReportController implements IScreen {
 		nextPageBtn.setVisible(false);
 	}
 	
+	private String getReportDate() {
+		String date = String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth), reportYear);
+		return date;
+	}
+
 	public void setChatService(ClientController chatService) {
 		chat = chatService;
 	}

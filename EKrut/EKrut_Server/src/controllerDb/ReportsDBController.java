@@ -21,7 +21,7 @@ import ocsf.server.ConnectionToClient;
 public class ReportsDBController {
 	private static String reportType, month, year, region;
 	private static int machineID;
-	private static Connection con;
+	private static Connection con = MySqlClass.getConnection();
 
 	public ReportsDBController() {
 		con = MySqlClass.getConnection();
