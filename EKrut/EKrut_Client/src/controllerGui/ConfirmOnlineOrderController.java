@@ -149,13 +149,13 @@ public class ConfirmOnlineOrderController implements IScreen {
 	public static void getDeliveryEntityFromServer(DeliveryEntity deliveryEntity) {
 
 		if (deliveryEntity == null) {
-			errorMsg = ("Order doesn't exist\n");
+			errorMsg = ("Order doesn't exist.\n ");
 			isValidOrder = false;
 		} else if (deliveryEntity.getDeliveryStatus().equals(DeliveryStatusEnum.pendingApproval)) {
 			errorMsg = ("Your order is still in process. Cannot be confirmed.\n");
 			isValidOrder = false;
 		} else if (deliveryEntity.getCustomerStatus().equals(CustomerStatusEnum.APPROVED)) {
-			errorMsg = ("You already confirm this order.\n");
+			errorMsg = ("You already confirm this order.\n You can check the order that can be approved on your personal messages :)");
 			isValidOrder = false;
 		} else {
 			ArrayList<DeliveryEntity> de = new ArrayList<DeliveryEntity>();
