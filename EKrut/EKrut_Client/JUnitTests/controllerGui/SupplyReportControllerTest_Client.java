@@ -131,7 +131,7 @@ class SupplyReportControllerTest_Client {
 						"10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10", "10" }));
 		assertEquals(expectedRes, actualRes);
 	}
-
+	
 	/**
 	 * Functionality : Test that the report label is displayed correctly
 	 * Input : region month and year

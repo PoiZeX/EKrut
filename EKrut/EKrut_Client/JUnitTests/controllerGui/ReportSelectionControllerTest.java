@@ -52,7 +52,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestValidValuesSuccsess() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "North";
 		month = "January";
 		year = "2022";
@@ -69,7 +69,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestInvalidMonthSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "North";
 		month = "BlaBla";
 		year = "2022";
@@ -86,7 +86,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestInvalidYearSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "North";
 		month = "January";
 		year = "20239402";
@@ -103,7 +103,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestInvalidRegionSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "SomeWhereFarAway";
 		month = "December";
 		year = "2022";
@@ -175,7 +175,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestEmptyMonthSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "North";
 		month = "";
 		year = "2022";
@@ -192,7 +192,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestEmptyYearSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "North";
 		month = "January";
 		year = "";
@@ -209,7 +209,7 @@ class ReportSelectionControllerTest {
 	 */
 	@Test
 	void validateFieldsTestEmptyRegionAndYearSucsses() {
-		reportType = "clientsReport";
+		reportType = "supplyReport";
 		region = "";
 		month = "December";
 		year = "";
