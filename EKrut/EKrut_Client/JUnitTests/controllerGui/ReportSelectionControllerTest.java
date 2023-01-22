@@ -4,10 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import controllerGui.SupplyReportControllerTest_Client.FieldsValidatorStub;
-import controllerGui.SupplyReportControllerTest_Client.ReportsFromDBStub;
-import entity.SupplyReportEntity;
 import javafx.scene.Node;
 import utils.IValidateFields;
 
