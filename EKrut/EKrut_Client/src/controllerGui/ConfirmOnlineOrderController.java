@@ -1,6 +1,7 @@
 package controllerGui;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import Store.NavigationStoreController;
 import client.ClientController;
@@ -55,6 +56,7 @@ public class ConfirmOnlineOrderController implements IScreen {
 	 */
 	@Override
 	public void initialize() {
+		textFiledStyles();
 		switch (AppConfig.SYSTEM_CONFIGURATION) {
 		case "EK":
 			setBtnAndPicture(submitBtn, "Collect", "Collect your order now", "/styles/images/pickup.png");
@@ -138,7 +140,26 @@ public class ConfirmOnlineOrderController implements IScreen {
 			break;
 		}
 	}
-
+	private boolean orderNumChecker=false;
+	private void textFiledStyles() {
+		orderNumTxtField.setTooltip((new TooltipSetter("I like numbers please: \n0-9 digts will be just fine.").getTooltip()));
+		orderNumTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
+    		if (newValue != null) {
+	    	    if (CommonFunctions.isNullOrEmpty(orderNumTxtField.getText())) {
+	    	    	orderNumChecker = false;
+	    	    	orderNumTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+	    	    }
+	    	    else if (!Pattern.matches("^[0-9][0-9]{0,4}$", orderNumTxtField.getText())) {
+	    	    	orderNumChecker = false;
+	    	    	orderNumTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
+	    	    }
+	    	    else {
+	    	    	orderNumChecker = true;
+	    	    	orderNumTxtField.setStyle("-fx-border-color: none;");
+	    	    }
+    		}
+    	});
+	}
 	/**
 	 * Validated the details of given deliveryEntity from server: the order exist
 	 * for this customer the delivery status is outForDelivery the customerStatus!=
