@@ -108,9 +108,9 @@ class LoginControllerTest {
 	// ------------------------------------------
 
 	/*
-     * checking functionality: not 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of empty username and good password
+     * input data: username "", password '123456'
+     * expected result: false with msg "Error in:\n* username cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameEmptyFailed() throws Exception {
@@ -124,9 +124,9 @@ class LoginControllerTest {
 	}
 	
 	/*
-     * checking functionality: 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of null username and good password
+     * input data: username null, password '123456'
+     * expected result: false with msg "Error in:\n* username cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameNullFailed() throws Exception {
@@ -140,9 +140,9 @@ class LoginControllerTest {
 	}
 
 	/*
-     * checking functionality: 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of good username and empty password
+     * input data: username 'abcd', password ''
+     * expected result: false with msg "Error in:\n* password cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestPasswordEmptyFailed() throws Exception {
@@ -156,9 +156,9 @@ class LoginControllerTest {
 	}
 
 	/*
-     * checking functionality: 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of good username and null password
+     * input data: username 'abcd', password null
+     * expected result: false with msg "Error in:\n* password cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestPasswordNullFailed() throws Exception {
@@ -172,9 +172,9 @@ class LoginControllerTest {
 	}
 
 	/*
-     * checking functionality: 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of empty username and empty password
+     * input data: username '', password ''
+     * expected result: false with msg "Error in:\n* password cannot be empty\n* password cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameAndPasswordEmptyFailed() throws Exception {
@@ -188,9 +188,9 @@ class LoginControllerTest {
 	}
 
 	/*
-     * checking functionality: 
-     * input data: 
-     * expected result: 
+     * checking functionality: validation of null username and null password
+     * input data: username null, password null
+     * expected result: false with msg "Error in:\n* password cannot be empty\n* password cannot be empty\n"
      */
 	@Test
 	void validateUsernamePasswordSyntaxTestPsernameAndPasswordNullFailed() throws Exception {
@@ -207,6 +207,11 @@ class LoginControllerTest {
 	// ------------Syntax--Length----------------
 	// ------------------------------------------
 
+	/*
+     * checking functionality: validation of good syntax of username & password (length & chars)
+     * input data: username 'abcd', password '1234'
+     * expected result: true with msg "Success"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameAndPasswordLengthSuccess() throws Exception {
 		LoginController.setUser(new String[] { "abcd", "1234" });
@@ -218,6 +223,11 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: validation of under minimum chars for username & good password length
+     * input data: username 'u', password '123456'
+     * expected result: false with msg "Error in:\n* username length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "u", "123456" });
@@ -228,7 +238,11 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	/*
+     * checking functionality: validation of over the maximum chars for username & good password length
+     * input data: username 'u', password '123456'
+     * expected result: false with msg "Error in:\n* username length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdefghijklmnopqrstuvwxyz", "123456" });
@@ -239,7 +253,12 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	
+	/*
+     * checking functionality: validation of good username & under over the maximum chars for password length
+     * input data: username 'abcdef', password '1'
+     * expected result: false with msg "Error in:\n* password length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestPasswordMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdef", "1" });
@@ -250,7 +269,12 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	
+	/*
+     * checking functionality: validation of good username & over the maximum chars for password length
+     * input data: username 'abcdef', password 'abcdefghijklmnopqrstuvwxyz'
+     * expected result: false with msg "Error in:\n* password length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestPasswordMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdef", "abcdefghijklmnopqrstuvwxyz" });
@@ -262,6 +286,11 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: validation of under min char of username & under min chars of password length
+     * input data: username 'ab', password 'ab'
+     * expected result: false with msg "Error in:\n* username length must be between 4-16\n* password length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameAndPasswordMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "ab", "ab" });
@@ -274,6 +303,11 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: validation of over the max char of username & over the max chars of password length
+     * input data: username 'abcdefghijklmnopqrstuvwxyz', password 'abcdefghijklmnopqrstuvwxyz'
+     * expected result: false with msg "Error in:\n* username length must be between 4-16\n* password length must be between 4-16\n"
+     */
 	@Test
 	void validateUsernamePasswordSyntaxTestUsernameAndPasswordMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz" });
@@ -289,8 +323,14 @@ class LoginControllerTest {
 	// ------------------------------------------
 	// ---------Syntax--Illegal--Chars-----------
 	// ------------------------------------------
+	
+	/*
+     * checking functionality: validation of legal chars pattern for username & password
+     * input data: username 'ab_cd', password '123456'
+     * expected result: false with msg "Success"
+     */
 	@Test
-	void validateUsernamePasswordSyntaxTestUsernameillegalCharsStartWithDigitSuccess() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameIllegalCharsStartWithDigitSuccess() throws Exception {
 		LoginController.setUser(new String[] { "ab_cd", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -300,8 +340,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: validation of illegal pattern: username starts with a digit
+     * input data: username '1abc', password '123456'
+     * expected result: false with msg "Error in:\n* username can contain just alphabet, digits and underscore\n"
+     */
 	@Test
-	void validateUsernamePasswordSyntaxTestUsernameillegalCharsStartWithDigitFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameIllegalCharsStartWithDigitFailed() throws Exception {
 		LoginController.setUser(new String[] { "1abc", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -310,9 +355,14 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	
+	/*
+     * checking functionality: validation of illegal pattern: username contains space 
+     * input data: username 'abc c', password '123456'
+     * expected result: false with msg "Error in:\n* username can contain just alphabet, digits and underscore\n"
+     */
 	@Test
-	void validateUsernamePasswordSyntaxTestUsernameillegalCharsContatinsSpaceFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameIllegalCharsContatinsSpaceFailed() throws Exception {
 		LoginController.setUser(new String[] { "abc c", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -322,8 +372,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars at anyplace for username
+     * input data: username 'ab@@!', password '123456'
+     * expected result: false with msg "Error in:\n* username can contain just alphabet, digits and underscore\n"
+     */
 	@Test
-	void validateUsernamePasswordSyntaxTestUsernameillegalCharsContainsOthersFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameIllegalCharsContainsOthersFailed() throws Exception {
 		LoginController.setUser(new String[] { "ab@@!", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -332,9 +387,94 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars for username & password and both min length
+     * input data: username '@@', password '!!@'
+     * expected result: false with msg "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n"
+	*/
 	@Test
-	void validateUsernamePasswordSyntaxTestPasswordillegalCharsContainsSpaceFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestFiledsIllegalCharsAndMinLengthUsernamePasswordFailed() throws Exception {
+		LoginController.setUser(new String[] { "@@", "!!@" });
+		invokeResult = invokeValidateSyntaxMethod();
+		result = getErrorMsgField();
+		excepted = errorCompare + "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n";
+
+		assertFalse(invokeResult);
+		assertEquals(result, excepted);
+	}
+	
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars for username & password and just password min length
+     * input data: username '@@', password '!!@'
+     * expected result: false with msg "* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n"
+	*/
+	@Test
+	void validateUsernamePasswordSyntaxTestFiledsIllegalCharsAndMinLengthPasswordFailed() throws Exception {
+		LoginController.setUser(new String[] { "@@@@", "!!@" });
+		invokeResult = invokeValidateSyntaxMethod();
+		result = getErrorMsgField();
+		excepted = errorCompare + "* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n";
+
+		assertFalse(invokeResult);
+		assertEquals(result, excepted);
+	}
+	
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars for username and just username min length
+     * input data: username '@@', password '!!@!'
+     * expected result: false with msg "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n"
+	*/
+	@Test
+	void validateUsernamePasswordSyntaxTestFiledsIllegalCharsAndMinLengthUsernameFailed() throws Exception {
+		LoginController.setUser(new String[] { "@@", "!!@!" });
+		invokeResult = invokeValidateSyntaxMethod();
+		result = getErrorMsgField();
+		excepted = errorCompare + "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n";
+
+		assertFalse(invokeResult);
+		assertEquals(result, excepted);
+	}
+	
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars for username and just username max length
+     * input data: username '!!!!@!!!!@!!!!@!!!!', password '!!'
+     * expected result: false with msg "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n"
+	*/
+	@Test
+	void validateUsernamePasswordSyntaxTestFiledsIllegalCharsAndMaxLengthUsernameFailed() throws Exception {
+		LoginController.setUser(new String[] { "!!!!@!!!!@!!!!@!!!!", "!!" });
+		invokeResult = invokeValidateSyntaxMethod();
+		result = getErrorMsgField();
+		excepted = errorCompare + "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n";
+
+		assertFalse(invokeResult);
+		assertEquals(result, excepted);
+	}
+	
+	
+	/*
+     * checking functionality: validation of illegal pattern: illegal chars for username and just password max length
+     * input data: username '!!', password '!!!!@!!!!@!!!!@!!!!'
+     * expected result: false with msg "* password length must be between 4-16\n* password can contain just alphabet, digits and underscore\n"
+	*/
+	@Test
+	void validateUsernamePasswordSyntaxTestFiledsIllegalCharsAndMaxLengthPasswordFailed() throws Exception {
+		LoginController.setUser(new String[] { "!!", "!!!!@!!!!@!!!!@!!!!" });
+		invokeResult = invokeValidateSyntaxMethod();
+		result = getErrorMsgField();
+		excepted = errorCompare + "* username length must be between 4-16\n* username can contain just alphabet, digits and underscore\n* password length must be between 4-16\n";
+
+		assertFalse(invokeResult);
+		assertEquals(result, excepted);
+	}
+	
+	/*
+     * checking functionality: validation of illegal pattern: password contains space
+     * input data: username 'abcd', password '123 456'
+     * expected result: false with msg "Error in:\n* username can contain just alphabet, digits and underscore\n"
+     */
+	@Test
+	void validateUsernamePasswordSyntaxTestPasswordIllegalCharsContainsSpaceFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcd", "123 456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -348,6 +488,11 @@ class LoginControllerTest {
 	// ---------User--Entity--Validation---------
 	// ------------------------------------------
 
+	/*
+     * checking functionality: validation of all login process
+     * input data: UserEntity with username: 'rmNorth', password: '123456', not logged_in, not not_approved
+     * expected result: loginProcess - true , connectedUser - the given user, message: "Success";
+     */
 	@Test
 	void loginProccessTestSuccess() {
 		//
@@ -364,7 +509,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("Success", user);
 	}
 
-
+	/*
+     * checking functionality: validation of not existing user 
+     * input data: username - 'imnotexisting', password - '123456'
+     * expected result: loginProcess - false , connectedUser - null, message: "Username or Password are incorrect";
+     */
 	@Test
 	void loginProccessTestUserNotExistInFailed() {
 		LoginController.setUser(new String[] { "imnotexisting", "123456" });  // the user 'input'
@@ -380,6 +529,11 @@ class LoginControllerTest {
 
 	}
 	
+	/*
+     * checking functionality: validation of not valid password
+     * input data: username - 'imnotexisting', password - 'not123456'
+     * expected result: loginProcess - false , connectedUser - null, message: "Username or Password are incorrect";
+     */
 	@Test
 	void loginProccessTestPasswordIncorrectInFailed() {
 		LoginController.setUser(new String[] { "rmNorth", "not123456" });  // the user 'input'
@@ -387,8 +541,8 @@ class LoginControllerTest {
 		user.setPassword("123456");  // empty means user were not found
 		
 		// prepare behavior
-//		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
-//		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.RequestUserFromServerDB, usernamePassword))).thenReturn(true);
+		when(chat.acceptObj(new Message(TaskType.SetUserLoggedIn, user))).thenReturn(true);
 		LoginController.validUserFromServer(user);
 		
 		// act
@@ -396,8 +550,11 @@ class LoginControllerTest {
 
 	}
 	
-	
-	
+	/*
+     * checking functionality: validation of valid user but already logged in 
+     * input data: username - 'rmNorth', password - '123456' (by server: logged_in - true)
+     * expected result: loginProcess - false , connectedUser - null, message: "User is already logged in";
+     */
 	@Test
 	void loginProccessTestUserLoggedInFailed() {
 		user.setLogged_in(true);
@@ -410,6 +567,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("User is already logged in", null);
 	}
 	
+	/*
+     * checking functionality: validation of valid user but is not approved
+     * input data: username - 'rmNorth', password - '123456' (by server: notApproved - true)
+     * expected result: loginProcess - false , connectedUser - null, message: "User is not approved yet";
+     */
 	@Test
 	void loginProccessTestUserNotApprovedFailed() {
 		user.setNotApproved(true);
@@ -425,6 +587,11 @@ class LoginControllerTest {
 	// ------------------------------------------
 	// ----------Connect--With--EKT--------------
 	// ------------------------------------------
+	/*
+     * checking functionality: validation of login with EKT success
+     * input data: username - 'rmNorth', password - '123456' (by server: roleType = member, with valid cc_number)
+     * expected result: loginProcess - true , connectedUser - the given user, message: "Success";
+     */
 	@Test
 	void loginProccessTestUserAuthorizedSuccess() throws Exception {
 		isEKTpressedField.set(loginController, true);
@@ -439,6 +606,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("Success", user);
 	}
 	
+	/*
+     * checking functionality: validation of login with EKT failed because the user  is not authorized
+     * input data: username - 'rmNorth', password - '123456' (by server: roleType - user)
+     * expected result: loginProcess - false , connectedUser - null, message: "You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)";
+     */
 	@Test
 	void loginProccessTestUserNotAuthorizedUserFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
@@ -452,6 +624,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)", null);
 	}
 	
+	/*
+     * checking functionality: validation of login with EKT failed because the registered is not authorized
+     * input data: username - 'rmNorth', password - '123456' (by server: roleType - registered)
+     * expected result: loginProcess - false , connectedUser - null, message: "You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)";
+     */
 	@Test
 	void loginProccessTestUserNotAuthorizedRegisterFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
@@ -465,7 +642,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)", null);
 	}
 	
-	
+	/*
+     * checking functionality: validation of login with EKT failed because the general user is not a member (worker or not - there is not cc_number)
+     * input data: username - 'rmNorth', password - '123456' (by server: roleType - CEO)
+     * expected result: loginProcess - false , connectedUser - null, message: "You are not a member!\n\nJust members can enjoy the benefit of quick login (And much more things)";
+     */
 	@Test
 	void loginProccessTestUserNotAuthorizedWorkerFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
