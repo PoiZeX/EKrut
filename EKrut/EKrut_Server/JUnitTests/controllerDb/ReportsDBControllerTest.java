@@ -14,7 +14,7 @@ import entity.UserEntity;
 import mysql.MySqlClass;
 
 class ReportsDBControllerTest {
-	private static boolean connectionSuccessful = false;
+	private static boolean isConnected = false;
 	public static UserEntity connectedUser;
 	private Connection nullConnection;
 
@@ -88,9 +88,9 @@ class ReportsDBControllerTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		// One-time DB Connection
-		if (connectionSuccessful)
+		if (isConnected)
 			return;
-		connectionSuccessful = true;
+		isConnected = true;
 		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
 	}
 
