@@ -3,8 +3,6 @@ package controllerDb;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
-import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +19,7 @@ class LoginDBControllerTest {
 	void setUp() throws Exception {
 		if(isConnected) return;
 		// setup connection to mysql
-		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root");
+		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "Vital242");
 		con = MySqlClass.getConnection();
 		isConnected = true;
 	}

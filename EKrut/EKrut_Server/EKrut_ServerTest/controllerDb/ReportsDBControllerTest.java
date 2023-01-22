@@ -101,7 +101,7 @@ class ReportsDBControllerTest {
 		if (isConnected)
 			return;
 		isConnected = true;
-		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root0196");
+		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "Vital242");
 	}
 
 	// Report Creation Tests

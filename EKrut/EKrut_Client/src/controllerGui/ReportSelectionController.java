@@ -3,7 +3,6 @@ package controllerGui;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,8 +11,6 @@ import Store.NavigationStoreController;
 import client.ClientController;
 import common.CommonFunctions;
 import common.Message;
-import entity.ItemInMachineEntity;
-import enums.PopupTypeEnum;
 import enums.RolesEnum;
 import enums.ScreensNamesEnum;
 import enums.TaskType;
@@ -28,7 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import utils.IValidateFields;
-import utils.PopupSetter;
+
 
 /**
  * Controller for the Orders Report screen. Handles displaying the order data in
