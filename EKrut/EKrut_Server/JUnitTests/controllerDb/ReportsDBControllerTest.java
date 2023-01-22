@@ -69,9 +69,8 @@ class ReportsDBControllerTest {
 		return true;
 	}
 
+	// Deletes the last rows in personal_messages by the amount of machines
 	private boolean deleteGeneratedMessagesFromDB(int numberOfRows) {
-		// delete from marks
-		// order by id desc limit 1
 		String query = "DELETE FROM ekrut.personal_messages ORDER BY id DESC limit ?;";
 		PreparedStatement statement;
 		try {
