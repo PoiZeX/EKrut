@@ -154,7 +154,7 @@ public class ReviewOrderController implements IScreen {
 
 			// check if OL/EK (for delivery)
 			rightGridHandle();
-			textFiledStyles();
+
 			orderEntity.setProductsAmount(Double.parseDouble(totulProductsSumLbl.getText().split("₪")[0]));
 			orderEntity.setTotal_sum(Double.parseDouble(totalSumLbl.getText().split("₪")[0]));
 
@@ -299,7 +299,7 @@ public class ReviewOrderController implements IScreen {
 		}
 		if (CommonFunctions.isNullOrEmpty(user.getCc_num())) {
 			PopupSetter.createPopup(PopupTypeEnum.Error,
-					"Sorry, it seems that the  credit Card number is invalid, please contact Customer Service: \n Tel: 04-9883625 \n email: customerService@ekrut.com");
+					"The credit Card number is invalid, please contact Customer Service");
 			return;
 		}
 		// if member he always pay in the end of the month
@@ -324,7 +324,7 @@ public class ReviewOrderController implements IScreen {
 			if (data instanceof Integer && (int) data == -1) {
 				// error inserting the order
 				RollBack();
-				PopupSetter.createPopup(PopupTypeEnum.Error, "Hey there\n We are SO Sorry!\n an ERROR acurred creating your order, \nPlease try again\nAbort");
+				PopupSetter.createPopup(PopupTypeEnum.Error, "Error creating order, Please try again\nAbort");
 				return;
 			}
 			orderId = (int) data;
@@ -476,13 +476,12 @@ public class ReviewOrderController implements IScreen {
 		}
 
 	}
-	
+
 	/**
 	 * Checks all fields of delivery and return true if valid
 	 * 
 	 * @return the message
 	 */
-	
 	private String isValidDeliveryDetails() {
 		StringBuilder errMsg = new StringBuilder();
 		address = new StringBuilder();
@@ -498,7 +497,7 @@ public class ReviewOrderController implements IScreen {
 		// send error on null/empty information
 		if (!CommonFunctions.isNullOrEmpty(errMsg.toString()))
 			return errMsg.toString();
-		
+
 		// validate the information strings
 		if (!Pattern.matches("^[a-zA-Z][a-zA-Z ]{1,12}$", cityTxtField.getText()))
 			errMsg.append("City can contain letters and space only in length of 2-12\n");
@@ -538,63 +537,7 @@ public class ReviewOrderController implements IScreen {
 			productsGrid.add(grid, 0, index++);
 		productsGrid.getRowConstraints().setAll(new RowConstraints(50, 50, 50));
 	}
-	private boolean streetChecker=false;
-	private boolean cityChecker=false;
-	private boolean aptChecker=false;
-	private void textFiledStyles() {
-		streetTxtField.setTooltip((new TooltipSetter("Street needs a name and a house number,\n and he does not like UPPERCASE CHARS like !@#$%^&* \n nobody likes swearing.").getTooltip()));
-		aptTxtField.setTooltip((new TooltipSetter("Apartment number is good with only numbers and /. \nPlease respect him.").getTooltip()));
-		cityTxtField.setTooltip((new TooltipSetter("City is fine with only letters don't try to make her upset.").getTooltip()));
-		streetTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
-    		if (newValue != null) {
-	    	    if (CommonFunctions.isNullOrEmpty(streetTxtField.getText())) {
-	    	    	streetChecker = false;
-	    	    	streetTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
-	    	    else if (!Pattern.matches("^[a-zA-Z][a-zA-Z 0-9]{1,12}$", streetTxtField.getText())) {
-	    	    	streetChecker = false;
-	    	    	streetTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
-	    	    else {
-	    	    	streetChecker = true;
-	    	    	streetTxtField.setStyle("-fx-border-color: none;");
-	    	    }
-    		}
-    	});
-		aptTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
-    		if (newValue != null) {
-	    	    if (CommonFunctions.isNullOrEmpty(aptTxtField.getText())) {
-	    	    	aptChecker = false;
-	    	    	aptTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
-	    	    else 	if (!Pattern.matches("^[0-9][0-9/]{0,4}$", aptTxtField.getText())) {
-	    	    	aptTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
-	    	    else {
-	    	    	aptChecker = true;
-	    	    	aptTxtField.setStyle("-fx-border-color: none;");
-	    	    }
-    		}
-    	});
-		cityTxtField.textProperty().addListener((observable, oldValue, newValue) -> {
-    		if (newValue != null) {
-	    	    if (CommonFunctions.isNullOrEmpty(aptTxtField.getText())) {
-	    	    	cityChecker = false;
-	    	    	cityTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
-	    	    else if(!Pattern.matches("^[a-zA-Z][a-zA-Z ]{1,12}$", cityTxtField.getText())) {
-	    	    	cityChecker = false;
-	    	    	cityTxtField.setStyle("-fx-border-color: #ff1414; -fx-border-radius: 15;");
-	    	    }
 
-	    	    else {
-	    	    	cityChecker = true;
-	    	    	cityTxtField.setStyle("-fx-border-color: none;");
-	    	    }
-    		}
-    	});
-		
-	}
 	/**
 	 * Build graphical side for single item
 	 * 
