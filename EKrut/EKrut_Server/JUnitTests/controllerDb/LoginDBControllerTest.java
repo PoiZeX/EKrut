@@ -14,13 +14,16 @@ import mysql.MySqlClass;
 
 class LoginDBControllerTest {
 
-	Connection con;
-
+	private static boolean isConnected = false;
+	private static Connection con;
+	
 	@BeforeEach
 	void setUp() throws Exception {
+		if(isConnected) return;
 		// setup connection to mysql
 		MySqlClass.connectToDb("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "root");
 		con = MySqlClass.getConnection();
+		isConnected = true;
 	}
 
 	// ------------------------------------------

@@ -107,8 +107,13 @@ class LoginControllerTest {
 	// --------------NULL--Empty-----------------
 	// ------------------------------------------
 
+	/*
+     * checking functionality: not 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void usernameEmptyFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameEmptyFailed() throws Exception {
 		LoginController.setUser(new String[] { "", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -117,9 +122,14 @@ class LoginControllerTest {
 		assertFalse(invokeResult);
 		assertEquals(result, excepted);
 	}
-
+	
+	/*
+     * checking functionality: 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void usernameNullFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameNullFailed() throws Exception {
 		LoginController.setUser(new String[] { null, "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -129,8 +139,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void passwordEmptyFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPasswordEmptyFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcd", "" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -140,8 +155,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void passwordNullFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPasswordNullFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcd", null });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -151,8 +171,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void usernameAndPasswordEmptyFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameAndPasswordEmptyFailed() throws Exception {
 		LoginController.setUser(new String[] { "", "" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -162,8 +187,13 @@ class LoginControllerTest {
 		assertEquals(result, excepted);
 	}
 
+	/*
+     * checking functionality: 
+     * input data: 
+     * expected result: 
+     */
 	@Test
-	void usernameAndPasswordNullFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPsernameAndPasswordNullFailed() throws Exception {
 		LoginController.setUser(new String[] { null, null });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -178,7 +208,7 @@ class LoginControllerTest {
 	// ------------------------------------------
 
 	@Test
-	void usernameAndPasswordLengthSuccess() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameAndPasswordLengthSuccess() throws Exception {
 		LoginController.setUser(new String[] { "abcd", "1234" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -189,7 +219,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameMinCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "u", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -200,7 +230,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameMaxCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdefghijklmnopqrstuvwxyz", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -211,7 +241,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void passwordMinCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPasswordMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdef", "1" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -222,7 +252,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void passwordMaxCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPasswordMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdef", "abcdefghijklmnopqrstuvwxyz" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -233,7 +263,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameAndPasswordMinCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameAndPasswordMinCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "ab", "ab" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -245,7 +275,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameAndPasswordMaxCharsFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameAndPasswordMaxCharsFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -260,7 +290,7 @@ class LoginControllerTest {
 	// ---------Syntax--Illegal--Chars-----------
 	// ------------------------------------------
 	@Test
-	void usernameillegalCharsStartWithDigitSuccess() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameillegalCharsStartWithDigitSuccess() throws Exception {
 		LoginController.setUser(new String[] { "ab_cd", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -271,7 +301,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameillegalCharsStartWithDigitFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameillegalCharsStartWithDigitFailed() throws Exception {
 		LoginController.setUser(new String[] { "1abc", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -282,7 +312,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameillegalCharsContatinsSpaceFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameillegalCharsContatinsSpaceFailed() throws Exception {
 		LoginController.setUser(new String[] { "abc c", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -293,7 +323,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void usernameillegalCharsContainsOthersFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestUsernameillegalCharsContainsOthersFailed() throws Exception {
 		LoginController.setUser(new String[] { "ab@@!", "123456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -304,7 +334,7 @@ class LoginControllerTest {
 	}
 
 	@Test
-	void passwordillegalCharsContainsSpaceFailed() throws Exception {
+	void validateUsernamePasswordSyntaxTestPasswordillegalCharsContainsSpaceFailed() throws Exception {
 		LoginController.setUser(new String[] { "abcd", "123 456" });
 		invokeResult = invokeValidateSyntaxMethod();
 		result = getErrorMsgField();
@@ -319,7 +349,7 @@ class LoginControllerTest {
 	// ------------------------------------------
 
 	@Test
-	void loginProccessSuccess() {
+	void loginProccessTestSuccess() {
 		//
 		user.setLogged_in(false);
 		user.setNotApproved(false);
@@ -336,7 +366,7 @@ class LoginControllerTest {
 
 
 	@Test
-	void loginProccessUserNotExistInFailed() {
+	void loginProccessTestUserNotExistInFailed() {
 		LoginController.setUser(new String[] { "imnotexisting", "123456" });  // the user 'input'
 		user.setUsername("");  // empty means user were not found
 		
@@ -351,7 +381,7 @@ class LoginControllerTest {
 	}
 	
 	@Test
-	void loginProccessPasswordIncorrectInFailed() {
+	void loginProccessTestPasswordIncorrectInFailed() {
 		LoginController.setUser(new String[] { "rmNorth", "not123456" });  // the user 'input'
 		user.setUsername("rmNorth");  // empty means user were not found
 		user.setPassword("123456");  // empty means user were not found
@@ -369,7 +399,7 @@ class LoginControllerTest {
 	
 	
 	@Test
-	void loginProccessUserLoggedInFailed() {
+	void loginProccessTestUserLoggedInFailed() {
 		user.setLogged_in(true);
 		
 		// prepare behavior
@@ -381,7 +411,7 @@ class LoginControllerTest {
 	}
 	
 	@Test
-	void loginProccessUserNotApprovedFailed() {
+	void loginProccessTestUserNotApprovedFailed() {
 		user.setNotApproved(true);
 		
 		// prepare behavior
@@ -392,12 +422,11 @@ class LoginControllerTest {
 		loginEndProcessAssertion("User is not approved yet", null);
 	}
 	
-	
 	// ------------------------------------------
 	// ----------Connect--With--EKT--------------
 	// ------------------------------------------
 	@Test
-	void loginProccessUserAuthorizedSuccess() throws Exception {
+	void loginProccessTestUserAuthorizedSuccess() throws Exception {
 		isEKTpressedField.set(loginController, true);
 		user.setRole_type("member");
 		user.setCc_num("1234123412341234");
@@ -411,7 +440,7 @@ class LoginControllerTest {
 	}
 	
 	@Test
-	void loginProccessUserNotAuthorizedUserFailed() throws Exception {
+	void loginProccessTestUserNotAuthorizedUserFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
 		user.setRole_type("user");
 		
@@ -424,7 +453,7 @@ class LoginControllerTest {
 	}
 	
 	@Test
-	void loginProccessUserNotAuthorizedRegisterFailed() throws Exception {
+	void loginProccessTestUserNotAuthorizedRegisterFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
 		user.setRole_type("registered");
 		
@@ -438,7 +467,7 @@ class LoginControllerTest {
 	
 	
 	@Test
-	void loginProccessUserNotAuthorizedWorkerFailed() throws Exception {
+	void loginProccessTestUserNotAuthorizedWorkerFailed() throws Exception {
 		isEKTpressedField.set(loginController, true);
 		user.setRole_type("CEO"); 	// cc_num is not set - so not a member
 
