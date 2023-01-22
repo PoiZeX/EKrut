@@ -122,7 +122,21 @@ class ReportsDBControllerTest {
 		// Make sure the result was properly deleted
 		assertFalse(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
 	}
-
+	
+	@Test
+	// Functionality: Generate a new Supply Report with an empty Machine
+	// it in the DB
+	// Input: String "supply", String "12", String "2022", String "3", int 15
+	// Result: True
+	void testGenerateSupplyReportInDBWithEmptyMachineID() throws Exception {
+		setReportDetails("3", "12", "2022", "15");
+		new ReportsDBController();
+		// Make sure the report doesn't exist before generating it
+		assertFalse(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
+		ReportsGenerator.generateSupplyReportForMachineID(15);
+		assertFalse(ReportsDBController.isReportExist(SUPPLY, reportMonth, reportYear, reportRegion, Integer.parseInt(reportMachineID)));
+	}
+	
 	@Test
 	// Functionality: Generate a new Supply Report with a vali d Machine ID and
 	// store it in the DB
