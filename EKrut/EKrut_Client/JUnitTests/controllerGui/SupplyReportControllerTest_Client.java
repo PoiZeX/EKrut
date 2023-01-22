@@ -85,6 +85,11 @@ class SupplyReportControllerTest_Client {
 				"10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10", "12", "2022", "1");
 	}
 
+	/**
+	 * Functionality : Test that all values are good error message indicator is
+	 * blank Input : Valid report type, region month and year. Result : blank error
+	 * message
+	 */
 	@Test
 	void Test_GoodValues() {
 		reportType = "clientsReport";
@@ -97,6 +102,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows bad month selection Input :
+	 * Valid reportType region year, invalid month Result : error message indicates
+	 * bad month selected
+	 */
 	@Test
 	void Test_BadMonthValue() {
 		reportType = "clientsReport";
@@ -109,6 +119,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows bad year selection 
+	 * Input : Valid reportType region month, invalid year 
+	 * Result : error message indicates bad year selected
+	 */
 	@Test
 	void Test_BadYearValue() {
 		reportType = "clientsReport";
@@ -121,6 +136,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows bad region selection 
+	 * Input : Valid reportType month year, invalid region 
+	 * Result : error message indicates bad region selected
+	 */
 	@Test
 	void Test_BadRegionValue() {
 		reportType = "clientsReport";
@@ -133,6 +153,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows bad reportType selection 
+	 * Input : Valid year region month, invalid reportType 
+	 * Result : error message indicates bad reportType selected
+	 */
 	@Test
 	void Test_BadReportTypeValue() {
 		reportType = "SomeReportType";
@@ -145,6 +170,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows all bad values selection 
+	 * Input : Valid reportType region month, invalid year 
+	 * Result : error message indicates bad year selected
+	 */
 	@Test
 	void Test_BadValues() {
 		reportType = "SomeReportType";
@@ -157,6 +187,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that error message shows all bad values selection 
+	 * Input : Valid reportType region month, Non-numeric year instered
+	 * Result : exception about bad year thrown
+	 */
 	@Test
 	void Test_NonNumericYear() {
 		reportType = "SomeReportType";
@@ -172,6 +207,11 @@ class SupplyReportControllerTest_Client {
 		}
 	}
 
+	/**
+	 * Functionality : Test that when previous month report is valid, start amount is calculated correctly
+	 * Input : Valid report and previous report
+	 * Result : an array of all calculated items from previous month
+	 */
 	@Test
 	void Test_HasPrevReport() {
 		int machineID = 1;
@@ -188,6 +228,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(actualRes, expectedRes);
 	}
 
+	/**
+	 * Functionality : Test that when previous month report is invalid : empty, start amount is calculated correctly
+	 * Input : Valid report and no previous report
+	 * Result : an array of all calculated items from previous month all 0's inserted
+	 */
 	@Test
 	void Test_HasNoPrevReport() {
 		int machineID = 1;
@@ -200,6 +245,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(actualRes, expectedRes);
 	}
 
+	/**
+	 * Functionality : Test that when previous month report is valid but shorter, start amount is calculated correctly
+	 * Input : Valid report and valid previous report
+	 * Result : an array of all calculated items from previous month where all missing items are 0's inserted
+	 */
 	@Test
 	void Test_HasShorterPrevReport() {
 		int machineID = 1;
@@ -216,6 +266,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedRes, actualRes);
 	}
 
+	/**
+	 * Functionality : Test that when previous month report is valid but unmatched indexes, start amount is calculated correctly
+	 * Input : Valid report and previous report
+	 * Result : an array of all calculated items from previous month, with matching indexes.
+	 */
 	@Test
 	void Test_misMatchedIndexesReport() {
 		int machineID = 1;
@@ -233,6 +288,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedRes, actualRes);
 	}
 
+	/**
+	 * Functionality : Test that the report label is displayed correctly
+	 * Input : region month and year
+	 * Result : displayed region month and year is correct
+	 */
 	@SuppressWarnings("static-access")
 	@Test
 	void Test_validateReportDetails() {
@@ -245,6 +305,11 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedResult, actualResult);
 	}
 
+	/**
+	 * Functionality : Test empty report is detected when getting empty report
+	 * Input : invalid report
+	 * Result : no report found error message
+	 */
 	@Test
 	void Test_nullReportMessage() {
 		SupplyReportEntity emptyReport = new SupplyReportEntity();
@@ -253,8 +318,13 @@ class SupplyReportControllerTest_Client {
 		assertEquals(expectedMsg, actualMsg);
 	}
 
+	/**
+	 * Functionality : Test that the machine min amount is displayed correctly in the label
+	 * Input : valid report
+	 * Result : min amount is set correctly
+	 */
 	@Test
-	void Test_correctMinAmountMsg() {
+	void Test_correctMinAmount() {
 		int machineID = 1;
 		SupplyReportEntity misMatchedItems = new SupplyReportEntity(61, 1, 7,
 				"2,1,4,3,6,5,9,11,7,10,8,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
@@ -264,6 +334,21 @@ class SupplyReportControllerTest_Client {
 		supplyReportClass.setCurrentReport(supplyReportClass.getSupplyReportFromDB(machineID));
 		String actualResult = supplyReportClass.getMinAmount();
 		String expectedResult = "7";
+		assertEquals(expectedResult, actualResult);
+	}
+	
+	/**
+	 * Functionality : Test that the machine min amount is displayed correctly in the label
+	 * Input : invalid report
+	 * Result : min amount is set correctly
+	 */
+	@Test
+	void Test_correctMinAmountEmptyReport() {
+		int machineID = 1;
+		currentReport = new SupplyReportEntity();
+		supplyReportClass.setCurrentReport(supplyReportClass.getSupplyReportFromDB(machineID));
+		String actualResult = supplyReportClass.getMinAmount();
+		String expectedResult = "0";
 		assertEquals(expectedResult, actualResult);
 	}
 }
