@@ -165,7 +165,6 @@ public class ReportsDBController {
 		try {
 			if (con == null)
 				return report;
-			System.out.println(year + month + region);
 			String query = "SELECT * FROM ekrut.supply_report where month = ? AND year = ? AND machine_id = ?";
 
 			PreparedStatement ps = con.prepareStatement(query);
