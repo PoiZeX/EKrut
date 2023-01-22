@@ -62,7 +62,6 @@ class SupplyReportControllerTest_Client {
 	}
 
 	private SupplyReportEntity currentReport;
-	private PopupSetter popupMock;
 	private FieldsValidatorStub validatorStub;
 	private ReportsFromDBStub reportsGetterStub;
 	private ReportSelectionController validatorClass;
@@ -91,7 +90,7 @@ class SupplyReportControllerTest_Client {
 	 * message
 	 */
 	@Test
-	void Test_GoodValues() {
+	void validateFieldsTestValidValuesSuccsess() {
 		reportType = "clientsReport";
 		region = "North";
 		month = "January";
@@ -108,7 +107,7 @@ class SupplyReportControllerTest_Client {
 	 * bad month selected
 	 */
 	@Test
-	void Test_BadMonthValue() {
+	void validateFieldsTestInvalidMonthSucsses() {
 		reportType = "clientsReport";
 		region = "North";
 		month = "BlaBla";
@@ -125,7 +124,7 @@ class SupplyReportControllerTest_Client {
 	 * Result : error message indicates bad year selected
 	 */
 	@Test
-	void Test_BadYearValue() {
+	void validateFieldsTestInvalidYearSucsses() {
 		reportType = "clientsReport";
 		region = "North";
 		month = "January";
@@ -142,7 +141,7 @@ class SupplyReportControllerTest_Client {
 	 * Result : error message indicates bad region selected
 	 */
 	@Test
-	void Test_BadRegionValue() {
+	void validateFieldsTestInvalidRegionSucsses() {
 		reportType = "clientsReport";
 		region = "SomeWhereFarAway";
 		month = "December";
@@ -159,7 +158,7 @@ class SupplyReportControllerTest_Client {
 	 * Result : error message indicates bad reportType selected
 	 */
 	@Test
-	void Test_BadReportTypeValue() {
+	void validateFieldsTestInvalidReportTypeSucsses() {
 		reportType = "SomeReportType";
 		region = "North";
 		month = "January";
@@ -176,7 +175,7 @@ class SupplyReportControllerTest_Client {
 	 * Result : error message indicates bad year selected
 	 */
 	@Test
-	void Test_BadValues() {
+	void validateFieldsTestInvalidFieldsSucsses() {
 		reportType = "SomeReportType";
 		region = "SomeText";
 		month = "SomeText";
@@ -193,7 +192,7 @@ class SupplyReportControllerTest_Client {
 	 * Result : exception about bad year thrown
 	 */
 	@Test
-	void Test_NonNumericYear() {
+	void validateFieldsTestInvalidFieldsNonNumericYearFeiledSucsses() {
 		reportType = "SomeReportType";
 		region = "SomeText";
 		month = "SomeText";
