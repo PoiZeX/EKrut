@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import utils.IReportsFromDB;
 import utils.PopupSetter;
 import utils.TooltipSetter;
 
@@ -89,10 +90,11 @@ public class SupplyReportController implements IScreen {
 	private static String reportYear, reportMonth, reportRegion;
 	private String machineName;
 	private int machineID;
+	private IReportsFromDB reportsGetter = new ReportsFromDB();
 	private ArrayList<String[]> itemsArray = new ArrayList<>();
 	private ArrayList<String> itemsNames = new ArrayList<>(), startAmount = new ArrayList<>();
 	private int start = 0, end = 5;
-
+	private boolean isServiceEnabled = false;
 
 	/**
 	 * 
@@ -109,8 +111,8 @@ public class SupplyReportController implements IScreen {
 		supplySBC.setAnimated(false);
 		textConclusionsLbl.setVisible(false);
 		minAmountLbl.setVisible(false);
-		reportDetailsLabel.setText(
-				String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth), reportYear));
+		reportDetailsLabel.setText(getReportDate());
+		isServiceEnabled = true;
 		allMachines = DataStore.getMachines();
 		ObservableList<String> machines = FXCollections.observableArrayList();
 		for (MachineEntity machine : allMachines) {
@@ -134,11 +136,16 @@ public class SupplyReportController implements IScreen {
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
 	}
-	
+
+	public String getReportDate() {
+		String date = String.format("%s - %s/%s", reportRegion, CommonFunctions.getNumericMonth(reportMonth),
+				reportYear);
+		return date;
+	}
+
 	public void setChatService(ClientController chatService) {
 		chat = chatService;
 	}
-	
 
 	/**
 	 * 
@@ -170,6 +177,20 @@ public class SupplyReportController implements IScreen {
 		return;
 	}
 
+	public SupplyReportEntity getPrevSupplyReportForMachine(int machineID) {
+		return reportsGetter.getPrevSupplyReportForMachine(machineID);
+	}
+
+	/**
+	 * return the previous report
+	 * 
+	 * @param machineID
+	 * @return
+	 */
+	public SupplyReportEntity getSupplyReportFromDB(int machineID) {
+		return reportsGetter.getSupplyReportFromDB(machineID);
+	}
+
 	/**
 	 * 
 	 * This method receives an answer from a server and updates the answerFromServer
@@ -196,13 +217,9 @@ public class SupplyReportController implements IScreen {
 		if (textConclusionsLbl != null)
 			textConclusionsLbl.setText("");
 
-		currentReport = getSupplyReportFromDB(machineID);
+		setCurrentReport(getSupplyReportFromDB(machineID));
 
-		if (currentReport.getReportsList() == null) {
-			PopupSetter.createPopup(PopupTypeEnum.Error, "No Report Found!");
-			clearAllData();
-			return;
-		}
+		checkNullReport(currentReport);
 
 		// prepare
 		itemsArray = currentReport.getReportsList();
@@ -256,25 +273,24 @@ public class SupplyReportController implements IScreen {
 				: list.get(list.size() - 1).getPieValue() >= 5 ? "medium" : "low";
 		textConclusionsLbl.setText(conclusions);
 		textConclusionsLbl.setVisible(true);
-		minAmountLbl.setText("Min Amount: " + String.valueOf(currentReport.getMin_stock()));
+		minAmountLbl.setText("Min Amount: " + getMinAmount());
 		minAmountLbl.setVisible(true);
 	}
 
-	public SupplyReportEntity getSupplyReportFromDB(int machineID) {
-		RecievedData = false; // reset each operation
-		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestReport,
-				new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+	String getMinAmount() {
+		return String.valueOf(currentReport.getMin_stock());
+	}
 
-		// wait for answer
-		while (RecievedData == false) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public String checkNullReport(SupplyReportEntity currentReport) {
+		String errorMsg = "";
+		if (currentReport.getReportsList() == null) {
+			errorMsg = "No Report Found!";
+			if (isServiceEnabled) {
+				PopupSetter.createPopup(PopupTypeEnum.Error, errorMsg);
+				clearAllData();
 			}
 		}
-		return reportDetails;
+		return errorMsg;
 	}
 
 	/**
@@ -301,7 +317,7 @@ public class SupplyReportController implements IScreen {
 	 * @param machineID
 	 * @return
 	 */
-	private ArrayList<String> intersectItems(int machineID) {
+	ArrayList<String> intersectItems(int machineID) {
 		ArrayList<String> startAmounts = new ArrayList<>();
 		ArrayList<String[]> itemsList = currentReport.getReportsList();
 
@@ -337,39 +353,6 @@ public class SupplyReportController implements IScreen {
 			startAmounts.add("0"); // mark there was a problem (another 0 wont hurt someone :))
 
 		return startAmounts;
-
-	}
-
-	/**
-	 * return the previous report
-	 * 
-	 * @param machineID
-	 * @return
-	 */
-	private SupplyReportEntity getPrevSupplyReportForMachine(int machineID) {
-		// get supply report of last month for this machine
-		String month = reportMonth;
-		String year = reportYear;
-		if (month.equals("01")) {
-			month = "12";
-			year = String.valueOf(Integer.parseInt(year) - 1);
-		} else {
-			month = String.valueOf(Integer.parseInt(CommonFunctions.getNumericMonth(month)) - 1);
-		}
-		RecievedData = false; // reset each operation
-		// sends the user information to server
-		chat.acceptObj(new Message(TaskType.RequestReport,
-				new String[] { "supply", reportRegion, month, year, String.valueOf(machineID) }));
-		// wait for answer
-		while (RecievedData == false) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return reportDetails;
 
 	}
 
@@ -517,5 +500,69 @@ public class SupplyReportController implements IScreen {
 		prevPageBtn.setVisible(false);
 		nextPageBtn.setVisible(false);
 		minAmountLbl.setVisible(false);
+	}
+
+	public void setCurrentReport(SupplyReportEntity currentReport) {
+		this.currentReport = currentReport;
+	}
+
+	public void reportsGetterSetter(IReportsFromDB reportsGetter) {
+		this.reportsGetter = reportsGetter;
+	}
+
+	private class ReportsFromDB implements IReportsFromDB {
+
+		@Override
+		public SupplyReportEntity getSupplyReportFromDB(int machineID) {
+			RecievedData = false; // reset each operation
+			// sends the user information to server
+			chat.acceptObj(new Message(TaskType.RequestReport,
+					new String[] { "supply", reportRegion, reportMonth, reportYear, String.valueOf(machineID) }));
+
+			// wait for answer
+			while (RecievedData == false) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return reportDetails;
+		}
+
+		/**
+		 * return the previous report
+		 * 
+		 * @param machineID
+		 * @return
+		 */
+		@Override
+		public SupplyReportEntity getPrevSupplyReportForMachine(int machineID) {
+			// get supply report of last month for this machine
+			String month = reportMonth;
+			String year = reportYear;
+			if (month.equals("01")) {
+				month = "12";
+				year = String.valueOf(Integer.parseInt(year) - 1);
+			} else {
+				month = String.valueOf(Integer.parseInt(CommonFunctions.getNumericMonth(month)) - 1);
+			}
+			RecievedData = false; // reset each operation
+			// sends the user information to server
+			chat.acceptObj(new Message(TaskType.RequestReport,
+					new String[] { "supply", reportRegion, month, year, String.valueOf(machineID) }));
+			// wait for answer
+			while (RecievedData == false) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return reportDetails;
+
+		}
+
 	}
 }

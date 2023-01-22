@@ -176,17 +176,4 @@ public class SupplyReportEntity extends ReportEntity {
 		}
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof SupplyReportEntity)) {
-			return false;
-		}
-		SupplyReportEntity o = (SupplyReportEntity) other;
-		return getId() == o.getId() && machine_id == o.getMachine_id() && min_stock == o.getMin_stock()
-				&& item_id.equals(o.getItem_Id()) && times_under_min.equals(o.getTimes_under_min())
-				&& end_stock.equals(o.getEnd_stock()) && getMonth().equals(o.getMonth())
-				&& getYear().equals(o.getYear()) && getRegion().equals(o.getRegion());
-
-	}
-
 }

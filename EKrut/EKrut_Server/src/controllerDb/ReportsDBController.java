@@ -23,6 +23,14 @@ public class ReportsDBController {
 	private static int machineID;
 	private static Connection con = MySqlClass.getConnection();
 
+	public ReportsDBController() {
+		con = MySqlClass.getConnection();
+	}
+	
+	public ReportsDBController(Connection connection) {
+		con = connection;
+	}
+	
 	/**
 	 * Sets the report.
 	 *
