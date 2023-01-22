@@ -6,6 +6,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import entity.SupplyReportEntity;
 import entity.UserEntity;
 import mysql.MySqlClass;
@@ -15,6 +18,7 @@ class ReportsDBControllerTest {
 	public static UserEntity connectedUser;
 	private Connection nullConnection;
 
+	// Sets up and return a new SupplyReportEntity
 	private SupplyReportEntity setExpectedResult(int id, int machine_id, int min_stock, String item_id,
 			String times_under_min, String end_stock, String month, String year, String region) {
 		return new SupplyReportEntity(id, machine_id, min_stock, item_id, times_under_min, end_stock, month, year,
@@ -49,6 +53,39 @@ class ReportsDBControllerTest {
 		return true;
 	}
 
+	// Deletes a report by machine_id from the DB
+	private boolean deleteReportFromDB(int machineID) {
+		String query = "DELETE FROM ekrut.supply_report WHERE machine_id = ?;";
+		PreparedStatement statement;
+		try {
+			statement = MySqlClass.getConnection().prepareStatement(query);
+			statement.setInt(1, machineID);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean deleteGeneratedMessagesFromDB(int numberOfRows) {
+		// delete from marks
+		// order by id desc limit 1
+		String query = "DELETE FROM ekrut.personal_messages ORDER BY id DESC limit ?;";
+		PreparedStatement statement;
+		try {
+			statement = MySqlClass.getConnection().prepareStatement(query);
+			statement.setInt(1, numberOfRows);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
 	@BeforeEach
 	public void setUp() throws Exception {
 		// One-time DB Connection
@@ -67,11 +104,13 @@ class ReportsDBControllerTest {
 	void testGenerateSupplyReportInDBWithValidMachineID() throws Exception {
 		new ReportsDBController();
 		// Make sure the report doesn't exist before generating it
-		assertFalse(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));//
-		//////////////////////////////////////////////////////////////////////////////////
+		assertFalse(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
 		ReportsGenerator.generateSupplyReportForMachineID(14);
 		assertTrue(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
-
+		// Keep automation of UnitTesting by deleting the generated result
+		deleteReportFromDB(14);
+		// Make sure the result was properly deleted
+		assertFalse(ReportsDBController.isReportExist("supply", "12", "2022", "3", 14));
 	}
 
 	@Test
@@ -87,6 +126,8 @@ class ReportsDBControllerTest {
 		String actualResult = PersonalMessagesDBController.getPersonalMessagesFromDB(manager)
 				.get(PersonalMessagesDBController.getPersonalMessagesFromDB(manager).size() - 1).getMessage();
 		assertEquals(actualResult, expectedResult);
+		// Keep automation of UnitTesting by deleting the generated result
+		deleteGeneratedMessagesFromDB(CommonDataDBController.getMachineListFromDB().size());
 	}
 
 	// Report Viewing Tests
