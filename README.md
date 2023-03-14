@@ -1,2 +1,2 @@
 # EKrut
-Our degree project
+Mid project
