@@ -73,6 +73,9 @@ Sales for members:
 ![action](https://gcdnb.pbrd.co/images/9w9gONiigUrC.png?o=1)
 ![supply-management](https://gcdnb.pbrd.co/images/qrvc7SF3Vr74.png?o=1)
 
+
+## Messages example
+![](https://gcdnb.pbrd.co/images/YyM1w2Uk4z8B.png?o=1)
 ___
 
 There are far more actions and screens. Please see Demo.
